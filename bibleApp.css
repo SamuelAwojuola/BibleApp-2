@@ -1,0 +1,837 @@
+/* :root {
+    --verse-higlight: #f1f9c2;
+    --verse-higlight: #ffff9d;
+    --ref-hlt: beige;
+    --vhlt:#8080809c;
+    --nav-bg-color:#f8f8f8;
+    --top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
+    --scroll-thumb-border-color:#000000;
+    --scroll-thumb-hover-border:#939cff;
+    --scroll-thumb-hover-bg-color:#555;
+} */
+/* :root {
+    --verse-higlight: #ffff94;
+    --ref-hlt:#ffef9d ;
+    --nav-bg-color:#f8f8f8;
+    --top-bar-bground-color:#427d7f;--top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
+    --scroll-thumb-bgcolor:#888;
+    --scroll-thumb-border-color:#000000;
+    --scroll-thumb-hover-border:#939cff;
+    --scroll-thumb-hover-bg-color:#555;
+} */
+:root {
+    --fontsize-main: 13px;
+    --ref-hlt: #f8f8f8;
+    --ref-hlt: #f8f8ff;
+    --verse-higlight: #ffff92;
+    --verse-higlight: #fffb001b;
+    --nav-bg-color: #fbfbfb;
+    --vhlt-border: #8080809c;
+    --vhlt: #ffffc4;
+    --chpt: rgb(238, 227, 202);
+    --verse-hover: rgb(248, 246, 241);
+    /* --top-bar-bground-color: #427d7f; */
+    --top-bar-bground-color: #212121;
+    --darkmode-bg1color: #212121;
+    --scroll-track-bg-color: #878787;
+    --scroll-thumb-border-color: #000000;
+    --scroll-thumb-bgcolor: #4b4b4b;
+    --scroll-thumb-hover-border: #939cff;
+    --scroll-thumb-hover-bg-color: #555;
+    --buttons: #f8f8f8;
+    /* --buttons: #FCFCFC 110.00000000000001%; */
+    --buttons-border: 0.25px solid #70707072;
+}
+
+::selection {
+    background-color: rgba(0, 0, 255, 0.1);
+}
+
+html {
+    padding: 0;
+    font-size: var(--fontsize-main);
+    background-color: var(--nav-bg-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body>svg {
+    width: 100% !important;
+}
+
+body {
+    margin: 0;
+    overflow-y: hidden;
+    /* don't add color to the body, it will hide the svg */
+}
+
+#pagemaster {
+    position: relative;
+    height: 100vh;
+    /* border: 2px solid red; */
+    display: grid;
+    /* grid-template-columns: repeat(auto-fill, minmax(min(auto, 100%), 1fr)); */
+    grid-template-columns: auto 1fr 1fr;
+    grid-template-rows: auto 1fr 1fr;
+    row-gap: 0;
+    /* overflow-y:scroll; */
+}
+
+code {
+    font-size: 8px;
+}
+
+.chptheading {
+    background-color: var(--chpt);
+    border-bottom: 0.5px solid grey;
+    font-size: small;
+}
+
+#searchPreviewFixed .chptheading {
+    font-size: xx-small;
+    font-weight: bolder;
+    margin: 0;
+}
+
+#searchPreviewFixed .chptheading+.verse {
+    margin-top: 5px;
+}
+
+#ppp>span {
+    display: block;
+}
+
+#refnav {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 4;
+    display: flex;
+}
+
+.slidein {
+    display: block;
+    margin-left: 0;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+.slideout {
+    display: none;
+    margin-left: -500px;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+}
+
+#refnav>.refnav {
+    height: 100%;
+    float: left;
+}
+
+#refnav #app_settings {
+    border-right: 5px solid grey;
+    /* background-color: var(--top-bar-bground-color); */
+    background-color: var(--buttons);
+}
+
+#refnav #app_settings * {
+    display: block;
+    width: 22px;
+    padding: 0;
+    /* font-size:xx-small; */
+}
+#bibleversions_btns input{
+    width: 8px;
+    /* margin: 0; */
+    pointer-events: none;
+}
+#bibleversions_btns button {
+    padding: 0;
+    width: 35px;
+    float: left;
+    overflow: hidden;
+}
+
+
+.refnav .bible_nav {
+    height: 99.5%;
+    float: left;
+    background-color: var(--nav-bg-color);
+    overflow-y: scroll;
+    border-bottom: 2px solid;
+}
+
+#refnav .bible_nav * {
+    /* font-size: 0.75em; */
+    cursor: pointer;
+}
+
+#refnav .bible_nav *:hover {
+    background-color: var(--ref-hlt);
+    font-style: italic;
+}
+
+#refnav .bible_nav *:active {
+    background-color: var(--verse-higlight);
+}
+
+.ref_hlt {
+    font-weight: bold;
+    font-style: italic;
+    background-color: var(--ref-hlt);
+    background-color: var(--ref-hlt);
+    border-top: 0.25px solid rgba(128, 128, 128, 0.611);
+    border-bottom: 0.25px solid rgba(128, 128, 128, 0.611);
+}
+
+.tmp_hlt {
+    background-color: var(--ref-hlt);
+}
+
+#bible_chapters>option {
+    display: none;
+}
+
+.show_chapter {
+    display: block !important;
+}
+
+#bible_verses {
+    display: none;
+}
+
+#bible_verses>option {
+    /* display: none; */
+    width: 20px;
+}
+
+.show_verses {
+    /* display: block !important; */
+}
+
+button {
+    cursor: pointer;
+    background-color: var(--buttons);
+    border: var(--buttons-border);
+}
+
+.buttons {
+    grid-column-start: 1;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 2;
+    /* background-color: var(--top-bar-bground-color); */
+    border-bottom: 2px solid grey;
+    display: flex;
+}
+
+.buttons>button,
+.buttons>#searchdiv button,
+.buttons>#refdiv button {
+    font-size: 12px;
+}
+
+.buttons>#searchdiv,
+.buttons>#refdiv {
+    padding-top: 0 !important;
+    display: inline-flex;
+}
+
+#reference {
+    vertical-align: bottom;
+    background-color: var(--buttons);
+    border: var(--buttons-border);
+}
+
+button:not(:disabled):hover {
+    background-color: var(--chpt);
+}
+
+.strongsnum {
+    color: rgb(64, 59, 105);
+    /* font-size: 0.85em; */
+}
+
+[strnum]:empty {
+    display: none !important;
+}
+
+#main {
+    /* border: 3px solid orange; */
+    max-width: 100%;
+    grid-column-start: 2;
+    grid-column-end: 5;
+    grid-row-start: 2;
+    grid-row-end: 4;
+    overflow-y: scroll;
+    display: flex;
+}
+
+#main>*>* {
+    padding-left: 5px;
+}
+
+#ppp {
+    /* height: 50%; */
+    /* overflow-y: hidden; */
+}
+
+#search_section {
+    /* max-width:100px; */
+    grid-column-start: 4;
+    grid-column-end: 5;
+    grid-row-start: 1;
+    grid-row-end: 4;
+    background-color: royalblue;
+}
+
+#ppp>span.verse:last-child {
+    /* margin-bottom: 20px; */
+    padding-bottom: 20px;
+}
+
+[strnum] {
+    cursor: pointer;
+}
+
+span.verse:hover,
+span.vmultiple:hover {
+    background-color: var(--verse-hover);
+}
+
+span.translated:hover {
+    border-bottom: 1px solid rgb(151, 116, 0);
+    color: brown;
+}
+
+sup {
+    font-weight: bold;
+}
+
+main span {
+    /* font-size: x-small; */
+}
+
+.translated[trans] {
+    /* font-size: xx-small; */
+    font-weight: 600;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+#wordsearch {
+    /* cursor: pointer; */
+    background-color: var(--buttons);
+    border: var(--buttons-border);
+}
+
+#wordsearch::-webkit-input-placeholder,
+#reference::-webkit-input-placeholder {
+    font-style: italic;
+}
+
+#wordsearch:-moz-placeholder,
+#reference:-moz-placeholder {
+    font-style: italic;
+}
+
+#wordsearch::-moz-placeholder,
+#reference::-moz-placeholder {
+    font-style: italic;
+}
+
+#wordsearch:-ms-input-placeholder,
+#reference:-ms-input-placeholder {
+    font-style: italic;
+}
+
+.search_options {
+    display: none;
+    font-size: small;
+    font-style: italic;
+    color: whitesmoke;
+}
+
+/* .strnum:before {content: " " attr(data-xlit) " ";} */
+.eng2grk {
+    text-indent: -9999px;
+}
+
+.eng2grk>span {
+    display: inline;
+    font-weight: bold;
+}
+
+/* 
+.strnum:after {
+    content: attr(data-lemma);
+    font-style: italic;
+}   */
+
+#searchresultwindow {
+    position: absolute;
+    top: 12px;
+    right: 5px;
+    height: 100%;
+    width: 150px;
+}
+
+.relative {
+    position: relative;
+    /* margin-top: 100px; */
+    /* width: 100%;*/
+    height: 100%;
+}
+
+#searchPreview {
+    position: absolute;
+    top: 5px;
+    right: 0;
+    width: 150px;
+    padding: 5px 0 5px 0;
+    background-color: white;
+    border: 0.5px solid black;
+    min-height: 0px;
+    max-height: 90%;
+    overflow-y: scroll;
+}
+
+#searchPreview>* {
+    display: block;
+    padding: 0 5px;
+}
+
+#searchPreview [ref]:hover {
+    font-weight: bolder;
+    border-bottom: 1px dashed blue;
+    border: 2px solid gray;
+}
+
+#searchboxtitlebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 12px;
+    border: 0.5px solid whitesmoke;
+    background-color: whitesmoke;
+    cursor: pointer;
+    z-index: 2;
+}
+
+#searchrelative {
+    display: flex;
+}
+
+#searchclose {
+    /* position: absolute;
+    top: 0px;
+    right: 0px; */
+    /* height: 5px; */
+    padding: 0 2px;
+    font-size: 10px;
+    font-weight: bold;
+    border-left: 0.5px solid black;
+    /* color:white;
+    background-color: rgb(158, 42, 0); */
+}
+
+#searchclose:active,
+#searchminimize:active {
+    font-style: italic;
+}
+
+#searchclose:hover {
+    background-color: lightpink;
+}
+
+#searchminimize:hover {
+    background-color: greenyellow;
+}
+
+#searchminimize {
+    /* position: absolute;
+    top: 0px;
+    right: 22px; */
+    /* height: 5px; */
+    padding: 0 2px;
+    font-size: 10px;
+    font-weight: bold;
+    border-left: 0.5px solid black;
+    /* color:black;
+    background-color: greenyellow; */
+    /* z-index: -1; */
+}
+
+#refnav input {
+    height: 8px;
+    width: 8px;
+}
+
+#searchparameters {
+    min-height: auto;
+    /* display: block; */
+    border-bottom: 1px solid var(--scroll-track-bg-color);
+    border-top: 0;
+    background-color: var(--ref-hlt);
+    font-size: 10px;
+}
+
+#searchparameters div:first-of-type+div,
+#bibleapp_cache div:first-of-type {
+    border-bottom: 1px solid var(--scroll-track-bg-color);
+    width: 100%;
+    box-shadow: 0 2px 0 rgb(58, 58, 58);
+    background-color: whitesmoke;
+    font-style: italic;
+    font-weight: bold;
+    text-align: center;
+}
+
+#searchparameters div:last-child {
+    display: block;
+    background-color: var(--verse-higlight);
+    border-top: 1.5px solid var(--scroll-track-bg-color);
+    box-shadow: 0 2px 0 grey;
+}
+
+#searchparameters #where2display {
+    display: block;
+    border-top: 1.1px solid var(--scroll-track-bg-color);
+}
+
+#hidesearchparameters {
+    padding: 0;
+    margin-top: -2px;
+    float: right;
+    border: 1px solid var(--scroll-track-bg-color);
+    background-color: white;
+    cursor: pointer;
+    height: 15px;
+}
+
+.hidesearchparameters>*:not(div) {
+    display: none !important;
+}
+
+#strongsdefinitionwindow,
+#bible_versions,
+#bibleapp_cache {
+    float: left;
+    max-width: 150px;
+    height: 99.3%;
+    border-right: 5px solid;
+    padding-right: 3px;
+    overflow-y: scroll;
+    background-color: var(--verse-higlight);
+    background-color: whitesmoke;
+    /* background-color: var(--darkmode-bg1color);
+    color: white; */
+    border-bottom: 2px solid;
+}
+
+#bible_versions {
+    font-size: xx-small;
+}
+
+.strngsdefinition h1,
+.strngsdefinition h2,
+.strngsdefinition h3,
+.strngsdefinition h4 {
+    display: inline;
+    padding-top: 0;
+    margin-top: 0;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.strngsdefinition {
+    margin-bottom: 10px;
+}
+
+#searchPreviewWindowFixed {
+    float: left;
+    width: 150px;
+    height: 99.3%;
+    border-right: 5px solid;
+    overflow-y: hidden;
+    background-color: var(--verse-higlight);
+    border-bottom: 2px solid;
+    font-size: 12px;
+}
+
+#searchPreviewFixed {
+    display: table-row;
+    height: 92%;
+    float: left;
+    width: 150px;
+    overflow-y: scroll;
+}
+
+#searchPreviewFixed>* {
+    display: block;
+    padding: 0 5px;
+}
+
+#searchPreviewFixed>.chptheading {
+    cursor: pointer;
+}
+
+.displaynone {
+    display: none !important;
+}
+
+.displayshow {
+    display: block !important;
+}
+
+@keyframes blink {
+    0% {
+        background-color: beige;
+    }
+
+    75% {
+        background-color: rgb(255, 170, 80);
+    }
+
+    100% {
+        background-color: beige;
+    }
+}
+
+.vglow {
+    animation: blink 3s 2;
+    animation-direction: alternate;
+}
+
+.vhlt {
+    background-color: var(--vhlt);
+    border-top: 0.25px solid var(--vhlt-border);
+    border-left: 0.25px solid var(--vhlt-border);
+    border-right: 0.25px solid var(--vhlt-border);
+    border-radius: 2px;
+    z-index: 99;
+    -webkit-box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
+    -moz-box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
+    box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
+}
+
+.vhlt+.vhlt {
+    border-top: 0;
+    padding-bottom: 3px;
+}
+
+#mobilebuttons {
+    display: none;
+}
+
+@media screen and (max-device-width: 500px) {
+
+    html {
+        font-size: 27px;
+    }
+
+    #mobilebuttons {
+        display: flex;
+        position: absolute;
+        width: auto;
+        background-color: transparent;
+        top: calc(100vh - 50px);
+        right: 0;
+        ;
+        height: 100px;
+    }
+
+    #mobilebuttons>button {
+        display: block;
+        width: 100px;
+        height: 50px;
+        font-size: larger;
+    }
+
+    .buttons {
+        position: absolute;
+        top: calc(100vh - 150px);
+        right: 0;
+        max-width: calc(100vw);
+        /* background-color: transparent!important; */
+    }
+
+    .buttons>div {
+        width: 100vw;
+        height: 100px;
+    }
+
+    .buttons * {
+        font-size: 27px !important;
+        min-height: 50px;
+        min-width: 50px;
+    }
+
+    .buttons button {
+        float: right
+    }
+
+    #reference {
+        width: 100vw;
+    }
+
+    #wordsearch {
+        width: 100vw;
+        top: 50px;
+    }
+
+    #togglenavbtn {
+        min-height: 75px;
+        min-width: 75px;
+        font-size: 50px !important;
+        display: none !important;
+    }
+
+    #searchdiv,
+    #refdiv {
+        display: none;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    code {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    #searchPreview {
+        width: calc(100vw - 40px);
+        height: calc(100vh - 200px) !important;
+        /* left: 20px; */
+        right: 10px;
+        border: 5px solid red;
+    }
+
+    #searchboxtitlebar div {
+        font-size: 18px;
+        display: flex;
+    }
+}
+
+/* SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 7.5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    /* background: #f1f1f1; */
+    background: var(--scroll-track-bg-color);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb-bgcolor);
+    border-top: 2px solid var(--scroll-thumb-border-color);
+    border-bottom: 2px solid var(--scroll-thumb-border-color);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover-bg-color);
+    border-top: 2px solid var(--scroll-thumb-hover-border);
+    border-bottom: 2px solid var(--scroll-thumb-hover-border);
+}
+
+/* BEREAN BIBLE */
+.section_headings {
+    display: none;
+}
+
+.vmultiple {
+    display: flex !important;
+    flex-wrap: wrap;
+    max-width: 900px;
+}
+
+.vmultiple>span {
+    padding: 5px 5px;
+    border-bottom: 1px solid grey;
+    /* border: 1px solid grey; */
+    /* text-align: center; */
+    /* margin: 5px; */
+    /* width: 150px; */
+    flex-basis: 150px;
+    flex-grow: 1;
+}
+
+/* .vmultiple>span+span {} */
+.flashit {
+    -webkit-animation: flash linear 1.5s;
+    animation: flash linear 1.5s;
+}
+
+@-webkit-keyframes flash {
+    0% {
+        opacity: 1;
+        background-color: #f5f1c6;
+        font-weight: 1000;
+    }
+
+    20% {
+        opacity: 1;
+        background-color: #ffff92;
+        font-weight: 200;
+    }
+
+    80% {
+        opacity: 1;
+        background-color: #f5f1c6;
+        font-weight: 200;
+    }
+
+    95% {
+        opacity: 1;
+        background-color: #f5f1c6;
+        font-weight: 400;
+    }
+
+    100% {
+        opacity: 1;
+        background-color: transparent;
+        font-weight: 100;
+    }
+}
+
+@-keyframes flash {
+    0% {
+        opacity: 1;
+        background-color: #f5f1c6;
+        font-weight: 100;
+    }
+
+    20% {
+        opacity: .1;
+        background-color: #ffff92;
+        font-weight: 200;
+    }
+
+    80% {
+        opacity: .8;
+        background-color: #f5f1c6;
+        font-weight: 500;
+    }
+
+    95% {
+        opacity: 1;
+        background-color: #f5f1c6;
+        font-weight: 700;
+    }
+
+    100% {
+        opacity: 1;
+        background-color: transparent;
+        font-weight: 700;
+    }
+}

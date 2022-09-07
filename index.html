@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>LC BibleApp-02</title>
+  <!-- <script src="data/bible.js"></script> -->
+  <style id="verse_alignement">.verse {display: block;}</style>
+  <link rel="stylesheet" href="bibleApp.css">
+</head>
+
+<body>
+  <div id="pagemaster">
+    <div class="buttons">
+      <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
+      <!-- <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b><button onclick="showTransliteration()" id="translit"class="translit" title="Transliteration"><b>T</b></button> -->
+      <!-- <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download
+        <button onclick="makeContentEditable()" class="footersection" id="btnfootcontenteditable"title="Make page editable">EditPage -->
+      <div id="refdiv">
+        <input class="footersection" id="reference" title="Type Bible Reference"
+          placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection" id="forreference" title="go to reference">GO</button>
+        </div>
+      <div id="searchdiv">
+        <input class="footersection" id="wordsearch" title="What to search for"
+          placeholder="Type Words to Search For"></input><button onclick="runWordSearch()" class="footersection" id="forwordsearch" title="Run Search"
+            disabled>...</button>
+        </div>
+      <div id="bibleversions_btns">
+          <!-- <button><input type="checkbox" id="bv_KJV_chk" name="bv_KJV_chk" value="bv_KJV_chk" checked>KJV</button> -->
+        </div>
+    </div>
+
+    <div id="mobilebuttons">
+      <button class="displaynone" id="mb3" onclick="showhidemobile(searchdiv)" title="search">&#128270;</button>
+      <button class="displaynone" id="mb2" onclick="showhidemobile(refdiv)" title="Reference">Go</button>
+      <button class="displaynone" id="mb1" onclick="toggleNav(), showhidemobile(null)"
+        title="Bible Books and Chapters">&#9776;</button>
+      <button onclick="showMobileBtns()" id="showmobilebtns">&#10094;</button>
+    </div>
+
+    <nav id="refnav" class="slideout" style="display:block">
+      <div class="refnav" name="settings" id="app_settings" multiple>
+        <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation">☰</button>
+        <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
+        <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button>
+        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
+            </path>
+            <path d="M0 0h24v24H0z" fill="none"></path>
+          </svg>
+        </button>
+        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
+        <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)"
+          title="Show strongs definition window">Str</button>
+      </div>
+      <div id="bible_nav" class="refnav">
+        <div class="bible_nav" name="books" id="bible_books" multiple></div>
+        <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
+        <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
+      </div>
+      <div id="bible_versions" class="slideout">
+        <!-- <div><input type="checkbox" id="KJV_version" name="KJV_version" value="KJV" checked><label for="KJV_version" abreviation="KJV" title="King James Version">KJV</label></div> -->
+      </div>
+
+      <div id="searchPreviewWindowFixed" class="slideout">
+        <div id="searchparameters" class="hidesearchparameters">
+          <div>
+            <button id="hidesearchparameters"
+              onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">&#9660;</button>
+          </div>
+          <div id="searchparametertitlebar" class="settingssectionheadings"
+            onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">Search Parameters
+          </div>
+          <input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive"><label
+            for="case_sensitive">Case Sensitivity</label><br>
+          <input type="checkbox" id="whole_word" name="whole_word" value="whole_word"><label for="whole_word">Whole
+            Words</label><br>
+          <input type="radio" id="search_phrase" name="phraseornot" value="search_phrase"><label for="search_phrase">All
+            Words-Search for Phrase</label><br>
+          <input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked><label
+            for="search_all_words">All Words-Not Phrase</label><br>
+
+          <span id="where2display">
+            <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"
+              checked><label for="searchresultdisplay">Show search results in this window only</label><br>
+            <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"
+              checked><label for="showreturnedverses">Show all verses</label>
+          </span>
+          <div id="totalfound"></div>
+        </div>
+        <div id="searchPreviewFixed"></div>
+      </div>
+      <div id="bibleapp_cache" class="slideout">
+        <div class="settingssectionheadings">Modify Cache</div>
+        <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"
+          title="Clear transliterated words cache">Forget Transliterated Words</label><br>
+        <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
+          for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label><br>
+      </div>
+      <div id="strongsdefinitionwindow" class="slideout">
+      </div>
+    </nav>
+    <main id="main" contenteditable="false">
+      <div id="ppp"></div>
+      <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
+        <div id="search_section">adfadfadsfasdfadsf</div> -->
+      <div id="searchresultwindow" class="displaynone">
+        <div class="relative">
+          <div id="searchboxtitlebar">
+            <div id="searchrelative">
+              <div id="searchclose" onclick="hideElement(searchresultwindow)" title="Close search result window">CLOSE
+              </div>
+              <div id="searchminimize" onclick="minimize(searchPreview)" title="Minimize search result window">MINIMIZE
+              </div>
+            </div>
+          </div>
+          <div id="searchPreview">
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+<!-- <script src="data/KJV.js"></script> -->
+<script src="data/bible.js"></script>
+<script src="script.js/bibleApp_versionsLoader.js"></script>
+<script src="script.js/bibleApp_generateScriptureReference.js"></script>
+<script src="script.js/bibleApp_refNav.js"></script>
+<script src="script.js/bibleApp_js_cache.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
+<script src="script.js/bibleApp.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_search.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_chapterNameOnScroll.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
+
+</html>

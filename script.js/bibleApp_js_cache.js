@@ -11,34 +11,20 @@ cache_higlights.addEventListener('change', function () {
 });
 
 function cacheFunctions() {
+    if (localStorage.getItem('versionsToShow')) {
+        let versionsToDisplay = localStorage.getItem('versionsToShow').split(',');
+        versionsToShow=versionsToDisplay;
+        versionsToShow2=versionsToShow;
+        // console.log(versionsToDisplay)
+        // console.log(versionsToShow)
+    }
     if (localStorage.getItem('loadedBibleVersions')) {
         let versionsToBeLoaded = localStorage.getItem('loadedBibleVersions').split(',');
         versionsToBeLoaded.forEach(version => {
-            loadVersion(version)
-            versionID=version+'_version';
-            document.querySelector('#'+versionID).checked=true;
+            versionID = version + '_version';
+            document.querySelector('#' + versionID).checked = true;//To indicate the book has been loaded
+            loadVersion(version);//To load the book
             // document.querySelector('#'+versionID).click();
-        });
-    }
-    if (localStorage.getItem('versionsToShow')) {
-        let versionsToDisplay = localStorage.getItem('versionsToShow').split(',');
-        // versionsToShow=versionsToDisplay;
-        versionsToDisplay.forEach(version => {
-            // document.querySelector('[bversion="'+version+'"]').click();
-            document.querySelector('[bversion="KJV"]').click();
-            // document.querySelector('#'+versionID).click();
-        });
-    }
-    if (localStorage.getItem('lastBookandChapter')) {
-        lastOpenedBook = localStorage.getItem('lastBookandChapter').split(',')[0];
-        document.querySelector('.bkname[value="' + lastOpenedBook + '"]').click()
-        lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
-        getTextOfChapter(bible_chapters.querySelector('.chptnum[value="' + lastOpenedChapter + '"]'));
-    }
-    if (localStorage.getItem('transliteratedWords')) {
-        transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');
-        transliteratedWords_Array.forEach(storedStrnum => {
-            showTransliteration(storedStrnum)
         });
     }
     if (localStorage.getItem('strongsHighlightStyleSheet')) {
@@ -52,8 +38,11 @@ function cacheFunctions() {
     }
     if (localStorage.getItem('showVersesInSearch')) {
         let showVerseCheck = localStorage.getItem('showVersesInSearch');
-        if(showVerseCheck=='yes'){showreturnedverses.check=true}
-        else if(showVerseCheck=='no'){showreturnedverses.checked=false}
+        if (showVerseCheck == 'yes') {
+            showreturnedverses.check = true
+        } else if (showVerseCheck == 'no') {
+            showreturnedverses.checked = false
+        }
     }
 
     // if (localStorage.getItem('version_bsb_loaded')) {
@@ -62,9 +51,25 @@ function cacheFunctions() {
     //     else{bsb_version.checked=false}
     // }
 }
-
+function cacheFunctions2() {
+    runCacheFunc2=false;
+    versionsToShow.forEach(versionName =>{
+            document.querySelector('[bversion="' + versionName + '"]').click();})
+    if (localStorage.getItem('lastBookandChapter')) {
+        lastOpenedBook = localStorage.getItem('lastBookandChapter').split(',')[0];
+        document.querySelector('.bkname[value="' + lastOpenedBook + '"]').click()
+        lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
+        getTextOfChapter(bible_chapters.querySelector('.chptnum[value="' + lastOpenedChapter + '"]'));
+    }
+    if (localStorage.getItem('transliteratedWords')) {
+        transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');
+        transliteratedWords_Array.forEach(storedStrnum => {
+            showTransliteration(storedStrnum)
+        });
+    }
+}
 function setItemInLocalStorage(name, nValue) {
-    if (name == 'transliteratedWords' && !cache_strongs.checked) {//check if in the settings saving to cache for the transliteration words is selected
+    if (name == 'transliteratedWords' && !cache_strongs.checked) { //check if in the settings saving to cache for the transliteration words is selected
         localStorage.setItem(name, nValue);
     } else if (name == 'strongsHighlightStyleSheet' && !cache_higlights.checked) {
         localStorage.setItem(name, nValue);
@@ -122,6 +127,9 @@ function isAsubArrayofB(a, b) {
 }
 
 function areAllitemsOfAinB(a, b) {
-    if(a.every(elem => b.indexOf(elem) > -1)){return true}
-    else {return false}
+    if (a.every(elem => b.indexOf(elem) > -1)) {
+        return true
+    } else {
+        return false
+    }
 }

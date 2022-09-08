@@ -10,7 +10,7 @@ kjvBible.onload = function () {
     let booksChaptersAndVerses = kjvBible.response;
     KJV = booksChaptersAndVerses['books'];
     populateBooks();
-    // console.log('KJV_Bible')
+    // 
 
     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
         openachapteronpageload() //To display Gensis 1 on pageLoad
@@ -18,6 +18,14 @@ kjvBible.onload = function () {
         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
     }
 }
+
+// window.onload=function(){
+//     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
+//         openachapteronpageload() //To display Gensis 1 on pageLoad
+//     } else {
+//         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
+//     }
+// }
 
 /* LOAD THE BIBLE */
 let availableVersions = {
@@ -50,8 +58,8 @@ let availableVersions = {
 // var original='original',accented='accented',WEB='WEB',ESV='ESV',LC='LC',YLT='YLT',ASV='ASV',DARBY='DARBY',GW='GW',JUB='JUB',LEB='LEB',NET='NET',WMB='WMB',OPV='OPV',TPV='TPV',NMV='NMV',AraSVD='AraSVD',RomCor='RomCor',MCSB='MCSB',FreSegond1910='FreSegond1910',FreJND='FreJND',FrePGR='FrePGR',CKBOKS='CKBOKS';
 
 for (key in availableVersions) {
-    // console.log(key)
-    // console.log(availableVersions[key].name)
+    // 
+    // 
     bible_versions.innerHTML = bible_versions.innerHTML + `<div><input type="checkbox" id="${key}_version" name="${key}_version" value="${key}"><label for="${key}_version" abreviation="${key}" title="${availableVersions[key].name}">${key}</label></div>`;
 }
 bible_versions.addEventListener('change', function (e) {
@@ -64,15 +72,25 @@ bible_versions.addEventListener('change', function (e) {
         let versionName=window[e.target.getAttribute('value')]
         versionName=null;//Delete the loaded JSON version
         loadedBibleVersions.splice(loadedBibleVersions.indexOf(versionName), 1)
+        if(versionsToShow.length>0){
+        versionsToShow.splice(versionsToShow.indexOf(versionName), 1);
+        localStorage.setItem('versionsToShow', versionsToShow)
+        }
         localStorage.setItem('loadedBibleVersions',loadedBibleVersions)
         bibleversions_btns.querySelector(`[bversion="${e.target.getAttribute('value')}"]`).remove()
     }
 });
 
+let bibleVersionsLoadedFromCACHE=[];
 let loadedBibleVersions=[];
+let versionsToShow=[];
+let runCacheFunc2=true;
+
 function loadVersion(versionName) {
-    // console.log(Object.values(eval({versionName})))
-    // console.log(window[versionName])
+    
+
+    // 
+    // 
     let request_Version_URL = `bibles/${versionName}.json`;
     let bibleVersion = new XMLHttpRequest();
     bibleVersion.open('GET', request_Version_URL);
@@ -80,14 +98,31 @@ function loadVersion(versionName) {
     bibleVersion.send();
 
     let newVersion;
+    
     bibleVersion.onload = function () { 
         let booksChaptersAndVerses = bibleVersion.response;
         newVersion = booksChaptersAndVerses['books'];
-        // console.log(Object.keys({WEB})[0]==versionName)//Changes varible name to string
+        // 
         window[versionName]=newVersion;//For automatically assigning values to the variables
-        console.log(WEB)
-        console.log(versionName)
-        console.log(window[versionName])
+        // 
+        // 
+        
+        /* TO ENSURE THE BOOKS ARE ONLY DISPLAYED AFTER THEY HAVE BEEN LOADED */
+        
+        
+        
+        
+        
+        
+        if(runCacheFunc2){
+            if (versionsToShow.includes(versionName.toString())) {
+                
+                bibleVersionsLoadedFromCACHE.push(versionName);
+            }
+            if(versionsToShow2.length==bibleVersionsLoadedFromCACHE.length){
+                cacheFunctions2()
+            }
+        }
     }
     let bvInpt = document.createElement('INPUT');
     bvInpt.setAttribute('type','checkbox');
@@ -99,44 +134,45 @@ function loadVersion(versionName) {
     if(loadedBibleVersions.indexOf(versionName)==-1){loadedBibleVersions.push(versionName)};
 }
 
-let versionsToShow=[];
 bibleversions_btns.addEventListener('click', function(e){
     let pbtn=e.target;
     if(pbtn.tagName.toLowerCase()=='button'){
         let pbtnCheck=pbtn.querySelector('input');
         let vname =pbtn.getAttribute('bversion');
+        
         if((pbtnCheck.checked)&&(bibleversions_btns.querySelectorAll('input:checked').length>1)){
-            pbtnCheck.checked=false;
-            //remove the book from the display
-            let versionVersesToRemove=document.querySelectorAll(`.v_${vname}`);
-            versionVersesToRemove.forEach(v2r => {v2r.remove()});
-            versionsToShow.splice(versionsToShow.indexOf(vname),1);
-            localStorage.setItem('versionsToShow', versionsToShow)
-        }else if(!pbtnCheck.checked){
+                pbtnCheck.checked=false;
+                //remove the book from the display
+                let versionVersesToRemove=document.querySelectorAll(`.v_${vname}`);
+                versionVersesToRemove.forEach(v2r => {v2r.remove()});
+                versionsToShow.splice(versionsToShow.indexOf(vname),1);
+                localStorage.setItem('versionsToShow', versionsToShow)
+        }else if((!pbtnCheck.checked)){
             pbtnCheck.checked=true;
-            versionsToShow.push(vname);
+            if(versionsToShow.includes(vname)==0){versionsToShow.push(vname);
             localStorage.setItem('versionsToShow', versionsToShow)
             //display the book
-            let allLoadedmainerses=main.querySelectorAll('.vmultiple');
-            // console.log(allLoadedmainerses)
-            allLoadedmainerses.forEach(vrs => {
+            let allLoadedmainVerses=main.querySelectorAll('.vmultiple');
+            // 
+            allLoadedmainVerses.forEach(vrs => {
                 let bkid=vrs.id.split('.')[0];
                 let v_ref = vrs.querySelector('code').getAttribute('ref').split(' ');
-                console.log(v_ref)
+                // 
                 let chptNv=v_ref.pop();
                 let bookName=v_ref.join(' ');
                 chptNv=chptNv.split(':')
                 let chNumInBk=chptNv[0]
                 let vIdx=chptNv[1]
-                console.log(bookName)
-                console.log(chNumInBk)
-                console.log(vIdx)
+                // 
+                // 
+                // 
                 let vText = window[vname][bookName][Number(chNumInBk)-1][Number(vIdx)-1];
                 let appendHere = vrs;
                 parseSingleVerse(bkid, chNumInBk, vIdx, vText, appendHere,bookName,null, true,vname);
-            });
+            });}
         }
     }
+    
 })
 // loadVersion('WEB')
 

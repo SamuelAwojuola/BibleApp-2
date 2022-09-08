@@ -232,6 +232,9 @@ main.addEventListener('mouseover', function (e) {
     // main.classList.remove('noselect');
     // if (e.target.classList.contains('translated')) {
     if (strAtt = e.target.getAttribute('strnum')) {
+        if (document.getElementById('highlightall')) {
+            document.getElementById('highlightall').remove();
+        }
         let newStyleInHead = document.createElement('style');
         strAtt=strAtt.split(' ');
         transStyleSelector = '';

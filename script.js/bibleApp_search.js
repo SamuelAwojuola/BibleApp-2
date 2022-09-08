@@ -113,7 +113,7 @@ function runWordSearch() {
         searchResultArr.push(verseID)
         console.log(vText)
 
-        parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere,bookName,null, true)
+        parseSingleVerse(bkid, Number(chNumInBk)+1, vNumInChpt, vText, appendHere,bookName,null, true)
     }
 
     function searchJSON() {

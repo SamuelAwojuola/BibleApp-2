@@ -170,7 +170,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     let verseNum = document.createElement('code');
     // let bereanIndex = jsonVerseIdex - versesOT;/* TO BE CHANGED */
 
-    let parsedVerse = new DocumentFragment();
+    // let parsedVerse = new DocumentFragment();
 
     function parseVerseText(vT, verseSpan) {
         let wcount = 0;
@@ -212,7 +212,9 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
                 // '<span class="translated" translation="created" data-kjv-trans="created" strnum="H853 H1254" data-xlit="" data-lemma="">created</span>'
             });
         } else {
-            verseSpan.innerText = vT;
+            vT = vT.replace(/<hi type="bold">/g, '<strong>');
+            vT = vT.replace(/<\/hi>/g, '</strong>');
+            verseSpan.innerHTML = vT;
         }
         return verseSpan;
     }

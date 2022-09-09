@@ -2,29 +2,38 @@
 main.addEventListener('scroll', getHighestVisibleH2)
 
 function getHighestVisibleH2() {
-    let higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
-    if (higestElm.classList.contains('chptheading')) {
+    higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
+
+    let hH;
+    if (higestElm.matches('.chptheading')) {
         showCurrentChapterInHeadnSearchBar(higestElm)
-    }
-    let lowerElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 20);
-    //if highest visible h2 is between 20 and 5, then make the preceding h2 the highest
-    if (lowerElm.classList.contains('chptheading')) { //get the class of the preceding h2 from the id of the current h2
-        if (lowerElm.id.split('.')[1] - 1) {
-            higestElm = document.getElementById(lowerElm.id.split('.')[0].toString() + '.' + (lowerElm.id.split('.')[1] - 1))
-            if (higestElm) {
-                showCurrentChapterInHeadnSearchBar(higestElm)
-            }
+    } else {
+        if (higestElm.matches('.chptverses')) {
+            higestElm = higestElm.previousElementSibling;
+        } else if (elmAhasElmOfClassBasAncestor(higestElm, 'chptverses')) {
+            higestElm = elmAhasElmOfClassBasAncestor(higestElm, 'chptverses');
+            higestElm = higestElm.previousElementSibling;
         }
+        if(higestElm.matches('.chptheading')){showCurrentChapterInHeadnSearchBar(higestElm)}
     }
+
 }
 
-function showCurrentChapterInHeadnSearchBar(h) {
+function showCurrentChapterInHeadnSearchBar(h, isH2 = true) {
     //Change reference in reference search box
-    reference.value = h.innerText;
+    let derivedReference, hID;
+    if (isH2) {
+        derivedReference = h.innerText;
+        hID = h.id.split('_')[1];
+    } else {
+        derivedReference = `${h.getAttribute('bookname')} ${h.getAttribute('chapter')}`;
+        hID = `${h.getAttribute('bookid')}.${Number(h.getAttribute('chapter'))-1}`;
+    }
+    reference.value = derivedReference;
     //Make current chapter page title
-    document.querySelector('head>title').innerText = /*'LightCity-' +  */ h.innerText
+    document.querySelector('head>title').innerText = /*'LightCity-' +  */ derivedReference
     //To indicate the selected current chapter
-    let hID = h.id.split('_')[1];
+
     let selectedChapter = bible_chapters.querySelector(`[value="bk${hID.split('.')[0].toString()}ch${Number(hID.split('.')[1])}"]`)
     let bkName = bible_books.querySelector(`[bookname="${h.getAttribute('bookname')}"]`);
     indicateBooknChapterInNav(bkName, selectedChapter)
@@ -115,7 +124,9 @@ function loadNewChapterOnScroll() {
 
 /* Scroll To Target Verse */
 function scrollToVerse(targetVerse) {
-    if (targetVerse.parentElement.classList.contains('vmultiple')) {targetVerse = targetVerse.parentElement}//When verse is put in a verse holder for multiple verses
+    if (targetVerse.parentElement.classList.contains('vmultiple')) {
+        targetVerse = targetVerse.parentElement
+    } //When verse is put in a verse holder for multiple verses
     if (targetVerse) {
         if (targetVerse.previousElementSibling) {
             targetVerse.previousElementSibling.scrollIntoView({

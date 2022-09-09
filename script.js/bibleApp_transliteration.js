@@ -31,12 +31,16 @@ function createTransliterationAttr(x) {
                     let str_lemma = strongsJSONresponse[abc].lemma;
                     strNumElm.setAttribute("data-xlit", strNumElm.getAttribute("data-xlit") + divider + str_xlit);
                     strNumElm.setAttribute("data-lemma", strNumElm.getAttribute("data-lemma") + divider + str_lemma);
-                    strNumElm.title = strNumElm.title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma;
+                    let strNum_Title='';
+                    if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
+                    strNumElm.setAttribute('data-title', strNum_Title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma);
                     break
                 }
             }
         });
-        strNumElm.title = '(' + strNumElm.getAttribute("translation") + ')' + strNumElm.title;
+        let strNum_Title='';
+        if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
+        strNumElm.setAttribute('data-title', '(' + strNumElm.getAttribute("translation") + ')' + strNum_Title);
     });
 }
 
@@ -85,7 +89,7 @@ function showTransliteration(stn) {
             transSpan.setAttribute('strnum', eStn);
             transSpan.setAttribute('data-xlit', elm_dxlit[j]);
             let sLemma='|'+elm_lemma[j];
-            transSpan.title = (engTranslation + '|'+eStn+ sLemma);
+            transSpan.setAttribute('data-title', engTranslation + '|'+eStn+ sLemma);
             if(elm.getAttribute("transliteration")){transSpan.innerText = ' ' + elm.getAttribute("transliteration").split(' ')[j];
             }else{transSpan.innerText = ' ' + elm_dxlit[j];}
             xlitFragment.append(transSpan);
@@ -163,35 +167,6 @@ function strongsHighlighting(e) {
 //window.onload = () => cacheFunctions();
 //Moved to after loading of first chapter
 
-
-/* TRANSLITERAIOTN */
-/* 
-Α	α	a
-Β	β	b
-Γ	γ	g
-Δ	δ	d
-Ε	ε	e
-Ζ	ζ	z
-Η	η	h ē
-Θ	θ	th
-Ι	ι	i
-Κ	κ	k
-Λ	λ	l
-Μ	μ	m
-Ν	ν	n
-Ξ	ξ	x
-Ο	ο	o
-Π	π	p
-Ρ	ρ	r
-Σ	σ,ς	s
-Τ	τ	t
-Υ	υ	u (hu when it is the first letter)
-Φ	φ	ph
-Χ	χ	ch
-Ψ	ψ	ps
-Ω	ω	ō
- */
-
 pagemaster.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
@@ -257,3 +232,4 @@ main.addEventListener('mouseout', function (e) {
         document.getElementById('highlightall').remove();
     }
 })
+

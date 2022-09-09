@@ -142,6 +142,7 @@ function indicateBooknChapterInNav(bk, chpt) {
 document.addEventListener('keydown', function (event) {
     if (event.key === "Escape") {
         hideRefNav('hide');
+        if(context_menu){hideRefNav('hide', context_menu)}
     }
 });
 

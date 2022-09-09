@@ -111,7 +111,7 @@ function runWordSearch() {
         }
         let verseID = '_' + bkid + '.' + chNumInBk + '.' + vNumInChpt;
         searchResultArr.push(verseID)
-        console.log(vText)
+        // console.log(vText)
 
         parseSingleVerse(bkid, Number(chNumInBk)+1, vNumInChpt, vText, appendHere,bookName,null, true)
     }

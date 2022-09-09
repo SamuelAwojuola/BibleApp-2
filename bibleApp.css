@@ -148,6 +148,9 @@ code {
     padding: 0;
     /* font-size:xx-small; */
 }
+#bibleversions_btns{
+    display: inline-flex;
+}
 #bibleversions_btns input{
     width: 8px;
     /* margin: 0; */
@@ -241,7 +244,28 @@ button {
     border-bottom: 2px solid grey;
     display: flex;
 }
-
+#ref_search_versions_holder {
+    display: flex;
+    flex-wrap: wrap;
+}
+#context_menu{
+    position:absolute;
+    background: var(--ref-img);
+    border: 1px solid grey;
+    width: 125px;
+    padding: 5px;
+    -webkit-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
+    -moz-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
+    box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
+    z-index: 10;
+    font-size: smaller;
+}
+#context_menu:hover{
+    /* border: 1px solid #878787; */
+    -webkit-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
+    -moz-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
+    box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
+}
 .buttons>button,
 .buttons>#searchdiv button,
 .buttons>#refdiv button {
@@ -259,9 +283,9 @@ button {
     background-color: var(--buttons);
     border: var(--buttons-border);
 }
-
+input:hover,
 button:not(:disabled):hover {
-    background-color: var(--chpt);
+    background-color: var(--chpt)!important;
 }
 
 .strongsnum {
@@ -289,8 +313,7 @@ button:not(:disabled):hover {
 }
 
 #ppp {
-    /* height: 50%; */
-    /* overflow-y: hidden; */
+    /* position: relative; */
 }
 
 #search_section {
@@ -311,7 +334,7 @@ button:not(:disabled):hover {
     cursor: pointer;
 }
 
-span.verse:hover,
+span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
     background-color: var(--verse-hover);
 }
@@ -590,7 +613,7 @@ main span {
     padding: 0 5px;
 }
 
-#searchPreviewFixed>.chptheading {
+#searchPreviewFixed>.chptheading,#searchPreviewFixed code {
     cursor: pointer;
 }
 
@@ -627,10 +650,16 @@ main span {
     border-left: 0.25px solid var(--vhlt-border);
     border-right: 0.25px solid var(--vhlt-border);
     border-radius: 2px;
-    z-index: 99;
+    z-index: 1;
     -webkit-box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
     -moz-box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
     box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
+}
+.vhlt:hover {
+    background-color: #fef8d0;
+    -webkit-box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);
+    -moz-box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);
+    box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);
 }
 
 .vhlt+.vhlt {

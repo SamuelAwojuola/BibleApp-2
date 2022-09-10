@@ -53,7 +53,7 @@ function getTextOfChapterOnScroll(xxx, prependORnot, adjustScrolling) {
 }
 
 function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = false) {
-    console.log('gotoId')
+    // console.log('gotoId')
     chNumInBk = Number(xxx.getAttribute("chapterindex"));
     bkid = Number(xxx.getAttribute("bookindex"));
     bookName = xxx.getAttribute("bookname");
@@ -76,7 +76,7 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
             wholeChapterFragment.prepend(generateChapter(xxx));
             prependORappendChapters(prependORnot, wholeChapterFragment);
         }
-        console.log(gotoId)
+        // console.log(gotoId)
         scrollToVerse(document.getElementById(gotoId));
     }
 }
@@ -171,6 +171,14 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     // let bereanIndex = jsonVerseIdex - versesOT;/* TO BE CHANGED */
 
     // let parsedVerse = new DocumentFragment();
+    console.log(vText)
+    if(vText==null&&bibleVersionName){
+        console.log('vText')
+        // function ifNoVtxt(){
+            vText = window[bibleVersionName][bookName][chNumInBk-1][vNumInChpt-1];
+            console.log(vText)
+        // }
+    }
 
     function parseVerseText(vT, verseSpan) {
         let wcount = 0;
@@ -240,10 +248,9 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
         return
     }
     // /* OTHER VERSIONS */
-    // if(loadedBibleVersions.length!=0){loadedBibleVersions.forEach(bv2d => {
     if (versionsToShow.length != 0) {
         versionsToShow.forEach(bv2d => {
-            // console.log(bv2d)
+            let trans_lang = bible.Data.supportedVersions[bv2d].language;
             // console.log(window[bv2d][bookName][chNumInBk][vIdx])
             let verseSpan2 = document.createElement('span');
             let verseNum2 = document.createElement('code');
@@ -253,13 +260,18 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             verseSpan2 = parseVerseText(vText2, verseSpan2);
             verseSpan2.classList.add(`v_${bv2d}`)
 
-            verseNum2.prepend(document.createTextNode(`${bv2d} ${(chNumInBk + 1)}:${vNumInChpt} `));
             verseNum2.setAttribute('ref', bookName + ' ' + (chNumInBk + 1) + ':' + vNumInChpt);
             verseNum2.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
             verseSpan2.prepend(verseNum2);
             verseSpan2.classList.add('verse');
+            if(bible.isRtlVersion(bv2d,bookName)==true){
+                verseSpan2.classList.add('rtl');
+                verseNum2.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bv2d}`));
+            }else{                
+                verseNum2.prepend(document.createTextNode(`${bv2d} ${(chNumInBk + 1)}:${vNumInChpt} `));
+            }
             // verseSpan2.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
-            createTransliterationAttr(verseSpan2);
+            createTransliterationAttr(verseSpan2,trans_lang);
             verseMultipleSpan.appendChild(verseSpan2);
             verseMultipleSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         })

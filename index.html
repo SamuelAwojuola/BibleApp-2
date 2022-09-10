@@ -33,7 +33,7 @@
             id="forwordsearch" title="Run Search" disabled>...</button>
         </div>
         <div id="bibleversions_btns">
-          <!-- <button><input type="checkbox" id="bv_KJV_chk" name="bv_KJV_chk" value="bv_KJV_chk" checked>KJV</button> -->
+          <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check" checked>Tt</button>
         </div>
       </div>
     </div>
@@ -48,7 +48,7 @@
 
     <nav id="refnav" class="slideout" style="display:block">
       <div class="refnav" name="settings" id="app_settings" multiple>
-        <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation">☰</button>
+        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation">☰</button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
         <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button>
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
@@ -56,7 +56,7 @@
             <path
               d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
             </path>
-            <path d="M0 0h24v24H0z" fill="none"></path>
+            <path d="M0 0h24v24H0z" fill="transparent"></path>
           </svg>
         </button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
@@ -105,14 +105,31 @@
         <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"
           title="Clear transliterated words cache">Forget Transliterated Words</label><br>
         <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
-          for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label><br>
+          for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label>
+          <br>
+          <div class="settingssectionheadings">Change Font</div>
+          <select id="fontchange" onchange="changeFont()">
+            <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
+            <option value="Calibri, sans-serif">Calibri</option>
+            <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
+            <option value="'Courier New',monospace">Courier New</option>
+            <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
+            <option value="Garamond, sans-serif">Garamond</option>
+            <option value="Georgia, sans-serif">Georgia</option>
+            <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
+            <option value="Perpetua, sans-serif">Perpetua</option>
+            <option value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">System-ui</option>
+            <option value="'Times New Roman', serif">Times New Roman</option>
+            <option value="Verdana, sans-serif">Verdana</option>
+          </select>
       </div>
       <div id="strongsdefinitionwindow" class="slideout">
       </div>
     </nav>
     <main id="main" contenteditable="false">
       
-      <div id="context_menu" class="context_menu slideout">Hello there, how are you doing today. GOD bless you.</div>
+      <div id="context_menu" class="context_menu slideout"></div>
+      <div id="singleverse_compare_menu" class="slideout"></div>
       <!-- <div class="context_menu slideout">Hello there, how are you doing today. GOD bless you.</div> -->
       <div id="ppp"></div>
       <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>

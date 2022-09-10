@@ -49,3 +49,12 @@ function addRemoveRuleFromStyleSheet(CS_rule, ruleSelector, targetStyleSheet) {
         break
     }
 }
+/* CHANGE ROOT CSS VARIABLES */
+//get a variables value
+// let rootStyles = getComputedStyle(documentROOT)
+// rootStyles.getPropertyValue('--buttons')
+let documentROOT = document.querySelector(':root');
+function changeFont(){
+    //change value of variable
+    documentROOT.style.setProperty('--main-font', fontchange.value);
+}

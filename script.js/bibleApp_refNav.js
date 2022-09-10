@@ -71,6 +71,7 @@ var currentBookValue = null;
 //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
 refnav.addEventListener("click", function (e) {
     clickedElm = e.target;
+        if(e.target.matches("button")){clickedElm.classList.toggle("active_button")}
     //To populate book chapter numbers refnav pane
     if (clickedElm.classList.contains('bkname')) {
         getBksChptsNum(clickedElm);

@@ -1,24 +1,3 @@
-/* :root {
-    --verse-higlight: #f1f9c2;
-    --verse-higlight: #ffff9d;
-    --ref-hlt: beige;
-    --vhlt:#8080809c;
-    --nav-bg-color:#f8f8f8;
-    --top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
-    --scroll-thumb-border-color:#000000;
-    --scroll-thumb-hover-border:#939cff;
-    --scroll-thumb-hover-bg-color:#555;
-} */
-/* :root {
-    --verse-higlight: #ffff94;
-    --ref-hlt:#ffef9d ;
-    --nav-bg-color:#f8f8f8;
-    --top-bar-bground-color:#427d7f;--top-bar-bground-color:#ffb1b1;    --scroll-track-bg-color:#878787;
-    --scroll-thumb-bgcolor:#888;
-    --scroll-thumb-border-color:#000000;
-    --scroll-thumb-hover-border:#939cff;
-    --scroll-thumb-hover-bg-color:#555;
-} */
 :root {
     --fontsize-main: 13px;
     --ref-hlt: #f8f8f8;
@@ -32,6 +11,7 @@
     --vhlt: #ffffc4;
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
+    --main-font:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     /* --top-bar-bground-color: #427d7f; */
     --top-bar-bground-color: #212121;
     --darkmode-bg1color: #212121;
@@ -55,9 +35,7 @@ html {
     background-color: var(--nav-bg-color);
     background: url(R.jpg);
     background: -webkit-radial-gradient(center, ellipse closest-corner, rgba(251, 251, 251, 0.825) 0%, rgba(251, 251, 251, 0.875) 25%, rgba(255, 255, 255, 0) 100%), url(background.jpg);
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-family:var(--main-font);
 }
 body>svg {
     width: 100% !important;
@@ -112,7 +90,19 @@ code {
     grid-row-end: 4;
     display: flex;
 }
-
+.rtl{direction: rtl}
+#singleverse_compare_menu button{
+    font-size: xx-small!important;
+    width:  25px;
+    height: 15px;
+    padding: 2px;
+    text-overflow: ellipsis;
+}
+#singleverse_compare_menu input{
+    width: 5.5px;
+    position: absolute;
+    right: 0;
+}
 .slidein {
     display: block;
     margin-left: 0;
@@ -152,22 +142,19 @@ code {
     display: inline-flex;
 }
 #bibleversions_btns input{
-    width: 8px;
+    width: 6px;
     /* margin: 0; */
     pointer-events: none;
 }
 #bibleversions_btns button {
+    display:block;
     padding: 0;
     width: 35px;
     float: left;
-    overflow: hidden;
-}
-[bversion]{
-    font-size: 8px!important;
+    font-size: 6.5px!important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    display:block;
 }
 
 
@@ -250,15 +237,22 @@ button {
 }
 #context_menu{
     position:absolute;
+    /* display: block; */
     background: var(--ref-img);
     border: 1px solid grey;
-    width: 125px;
+    min-width: 50px;
+    max-width: 125px;
     padding: 5px;
     -webkit-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     -moz-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     z-index: 10;
     font-size: smaller;
+}
+#tool_tip{
+    /* float:left; */
+    position: fixed;
+    right: 0;
 }
 #context_menu:hover{
     /* border: 1px solid #878787; */
@@ -287,7 +281,9 @@ input:hover,
 button:not(:disabled):hover {
     background-color: var(--chpt)!important;
 }
-
+.active_button, searchsettings.active_button {
+    background-color: var(--chpt)!important;
+}
 .strongsnum {
     color: rgb(64, 59, 105);
     /* font-size: 0.85em; */
@@ -517,14 +513,20 @@ main span {
 }
 
 #searchparameters div:first-of-type+div,
-#bibleapp_cache div:first-of-type {
+#bibleapp_cache div:first-of-type,
+#bibleapp_cache .settingssectionheadings {
     border-bottom: 1px solid var(--scroll-track-bg-color);
+    border-top: 1px solid var(--scroll-track-bg-color);
     width: 100%;
-    box-shadow: 0 2px 0 rgb(58, 58, 58);
+    box-shadow: 0 0.5px 0 rgb(58, 58, 58);
     background-color: whitesmoke;
     font-style: italic;
     font-weight: bold;
     text-align: center;
+}
+#bibleapp_cache *:not(.settingssectionheadings){
+    display: inline-flex;
+    font-size: xx-small;
 }
 
 #searchparameters div:last-child {
@@ -560,7 +562,6 @@ main span {
     max-width: 150px;
     height: 99.3%;
     border-right: 5px solid;
-    padding-right: 3px;
     overflow-y: scroll;
     background-color: var(--verse-higlight);
     background-color: whitesmoke;
@@ -568,6 +569,12 @@ main span {
     color: white; */
     border-bottom: 2px solid;
     font-size: smaller;
+}
+#strongsdefinitionwindow>*:not(hr),
+#bible_versions>*:not(hr),
+#bibleapp_cache>*:not(hr) {
+    padding-right: 3px;
+    padding-left: 3px;
 }
 
 #bible_versions {

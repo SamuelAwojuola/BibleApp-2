@@ -17,23 +17,6 @@
 'abgdezhiklmnxoprsstyō'
 s.replace('\bυ','hu')
 s.replace('\bΥ','Hu')
-s.replace('αυ','au')
-s.replace('ευ','eu')
-s.replace('ου','ou')
-s.replace('ηυ','hu')
-s.replace('υι','ui')
-s.replace('γγ','ng')
-s.replace('γχ','nch')
-s.replace('γκ','nk')
-s.replace('γξ','nx')
-s.replace('θ','th')
-s.replace('Θ','Th')
-s.replace('Φ','ph')
-s.replace('φ','Ph')
-s.replace('χ','ch')
-s.replace('Χ','Ch')
-s.replace('ψ','ps')
-s.replace('Ψ','Ps')
 Α	α	a
 Β	β	b
 Γ	γ	g
@@ -59,21 +42,144 @@ s.replace('Ψ','Ps')
 Ψ	ψ	ps
 Ω	ω	ō
  */
+/* const greekTransliterationReplacementSET = {
+    "αυ": "au",
+    "\bυ": "hu",
+    "Α": "A",
+    "Β": "B",
+    "Γ": "G",
+    "Δ": "D",
+    "Ε": "E",
+    "Ζ": "Z",
+    "Η": "H",
+    "Ι": "I",
+    "Κ": "K",
+    "Λ": "L",
+    "Μ": "M",
+    "Ν": "N",
+    "Ξ": "X",
+    "Ο": "O",
+    "Π": "P",
+    "Ρ": "R",
+    "Σ": "S",
+    "Τ": "T",
+    "Υ": "Y",
+    "Ω": "Ō",
+    "α": "a",
+    "β": "b",
+    "γ": "g",
+    "δ": "d",
+    "ε": "e",
+    "ζ": "z",
+    "η": "h",
+    "ι": "i",
+    "κ": "k",
+    "λ": "l",
+    "μ": "m",
+    "ν": "n",
+    "ξ": "x",
+    "ο": "o",
+    "π": "p",
+    "ρ": "r",
+    "σ": "s",
+    "ς": "s",
+    "τ": "t",
+    "υ": "y",
+    "ω": "ō"
+} */
+
+const greekTransliterationReplacementSET = {
+    "au": ["αυ"],
+    "hu": ["\bυ"],
+    "au": ["αυ"],
+    "eu": ["ευ"],
+    "ou": ["ου"],
+    "hu": ["ηυ"],
+    "me": ["μὴ"],
+    "ui": ["υι"],
+    "ng": ["γγ"],
+    "nch": ["γχ"],
+    "nk": ["γκ"],
+    "nx": ["γξ"],
+    "th": ["θ"],
+    "Th": ["Θ"],
+    "ph": ["Φ"],
+    "Ph": ["φ"],
+    "ch": ["χ"],
+    "Ch": ["Χ"],
+    "ps": ["ψ"],
+    "Ps": ["Ψ"],
+    "A": ["Α"],
+    "B": ["Β"],
+    "G": ["Γ"],
+    "D": ["Δ"],
+    "E": ["Ε","Ἔ"],
+    "Z": ["Ζ"],
+    "H": ["Η"],
+    "I": ["Ι"],
+    "K": ["Κ"],
+    "L": ["Λ"],
+    "M": ["Μ"],
+    "N": ["Ν"],
+    "X": ["Ξ"],
+    "O": ["Ο"],
+    "P": ["Π"],
+    "R": ["Ρ"],
+    "S": ["Σ"],
+    "T": ["Τ"],
+    "Y": ["Υ"],
+    "Ō": ["Ω"],
+    "a": ["α","ὰ","ά","ᾶ","ᾰ","ᾱ"],
+    "b": ["β"],
+    "g": ["γ"],
+    "d": ["δ"],
+    "e": ["ε","ὲ","ἐ","ἔ"],
+    "é": ["ἐ"],
+    "z": ["ζ"],
+    "ḗ": ["ή"],
+    "h": ["η","ὴ","ή","ῆ"],
+    "ḗ": ["ή"],
+    "i": ["ι","ὶ","ϊ",'ΐ',"ῖ","ῐ","ῑ"],
+    "k": ["κ"],
+    "l": ["λ"],
+    "m": ["μ"],
+    "n": ["ν"],
+    "x": ["ξ"],
+    "o": ["ο","ὸ"],
+    "p": ["π"],
+    "r": ["ρ"],
+    "s": ["σ","ς"],
+    "t": ["τ"],
+    "y": ["υ","ὺ","ύ","ϋ","ΰ","ῠ","ῡ"],
+    "û": ["ῦ"],
+    "ō": ["ω","ὧ","ῷ","ώ","ὼ","ῶ"]
+}
 
 /* GREEK TRANSLITERATOR */
-// let r = 'αβσδεφγ῾ικλμνοπρστυξυζηω'.split('').reduce((o,curr,i) => {o['abcdefghiklmnoprstuxyzēō'[i]] = curr;return o}, {})
-let greekLetters=['αυ','\bυ','Α','Β','Γ','Δ','Ε','Ζ','Η','Ι','Κ','Λ','Μ','Ν','Ξ','Ο','Π','Ρ','Σ','Τ','Υ','Ω','α','β','γ','δ','ε','ζ','η','ι','κ','λ','μ','ν','ξ','ο','π','ρ','σ','ς','τ','υ','ω'];
-let replacementLetters='au,hu,A,B,G,D,E,Z,H,I,K,L,M,N,X,O,P,R,S,T,Y,Ō,a,b,g,d,e,z,h,i,k,l,m,n,x,o,p,r,s,s,t,y,ō';
-let r = replacementLetters.split(',').reduce((o,curr,i) => {o[greekLetters[i]] = curr;return o}, {})
-// function gr(s) { return s.replace('th','θ').replace('ch','χ').replace(/./gui, a=>r[a]||a).replace(/σ /g, 'ς ') }
-// function gr(s) { return s.replace(/\\bυ/,'hu').replace(/\\bΥ/,'Hu').replace('αυ','au').replace('ευ','eu').replace('ου','ou').replace('ηυ','hu').replace('υι','ui').replace('γγ','ng').replace('γχ','nch').replace('γκ','nk').replace('γξ','nx').replace('θ','th').replace('Θ','Th').replace('Φ','ph').replace('φ','Ph').replace('χ','ch').replace('Χ','Ch').replace('ψ','ps').replace('Ψ','Ps').replace(/./gui, a=>r[a]||a) }
-function gr(s) { return s.replace('αυ','au').replace('ευ','eu').replace('ου','ou').replace('ηυ','hu').replace('υι','ui').replace('γγ','ng').replace('γχ','nch').replace('γκ','nk').replace('γξ','nx').replace('θ','th').replace('Θ','Th').replace('Φ','ph').replace('φ','Ph').replace('χ','ch').replace('Χ','Ch').replace('ψ','ps').replace('Ψ','Ps') }
-// function gr(s) { return s.replace(/./gui, a=>r[a]||a) }
-
 // 'ΑΒΓΔΕΖΗΙΚΛΜΝΞΟΠΡΣΤΥΩαβγδεζηικλμνξοπρσςτυω'
 // 'ABGDEZHIKLMNXOPRSTYŌabgdezhiklmnxoprsstyō'
 
-// replace selected
-// s=window.getSelection()
-// t=s.toString()
-// p=s.focusNode.parentNode;p.innerHTML=p.innerHTML.replace(t, gr(t))
+// Create Object from 2 Arrays
+//FROM: (https://bobbyhadz.com/blog/javascript-create-object-from-two-arrays#:~:text=To%20create%20an%20object%20from%20two%20arrays%3A%201,iteration%2C%20assign%20the%20key-value%20pair%20to%20an%20object.)
+// function generateGreekTransliterationReplacementSET() {
+//     let greekLetters = ['αυ', '\bυ', 'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Ω', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'ς', 'τ', 'υ', 'ω'];
+//     let replacementLetters = ['au', 'hu', 'A', 'B', 'G', 'D', 'E', 'Z', 'H', 'I', 'K', 'L', 'M', 'N', 'X', 'O', 'P', 'R', 'S', 'T', 'Y', 'Ō', 'a', 'b', 'g', 'd', 'e', 'z', 'h', 'i', 'k', 'l', 'm', 'n', 'x', 'o', 'p', 'r', 's', 's', 't', 'y', 'ō'];
+//     let greekTransliterationReplacementSET = {};
+//     greekLetters.forEach((element, index) => {
+//         greekTransliterationReplacementSET[element] = replacementLetters[index];
+//     });
+//     return greekTransliterationReplacementSET;
+// }
+//Match key and replace with value
+function keyValueReplacer(str, keyValueReplacementObj=greekTransliterationReplacementSET) {
+    //GREEK to ENGLISH
+    /* For Word Begining */
+    str = str.replace(new RegExp(`\\b[υὑ]`, 'g'), 'hu')
+    Object.keys(keyValueReplacementObj).forEach(k => keyValueReplacementObj[k].forEach(function (item) {
+        str = str.replace(new RegExp(`${item}`, 'g'), k)
+    }));
+    // console.log(str);
+    let transliteration=str;
+    return transliteration
+}
+// keyValueReplacer()

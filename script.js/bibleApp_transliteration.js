@@ -11,7 +11,7 @@ strongsJSON.onload = function () {
 }
 
 // Create and Append Transliteration Data Attribute
-function createTransliterationAttr(x) {
+function createTransliterationAttr(x, l) {
     let translatedWordsInVerse = x.querySelectorAll('[strnum]');
     translatedWordsInVerse.forEach(strNumElm => {
         wStrnum_array = strNumElm.getAttribute('strnum').split(' ');
@@ -24,6 +24,11 @@ function createTransliterationAttr(x) {
             } else if ((i == 1) || ((i > 2) && (i == wStrnum_array.length))) {
                 divider = ''
             }
+            //For Greek/Hebrew Bibles
+            if (l == 'original') {
+                strNumElm.setAttribute("data-true-xlit", keyValueReplacer(strNumElm.innerText));
+            }
+            // CHECK STRONGS DICTIONARY
             for (abc = 0; abc < strongsJSONresponse.length; abc++) {
                 if (strongsJSONresponse[abc].number == wStrnum) {
                     strNumElm.classList.add(wStrnum)
@@ -31,16 +36,19 @@ function createTransliterationAttr(x) {
                     let str_lemma = strongsJSONresponse[abc].lemma;
                     strNumElm.setAttribute("data-xlit", strNumElm.getAttribute("data-xlit") + divider + str_xlit);
                     strNumElm.setAttribute("data-lemma", strNumElm.getAttribute("data-lemma") + divider + str_lemma);
-                    let strNum_Title='';
-                    if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
-                    strNumElm.setAttribute('data-title', strNum_Title + " - " + str_xlit + " | " + wStrnum + " | " + str_lemma);
+                    let strNum_Title = '';
+                    // if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
+                    strNumElm.setAttribute('data-title', wStrnum + " | " + str_xlit + " | " + str_lemma);
                     break
                 }
             }
         });
-        let strNum_Title='';
-        if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
-        strNumElm.setAttribute('data-title', '(' + strNumElm.getAttribute("translation") + ')' + strNum_Title);
+        let strNum_Title = '';
+        if (strNumElm.getAttribute('data-title')) {
+            strNum_Title = strNumElm.getAttribute('data-title');
+        }
+        // strNumElm.setAttribute('data-title', '(' + strNumElm.getAttribute("translation") + ')' + strNum_Title);
+        strNumElm.setAttribute('data-title', strNum_Title);
     });
 }
 
@@ -71,27 +79,39 @@ var transliteratedWords_Array = [];
 function showTransliteration(stn) {
     let allSimilarWords = pagemaster.querySelectorAll('.' + stn);
     allSimilarWords.forEach(elm => {
-        elm.innerHTML='';
+        elm.innerHTML = '';
         let xlitFragment = new DocumentFragment();
         let elm_strnum = elm.getAttribute("strnum").split(' ');
         let elm_dxlit = elm.getAttribute("data-xlit").split('|');
-        let elm_lemma='';
-        if(elm.getAttribute("data-lemma")){
+        let elm_lemma = '';
+        if (elm.getAttribute("data-lemma")) {
             elm_lemma = elm.getAttribute("data-lemma").split('|')
         }
-        // let elm_transliteration = elm.getAttribute("transliteration").split('|');
-        let engTranslation = elm.getAttribute("translation");
-        let j=0;
+        let engTranslation;
+        let trueTransliteration = null;
+        if (elm.getAttribute("data-true-xlit")) {//If it is from Greek Bible
+            trueTransliteration = elm.getAttribute("data-true-xlit");
+        } else {//If it is not from Greek Bible
+            engTranslation = elm.getAttribute("translation");
+        }
+        let j = 0;
         elm_strnum.forEach(eStn => {
             let transSpan = document.createElement('SPAN');
             transSpan.classList.add(eStn);
             transSpan.classList.add('strnum')
             transSpan.setAttribute('strnum', eStn);
             transSpan.setAttribute('data-xlit', elm_dxlit[j]);
-            let sLemma='|'+elm_lemma[j];
-            transSpan.setAttribute('data-title', engTranslation + '|'+eStn+ sLemma);
-            if(elm.getAttribute("transliteration")){transSpan.innerText = ' ' + elm.getAttribute("transliteration").split(' ')[j];
-            }else{transSpan.innerText = ' ' + elm_dxlit[j];}
+            let sLemma = ' | ' + elm_lemma[j];
+            transSpan.setAttribute('data-title', eStn + ' | ' + elm_dxlit[j] + sLemma);
+            if (elm.getAttribute("transliteration")) {
+                transSpan.innerText = ' ' + elm.getAttribute("transliteration").split(' ')[j];
+            } else {
+                transSpan.innerText = ' ' + elm_dxlit[j];
+            }
+            if (trueTransliteration) {
+                transSpan.setAttribute("data-true-xlit", trueTransliteration);
+                transSpan.innerText = ' ' + trueTransliteration;
+            }
             xlitFragment.append(transSpan);
             j++
         });
@@ -104,8 +124,8 @@ function hideTransliteration(stn) {
     let allSimilarWords = pagemaster.querySelectorAll('.' + stn);
     allSimilarWords.forEach(elm => {
         elm.classList.remove('eng2grk');
-        elm.innerHTML='';
-        elm.innerHTML=elm.getAttribute("translation");
+        elm.innerHTML = '';
+        elm.innerHTML = elm.getAttribute("translation");
     })
 }
 
@@ -127,7 +147,9 @@ let timerstn;
 function removeRecentStrongsFromArray(stn) {
     timerstn = setTimeout(() => {
         const index = clickeElmArray.indexOf(stn);
-        if (index > -1) {clickeElmArray.splice(index, 1)}
+        if (index > -1) {
+            clickeElmArray.splice(index, 1)
+        }
         highlightAllStrongs(stn)
         if (highlightstrongs) {
             setItemInLocalStorage('strongsHighlightStyleSheet', getAllRulesInStyleSheet(highlightstrongs));
@@ -211,14 +233,16 @@ main.addEventListener('mouseover', function (e) {
             document.getElementById('highlightall').remove();
         }
         let newStyleInHead = document.createElement('style');
-        strAtt=strAtt.split(' ');
+        strAtt = strAtt.split(' ');
         transStyleSelector = '';
         let i = 0;
-        let comma='';
+        let comma = '';
         strAtt.forEach(stn => {
             i++;
-            if(i>1){comma=','}
-            transStyleSelector=transStyleSelector+comma+'.'+stn;
+            if (i > 1) {
+                comma = ','
+            }
+            transStyleSelector = transStyleSelector + comma + '.' + stn;
         });
         newStyleInHead.id = 'highlightall';
         newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
@@ -228,8 +252,7 @@ main.addEventListener('mouseover', function (e) {
 })
 main.addEventListener('mouseout', function (e) {
     if (e.target.hasAttribute('strnum')) {
-    // if (e.target.classList.contains('translated')) {
+        // if (e.target.classList.contains('translated')) {
         document.getElementById('highlightall').remove();
     }
 })
-

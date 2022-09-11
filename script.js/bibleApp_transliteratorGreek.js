@@ -103,8 +103,8 @@ const greekTransliterationReplacementSET = {
     "nx": ["γξ"],
     "th": ["θ"],
     "Th": ["Θ"],
-    "ph": ["Φ"],
-    "Ph": ["φ"],
+    "ph": ["φ"],
+    "Ph": ["Φ"],
     "ch": ["χ"],
     "Ch": ["Χ"],
     "ps": ["ψ"],
@@ -152,7 +152,7 @@ const greekTransliterationReplacementSET = {
     "t": ["τ"],
     "y": ["υ","ὺ","ύ","ϋ","ΰ","ῠ","ῡ"],
     "û": ["ῦ"],
-    "ō": ["ω","ὧ","ῷ","ώ","ὼ","ῶ"]
+    "ō": ["ω","ὧ","ῷ","ώ","ὼ","ῶ","ὠ"]
 }
 
 /* GREEK TRANSLITERATOR */

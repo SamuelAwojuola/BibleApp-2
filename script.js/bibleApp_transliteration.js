@@ -12,6 +12,7 @@ strongsJSON.onload = function () {
 
 // Create and Append Transliteration Data Attribute
 function createTransliterationAttr(x, l) {
+    // console.log(l)
     let translatedWordsInVerse = x.querySelectorAll('[strnum]');
     translatedWordsInVerse.forEach(strNumElm => {
         wStrnum_array = strNumElm.getAttribute('strnum').split(' ');

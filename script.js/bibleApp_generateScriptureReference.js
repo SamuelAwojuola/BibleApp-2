@@ -171,13 +171,8 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     // let bereanIndex = jsonVerseIdex - versesOT;/* TO BE CHANGED */
 
     // let parsedVerse = new DocumentFragment();
-    console.log(vText)
     if(vText==null&&bibleVersionName){
-        console.log('vText')
-        // function ifNoVtxt(){
-            vText = window[bibleVersionName][bookName][chNumInBk-1][vNumInChpt-1];
-            console.log(vText)
-        // }
+        vText = window[bibleVersionName][bookName][chNumInBk-1][vNumInChpt-1];
     }
 
     function parseVerseText(vT, verseSpan) {
@@ -186,12 +181,6 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             vT.forEach(wString => {
                 let wordSpan = document.createElement('span');
                 wcount++;
-                // console.log(wString);
-                // console.log(wString.length);
-                // console.log(wString[0]);
-                // console.log(wString[1]);
-                // console.log(wString[2]);
-                // ["created", "H853 H1254", "TH8804"]
                 if (wString.length == 3) {
                     wordSpan.setAttribute('TH', wString[2]);
                 }
@@ -227,6 +216,10 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
         return verseSpan;
     }
     if (fromSearch) {
+        let trans_lang;
+        if(bibleVersionName){
+            trans_lang = bible.Data.supportedVersions[bibleVersionName].language;
+        }
         verseSpan = parseVerseText(vText, verseSpan);
         if(bibleVersionName){
             verseNum.prepend(document.createTextNode(`${bibleVersionName} ${(chNumInBk)}:${vNumInChpt} `));
@@ -239,7 +232,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
         verseNum.setAttribute('ref', bookName + ' ' + (chNumInBk) + ':' + vNumInChpt);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
         verseSpan.prepend(verseNum);
-        createTransliterationAttr(verseSpan);
+        createTransliterationAttr(verseSpan,trans_lang);
         verseSpan.classList.add('verse');
         appendHere.appendChild(verseSpan);
         transliteratedWords_Array.forEach(storedStrnum => {

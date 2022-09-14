@@ -33,7 +33,8 @@
             id="forwordsearch" title="Run Search" disabled>...</button>
         </div>
         <div id="bibleversions_btns">
-          <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check" checked>Tt</button>
+          <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check"
+              name="ttip_check" value="ttip_check" checked>Tt</button>
         </div>
       </div>
     </div>
@@ -48,7 +49,8 @@
 
     <nav id="refnav" class="slideout" style="display:block">
       <div class="refnav" name="settings" id="app_settings" multiple>
-        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation">☰</button>
+        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)"
+          title="Bible Navigation">☰</button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
         <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button>
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
@@ -106,30 +108,69 @@
           title="Clear transliterated words cache">Forget Transliterated Words</label><br>
         <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
           for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label>
+        <br>
+        <div class="settingssectionheadings">Change Font</div>
+        <select id="fontchange" onchange="changeFontFamily()">
+          <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
+          <option value="Calibri, sans-serif">Calibri</option>
+          <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
+          <option value="'Courier New',monospace">Courier New</option>
+          <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
+          <option value="Garamond, sans-serif">Garamond</option>
+          <option value="Georgia, sans-serif">Georgia</option>
+          <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
+          <option value="Perpetua, sans-serif">Perpetua</option>
+          <option
+            value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+            System-ui</option>
+          <option value="'Times New Roman', serif">Times New Roman</option>
+          <option value="Verdana, sans-serif">Verdana</option>
+        </select>
+        <div class="settingssectionheadings" id="change_fontsize">
+          <table>
+            <tr>
+              <td>Verse Text</td>
+              <!-- <td>Increase Font Size:</td> -->
+              <td><button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button></td>
+            </tr>
+            <tr>
+              <!-- <td>Decrease Font Size:</td> -->
+              <td><button id="decrease_fontsize" onclick="changeFontSize('verse_text','minus')">-</button></td>
+            </tr>
+          </table>
           <br>
-          <div class="settingssectionheadings">Change Font</div>
-          <select id="fontchange" onchange="changeFont()">
-            <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
-            <option value="Calibri, sans-serif">Calibri</option>
-            <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
-            <option value="'Courier New',monospace">Courier New</option>
-            <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
-            <option value="Garamond, sans-serif">Garamond</option>
-            <option value="Georgia, sans-serif">Georgia</option>
-            <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
-            <option value="Perpetua, sans-serif">Perpetua</option>
-            <option value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">System-ui</option>
-            <option value="'Times New Roman', serif">Times New Roman</option>
-            <option value="Verdana, sans-serif">Verdana</option>
-          </select>
+          <table>
+            <tr>
+              <td>Refrence Text</td>
+              <!-- <td>Increase Font Size:</td> -->
+              <td><button id="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button></td>
+            </tr>
+            <tr>
+              <!-- <td>Decrease Font Size:</td> -->
+              <td><button id="decrease_fontsize" onclick="changeFontSize('ref_text','minus')">-</button></td>
+            </tr>
+          </table>
+          <br>
+          <table>
+            <tr>
+              <td>Strongs Tool Tip</td>
+              <!-- <td>Increase Font Size:</td> -->
+              <td><button id="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button></td>
+            </tr>
+            <tr>
+              <!-- <td>Decrease Font Size:</td> -->
+              <td><button id="decrease_fontsize" onclick="changeFontSize('strongs_tooltip','minus')">-</button></td>
+            </tr>
+          </table>
+        </div>
       </div>
       <div id="strongsdefinitionwindow" class="slideout">
       </div>
     </nav>
+    <div id="singleverse_compare_menu" class="slideout"></div>
     <main id="main" contenteditable="false">
-      
+
       <div id="context_menu" class="context_menu slideout"></div>
-      <div id="singleverse_compare_menu" class="slideout"></div>
       <!-- <div class="context_menu slideout">Hello there, how are you doing today. GOD bless you.</div> -->
       <div id="ppp"></div>
       <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
@@ -168,5 +209,6 @@
 <!-- <script src="script.js/TSK.js" charset="utf-8"></script> -->
 <script src="data/crossReferences.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_ref_browserHistory.js" charset="utf-8"></script>
 
 </html>

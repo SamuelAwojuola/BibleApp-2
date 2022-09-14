@@ -2,20 +2,20 @@
 main.addEventListener('scroll', getHighestVisibleH2)
 
 function getHighestVisibleH2() {
-    higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
+    let hH=null;
+    let higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
 
-    let hH;
     if (higestElm.matches('.chptheading')) {
-        showCurrentChapterInHeadnSearchBar(higestElm)
+        hH=higestElm;
     } else {
         if (higestElm.matches('.chptverses')) {
-            higestElm = higestElm.previousElementSibling;
+            hH = higestElm.previousElementSibling;
         } else if (elmAhasElmOfClassBasAncestor(higestElm, 'chptverses')) {
             higestElm = elmAhasElmOfClassBasAncestor(higestElm, 'chptverses');
-            higestElm = higestElm.previousElementSibling;
+            hH = higestElm.previousElementSibling;
         }
-        if(higestElm.matches('.chptheading')){showCurrentChapterInHeadnSearchBar(higestElm)}
     }
+    if(hH!=null&&hH.matches('.chptheading')&&hH.innerText!=reference.value){showCurrentChapterInHeadnSearchBar(hH)}
 
 }
 
@@ -29,14 +29,17 @@ function showCurrentChapterInHeadnSearchBar(h, isH2 = true) {
         derivedReference = `${h.getAttribute('bookname')} ${h.getAttribute('chapter')}`;
         hID = `${h.getAttribute('bookid')}.${Number(h.getAttribute('chapter'))-1}`;
     }
-    reference.value = derivedReference;
-    //Make current chapter page title
-    document.querySelector('head>title').innerText = /*'LightCity-' +  */ derivedReference
+
     //To indicate the selected current chapter
 
     let selectedChapter = bible_chapters.querySelector(`[value="bk${hID.split('.')[0].toString()}ch${Number(hID.split('.')[1])}"]`)
     let bkName = bible_books.querySelector(`[bookname="${h.getAttribute('bookname')}"]`);
-    indicateBooknChapterInNav(bkName, selectedChapter)
+    console.log('scrollto')
+    indicateBooknChapterInNav(bkName, selectedChapter);
+    
+    reference.value = derivedReference;
+    //Make current chapter page title
+    document.querySelector('head>title').innerText = /*'LightCity-' +  */ derivedReference
 }
 
 /* REMOVE HIGHEST AND LOWEST CHAPTERS VERSES */
@@ -140,4 +143,11 @@ function scrollToVerse(targetVerse) {
             targetVerse.classList.remove("flashit");
         }, 5000);
     }
+}
+
+function checkVisible(elm) {
+    //From: https://stackoverflow.com/questions/5353934/check-if-element-is-visible-on-screen
+    var rect = elm.getBoundingClientRect();
+    var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+    return !(rect.bottom < 0 || rect.top - viewHeight >= -10);
 }

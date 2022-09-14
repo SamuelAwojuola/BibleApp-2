@@ -9,7 +9,7 @@ cache_higlights.addEventListener('change', function () {
         localStorage.removeItem('strongsHighlightStyleSheet')
     }
 });
-
+let defaultReference;//For browser history
 function cacheFunctions() {
     if (localStorage.getItem('versionsToShow')) {
         let versionsToDisplay = localStorage.getItem('versionsToShow').split(',');
@@ -60,6 +60,7 @@ function cacheFunctions2() {
         document.querySelector('.bkname[value="' + lastOpenedBook + '"]').click()
         lastOpenedChapter = localStorage.getItem('lastBookandChapter').split(',')[1];
         getTextOfChapter(bible_chapters.querySelector('.chptnum[value="' + lastOpenedChapter + '"]'));
+        defaultReference = lastOpenedBook + ' ' + lastOpenedChapter;
     }
     if (localStorage.getItem('transliteratedWords')) {
         transliteratedWords_Array = localStorage.getItem('transliteratedWords').split(',');

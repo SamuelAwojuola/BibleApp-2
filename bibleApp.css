@@ -1,5 +1,8 @@
 :root {
     --fontsize-main: 13px;
+    --fontsize-scripture: 13px;
+    --fontsize-ref: 8px;
+    --fontsize-strongstooltip: 8px;
     --ref-hlt: #f8f8f8;
     --ref-hlt: #dde3db;
     --ref-img: url(R.jpg);
@@ -60,7 +63,7 @@ body {
 }
 
 code {
-    font-size: 8px;
+    font-size: var(--fontsize-ref);
 }
 
 .chptheading {
@@ -74,7 +77,15 @@ code {
     font-weight: bolder;
     margin: 0;
 }
-
+/* #change_fontsize{
+    display:grid;
+} */
+tr, td{
+    text-align: left;
+}
+.verse:not(code) {
+    font-size: var(--fontsize-scripture);
+}
 #searchPreviewFixed .chptheading+.verse {
     margin-top: 5px;
 }
@@ -91,6 +102,9 @@ code {
     display: flex;
 }
 .rtl{direction: rtl}
+#singleverse_compare_menu{
+    /* display: inline-flex; */
+}
 #singleverse_compare_menu button{
     font-size: xx-small!important;
     width:  25px;
@@ -157,7 +171,9 @@ code {
     text-overflow: ellipsis;
 }
 
-
+#bible_nav{
+    font-size: small;
+}
 .refnav .bible_nav {
     height: 99.5%;
     float: left;
@@ -247,7 +263,7 @@ button {
     -moz-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     z-index: 10;
-    font-size: smaller;
+    font-size: var(--fontsize-strongstooltip);
 }
 #tool_tip{
     /* float:left; */

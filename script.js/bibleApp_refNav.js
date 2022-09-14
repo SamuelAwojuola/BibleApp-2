@@ -40,20 +40,20 @@ function populateBooks() {
 }
 
 function getBksChptsNum(xxx) {
-     if (document.querySelector(".show_chapter")) {
-         document.querySelectorAll(".show_chapter").forEach(element => {
-             element.classList.remove("show_chapter");
-         });
-     }
-     let classOfChapters = document.querySelectorAll('.' + xxx.value);
-     classOfChapters.forEach(element => {
-         element.classList.add("show_chapter");
-     });
-     //remove class from previous class holder in refnav
-     if (refbk = bible_books.querySelector('.temp_hlt')) {
-         refbk.classList.remove('temp_hlt')
-     }
-     xxx.classList.add('temp_hlt')
+    if (document.querySelector(".show_chapter")) {
+        document.querySelectorAll(".show_chapter").forEach(element => {
+            element.classList.remove("show_chapter");
+        });
+    }
+    let classOfChapters = document.querySelectorAll('.' + xxx.value);
+    classOfChapters.forEach(element => {
+        element.classList.add("show_chapter");
+    });
+    //remove class from previous class holder in refnav
+    if (bible_books.querySelector('.tmp_hlt')) {
+    bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
+    }
+    xxx.classList.add('tmp_hlt')
 }
 /* ON PAGE LOAD SELECT THE FIRST BOOK AND CHAPTER */
 function openachapteronpageload() {
@@ -71,17 +71,11 @@ var currentBookValue = null;
 //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
 refnav.addEventListener("click", function (e) {
     clickedElm = e.target;
-        if(e.target.matches("button")){clickedElm.classList.toggle("active_button")}
+    if(e.target.matches("button")){clickedElm.classList.toggle("active_button")}
     //To populate book chapter numbers refnav pane
     if (clickedElm.classList.contains('bkname')) {
         getBksChptsNum(clickedElm);
         goto = 0;
-        if (bible_books.querySelector('.tmp_hlt')) {
-            bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
-            clickedElm.classList.add('tmp_hlt')
-            // clickedElm.scrollIntoView(false)
-        }
-        clickedElm.classList.add('tmp_hlt')
         currentBookValue = clickedElm.getAttribute('value');
     }
     //To Get Text of Selected Chapter
@@ -108,17 +102,18 @@ function indicateBooknChapterInNav(bk, chpt) {
     if (bible_books.querySelector('.tmp_hlt')) {
         bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt');
     }
+    // console.log(bk)
     if (bk) {
         if (refbk = bible_books.querySelector('.ref_hlt')) {
             refbk.classList.remove('ref_hlt')
         }
         bk.classList.add('ref_hlt');
-        bk.scrollIntoView(false);
-        getBksChptsNum(bk);
+        if(!checkVisible(bk)){bk.scrollIntoView(false);}
+        // getBksChptsNum(bk);
         if (!chpt) {
             let chapter_to_highlight = bible_chapters.querySelector('.show_chapter');
             chapter_to_highlight.classList.add('ref_hlt');
-            chapter_to_highlight.scrollIntoView(false);
+        if(!checkVisible(chapter_to_highlight)){chapter_to_highlight.scrollIntoView(false);}
         }
     }
     if (chpt) {
@@ -135,8 +130,17 @@ function indicateBooknChapterInNav(bk, chpt) {
             bookToHighlight.scrollIntoView(false);
         }
     }
-    // Update cache
+    // UPDATE CACHE
     setItemInLocalStorage('lastBookandChapter', bk.getAttribute('value') + ',' + chpt.getAttribute("value") + ',' + chpt.getAttribute("bookname"));
+
+    //BROWERS HISTORY
+    // let derivedReference=chpt.getAttribute('bookname') + ' ' + chpt.innerText;
+    // if(derivedReference!=reference.value){
+    //     console.log(derivedReference)
+    //     if (derivedReference!=window.location.hash.split('%20').join(' ')){
+    //         updateRefBrowserHistory(derivedReference);
+    //     }
+    // }
 }
 
 //Hide refnav when escape is pressed

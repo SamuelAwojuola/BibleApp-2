@@ -51,10 +51,36 @@ function addRemoveRuleFromStyleSheet(CS_rule, ruleSelector, targetStyleSheet) {
 }
 /* CHANGE ROOT CSS VARIABLES */
 //get a variables value
-// let rootStyles = getComputedStyle(documentROOT)
-// rootStyles.getPropertyValue('--buttons')
 let documentROOT = document.querySelector(':root');
-function changeFont(){
+let rootStyles = getComputedStyle(documentROOT)
+// rootStyles.getPropertyValue('--buttons')
+function changeFontFamily() {
     //change value of variable
     documentROOT.style.setProperty('--main-font', fontchange.value);
+}
+
+function changeFontSize(targetgroup, plusMinus) {
+    let currentSize;
+    if (targetgroup == 'verse_text') {
+        targ='--fontsize-scripture';
+        currentSize = rootStyles.getPropertyValue('--fontsize-scripture');
+    }
+    if (targetgroup == 'ref_text') {
+        targ='--fontsize-ref';
+        currentSize = rootStyles.getPropertyValue('--fontsize-ref');
+    }
+    if (targetgroup == 'strongs_tooltip') {
+        targ='--fontsize-strongstooltip';
+        currentSize = rootStyles.getPropertyValue('--fontsize-strongstooltip');
+    }
+    currentSize = Number(currentSize.split('px')[0].trim())
+    if (plusMinus == 'plus') {
+        currentSize = (currentSize + 5) + 'px'
+    } else if (plusMinus == 'minus') {
+        currentSize = (currentSize - 5) + 'px'
+    }
+    documentROOT.style.setProperty(targ, currentSize);
+    return {
+        fSize: currentSize
+    }
 }

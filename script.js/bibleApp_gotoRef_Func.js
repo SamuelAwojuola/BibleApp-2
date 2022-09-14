@@ -1,14 +1,15 @@
 /* BIBLE REFERENCE ABBREVIATIONS */
-var requestURLBibleRefAbr = 'bibles_JSON/key_abbreviations_english.json';
-var ref_abreviations = new XMLHttpRequest();
-ref_abreviations.open('GET', requestURLBibleRefAbr);
-ref_abreviations.responseType = 'json';
-ref_abreviations.send();
+// var requestURLBibleRefAbr = 'bibles_JSON/key_abbreviations_english.json';
+// var ref_abreviations = new XMLHttpRequest();
+// ref_abreviations.open('GET', requestURLBibleRefAbr);
+// ref_abreviations.responseType = 'json';
+// ref_abreviations.send();
 
 let ref_Abrev;
-ref_abreviations.onload = function () {
-    ref_Abrev = ref_abreviations.response;
-}
+// ref_abreviations.onload = function () {
+//     ref_Abrev = ref_abreviations.response;
+// }
+ref_Abrev = bible.Data.books;
 //On enter go to reference
 reference.addEventListener("keypress", function (event) {
     if (event.key === "Enter") {
@@ -21,7 +22,9 @@ function changeSingleStringToTitleCase(str) {
     return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
 }
 
-function gotoRef(ref_to_get) {
+function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
+    let currentBook = bible_books.querySelector('.ref_hlt');
+    let currentBookName = currentBook.getAttribute('bookname');
     let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;
     let ref;
     if(ref_to_get){ref=ref_to_get}else{ref=reference.value;}
@@ -101,17 +104,18 @@ function gotoRef(ref_to_get) {
     }
     
     // Find id of Book
-    ref_Abrev.forEach(ref_ => {
-        if (ref_.a.includes(ref_bkname.toUpperCase())) {
-            refb = ref_.b - 1;
+    ref_Abrev.forEach((ref_, ref_indx) => {
+        if (ref_.includes(ref_bkname.toUpperCase())) {
+            ref_bkname = bible.Data.bookNamesByLanguage.en[ref_indx]
+            refb = ref_indx;
             if (currentBook != refb) {
-                document.querySelector(`[value="book_${refb}"]`).click(); //click on book
+                // document.querySelector(`[value="book_${refb}"]`).click(); //click on book
+                let selected_chapter=document.querySelector(`[value="book_${refb}"]`);
+                getBksChptsNum(selected_chapter)
                 let chptOption = document.querySelector(`[value="bk${refb}ch${ref_chp-1}"]`);
-                getTextOfChapter(chptOption,1,null,true)
-                // document.querySelector(`[value="bk${refb}ch${ref_chp-1}"]`).click(); //click on book
-                // getAllChapters(); //generate text of all chapters in the book
+                getTextOfChapter(chptOption,1,null,true,shouldBrowserHistoryBeUpdated)
             }
-            bkXchY = `bk${ref_.b - 1}ch${ref_chp}`;
+            bkXchY = `bk${ref_indx}ch${ref_chp}`;
             ref_chpnVer = (ref_chp - 1) + '.' + (ref_ver - 1);
             let targetVerse = document.getElementById(`_${refb}.${ref_chpnVer}`);
             scrollToVerse(targetVerse)

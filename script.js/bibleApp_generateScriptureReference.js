@@ -52,7 +52,7 @@ function getTextOfChapterOnScroll(xxx, prependORnot, adjustScrolling) {
     }
 }
 
-function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = false) {
+function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = false, shouldBrowserHistoryBeUpdated=true) {
     // console.log('gotoId')
     chNumInBk = Number(xxx.getAttribute("chapterindex"));
     bkid = Number(xxx.getAttribute("bookindex"));
@@ -78,20 +78,21 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
         }
         // console.log(gotoId)
         scrollToVerse(document.getElementById(gotoId));
+        if(shouldBrowserHistoryBeUpdated){updateRefBrowserHistory(bookName + ' ' + (Number(chNumInBk)+1))}
     }
 }
 
-function clickCurrentBook(xxx) {
-    bookName = xxx.getAttribute("bookname");
-    currentBookName = bookName;
-    let bk_option = bible_books.querySelector('[bookname="' + bookName + '"]');
-    return {
-        indicateBknChpt: indicateBooknChapterInNav(bk_option, xxx),
-        clickBook: bk_option.click(),
-        clickChpt: xxx.click(),
-        book: bk_option
-    }
-}
+// function clickCurrentBook(xxx) {
+//     bookName = xxx.getAttribute("bookname");
+//     currentBookName = bookName;
+//     let bk_option = bible_books.querySelector('[bookname="' + bookName + '"]');
+//     return {
+//         indicateBknChpt: indicateBooknChapterInNav(bk_option, xxx),
+//         clickBook: bk_option.click(),
+//         clickChpt: xxx.click(),
+//         book: bk_option
+//     }
+// }
 
 function prependORappendChapters(prependORnot, what_to_append) {
     if (!prependORnot) {

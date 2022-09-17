@@ -52,7 +52,7 @@
         <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)"
           title="Bible Navigation">☰</button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
-        <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button>
+        <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path
@@ -61,9 +61,9 @@
             <path d="M0 0h24v24H0z" fill="transparent"></path>
           </svg>
         </button>
-        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)"
           title="Show strongs definition window">Str</button>
+        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
       </div>
       <div id="bible_nav" class="refnav">
         <div class="bible_nav" name="books" id="bible_books" multiple></div>
@@ -127,44 +127,44 @@
           <option value="Verdana, sans-serif">Verdana</option>
         </select>
         <div class="settingssectionheadings" id="change_fontsize">
+          <div class="settingssectionheadings">Change Font Sizes</div>
           <table>
             <tr>
               <td>Verse Text</td>
-              <!-- <td>Increase Font Size:</td> -->
-              <td><button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button></td>
-            </tr>
-            <tr>
-              <!-- <td>Decrease Font Size:</td> -->
-              <td><button id="decrease_fontsize" onclick="changeFontSize('verse_text','minus')">-</button></td>
+              <td>
+                <button id="decrease_fontsize" onclick="changeFontSize('verse_text','minus')">-</button>
+                <button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button>
+              </td>
             </tr>
           </table>
           <br>
           <table>
             <tr>
               <td>Refrence Text</td>
-              <!-- <td>Increase Font Size:</td> -->
-              <td><button id="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button></td>
-            </tr>
-            <tr>
-              <!-- <td>Decrease Font Size:</td> -->
-              <td><button id="decrease_fontsize" onclick="changeFontSize('ref_text','minus')">-</button></td>
+              <td>
+                <button id="decrease_fontsize" onclick="changeFontSize('ref_text','minus')">-</button>
+                <button id="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button>
+              </td>
             </tr>
           </table>
           <br>
           <table>
             <tr>
               <td>Strongs Tool Tip</td>
-              <!-- <td>Increase Font Size:</td> -->
-              <td><button id="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button></td>
-            </tr>
-            <tr>
-              <!-- <td>Decrease Font Size:</td> -->
-              <td><button id="decrease_fontsize" onclick="changeFontSize('strongs_tooltip','minus')">-</button></td>
+              <td>
+                <button id="decrease_fontsize" onclick="changeFontSize('strongs_tooltip','minus')">-</button>
+                <button id="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button>
+              </td>
             </tr>
           </table>
         </div>
+        <div>
+          Toggle Dark/Light Mode: <button id="darkmodebtn" onclick="darkLightMode()">L</button>
+        </div>
       </div>
       <div id="strongsdefinitionwindow" class="slideout">
+      </div>
+      <div id="resizerdiv">
       </div>
     </nav>
     <div id="singleverse_compare_menu" class="slideout"></div>

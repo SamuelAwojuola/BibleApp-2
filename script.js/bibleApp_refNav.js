@@ -51,7 +51,7 @@ function getBksChptsNum(xxx) {
     });
     //remove class from previous class holder in refnav
     if (bible_books.querySelector('.tmp_hlt')) {
-    bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
+        bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
     }
     xxx.classList.add('tmp_hlt')
 }
@@ -71,7 +71,9 @@ var currentBookValue = null;
 //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
 refnav.addEventListener("click", function (e) {
     clickedElm = e.target;
-    if(e.target.matches("button")){clickedElm.classList.toggle("active_button")}
+    if (e.target.matches("button")) {
+        clickedElm.classList.toggle("active_button")
+    }
     //To populate book chapter numbers refnav pane
     if (clickedElm.classList.contains('bkname')) {
         getBksChptsNum(clickedElm);
@@ -97,7 +99,7 @@ refnav.addEventListener("click", function (e) {
 })
 
 function indicateBooknChapterInNav(bk, chpt) {
-    if(bk==null)bk=bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);
+    if (bk == null) bk = bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);
     //remove class from previous class holder in refnav
     if (bible_books.querySelector('.tmp_hlt')) {
         bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt');
@@ -108,12 +110,16 @@ function indicateBooknChapterInNav(bk, chpt) {
             refbk.classList.remove('ref_hlt')
         }
         bk.classList.add('ref_hlt');
-        if(!checkVisible(bk)){bk.scrollIntoView(false);}
+        if (!checkVisible(bk)) {
+            bk.scrollIntoView(false);
+        }
         // getBksChptsNum(bk);
         if (!chpt) {
             let chapter_to_highlight = bible_chapters.querySelector('.show_chapter');
             chapter_to_highlight.classList.add('ref_hlt');
-        if(!checkVisible(chapter_to_highlight)){chapter_to_highlight.scrollIntoView(false);}
+            if (!checkVisible(chapter_to_highlight)) {
+                chapter_to_highlight.scrollIntoView(false);
+            }
         }
     }
     if (chpt) {
@@ -144,10 +150,18 @@ function indicateBooknChapterInNav(bk, chpt) {
 }
 
 //Hide refnav when escape is pressed
+function hideRightClickContextMenu() {
+    if (context_menu.matches('.rightclicked')) {
+        context_menu.classList.remove('rightclicked')
+        hideRefNav('hide', context_menu);
+        newStrongsDef = '';
+        if(toolTipON==true){toolTipOnOff();}
+    }
+}
 document.addEventListener('keydown', function (event) {
     if (event.key === "Escape") {
         hideRefNav('hide');
-        if(context_menu){hideRefNav('hide', context_menu)}
+        hideRightClickContextMenu();
     }
 });
 

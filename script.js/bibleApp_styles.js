@@ -57,20 +57,21 @@ let rootStyles = getComputedStyle(documentROOT)
 function changeFontFamily() {
     //change value of variable
     documentROOT.style.setProperty('--main-font', fontchange.value);
+    styleLocalstorageSet()
 }
 
 function changeFontSize(targetgroup, plusMinus) {
     let currentSize;
     if (targetgroup == 'verse_text') {
-        targ='--fontsize-scripture';
+        targ = '--fontsize-scripture';
         currentSize = rootStyles.getPropertyValue('--fontsize-scripture');
     }
     if (targetgroup == 'ref_text') {
-        targ='--fontsize-ref';
+        targ = '--fontsize-ref';
         currentSize = rootStyles.getPropertyValue('--fontsize-ref');
     }
     if (targetgroup == 'strongs_tooltip') {
-        targ='--fontsize-strongstooltip';
+        targ = '--fontsize-strongstooltip';
         currentSize = rootStyles.getPropertyValue('--fontsize-strongstooltip');
     }
     currentSize = Number(currentSize.split('px')[0].trim())
@@ -80,7 +81,36 @@ function changeFontSize(targetgroup, plusMinus) {
         currentSize = (currentSize - 5) + 'px'
     }
     documentROOT.style.setProperty(targ, currentSize);
-    return {
-        fSize: currentSize
+    styleLocalstorageSet()
+}
+
+function styleLocalstorageSet() {
+    let variableArray = [
+        ["--fontsize-scripture", rootStyles.getPropertyValue('--fontsize-scripture')],
+        ["--fontsize-ref", rootStyles.getPropertyValue('--fontsize-ref')],
+        ["--fontsize-strongstooltip", rootStyles.getPropertyValue('--fontsize-strongstooltip')],
+        ["--main-font", rootStyles.getPropertyValue('--main-font')]
+    ]
+    setItemInLocalStorage('styles_variables', variableArray);
+}
+
+let lcol= rootStyles.getPropertyValue('--verse-hover');
+function darkLightMode() {
+    let dark_mode = 'darkmode';
+    let darkmodeCSS = `span.verse{
+        background-color:rgb(38, 38, 38);
+        color:white;
+    }`
+    // let dcol= 'rgba(0, 50, 112, 0.918)';
+    let dcol= 'rgba(0, 120, 112, 0.918)';
+    if (document.getElementsByTagName('head')[0].querySelector('#darkmode')) {
+        darkmode.remove();
+        console.log(this);
+        darkmodebtn.innerText = 'L'
+        documentROOT.style.setProperty('--verse-hover', lcol);
+    } else {
+        createNewStyleSheetandRule(dark_mode, darkmodeCSS);
+        darkmodebtn.innerText = 'D';
+        documentROOT.style.setProperty('--verse-hover', dcol);
     }
 }

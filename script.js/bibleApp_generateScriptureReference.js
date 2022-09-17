@@ -177,27 +177,57 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     }
 
     function parseVerseText(vT, verseSpan) {
-        let wcount = 0;
         if (Array.isArray(vT)) {
             vT.forEach(wString => {
                 let wordSpan = document.createElement('span');
-                wcount++;
+                let wordSpan1 = document.createElement('span');
+                let wordSpan2 = document.createElement('span');
                 if (wString.length == 3) {
-                    wordSpan.setAttribute('TH', wString[2]);
+                    if(wString[2].includes('/')){//For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
+                        let splt_L=wString[2].split('/')
+                        wordSpan1.setAttribute('TH', splt_L[0]);
+                        wordSpan2.setAttribute('TH', splt_L[1])
+                    }
+                    else{
+                        wordSpan.setAttribute('TH', wString[2]);
+                    }
                 }
                 if (wString.length >= 2) {
-                    if (wString[1] != 'added') {
-                        wordSpan.classList.add('translated');
-                        wordSpan.setAttribute('data-xlit', "");
-                        wordSpan.setAttribute('data-lemma', "");
-                        wordSpan.setAttribute('strnum', wString[1]);
-                        wordSpan.setAttribute('data-kjv-trans', ' ' + wString[0]);
-                        wordSpan.setAttribute('translation', ' ' + wString[0]);
+                    if(wString[0].includes('/')){//For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
+                        let splt_L=wString[0].split('/')
+                        
+                        wordSpan1.classList.add('translated');
+                        wordSpan1.setAttribute('data-xlit', "");
+                        wordSpan1.setAttribute('data-lemma', "");
+                        wordSpan1.setAttribute('strnum', wString[1].split('/')[0]);
+                        wordSpan1.setAttribute('data-kjv-trans', ' ' + splt_L[0]);
+                        wordSpan1.setAttribute('translation', ' ' + splt_L[0]);
+                        wordSpan1.innerHTML = splt_L[0];
+                        verseSpan.append(' ')
+                        verseSpan.append(wordSpan1)
+                        
+                        wordSpan2.classList.add('translated');
+                        wordSpan2.setAttribute('data-xlit', "");
+                        wordSpan2.setAttribute('data-lemma', "");
+                        wordSpan2.setAttribute('strnum', wString[1].split('/')[1]);
+                        wordSpan2.setAttribute('data-kjv-trans', ' ' + splt_L[1]);
+                        wordSpan2.setAttribute('translation', ' ' + splt_L[1]);
+                        wordSpan2.innerHTML = splt_L[1];
+                        verseSpan.append(wordSpan2)
                     }
-
-                    wordSpan.innerHTML = wString[0];
-                    verseSpan.append(' ')
-                    verseSpan.append(wordSpan)
+                    else{
+                        if (wString[1] != 'added') {
+                            wordSpan.classList.add('translated');
+                            wordSpan.setAttribute('data-xlit', "");
+                            wordSpan.setAttribute('data-lemma', "");
+                            wordSpan.setAttribute('strnum', wString[1]);
+                            wordSpan.setAttribute('data-kjv-trans', ' ' + wString[0]);
+                            wordSpan.setAttribute('translation', ' ' + wString[0]);
+                        }
+                        wordSpan.innerHTML = wString[0];
+                        verseSpan.append(' ')
+                        verseSpan.append(wordSpan)
+                    }
                 }
                 if (wString.length == 1) {
                     let spacebtwwords = '';

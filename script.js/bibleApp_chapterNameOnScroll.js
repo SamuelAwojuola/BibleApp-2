@@ -34,7 +34,7 @@ function showCurrentChapterInHeadnSearchBar(h, isH2 = true) {
 
     let selectedChapter = bible_chapters.querySelector(`[value="bk${hID.split('.')[0].toString()}ch${Number(hID.split('.')[1])}"]`)
     let bkName = bible_books.querySelector(`[bookname="${h.getAttribute('bookname')}"]`);
-    console.log('scrollto')
+    // console.log('scrollto')
     indicateBooknChapterInNav(bkName, selectedChapter);
     
     reference.value = derivedReference;

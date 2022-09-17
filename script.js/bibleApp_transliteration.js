@@ -52,7 +52,7 @@ function createTransliterationAttr(x, l) {
         strNumElm.setAttribute('data-title', strNum_Title);
     });
 }
-
+let currentStrongsDef=null;
 function getsStrongsDefinition(x) {
     strongsdefinitionwindow.innerHTML = '';
     let _text = '';
@@ -68,6 +68,7 @@ function getsStrongsDefinition(x) {
                 <h3><hr>Definition:</h3><hr> ${str_definition}<hr></div>
                 `
                 strongsdefinitionwindow.innerHTML = _text;
+                currentStrongsDef=_text;
                 break
             }
         }
@@ -131,7 +132,7 @@ function hideTransliteration(stn) {
 }
 
 function highlightAllStrongs(x) {
-    cs = `span[strnum="` + x + `"]{background-color:${randomColor(200)};border-radius:2px;`
+    cs = `span[strnum="` + x + `"]{background-color:${randomColor(200)};border-radius:2px; color:black!important`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -215,7 +216,7 @@ pagemaster.addEventListener("dblclick", function (e) {
 })
 
 //HIGHLIGHTING CLICKED WORD
-main.addEventListener("click", strongsHighlighting)
+main.addEventListener("mouseover", strongsHighlighting)
 // main.addEventListener("click", debounce(strongsHighlighting))
 searchPreviewFixed.addEventListener("click", strongsHighlighting)
 main.addEventListener("click", hideBibleNav)
@@ -246,7 +247,8 @@ main.addEventListener('mouseover', function (e) {
             transStyleSelector = transStyleSelector + comma + '.' + stn;
         });
         newStyleInHead.id = 'highlightall';
-        newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
+        // newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
+        newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--strongword-hover)!important;border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }

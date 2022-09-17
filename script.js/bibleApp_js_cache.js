@@ -44,12 +44,14 @@ function cacheFunctions() {
             showreturnedverses.checked = false
         }
     }
-
-    // if (localStorage.getItem('version_bsb_loaded')) {
-    //     let bsbLoad=localStorage.getItem('version_bsb_loaded');
-    //     if(bsbLoad==true){bsb_version.checked=true}
-    //     else{bsb_version.checked=false}
-    // }
+    
+    if (localStorage.getItem('styles_variables')) {
+        let stylesVariablesArray=localStorage.getItem('styles_variables').split(',');
+        stylesVariablesArray.forEach((sVar,i) => {
+            j=i+2;
+            if(j%2==0){document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i+1]);}
+        });
+    }
 }
 function cacheFunctions2() {
     runCacheFunc2=false;

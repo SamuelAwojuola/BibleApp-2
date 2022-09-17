@@ -123,7 +123,6 @@ function loadVersion(versionName) {
             unw.remove()
         })
     }
-    console.log('HELLO')
     if (loadedBibleVersions.indexOf(versionName) == -1) {
         loadedBibleVersions.push(versionName)
     };
@@ -154,7 +153,9 @@ bibleversions_btns.addEventListener('click', function (e) {
             //MOVE DE-SELECTED VERSION BELOW SELECTED VERSIONS
                 let elm2moveDown = pbtn.cloneNode(true);
                 pbtn.remove();
-                bibleversions_btns.appendChild(elm2moveDown);
+                let elm2precede=bibleversions_btns.querySelector('button:not(.active_button)');
+                bibleversions_btns.insertBefore(elm2moveDown, elm2precede);
+                // bibleversions_btns.appendChild(elm2moveDown);
         } else if ((!pbtnCheck.checked)) {
             pbtn.classList.add("active_button");
             pbtnCheck.checked = true;
@@ -188,7 +189,8 @@ bibleversions_btns.addEventListener('click', function (e) {
                 }
             }
             //MOVE SELECTED VERSIONS TO THE TOP
-            if(elm2precede=bibleversions_btns.querySelector('button:not(.active_button)')){
+            if(bibleversions_btns.querySelector('button:not(.active_button)')){
+                let elm2precede=bibleversions_btns.querySelector('button:not(.active_button)');
                 let pbtnClone = pbtn.cloneNode(true);
                 pbtn.remove();
                 bibleversions_btns.insertBefore(pbtnClone, elm2precede)

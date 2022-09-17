@@ -2,19 +2,24 @@
     --fontsize-main: 13px;
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
-    --fontsize-strongstooltip: 8px;
+    --fontsize-strongstooltip: 13px;
     --ref-hlt: #f8f8f8;
     --ref-hlt: #dde3db;
     --ref-img: url(R.jpg);
     --ref-img: url(background.jpg);
+    --ref-paper: url(4rKVgAQ.jpg);
+    --ref-paper: url(IyEMTp.jpg);
     --verse-higlight: #ffff92;
     --verse-higlight: #fffb001b;
     --nav-bg-color: #fbfbfb;
     --vhlt-border: #8080809c;
     --vhlt: #ffffc4;
+    --strongword-hover: rgb(216, 255, 137);
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
-    --main-font:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    --verse-hover: rgba(192, 176, 98, 0.858);
+    --verse-hover: rgba(230, 183, 72, 0.5);
+    --main-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     /* --top-bar-bground-color: #427d7f; */
     --top-bar-bground-color: #212121;
     --darkmode-bg1color: #212121;
@@ -36,10 +41,14 @@ html {
     padding: 0;
     font-size: var(--fontsize-main);
     background-color: var(--nav-bg-color);
-    background: url(R.jpg);
-    background: -webkit-radial-gradient(center, ellipse closest-corner, rgba(251, 251, 251, 0.825) 0%, rgba(251, 251, 251, 0.875) 25%, rgba(255, 255, 255, 0) 100%), url(background.jpg);
-    font-family:var(--main-font);
+    /* background-image: url(R.jpg); */
+    background-image: var(--ref-img);
+    /* background: -webkit-radial-gradient(center, ellipse closest-corner, rgba(251, 251, 251, 0.825) 0%, rgba(251, 251, 251, 0.875) 25%, rgba(255, 255, 255, 0) 100%), url(background.jpg); */
+    /* background: -webkit-radial-gradient(ellipse closest-corner, rgba(251, 251, 251, 0.825) 0%, rgba(251, 251, 251, 0.875) 25%, rgba(255, 255, 255, 0) 100%), url(background.jpg); */
+    /* background: url(background.jpg) repeat; */
+    font-family: var(--main-font);
 }
+
 body>svg {
     width: 100% !important;
 }
@@ -77,15 +86,15 @@ code {
     font-weight: bolder;
     margin: 0;
 }
-/* #change_fontsize{
-    display:grid;
-} */
-tr, td{
-    text-align: left;
+
+td:first-child {
+    width: 70px;
 }
+
 .verse:not(code) {
     font-size: var(--fontsize-scripture);
 }
+
 #searchPreviewFixed .chptheading+.verse {
     margin-top: 5px;
 }
@@ -101,22 +110,29 @@ tr, td{
     grid-row-end: 4;
     display: flex;
 }
-.rtl{direction: rtl}
-#singleverse_compare_menu{
+
+.rtl {
+    direction: rtl
+}
+
+#singleverse_compare_menu {
     /* display: inline-flex; */
 }
-#singleverse_compare_menu button{
-    font-size: xx-small!important;
-    width:  25px;
+
+#singleverse_compare_menu button {
+    font-size: xx-small !important;
+    width: 25px;
     height: 15px;
     padding: 2px;
     text-overflow: ellipsis;
 }
-#singleverse_compare_menu input{
+
+#singleverse_compare_menu input {
     width: 5.5px;
     position: absolute;
     right: 0;
 }
+
 .slidein {
     display: block;
     margin-left: 0;
@@ -143,7 +159,8 @@ tr, td{
 #refnav #app_settings {
     border-right: 5px solid grey;
     /* background-color: var(--top-bar-bground-color); */
-    background-color: var(--buttons);
+    /* background-color: var(--buttons); */
+    background-image: var(--ref-img);
 }
 
 #refnav #app_settings * {
@@ -152,28 +169,32 @@ tr, td{
     padding: 0;
     /* font-size:xx-small; */
 }
-#bibleversions_btns{
+
+#bibleversions_btns {
     display: inline-flex;
 }
-#bibleversions_btns input{
+
+#bibleversions_btns input {
     width: 6px;
     /* margin: 0; */
     pointer-events: none;
 }
+
 #bibleversions_btns button {
-    display:block;
+    display: block;
     padding: 0;
     width: 35px;
     float: left;
-    font-size: 6.5px!important;
+    font-size: 6.5px !important;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#bible_nav{
+#bible_nav {
     font-size: small;
 }
+
 .refnav .bible_nav {
     height: 99.5%;
     float: left;
@@ -247,17 +268,21 @@ button {
     border-bottom: 2px solid grey;
     display: flex;
 }
+
 #ref_search_versions_holder {
     display: flex;
     flex-wrap: wrap;
 }
-#context_menu{
-    position:absolute;
+
+#context_menu {
+    position: absolute;
     /* display: block; */
     background: var(--ref-img);
     border: 1px solid grey;
     min-width: 50px;
-    max-width: 125px;
+    max-width: 400px;
+    max-height: 400px;
+    overflow: auto;
     padding: 5px;
     -webkit-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     -moz-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
@@ -265,17 +290,20 @@ button {
     z-index: 10;
     font-size: var(--fontsize-strongstooltip);
 }
-#tool_tip{
+
+#tool_tip {
     /* float:left; */
     position: fixed;
     right: 0;
 }
-#context_menu:hover{
+
+#context_menu:hover {
     /* border: 1px solid #878787; */
     -webkit-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
     -moz-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
     box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
 }
+
 .buttons>button,
 .buttons>#searchdiv button,
 .buttons>#refdiv button {
@@ -293,13 +321,17 @@ button {
     background-color: var(--buttons);
     border: var(--buttons-border);
 }
+
 input:hover,
 button:not(:disabled):hover {
-    background-color: var(--chpt)!important;
+    background-color: var(--chpt) !important;
 }
-.active_button, searchsettings.active_button {
-    background-color: var(--chpt)!important;
+
+.active_button,
+searchsettings.active_button {
+    background-color: var(--chpt) !important;
 }
+
 .strongsnum {
     color: rgb(64, 59, 105);
     /* font-size: 0.85em; */
@@ -325,7 +357,7 @@ button:not(:disabled):hover {
 }
 
 #ppp {
-    /* position: relative; */
+    /* background-image: var(--ref-paper); */
 }
 
 #search_section {
@@ -344,6 +376,11 @@ button:not(:disabled):hover {
 
 [strnum] {
     cursor: pointer;
+}
+
+span.verse:hover:not(.vhlt),
+span.vmultiple:hover {
+    transition: background 0.3s linear;
 }
 
 span.verse:hover:not(.vhlt),
@@ -536,11 +573,13 @@ main span {
     width: 100%;
     box-shadow: 0 0.5px 0 rgb(58, 58, 58);
     background-color: whitesmoke;
+    background-image: var(--ref-img);
     font-style: italic;
     font-weight: bold;
     text-align: center;
 }
-#bibleapp_cache *:not(.settingssectionheadings){
+
+#bibleapp_cache *:not(.settingssectionheadings) {
     display: inline-flex;
     font-size: xx-small;
 }
@@ -548,6 +587,7 @@ main span {
 #searchparameters div:last-child {
     display: block;
     background-color: var(--verse-higlight);
+    background-image: var(--ref-img);
     border-top: 1.5px solid var(--scroll-track-bg-color);
     box-shadow: 0 2px 0 grey;
 }
@@ -577,15 +617,35 @@ main span {
     float: left;
     max-width: 150px;
     height: 99.3%;
-    border-right: 5px solid;
-    overflow-y: scroll;
+    border-right: 2px solid grey;
+    overflow-y: auto;
     background-color: var(--verse-higlight);
-    background-color: whitesmoke;
+    /* background-color: whitesmoke; */
     /* background-color: var(--darkmode-bg1color);
     color: white; */
+    padding-right: 2px;
     border-bottom: 2px solid;
     font-size: smaller;
 }
+#bible_versions,
+#bibleapp_cache {
+    overflow-y: scroll;
+}
+#strongsdefinitionwindow::after {
+    content: '';
+    background-color: #ccc;
+    /* position: absolute; */
+    right: 0;
+}
+
+#resizerdiv {
+    background-color: grey;
+    float: right;
+    width: 2px;
+    height: 100%;
+    cursor: ew-resize;
+}
+
 #strongsdefinitionwindow>*:not(hr),
 #bible_versions>*:not(hr),
 #bibleapp_cache>*:not(hr) {
@@ -636,7 +696,8 @@ main span {
     padding: 0 5px;
 }
 
-#searchPreviewFixed>.chptheading,#searchPreviewFixed code {
+#searchPreviewFixed>.chptheading,
+#searchPreviewFixed code {
     cursor: pointer;
 }
 
@@ -678,8 +739,9 @@ main span {
     -moz-box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
     box-shadow: 1px 1px 2px 0px rgba(67, 67, 67, 0.87);
 }
+
 .vhlt:hover {
-    background-color: #fef8d0;
+    background-color: #fff08f99;
     -webkit-box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);
     -moz-box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);
     box-shadow: 1px 1px 1px 0px rgba(67, 67, 67, 0.87);

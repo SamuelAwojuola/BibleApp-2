@@ -72,7 +72,7 @@ body {
     /* overflow-y:scroll; */
 }
 
-#ppp code {
+#ppp code, #context_menu code {
     font-size: var(--fontsize-ref);
 }
 

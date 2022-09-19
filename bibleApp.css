@@ -17,8 +17,9 @@
     --strongword-hover: rgb(216, 255, 137);
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
-    --verse-hover: rgba(192, 176, 98, 0.858);
+    /* --verse-hover: rgba(192, 176, 98, 0.858);
     --verse-hover: rgba(230, 183, 72, 0.5);
+    --verse-hover: rgba(255, 252, 165, 0.78); */
     --main-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     /* --top-bar-bground-color: #427d7f; */
     --top-bar-bground-color: #212121;
@@ -71,7 +72,7 @@ body {
     /* overflow-y:scroll; */
 }
 
-code {
+#ppp code {
     font-size: var(--fontsize-ref);
 }
 
@@ -91,7 +92,7 @@ td:first-child {
     width: 70px;
 }
 
-.verse:not(code) {
+#ppp .verse:not(code) {
     font-size: var(--fontsize-scripture);
 }
 
@@ -273,16 +274,24 @@ button {
     display: flex;
     flex-wrap: wrap;
 }
-
+.crossrefs>span:hover{
+    text-decoration: underline;
+    /* font-weight: bold; */
+    cursor: pointer;
+}
 #context_menu {
+    box-sizing: border-box;
     position: absolute;
     /* display: block; */
     background: var(--ref-img);
     border: 1px solid grey;
+    border-top: 5px solid grey;
+    border-left: 5px solid grey;
+    border-bottom: 5px solid grey;
     min-width: 50px;
-    max-width: 400px;
+    max-width: 300px;
     max-height: 400px;
-    overflow: auto;
+    overflow-y: scroll;
     padding: 5px;
     -webkit-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
     -moz-box-shadow: 1px 1px 0.5px 0px rgba(67, 67, 67, 0.87);
@@ -385,7 +394,11 @@ span.vmultiple:hover {
 
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
+    /* box-sizing:border-box!important; */
     background-color: var(--verse-hover);
+    /* border-bottom: 2px solid rgb(72, 72, 72); */
+    box-shadow: 0 0 5px rgb(30, 30, 30);
+    cursor: pointer;
 }
 
 span.translated:hover {

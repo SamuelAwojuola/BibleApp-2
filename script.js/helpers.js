@@ -1,3 +1,11 @@
+// function getFUllBookName(shortBkNm) {
+//     bible.Data.books.forEach((ref_, ref_indx) => {
+//         if (ref_.includes(shortBkNm.toUpperCase())) {
+//             let fullname = bible.Data.bookNamesByLanguage.en[ref_indx]
+//             return fullname;
+//         }
+//     });
+// }
 function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
     while (a.parentNode.tagName.toUpperCase() != limit) {
         if (a.parentNode.classList.contains(ancestorsClass)||a.parentNode.matches(ancestorsClass)) {

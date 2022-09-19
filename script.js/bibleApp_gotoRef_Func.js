@@ -31,7 +31,7 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     ref = ref.trim();
     if(ref==''){return}
     //convert every none-digit and none-word to space
-    ref = ref.replace(/[.,:;]/g, ' ');
+    ref = ref.replace(/[.,:;_]/g, ' ');
     //ensure every space is a single space
     ref = ref.replace(/\s+/g, ' ');
     //seperate between number and letter

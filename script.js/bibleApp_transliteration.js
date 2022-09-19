@@ -161,10 +161,6 @@ function removeRecentStrongsFromArray(stn) {
 
 function strongsHighlighting(e) {
     let clickedElm;
-    if (strnum = e.target.getAttribute('strnum')) {
-        strnum = strnum.split(' ');
-        getsStrongsDefinition(strnum);
-    }
     //IF IT IS A WORD TRANSLATED FROM HEBREW/GREEK
     if (e.target.classList.contains('translated')) {
         clickedElm = e.target;
@@ -216,7 +212,7 @@ pagemaster.addEventListener("dblclick", function (e) {
 })
 
 //HIGHLIGHTING CLICKED WORD
-main.addEventListener("mouseover", strongsHighlighting)
+main.addEventListener("click", strongsHighlighting)
 // main.addEventListener("click", debounce(strongsHighlighting))
 searchPreviewFixed.addEventListener("click", strongsHighlighting)
 main.addEventListener("click", hideBibleNav)

@@ -171,7 +171,7 @@ function toggleNav() {
 }
 
 // FUNCTION TO SHOW OR HIDE REF_NAV
-function hideRefNav(hORs, elm2HideShow) {
+function hideRefNav(hORs, elm2HideShow, runfunc) {
     let elHS;
     if (elm2HideShow) {
         elHS = elm2HideShow
@@ -193,6 +193,7 @@ function hideRefNav(hORs, elm2HideShow) {
             elHS.classList.add('slideout');
         }
     }
+    runfunc
 }
 
 function changeVerseAlignment() {

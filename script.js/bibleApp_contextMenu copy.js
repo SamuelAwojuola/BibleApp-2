@@ -1,15 +1,14 @@
 /* RIGHT-CLICK MENU */
-let timer1, timer2;
+let timer1,timer2;
 
 function add_tooltipContextMenu(e) {
     e.preventDefault();
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
-    if (e.target.matches('.translated, .strnum, .crossrefs>span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {
+    if (e.target.matches('.translated, .strnum, .crossrefs>span')/* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
-
         function timedFUNC() {
             let target_right = e.target.getBoundingClientRect().right;
             // let target_left = e.target.offsetLeft;
@@ -18,30 +17,8 @@ function add_tooltipContextMenu(e) {
             // let target_top = e.target.getBoundingClientRect().top;
             let target_bottom = e.target.getBoundingClientRect().bottom;
             let target_width = e.target.offsetWidth;
-            let originalWord, extraLeft = 0;
+            let originalWord;
             let addquotes = true;
-            let eParent;
-            // console.clear()
-            // console.log(elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed'))
-            if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
-                eParent = document.querySelector('#main');
-                if (eParent.offsetLeft != 0) {
-                    extraLeft = eParent.offsetLeft;
-                }
-                if (!eParent.querySelector('#context_menu')) {
-                    let clonedContextMenu = searchPreviewFixed.querySelector('#context_menu').cloneNode(true);
-                    searchPreviewFixed.querySelector('#context_menu').remove()
-                    main.append(clonedContextMenu)
-                }
-            } else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
-                eParent = document.querySelector('#searchPreviewFixed');
-                if (!eParent.querySelector('#context_menu')) {
-                    let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                    main.querySelector('#context_menu').remove()
-                    searchPreviewFixed.append(clonedContextMenu)
-                }
-            }
-
             if (e.target.matches('.translated, .strnum')) {
                 if (e.target.getAttribute("translation")) {
                     originalWord = e.target.getAttribute("translation");
@@ -66,64 +43,70 @@ function add_tooltipContextMenu(e) {
                 context_menu.innerHTML = menu_inner + newStrongsDef;
                 // context_menu.removeAttribute('style');
                 context_menu.style.height = null;
-                context_menu.style.left = null;
                 context_menu.setAttribute('strnum', e.target.getAttribute('strnum'))
                 hideRefNav('show', context_menu)
-            } else /* if (e.type == 'contextmenu' || e.type == 'mouseover')  */ {
+            } else /* if (e.type == 'contextmenu' || e.type == 'mouseover')  */{
                 context_menu.innerText = null;
-                if (e.target.matches('.crossrefs>span')) {
-                    let cmtitlebar = document.createElement('div');
+                if (e.target.matches('.crossrefs>span')){
+                    let cmtitlebar=document.createElement('div');
                     cmtitlebar.classList.add('cmtitlebar');
-                    let cmtitletext = e.target.innerText;
-                    let bknch = cmtitletext.split('.')[0] + '.' + cmtitletext.split('.')[1];
-                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('');
+                    let cmtitletext=e.target.innerText;
+                    let bknch=cmtitletext.split('.')[0]+'.'+cmtitletext.split('.')[1];
+                    cmtitletext = bknch.split('.').join(' ')+':'+cmtitletext.split(bknch+'.').join('');
                     // cmtitlebar.innerText=e.target.innerText;
-                    cmtitlebar.innerText = cmtitletext;
+                    cmtitlebar.innerText=cmtitletext;
                     context_menu.append(cmtitlebar);
                 }
                 context_menu.append(getCrossReference(e.target));
                 // context_menu.removeAttribute('style');
                 context_menu.style.height = null;
-                context_menu.style.left = null;
                 context_menu.setAttribute('strnum', e.target.getAttribute('strnum'))
                 hideRefNav('show', context_menu)
             }
             /* POSITION MENU */
             let cmH = context_menu.offsetHeight;
-            context_menu.style.left = menusX + window.scrollX - extraLeft + "px";
+            context_menu.style.left = menusX + window.scrollX + "px";
             let target_height = e.target.offsetHeight;
-            if (window.innerWidth - target_left + extraLeft <= 300) {
+            if (window.innerWidth - target_left <= 300) {
                 context_menu.style.right = window.innerWidth - target_right - window.scrollX + "px";
-                context_menu.style.left = '';
+                context_menu.style.left = "";
             } else {
-                context_menu.style.left = target_left + window.scrollX - extraLeft + "px";
+                context_menu.style.left = target_left + window.scrollX + "px";
                 context_menu.style.right = "";
             }
+            // var menusY = e.y + 10;
+            let menusY = e.target.getBoundingClientRect().top + e.target.offsetHeight + window.scrollY;
+            context_menu.style.top = menusY + "px";
             //IF CONTEXT MENU IS TO CLOSE TO THE BOTTOM
             let btnsBarHeight = document.querySelector('#pagemaster>.buttons').getBoundingClientRect().height;
-            let space_above_target = target_top - eParent.scrollTop;
-            let space_below_target = window.innerHeight - btnsBarHeight - space_above_target;
-            // Space Below Target Enough for ContextMenu
-            if (space_below_target >= context_menu.offsetHeight) {
-                // context_menu.style.height = space_below_target - eParent.offsetTop - target_height + "px";
-                context_menu.style.top = target_top + target_height + "px";
-            }
-            // Space Below Target NOT Enough for ContextMenu
-            else {
-                // console.log('belowIsLEssThanCMH')
-                if (space_below_target >= space_above_target) {
-                    // console.log('111')
-                    context_menu.style.height = space_below_target - eParent.offsetTop - target_height + "px";
-                    context_menu.style.top = target_top + target_height + "px";
-                } else {
-                    // console.log('222')
-                    if (space_above_target >= context_menu.offsetHeight) {
-                        context_menu.style.top = target_top - context_menu.offsetHeight + "px";
+            let space_above_target = target_top - btnsBarHeight - main.scrollTop;
+            let space_below_target = window.innerHeight - target_bottom - main.scrollTop;
+            if (window.innerHeight - target_bottom <= context_menu.offsetHeight) {
+                context_menu.style.top = menusY - e.target.offsetHeight - context_menu.offsetHeight + "px";
+                let context_menu_top = target_top - context_menu.offsetHeight - main.scrollTop;
+                context_menu.style.top = context_menu_top + "px";
+                if (context_menu_top < btnsBarHeight + main.scrollTop) {
+                    if (space_below_target <= space_above_target) {
+                        console.log('one')
+                        let menuHeight;
+                        if (space_above_target < context_menu.offsetHeight) {
+                            context_menu.style.height = space_above_target + "px";
+                            context_menu.style.top = btnsBarHeight + "px";
+                        }
                     } else {
-                        context_menu.style.height = space_above_target + "px";
-                        context_menu.style.top = target_top - context_menu.offsetHeight + "px";
+                        console.log('two')
+                        if (space_below_target < context_menu.offsetHeight) {
+                            console.log('three')
+                            context_menu.style.height = space_below_target + "px";
+                        }
+                        context_menu.style.top = target_bottom + "px";
                     }
+                } else {
+                    console.log('four')
+                    context_menu.style.top = target_bottom - target_height - cmH - window.scrollY + "px";
                 }
+            } else {
+                context_menu.style.top = target_bottom + window.scrollY + "px";
             }
         }
         if (e.type == 'mouseover') {
@@ -133,7 +116,7 @@ function add_tooltipContextMenu(e) {
         } else {
             timedFUNC()
         }
-    } else if (context_menu.matches('.slidein') && !e.target.matches('#context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
+    } /* else if (context_menu.matches('.slidein')&&!e.target.matches('#context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
         function removeContextMenu() {
             hideRefNav('hide', context_menu, removeCMPevtListner());
             context_menu.innerHTML = '';
@@ -145,7 +128,7 @@ function add_tooltipContextMenu(e) {
         } else {
             removeContextMenu()
         }
-    }
+    } */
 }
 let newStrongsDef = '';
 
@@ -153,7 +136,6 @@ function getCurrentStrongsDef(e) {
     if (strnum = e.target.getAttribute('strnum')) {
         strnum = strnum.split(' ');
         getsStrongsDefinition(strnum);
-        console.log(strnum)
     }
     if (e.type == 'contextmenu') {
         context_menu.classList.add('rightclicked')
@@ -165,10 +147,6 @@ function getCurrentStrongsDef(e) {
         newStrongsDef = '';
     }
 }
-
-ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu, false);
 
 ppp.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span')) {
@@ -182,10 +160,8 @@ main.addEventListener('mouseover', function (e) {
 });
 
 function add_mouseoverContextMenuEventListner() {
-    // searchPreviewFixed.addEventListener('mouseover', add_tooltipContextMenu, false);
-    searchPreviewFixed.addEventListener('click', add_tooltipContextMenu, false);
-
     ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
+    searchPreviewFixed.addEventListener('click', add_tooltipContextMenu, false);
     ppp.addEventListener('click', add_tooltipContextMenu, false);
     // ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
 }
@@ -197,6 +173,15 @@ function remove_mouseoverContextMenuEventListner() {
     ppp.removeEventListener('mouseover', add_tooltipContextMenu, false);
     searchPreviewFixed.removeEventListener('click', add_tooltipContextMenu, false);
 }
+// function add_rClickcontextMenuEventListner() {
+//     ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
+// }
+// function remove_rClickcontextMenuEventListner() {
+//     ppp.removeEventListener('contextmenu', add_tooltipContextMenu, false);
+// }
+ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
+searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
+
 add_mouseoverContextMenuEventListner()
 
 tool_tip.addEventListener('click', () => {
@@ -255,11 +240,3 @@ function removeCMPevtListner() {
     ppp.removeEventListener('scroll', updateContextMenuPosition)
     searchPreviewFixed.removeEventListener('scroll', updateContextMenuPosition)
 }
-// function add_rClickcontextMenuEventListner() {
-//     ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
-// }
-// function remove_rClickcontextMenuEventListner() {
-//     ppp.removeEventListener('contextmenu', add_tooltipContextMenu, false);
-// }
-
-context_menu.addEventListener("dblclick", codeELmRefClick);

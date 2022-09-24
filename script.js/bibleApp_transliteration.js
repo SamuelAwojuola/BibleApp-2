@@ -38,8 +38,8 @@ function createTransliterationAttr(x, l) {
                     strNumElm.setAttribute("data-xlit", strNumElm.getAttribute("data-xlit") + divider + str_xlit);
                     strNumElm.setAttribute("data-lemma", strNumElm.getAttribute("data-lemma") + divider + str_lemma);
                     let strNum_Title = '';
-                    // if(strNumElm.getAttribute('data-title')){strNum_Title=strNumElm.getAttribute('data-title');}
                     strNumElm.setAttribute('data-title', wStrnum + " | " + str_xlit + " | " + str_lemma);
+                    // strNumElm.setAttribute('title', wStrnum + " | " + str_xlit + " | " + str_lemma);
                     break
                 }
             }
@@ -52,7 +52,8 @@ function createTransliterationAttr(x, l) {
         strNumElm.setAttribute('data-title', strNum_Title);
     });
 }
-let currentStrongsDef=null;
+let currentStrongsDef = null;
+
 function getsStrongsDefinition(x) {
     strongsdefinitionwindow.innerHTML = '';
     let _text = '';
@@ -62,13 +63,14 @@ function getsStrongsDefinition(x) {
                 let str_xlit = strongsJSONresponse[abc].xlit;
                 let str_lemma = strongsJSONresponse[abc].lemma;
                 let str_definition = strongsJSONresponse[abc].description;
-                _text = _text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2><hr>
-                <h4><i>Lemma</i>: </h4><h1>${str_lemma}</h1>
-                <h4><i>Transliteration</i>: </h4><h3>${str_xlit}</h3>
-                <h3><hr>Definition:</h3><hr> ${str_definition}<hr></div>
+                _text = _text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2>
+                <div><i>Lemma</i>: <h2>${str_lemma}</h2></div>
+                <div><i>Transliteration</i>: <h2>${str_xlit}</h2></div>
+                <div><h2><hr>Definition:</h2></div><hr> ${str_definition}<hr>
+                </div>
                 `
                 strongsdefinitionwindow.innerHTML = _text;
-                currentStrongsDef=_text;
+                currentStrongsDef = _text;
                 break
             }
         }
@@ -91,9 +93,9 @@ function showTransliteration(stn) {
         }
         let engTranslation;
         let trueTransliteration = null;
-        if (elm.getAttribute("data-true-xlit")) {//If it is from Greek Bible
+        if (elm.getAttribute("data-true-xlit")) { //If it is from Greek Bible
             trueTransliteration = elm.getAttribute("data-true-xlit");
-        } else {//If it is not from Greek Bible
+        } else { //If it is not from Greek Bible
             engTranslation = elm.getAttribute("translation");
         }
         let j = 0;
@@ -132,7 +134,7 @@ function hideTransliteration(stn) {
 }
 
 function highlightAllStrongs(x) {
-    cs = `span[strnum="` + x + `"]{background-color:${randomColor(200)};border-radius:2px; color:black!important`
+    cs = `span[strnum="` + x + `"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -224,9 +226,13 @@ function hideBibleNav() {
 /* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
 /* This is acomplished by modifying the styles in the head */
 main.addEventListener('mouseover', function (e) {
-    // main.classList.remove('noselect');
-    // if (e.target.classList.contains('translated')) {
-    if (strAtt = e.target.getAttribute('strnum')) {
+    let strAtt;
+    if (e.target.getAttribute('strnum')) {
+        strAtt = e.target.getAttribute('strnum')
+    } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {//For context_menu when it is serving a strong's number
+        strAtt=elmAhasElmOfClassBasAncestor(e.target, '[strnum]').getAttribute('strnum');
+    }
+    if (strAtt) {
         if (document.getElementById('highlightall')) {
             document.getElementById('highlightall').remove();
         }

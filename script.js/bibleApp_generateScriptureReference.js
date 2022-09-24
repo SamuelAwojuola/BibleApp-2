@@ -52,7 +52,7 @@ function getTextOfChapterOnScroll(xxx, prependORnot, adjustScrolling) {
     }
 }
 
-function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = false, shouldBrowserHistoryBeUpdated=true) {
+function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = false, shouldBrowserHistoryBeUpdated = true) {
     // console.log('gotoId')
     chNumInBk = Number(xxx.getAttribute("chapterindex"));
     bkid = Number(xxx.getAttribute("bookindex"));
@@ -78,7 +78,9 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
         }
         // console.log(gotoId)
         scrollToVerse(document.getElementById(gotoId));
-        if(shouldBrowserHistoryBeUpdated){updateRefBrowserHistory(bookName + ' ' + (Number(chNumInBk)+1))}
+        if (shouldBrowserHistoryBeUpdated) {
+            updateRefBrowserHistory(bookName + ' ' + (Number(chNumInBk) + 1))
+        }
     }
 }
 
@@ -138,6 +140,7 @@ function generateChapter(xyz) {
     let xyz_bookIdx = Number(xyz.getAttribute("bookindex"));
     let xyz_chNumInBk = Number(xyz.getAttribute("chapterindex"));
     let actualChapter = window[versionsToShow[0]][xyz_bookName][xyz_chNumInBk];
+    currentlyParsedVersion=versionsToShow[0];
     // let actualChapter = KJV[xyz_bookName][xyz_chNumInBk];
     for (vNumInChpt = 1, i = 0; i < actualChapter.length; i++, vNumInChpt++) {
         // Create Chapter Heading
@@ -159,30 +162,68 @@ function generateChapter(xyz) {
     chapterVersesSpan.append(chpVersesFragment);
     wholeChapterFragment.append(chapterVersesSpan);
     wholeChapterFragment.prepend(chpHeadingFragment);
+    currentlyParsedVersion=null;
     return wholeChapterFragment;
     // chpVersesFragment.prepend(chpHeadingFragment);
     // return chpVersesFragment;
 }
+
+let restartRed;
+let currentlyParsedVersion=null;
+let versionWithRedWordsArray=[];
 function parseVerseText(vT, verseSpan) {
+    
     if (Array.isArray(vT)) {
-        vT.forEach(wString => {
+        vTLength=Object(vT).length;
+        let redWordFRAG,redWordSpan,startRed,endRed;
+        vT.forEach((wString,i) => {
             let wordSpan = document.createElement('span');
             let wordSpan1 = document.createElement('span');
             let wordSpan2 = document.createElement('span');
-            if (wString.length == 3) {
-                if(wString[2].includes('/')){//For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
-                    let splt_L=wString[2].split('/')
-                    wordSpan1.setAttribute('TH', splt_L[0]);
-                    wordSpan2.setAttribute('TH', splt_L[1])
+            if (/^""/.test(wString[0])||(restartRed&&versionWithRedWordsArray.includes(currentlyParsedVersion))) {
+                startRed = true;
+                redWordFRAG = new DocumentFragment()
+                redWordSpan = document.createElement('span');
+                redWordSpan.classList.add('red');
+                /* To ensure it only applies the red word span accross multiple verses for the same translation */
+                if (!versionWithRedWordsArray.includes(currentlyParsedVersion)) {
+                    versionWithRedWordsArray.push(currentlyParsedVersion);
                 }
-                else{
+            };
+            if (/""$/.test(wString[0])) {
+                endRed = true;
+                removeItemFromArray(currentlyParsedVersion,versionWithRedWordsArray)
+            };
+
+            function versespanAppender(arr){
+                if (redWordFRAG) {
+                    arr.forEach(a =>{redWordFRAG.append(a)})
+                    restartRed=false;
+                    if (endRed||i==vTLength-1) {
+                        redWordSpan.append(redWordFRAG);
+                        verseSpan.append(redWordSpan);
+                        endRed = null;
+                        startRed = null;
+                        if(i==vTLength-1){restartRed=true;}
+                    }
+                } else {
+                    arr.forEach(a =>{verseSpan.append(a)})
+                }
+            }
+
+            if (wString.length == 3) {
+                if (wString[2].includes('/')) { //For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
+                    let splt_L = wString[2].split('/');
+                    wordSpan1.setAttribute('TH', splt_L[0]);
+                    wordSpan2.setAttribute('TH', splt_L[1]);
+                } else {
                     wordSpan.setAttribute('TH', wString[2]);
                 }
             }
             if (wString.length >= 2) {
-                if(wString[0].includes('/')){//For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
-                    let splt_L=wString[0].split('/')
-                    
+                if (wString[0].includes('/')) { //For words such as ["וְ/כָל","Hc/H3605","HC/Ncmsc"]
+                    let splt_L = wString[0].split('/')
+
                     wordSpan1.classList.add('translated');
                     wordSpan1.setAttribute('data-xlit', "");
                     wordSpan1.setAttribute('data-lemma', "");
@@ -190,8 +231,7 @@ function parseVerseText(vT, verseSpan) {
                     wordSpan1.setAttribute('data-kjv-trans', ' ' + splt_L[0]);
                     wordSpan1.setAttribute('translation', ' ' + splt_L[0]);
                     wordSpan1.innerHTML = splt_L[0];
-                    verseSpan.append(' ')
-                    verseSpan.append(wordSpan1)
+                    versespanAppender([' ',wordSpan1]);
                     
                     wordSpan2.classList.add('translated');
                     wordSpan2.setAttribute('data-xlit', "");
@@ -200,40 +240,54 @@ function parseVerseText(vT, verseSpan) {
                     wordSpan2.setAttribute('data-kjv-trans', ' ' + splt_L[1]);
                     wordSpan2.setAttribute('translation', ' ' + splt_L[1]);
                     wordSpan2.innerHTML = splt_L[1];
-                    verseSpan.append(wordSpan2)
-                }
-                else{
+                    versespanAppender([wordSpan2]);
+                } else {
+                    wStringREGEXED = wString[0];
+                    wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
+                    wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
                     if (wString[1] != 'added') {
                         wordSpan.classList.add('translated');
                         wordSpan.setAttribute('data-xlit', "");
                         wordSpan.setAttribute('data-lemma', "");
                         wordSpan.setAttribute('strnum', wString[1]);
-                        wordSpan.setAttribute('data-kjv-trans', ' ' + wString[0]);
-                        wordSpan.setAttribute('translation', ' ' + wString[0]);
+                        wordSpan.setAttribute('data-kjv-trans', ' ' + wStringREGEXED);
+                        wordSpan.setAttribute('translation', ' ' + wStringREGEXED);
                     }
-                    wordSpan.innerHTML = wString[0];
-                    verseSpan.append(' ')
-                    verseSpan.append(wordSpan)
+                    
+                    wordSpan.innerHTML = wStringREGEXED;
+                    versespanAppender([' ',wordSpan]);
                 }
             }
             if (wString.length == 1) {
                 let spacebtwwords = '';
                 if (([".", ",", ":", ";", "?"].includes(wString[0]) == false)) {
                     spacebtwwords = ' ';
+                }                
+                wStringREGEXED = wString[0];
+                wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
+                wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
+                if (startRed) {
+                    redWordFRAG.append(spacebtwwords);
+                    redWordFRAG.append(wStringREGEXED);
+                } else {
+                    verseSpan.append(spacebtwwords);
+                    verseSpan.append(wStringREGEXED);
                 }
-                verseSpan.append(spacebtwwords)
-                verseSpan.append(wString[0])
             }
             // '<span class="translated" translation="created" data-kjv-trans="created" strnum="H853 H1254" data-xlit="" data-lemma="">created</span>'
+            if(i==vT.lenth-1){console.log(wString)}
         });
     } else {
         vT = vT.replace(/<hi type="bold">/g, '<strong>');
         vT = vT.replace(/<\/hi>/g, '</strong>');
+        // vT = vT.replace(/^""/g, '<span class="red">');
+        // vT = vT.replace(/""/g, '</span>');
         verseSpan.innerHTML = vT;
     }
     return verseSpan;
 }
-function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch=false, bibleVersionName) {    
+
+function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch = false, bibleVersionName) {
     let verseMultipleSpan = document.createElement('span');
     verseMultipleSpan.classList.add('vmultiple')
     let verseSpan = document.createElement('span');
@@ -241,35 +295,34 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     // let bereanIndex = jsonVerseIdex - versesOT;/* TO BE CHANGED */
 
     // let parsedVerse = new DocumentFragment();
-    if(vText==null&&bibleVersionName){
-        vText = window[bibleVersionName][bookName][chNumInBk-1][vNumInChpt-1];
+    if (vText == null && bibleVersionName) {
+        vText = window[bibleVersionName][bookName][chNumInBk - 1][vNumInChpt - 1];
     }
 
 
     if (fromSearch) {
         let trans_lang;
-        if(bibleVersionName){
+        if (bibleVersionName) {
             trans_lang = bible.Data.supportedVersions[bibleVersionName].language;
         }
         verseSpan = parseVerseText(vText, verseSpan);
-        if(bibleVersionName){
+        if (bibleVersionName) {
             verseSpan.classList.add(`v_${bibleVersionName}`);
-            if(bible.isRtlVersion(bibleVersionName,bookName)==true){
+            if (bible.isRtlVersion(bibleVersionName, bookName) == true) {
                 verseSpan.classList.add('rtl');
                 verseNum.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bibleVersionName}`));
-            }else{                
+            } else {
                 verseNum.prepend(document.createTextNode(`${bibleVersionName} ${(chNumInBk)}:${vNumInChpt} `));
             }
-        }
-        else{
+        } else {
             verseNum.prepend(document.createTextNode((chNumInBk) + ':' + vNumInChpt + ' '));
             // verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         }
         verseNum.setAttribute('ref', bookName + ' ' + (chNumInBk) + ':' + vNumInChpt);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
         verseSpan.prepend(verseNum);
-        
-        createTransliterationAttr(verseSpan,trans_lang);
+
+        createTransliterationAttr(verseSpan, trans_lang);
         verseSpan.classList.add('verse');
         appendHere.appendChild(verseSpan);
         transliteratedWords_Array.forEach(storedStrnum => {
@@ -280,6 +333,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     // /* OTHER VERSIONS */
     if (versionsToShow.length != 0) {
         versionsToShow.forEach(bv2d => {
+            currentlyParsedVersion=bv2d;
             let trans_lang = bible.Data.supportedVersions[bv2d].language;
             // console.log(window[bv2d][bookName][chNumInBk][vIdx])
             let verseSpan2 = document.createElement('span');
@@ -294,19 +348,20 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             verseNum2.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
             verseSpan2.prepend(verseNum2);
             verseSpan2.classList.add('verse');
-            if(bible.isRtlVersion(bv2d,bookName)==true){
+            if (bible.isRtlVersion(bv2d, bookName) == true) {
                 verseSpan2.classList.add('rtl');
                 verseNum2.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bv2d}`));
-            }else{                
+            } else {
                 verseNum2.prepend(document.createTextNode(`${bv2d} ${(chNumInBk + 1)}:${vNumInChpt} `));
             }
             // verseSpan2.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
-            createTransliterationAttr(verseSpan2,trans_lang);
+            createTransliterationAttr(verseSpan2, trans_lang);
             verseMultipleSpan.appendChild(verseSpan2);
             verseMultipleSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         })
     }
     appendHere.appendChild(verseMultipleSpan);
+    currentlyParsedVersion=null;
     return appendHere
 }
 

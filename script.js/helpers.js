@@ -6,9 +6,52 @@
 //         }
 //     });
 // }
+/* Ensure doublick does not run click eventListner */
+
+function codeELmRefClick(e) {
+    if (e.target.tagName == "CODE") {
+        let codeElm = e.target;
+        gotoRef(codeElm.getAttribute('ref'))
+        // console.log('e.target')
+        e.preventDefault();
+    }
+}
+
+function debounce(func, timeout = 300) {
+    var ttt;
+        return function () {
+        if (ttt) {
+            console.log('clearing Timeout')
+            clearTimeout(ttt)
+            ttt=undefined;
+        } else {
+            // console.log('setting Timeout')
+            const context = this
+            const args = arguments
+            ttt = setTimeout(() => {
+                func.apply(context, args);
+                ttt=undefined;
+                // console.log('done & cleared')
+            }, timeout)
+        }
+    }
+}
+
+function removeItemFromArray(n, array) {
+    const index = array.indexOf(n);
+
+    // if the element is in the array, remove it
+    if (index > -1) {
+
+        // remove item
+        array.splice(index, 1);
+    }
+    return array;
+}
+
 function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
-    while (a.parentNode.tagName.toUpperCase() != limit) {
-        if (a.parentNode.classList.contains(ancestorsClass)||a.parentNode.matches(ancestorsClass)) {
+    while (a.parentNode && a.parentNode.tagName.toUpperCase() != limit) {
+        if (a.parentNode.classList.contains(ancestorsClass) || a.parentNode.matches(ancestorsClass)) {
             return a.parentNode
         }
         a = a.parentNode;

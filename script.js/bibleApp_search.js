@@ -11,18 +11,9 @@ wordsearch.addEventListener('keyup', function(){
     else{forwordsearch.disabled=true;}
   });
 if (!searchresultdisplay.checked) {
-    searchPreview.addEventListener("click", searchPreviewRefClick)
+    searchPreview.addEventListener("click", codeELmRefClick)
 }
-searchPreviewFixed.addEventListener("click", searchPreviewRefClick);
-
-function searchPreviewRefClick(e) {
-    if (e.target.tagName == "CODE") {
-        let codeElm = e.target;
-        gotoRef(codeElm.getAttribute('ref'))
-        // console.log('e.target')
-        e.preventDefault();
-    }
-}
+searchPreviewFixed.addEventListener("click", codeELmRefClick);
 
 function returnStrippedTextOfVerse(vTxt) {
     let madePlain = vTxt.replace(/"\],\["/g, ' '); //strip off '],['
@@ -133,7 +124,8 @@ function runWordSearch() {
         
             //Loop through booksList
             let abc = 0;
-            let allBooksWithContentInVersion = KJV;
+            // let allBooksWithContentInVersion = KJV;
+            let allBooksWithContentInVersion = window[bversionName];
             for (let x = 0; x < booksLength; x++) {
                 let bookNameInVersion = Object.keys(allBooksWithContentInVersion)[x];
                 bookName = bookNameInVersion;
@@ -159,6 +151,8 @@ function runWordSearch() {
                             let originalText = allVersesInCurrentChapter[z].toString();
                             let vText=originalText;
                             for (let j = 0; j < wordsArray.length; j++) {
+                                // let nreg = new RegExp(wordsArray[j]);
+                                // if (!nreg.test(originalText)) {
                                 if (!originalText.includes(wordsArray[j])) {
                                     containsAll = false;
                                     break
@@ -286,7 +280,7 @@ function hideAllVerseInSearch() {
     searchPreviewFixed.addEventListener('click', showVersesUnderH2)
     // console.log(totalVerseReturned)
     // totalfound.innerText="Total Verses Found: "+totalVerseReturned;
-    totalfound.innerHTML = "Found in <b>" + totalVerseReturned + "</b> verses";
+    totalfound.innerHTML = "Found in <b>" + totalVerseReturned + "</b> verses in the <b>" + bversionName + "</b>" ;
 }
 
 function showVersesUnderH2(e) {

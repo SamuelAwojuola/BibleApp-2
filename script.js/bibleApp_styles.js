@@ -99,6 +99,8 @@ function darkLightMode() {
     let dark_mode = 'darkmode';
     let darkmodeCSS = `span.verse{
         background-color:rgb(38, 38, 38);
+        color:white!important;
+    }span.verse span{
         color:white;
     }`
     // let dcol= 'rgba(0, 50, 112, 0.918)';
@@ -113,4 +115,9 @@ function darkLightMode() {
         darkmodebtn.innerText = 'D';
         documentROOT.style.setProperty('--verse-hover', dcol);
     }
+}
+let saved_highlightStrongsSheet
+function hide_strongshighlight(){
+    saved_highlightStrongsSheet= highlightstrongs;
+    highlightstrongs.remove()
 }

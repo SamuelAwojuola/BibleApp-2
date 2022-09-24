@@ -30,29 +30,95 @@ kjvBible.onload = function () {
 /* LOAD THE BIBLE */
 let availableVersions = {
     // 'original': {name: 'Original', language: 'original'},
-    'accented': {name: 'Accented original',language:'original'},
-    'KJV': {name: 'King James Version',language: 'en'},
-    'WEB': {name: 'World English Bible',language: 'en'},
-    'ESV': {name: 'English Standard Version',language: 'en'},
+    'accented': {
+        name: 'Accented original',
+        language: 'original'
+    },
+    'KJV': {
+        name: 'King James Version',
+        language: 'en'
+    },
+    'WEB': {
+        name: 'World English Bible',
+        language: 'en'
+    },
+    'ESV': {
+        name: 'English Standard Version',
+        language: 'en'
+    },
     // 'LC': {name: 'Literal Consistent', language: 'en'},
-    'YLT': {name: 'Young\'s Literal Translation',ge: 'en'},
-    'ASV': {name: 'American Standard Version',language: 'en'},
-    'DARBY': {name: 'Darby Translation',language: 'en'},
-    'GW': {name: 'God\'s Word Translation',language: 'en'},
-    'JUB': {name: 'Jubilee Bible 200',language: 'en'},
-    'LEB': {name: 'Lexham English Bible',language: 'en'},
-    'NET': {name: 'New English Translation',language: 'en'},
-    'WMB': {name: 'World Messianic Bible',language: 'en'},
-    'OPV': {name: 'ترجمه-ی قدام',language: 'fa'},
-    'TPV': {name: 'مژده برای اسرع جدید',language: 'fa'},
-    'NMV': {name: 'ترجمه هزارۀ نو',language: 'fa'},
-    'AraSVD': {name: 'Arabic Bible',language: 'ar'},
-    'RomCor': {name: 'Cornilescu Bible in Romanian  language',language: 'ro'},
-    'MCSB': {name: 'Matupi Chin Standard Bible',language: 'hlt'},
-    'FreSegond1910': {name: "Bible Louis Segond (1910)",language: 'fr'},
-    'FreJND': {name: "Bible J.N.Darby en français",language: 'fr'},
-    'FrePGR': {name: "Bible Perret-Gentil et Rilliet",language: 'fr'},
-    'CKBOKS': {name: "وەشانی بێبەرامبەری کوردیی سۆرانیی ستاندەر",language: 'ckb'},
+    'YLT': {
+        name: 'Young\'s Literal Translation',
+        ge: 'en'
+    },
+    'ASV': {
+        name: 'American Standard Version',
+        language: 'en'
+    },
+    'DARBY': {
+        name: 'Darby Translation',
+        language: 'en'
+    },
+    'GW': {
+        name: 'God\'s Word Translation',
+        language: 'en'
+    },
+    'JUB': {
+        name: 'Jubilee Bible 200',
+        language: 'en'
+    },
+    'LEB': {
+        name: 'Lexham English Bible',
+        language: 'en'
+    },
+    'NET': {
+        name: 'New English Translation',
+        language: 'en'
+    },
+    'WMB': {
+        name: 'World Messianic Bible',
+        language: 'en'
+    },
+    'OPV': {
+        name: 'ترجمه-ی قدام',
+        language: 'fa'
+    },
+    'TPV': {
+        name: 'مژده برای اسرع جدید',
+        language: 'fa'
+    },
+    'NMV': {
+        name: 'ترجمه هزارۀ نو',
+        language: 'fa'
+    },
+    'AraSVD': {
+        name: 'Arabic Bible',
+        language: 'ar'
+    },
+    'RomCor': {
+        name: 'Cornilescu Bible in Romanian  language',
+        language: 'ro'
+    },
+    'MCSB': {
+        name: 'Matupi Chin Standard Bible',
+        language: 'hlt'
+    },
+    'FreSegond1910': {
+        name: "Bible Louis Segond (1910)",
+        language: 'fr'
+    },
+    'FreJND': {
+        name: "Bible J.N.Darby en français",
+        language: 'fr'
+    },
+    'FrePGR': {
+        name: "Bible Perret-Gentil et Rilliet",
+        language: 'fr'
+    },
+    'CKBOKS': {
+        name: "وەشانی بێبەرامبەری کوردیی سۆرانیی ستاندەر",
+        language: 'ckb'
+    },
 };
 // let original,accented,WEB,ESV,LC,YLT,ASV,DARBY,GW,JUB,LEB,NET,WMB,OPV,TPV,NMV,AraSVD,RomCor,MCSB,FreSegond1910,FreJND,FrePGR,CKBOKS;
 // var original='original',accented='accented',WEB='WEB',ESV='ESV',LC='LC',YLT='YLT',ASV='ASV',DARBY='DARBY',GW='GW',JUB='JUB',LEB='LEB',NET='NET',WMB='WMB',OPV='OPV',TPV='TPV',NMV='NMV',AraSVD='AraSVD',RomCor='RomCor',MCSB='MCSB',FreSegond1910='FreSegond1910',FreJND='FreJND',FrePGR='FrePGR',CKBOKS='CKBOKS';
@@ -77,7 +143,9 @@ bible_versions.addEventListener('change', function (e) {
         }
         localStorage.setItem('loadedBibleVersions', loadedBibleVersions);
         bibleversions_btns.querySelector(`[bversion="${e.target.getAttribute('value')}"]`).remove();
-        if(singleverse_compare_menu){singleverse_compare_menu.querySelector(`[bversion="${e.target.getAttribute('value')}"]`).remove();}
+        if (singleverse_compare_menu) {
+            singleverse_compare_menu.querySelector(`[bversion="${e.target.getAttribute('value')}"]`).remove();
+        }
     }
 });
 
@@ -118,8 +186,8 @@ function loadVersion(versionName) {
     bvBtn.innerHTML = bvBtn.innerHTML + versionName;
     bibleversions_btns.append(bvBtn);
     singleverse_compare_menu.append(bvBtn.cloneNode(true));
-    if(unwantedInputs = singleverse_compare_menu.querySelectorAll('input')){
-        unwantedInputs.forEach(unw =>{
+    if (unwantedInputs = singleverse_compare_menu.querySelectorAll('input')) {
+        unwantedInputs.forEach(unw => {
             unw.remove()
         })
     }
@@ -151,11 +219,11 @@ bibleversions_btns.addEventListener('click', function (e) {
                 twinInSingleVerseCompare.classList.remove('active_button');
             }
             //MOVE DE-SELECTED VERSION BELOW SELECTED VERSIONS
-                let elm2moveDown = pbtn.cloneNode(true);
-                pbtn.remove();
-                let elm2precede=bibleversions_btns.querySelector('button:not(.active_button)');
-                bibleversions_btns.insertBefore(elm2moveDown, elm2precede);
-                // bibleversions_btns.appendChild(elm2moveDown);
+            let elm2moveDown = pbtn.cloneNode(true);
+            pbtn.remove();
+            let elm2precede = bibleversions_btns.querySelector('button:not(.active_button)');
+            bibleversions_btns.insertBefore(elm2moveDown, elm2precede);
+            // bibleversions_btns.appendChild(elm2moveDown);
         } else if ((!pbtnCheck.checked)) {
             pbtn.classList.add("active_button");
             pbtnCheck.checked = true;
@@ -189,8 +257,8 @@ bibleversions_btns.addEventListener('click', function (e) {
                 }
             }
             //MOVE SELECTED VERSIONS TO THE TOP
-            if(bibleversions_btns.querySelector('button:not(.active_button)')){
-                let elm2precede=bibleversions_btns.querySelector('button:not(.active_button)');
+            if (bibleversions_btns.querySelector('button:not(.active_button)')) {
+                let elm2precede = bibleversions_btns.querySelector('button:not(.active_button)');
                 let pbtnClone = pbtn.cloneNode(true);
                 pbtn.remove();
                 bibleversions_btns.insertBefore(pbtnClone, elm2precede)
@@ -204,16 +272,17 @@ bibleversions_btns.addEventListener('click', function (e) {
 function compareThisVerse() {}
 let sverse_comp_backup;
 let clickedVerseRef;
+const add_VersionsLoader_preventDoublick = debounce(local_versionsloader, 300);
 
-main.addEventListener('click', function (e) {
-    let clkelm=e.target;
+function local_versionsloader(e) {
+    let clkelm = e.target;
     /* ATTACH VERSE VERSION COMPARE BUTTONS */
     if (clkelm.matches('.verse,.vmultiple')) {
-        if(clkelm.querySelector('#singleverse_compare_menu')){
+        if (clkelm.querySelector('#singleverse_compare_menu')) {
             clkelm.querySelector('#singleverse_compare_menu').remove();
             return
         }
-        clickedVerseRef=clkelm.querySelector('[ref]').getAttribute('ref')
+        clickedVerseRef = clkelm.querySelector('[ref]').getAttribute('ref')
         let sverse_comp;
         if (document.querySelector('#singleverse_compare_menu')) {
             sverse_comp = singleverse_compare_menu.cloneNode(true);
@@ -237,39 +306,41 @@ main.addEventListener('click', function (e) {
             })
             sverse_comp_backup = sverse_comp.cloneNode(true);
             //On change of verse ensure that only versions of that verse are active
-            if(hlv=sverse_comp.querySelectorAll('button:not([disabled])')){
-            hlv.forEach(b => {
-                let vn=b.getAttribute('bversion');
-                if(!clkelm.parentElement.querySelector('.v_'+vn)){//If verse does not have the Version 
-                    b.classList.remove('active_button');
-                }else{//If verse has the version
-                    b.classList.add('active_button');
-                }
-            })}
+            if (hlv = sverse_comp.querySelectorAll('button:not([disabled])')) {
+                hlv.forEach(b => {
+                    let vn = b.getAttribute('bversion');
+                    if (!clkelm.parentElement.querySelector('.v_' + vn)) { //If verse does not have the Version 
+                        b.classList.remove('active_button');
+                    } else { //If verse has the version
+                        b.classList.add('active_button');
+                    }
+                })
+            }
         }
         clkelm.append(sverse_comp)
         sverse_comp.classList.remove('slideout')
         // sverse_comp.classList.add('slidein')
     }
-})
+}
+main.addEventListener('click', add_VersionsLoader_preventDoublick)
 //Get and append (or un-append) reference on click of comparison version button
-main.addEventListener('click', function(e){
-    let clkelm=e.target;
-    if(clkelm.matches('#singleverse_compare_menu [bversion]')){
-        let verseHolder=elmAhasElmOfClassBasAncestor(clkelm,'vmultiple');
-        let bversion=clkelm.getAttribute('bversion')
-        if(!clkelm.matches('.active_button')){
-            let bkID=verseHolder.id.split('.')[0].split('_')[1];
+main.addEventListener('click', function (e) {
+    let clkelm = e.target;
+    if (clkelm.matches('#singleverse_compare_menu [bversion]')) {
+        let verseHolder = elmAhasElmOfClassBasAncestor(clkelm, 'vmultiple');
+        let bversion = clkelm.getAttribute('bversion')
+        if (!clkelm.matches('.active_button')) {
+            let bkID = verseHolder.id.split('.')[0].split('_')[1];
             let fullRefSplit = clickedVerseRef.split(' ')
-            let bN,bC,cV,bCnCv;
-            bCnCv=fullRefSplit.pop();
-            bC=bCnCv.split(':')[0];
-            cV=bCnCv.split(':')[1];
-            bN=fullRefSplit.join(' ')
+            let bN, bC, cV, bCnCv;
+            bCnCv = fullRefSplit.pop();
+            bC = bCnCv.split(':')[0];
+            cV = bCnCv.split(':')[1];
+            bN = fullRefSplit.join(' ')
             clkelm.classList.toggle('active_button')
             parseSingleVerse(null, bC, cV, null, verseHolder, bN, null, true, bversion)
-        }else{
-            verseHolder.querySelector('.v_'+bversion).remove();
+        } else {
+            verseHolder.querySelector('.v_' + bversion).remove();
             clkelm.classList.toggle('active_button');
         }
     }

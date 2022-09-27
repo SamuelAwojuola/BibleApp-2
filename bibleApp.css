@@ -8,15 +8,19 @@
     --ref-img: url(R.jpg);
     --ref-img: #ffffc8;
     --ref-img: url(background.jpg);
+    --shadow-color:rgb(81, 81, 81);
     --ref-paper: url(4rKVgAQ.jpg);
     --ref-paper: url(IyEMTp.jpg);
     --verse-higlight: #ffff92;
     --verse-higlight: #fffb001b;
+    --vmultiple-hover:rgb(246, 239, 227);
     --nav-bg-color: #fbfbfb;
     --vhlt-border: #8080809c;
     --vhlt: #ffffc4;
     --redwords:crimson;
     --strongword-hover: rgb(216, 255, 137);
+    --strongword-hover: rgb(237, 213, 222);
+    --strongword-hover: rgb(255, 241, 137);
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
     /* --verse-hover: rgba(192, 176, 98, 0.858);
@@ -278,12 +282,7 @@ button {
     display: flex;
     flex-wrap: wrap;
 }
-.crossrefs>span:hover{
-    text-decoration: underline;
-    /* font-weight: bold; */
-    cursor: pointer;
-    color:crimson;
-}
+
 #context_menu {
     box-sizing: border-box;
     position: absolute;
@@ -315,9 +314,10 @@ button {
 #context_menu .strngsdefinition div {
     display: block;
 }
-#context_menu code:hover {
-    color: blue;
+.vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:hover {
     text-decoration: underline;
+    color: blue;
+    cursor: pointer;
 }
 #tool_tip {
     /* float:left; */
@@ -449,20 +449,32 @@ span:not(.red) span[strnum^=G] {
 
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
-    transition: background 0.3s linear;
+    transition: background 0.05s linear;
 }
 
-span.verse:hover:not(.vhlt),
-span.vmultiple:hover {
+span.verse:hover:not(.vhlt){
     /* box-sizing:border-box!important; */
     background-color: var(--verse-hover);
-    /* border-bottom: 1.5px solid rgb(72, 72, 72); */
+    /* box-shadow: 0 0 2px 0 rgb(30, 30, 30)*/
     cursor: pointer;
-    box-shadow: 0 0 2px 0 rgb(30, 30, 30),
-                0 1.5px 0 0 rgb(30, 30, 30),
-                1.5px 0 0 0 rgb(30, 30, 30);
+}
+span.vmultiple:hover .verse{
+    background-color: var(--vmultiple-hover);
+    background-color: var(--verse-hover);
+    transition: box-shadow 0.05s linear;
+    box-shadow: 0 0 1px 0 var(--shadow-color),
+    0 1px 1px 0 var(--shadow-color),
+    0 -1px 1px 0 var(--shadow-color),
+    1px 0 0 0 var(--shadow-color);
+    z-index: 2;
 }
 
+span[class^=v_]:hover {
+    background-color: rgb(246, 239, 227)!important;
+    background-color: var(--vhlt)!important;
+    box-shadow: 0 -2px 2px 0 var(--shadow-color),
+    0 2px 2px 0 var(--shadow-color)!important;
+}
 span.translated:hover {
     border-bottom: 1px solid rgb(151, 116, 0);
     color: brown;

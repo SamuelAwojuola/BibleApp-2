@@ -18,28 +18,15 @@ function appendCrossReferences(e){
         getBVN(classesOfe);
         // console.log(bversionName);
     }
-    let versionVerse;
-    if(e.target.matches('.vmultiple [ref]')&&!elmAhasElmOfClassBasAncestor(e.target,'vmultiple').nextElementSibling.matches('.crossrefs')){
+    let versionVerse,vmultiple_NextSibling=elmAhasElmOfClassBasAncestor(e.target,'vmultiple').nextElementSibling;
+    if(e.target.matches('.vmultiple [ref]')&&(vmultiple_NextSibling==null||!vmultiple_NextSibling.matches('.crossrefs'))){
         refCode = e.target.getAttribute('ref');
         vHolder = elmAhasElmOfClassBasAncestor(e.target,'vmultiple');
         versionVerse=vHolder.querySelector('.v_KJV');
     }
-    // if(e.target.matches('.vmultiple')&&!e.target.nextElementSibling.matches('.crossrefs')){
-    //     vHolder=e.target;
-    //     versionVerse=vHolder.querySelector('.v_KJV');
-    //     refCode = e.target.querySelector('code').getAttribute('ref');
-    // } else if (vHolder = elmAhasElmOfClassBasAncestor(e.target,'vmultiple')){
-    //     if(e.target.matches('.verse')){versionVerse=e.target;}
-    //     else {
-    //         versionVerse=elmAhasElmOfClassBasAncestor(e.target,'verse');
-    //     }
-    //     if (!vHolder.nextElementSibling.matches('.crossrefs')){
-    //         refCode = vHolder.querySelector('code').getAttribute('ref');
-    //     }
-    // }
     if(refCode){
-        refCode = refCode.replace(/(\w)\s([0-9]+)/g, '$1.$2');
-        refCode = refCode.replace(/:/g, '.');
+        refCode = refCode.replace(/(\w)\s([0-9]+)/g, '$1.$2');//Romans 2:3==>Romans.2:3
+        refCode = refCode.replace(/:/g, '.');//Romans.2:3==>Romans.2.3
         let crossRef = crossReferences_fullName[refCode];
         function parseCrossRef(crossRef,refCode){
             let crfFrag=new DocumentFragment();
@@ -57,7 +44,6 @@ function appendCrossReferences(e){
             return crfDiv
         }
         parseCrossRef(crossRef,refCode);
-        crossReferences_fullName[refCode];
     }
 }
 function getCrossReference(x){

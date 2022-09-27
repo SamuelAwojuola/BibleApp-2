@@ -272,12 +272,15 @@ bibleversions_btns.addEventListener('click', function (e) {
 function compareThisVerse() {}
 let sverse_comp_backup;
 let clickedVerseRef;
+
+//To ensure local versions loader does not load if a verse is double clicked
 const add_VersionsLoader_preventDoublick = debounce(local_versionsloader, 300);
 
+//The actual function that adds the local versions loader to the window
 function local_versionsloader(e) {
     let clkelm = e.target;
     /* ATTACH VERSE VERSION COMPARE BUTTONS */
-    if (clkelm.matches('.verse,.vmultiple')) {
+    if((main.querySelector('#context_menu.slidein')==null)&&(clkelm.matches('.verse,.vmultiple'))) {
         if (clkelm.querySelector('#singleverse_compare_menu')) {
             clkelm.querySelector('#singleverse_compare_menu').remove();
             return
@@ -322,7 +325,10 @@ function local_versionsloader(e) {
         // sverse_comp.classList.add('slidein')
     }
 }
+
+//IF there is 'context_menu', then the first click should remove it. Therefore, the local versions loader should not be loaded if there is context menu in the window.
 main.addEventListener('click', add_VersionsLoader_preventDoublick)
+
 //Get and append (or un-append) reference on click of comparison version button
 main.addEventListener('click', function (e) {
     let clkelm = e.target;

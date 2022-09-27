@@ -3,12 +3,32 @@ let timer1, timer2;
 
 function add_tooltipContextMenu(e) {
     e.preventDefault();
+    let currentEt = e.target;
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
     if (e.target.matches('.translated, .strnum, .crossrefs>span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
+
+        // console.log(context_menu.getAttribute('strnum'))
+        // console.log(e.target)
+
+        if (e.type == 'mouseover') {
+            clearTimeout(timer1);
+
+            if ((!currentEt.matches('.strnum') && context_menu.getAttribute('strnum') != currentEt.getAttribute('strnum'))) {
+                timer1 = setTimeout(function () {
+                    timedFUNC();
+                }, 500)
+            } else if (!currentEt.matches('.strnum')) {
+                timer1 = setTimeout(function () {
+                    timedFUNC();
+                }, 500)
+            }
+        } else {
+            timedFUNC()
+        }
 
         function timedFUNC() {
             let target_right = e.target.getBoundingClientRect().right;
@@ -76,7 +96,7 @@ function add_tooltipContextMenu(e) {
                     cmtitlebar.classList.add('cmtitlebar');
                     let cmtitletext = e.target.innerText;
                     let bknch = cmtitletext.split('.')[0] + '.' + cmtitletext.split('.')[1];
-                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('');
+                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('')+ ' [' + bversionName + ']';
                     // cmtitlebar.innerText=e.target.innerText;
                     cmtitlebar.innerText = cmtitletext;
                     context_menu.append(cmtitlebar);
@@ -126,16 +146,11 @@ function add_tooltipContextMenu(e) {
                 }
             }
         }
-        if (e.type == 'mouseover') {
-            timer1 = setTimeout(function () {
-                timedFUNC();
-            }, 500)
-        } else {
-            timedFUNC()
-        }
-    } else if (context_menu.matches('.slidein') && !e.target.matches('#context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
+    } else if (context_menu.matches('.slidein') && (!e.target.matches('#context_menu') || !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
+
         function removeContextMenu() {
             hideRefNav('hide', context_menu, removeCMPevtListner());
+            context_menu.removeAttribute('strnum');
             context_menu.innerHTML = '';
         }
         if (e.type == 'mouseover') {
@@ -153,7 +168,7 @@ function getCurrentStrongsDef(e) {
     if (strnum = e.target.getAttribute('strnum')) {
         strnum = strnum.split(' ');
         getsStrongsDefinition(strnum);
-        console.log(strnum)
+        // console.log(strnum)
     }
     if (e.type == 'contextmenu') {
         context_menu.classList.add('rightclicked')
@@ -232,7 +247,7 @@ function toolTipOnOff(x) {
 }
 //Hide ContextMenu on clicking outside of main window
 document.addEventListener('click', function (e) {
-    if ((!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && elmAhasElmOfClassBasAncestor(e.target, 'context_menu'))) {
+    if ((!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, 'context_menu'))) {
         hideRightClickContextMenu()
     }
 })
@@ -262,4 +277,4 @@ function removeCMPevtListner() {
 //     ppp.removeEventListener('contextmenu', add_tooltipContextMenu, false);
 // }
 
-context_menu.addEventListener("dblclick", codeELmRefClick);
+context_menu.addEventListener("click", codeELmRefClick);

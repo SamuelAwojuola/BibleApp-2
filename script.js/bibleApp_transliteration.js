@@ -257,7 +257,6 @@ main.addEventListener('mouseover', function (e) {
 })
 main.addEventListener('mouseout', function (e) {
     if (e.target.hasAttribute('strnum')) {
-        // if (e.target.classList.contains('translated')) {
         document.getElementById('highlightall').remove();
     }
 })

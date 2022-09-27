@@ -280,7 +280,7 @@ const add_VersionsLoader_preventDoublick = debounce(local_versionsloader, 300);
 function local_versionsloader(e) {
     let clkelm = e.target;
     /* ATTACH VERSE VERSION COMPARE BUTTONS */
-    if((main.querySelector('#context_menu.slidein')==null)&&(clkelm.matches('.verse,.vmultiple'))) {
+    if (clkelm.matches('.verse,.vmultiple')) {
         if (clkelm.querySelector('#singleverse_compare_menu')) {
             clkelm.querySelector('#singleverse_compare_menu').remove();
             return
@@ -326,8 +326,12 @@ function local_versionsloader(e) {
     }
 }
 
-//IF there is 'context_menu', then the first click should remove it. Therefore, the local versions loader should not be loaded if there is context menu in the window.
-main.addEventListener('click', add_VersionsLoader_preventDoublick)
+main.addEventListener('click', function (e) {
+    //IF there is 'context_menu', then the first click should remove it. Therefore, the local versions loader should not be loaded if there is context menu in the window.
+    if (main.querySelector('#context_menu.slidein') == null) {
+        add_VersionsLoader_preventDoublick(e)
+    }
+})
 
 //Get and append (or un-append) reference on click of comparison version button
 main.addEventListener('click', function (e) {

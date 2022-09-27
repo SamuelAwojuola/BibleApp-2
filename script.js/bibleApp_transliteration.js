@@ -250,7 +250,7 @@ main.addEventListener('mouseover', function (e) {
         });
         newStyleInHead.id = 'highlightall';
         // newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
-        newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--strongword-hover)!important;border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
+        newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--strongword-hover)!important;border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;box-shadow:0 0.5px 1px 0px var(--shadow-color); z-index:2;`;
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }

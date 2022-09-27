@@ -153,13 +153,13 @@ function add_tooltipContextMenu(e) {
             context_menu.removeAttribute('strnum');
             context_menu.innerHTML = '';
         }
-        if (e.type == 'mouseover') {
+        // if (e.type == 'mouseover') {
             timer2 = setTimeout(function () {
                 removeContextMenu();
             }, 750)
-        } else {
-            removeContextMenu()
-        }
+        // } else {
+            // removeContextMenu()
+        // }
     }
 }
 let newStrongsDef = '';

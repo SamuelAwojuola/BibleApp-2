@@ -107,14 +107,34 @@ td:first-child {
 .rtl {
     direction: rtl
 }
+code{position: relative;
+padding-top: 5px;}
+#show_crossref_comments{
+    position: absolute;
+    bottom:10px;
+    display: flex;
+}
+#show_crossref_comments button{
+    font-size: 7px;
+    padding: 0;
+    /* background: transparent; */
+    border-width: 0.5px;
+}
+#show_crossref_comments button:not(:first-child){
+    margin-left: 2px;
+}
+.showing_crossref #verse_crossref,
+.showing_versenotes #verse_notes{
+    background: rgb(203, 255, 125)!important;
+}
 #singleverse_compare_menu {
     /* display: inline-flex; */
 }
 #singleverse_compare_menu button {
     font-size: xx-small !important;
     width: 25px;
-    height: 15px;
-    padding: 2px;
+    /* height: 15px; */
+    padding: 0px;
     text-overflow: ellipsis;
 }
 #singleverse_compare_menu input {

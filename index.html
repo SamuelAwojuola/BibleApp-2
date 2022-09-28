@@ -160,6 +160,8 @@
         </div>
         <div>Toggle Dark/Light Mode: <button id="darkmodebtn" onclick="darkLightMode()">L</button></div>
         <div>Hide/Show Highlights: <button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button></div>
+        <br>
+        <div><input type="color" style="width: 100px;height: 25px;padding:0;border:0"></input></div>
       </div>
       <div id="strongsdefinitionwindow" class="slideout">
       </div>
@@ -170,7 +172,7 @@
           
           <main id="main" contenteditable="false">
             <div id="context_menu" class="context_menu slideout"></div>
-      <!-- <div class="context_menu slideout">Hello there, how are you doing today. GOD bless you.</div> -->
+            <div id="show_crossref_comments" class="slideout"><button class="buttons" id="verse_crossref">TSK</button><button class="buttons" id="verse_notes">Note</button></div>
       <div id="ppp"></div>
       <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
         <div id="search_section">adfadfadsfasdfadsf</div> -->
@@ -213,5 +215,6 @@
 <script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_ref_browserHistory.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <script>tool_tip.click()</script>
 </html>

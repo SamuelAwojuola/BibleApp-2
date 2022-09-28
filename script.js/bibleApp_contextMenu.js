@@ -96,7 +96,7 @@ function add_tooltipContextMenu(e) {
                     cmtitlebar.classList.add('cmtitlebar');
                     let cmtitletext = e.target.innerText;
                     let bknch = cmtitletext.split('.')[0] + '.' + cmtitletext.split('.')[1];
-                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('')+ ' [' + bversionName + ']';
+                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('') + ' [' + bversionName + ']';
                     // cmtitlebar.innerText=e.target.innerText;
                     cmtitlebar.innerText = cmtitletext;
                     context_menu.append(cmtitlebar);
@@ -154,11 +154,11 @@ function add_tooltipContextMenu(e) {
             context_menu.innerHTML = '';
         }
         // if (e.type == 'mouseover') {
-            timer2 = setTimeout(function () {
-                removeContextMenu();
-            }, 750)
+        timer2 = setTimeout(function () {
+            removeContextMenu();
+        }, 750)
         // } else {
-            // removeContextMenu()
+        // removeContextMenu()
         // }
     }
 }
@@ -278,3 +278,23 @@ function removeCMPevtListner() {
 // }
 
 context_menu.addEventListener("click", codeELmRefClick);
+ppp.addEventListener("mouseover", codeButtons);
+
+function codeButtons(e) {
+    if(document.getElementById('show_crossref_comments')==null){ //It may get removed on loading new reference
+        let newElm = document.createElement('div');
+        newElm.classList.add('slideout');
+        newElm.id='show_crossref_comments';
+        newElm.innerHTML=`<button class="buttons" id="verse_crossref">TSK</button><button class="buttons" id="verse_notes">Note</button>`;
+        ppp.append(newElm);
+    } else if(show_crossref_comments){
+        if (e.target.matches('.verse code') && (e.type == 'mouseover')) {
+            relocateElmTo(show_crossref_comments, e.target);
+            show_crossref_comments.classList.remove('slideout');
+            show_crossref_comments.classList.add('slidein');
+        } else if (!e.target.matches('.verse code') && (e.type == 'mouseout')) {
+            show_crossref_comments.classList.remove('slidein');
+            show_crossref_comments.classList.add('slideout');
+        }
+    }
+}

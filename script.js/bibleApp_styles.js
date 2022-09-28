@@ -76,9 +76,9 @@ function changeFontSize(targetgroup, plusMinus) {
     }
     currentSize = Number(currentSize.split('px')[0].trim())
     if (plusMinus == 'plus') {
-        currentSize = (currentSize + 5) + 'px'
+        currentSize = (currentSize + 2) + 'px'
     } else if (plusMinus == 'minus') {
-        currentSize = (currentSize - 5) + 'px'
+        currentSize = (currentSize - 2) + 'px'
     }
     documentROOT.style.setProperty(targ, currentSize);
     styleLocalstorageSet()

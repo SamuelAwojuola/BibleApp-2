@@ -102,3 +102,9 @@ document.addEventListener("mouseup", function () {
     document.removeEventListener("mousemove", resize, false);
     hasBeenClicked = false;
 }, false);
+
+function relocateElmTo(elm, moveHere){
+    let elmCopy = elm.cloneNode(true);
+    elm.remove();
+    moveHere.append(elmCopy)
+}

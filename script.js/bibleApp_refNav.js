@@ -73,6 +73,9 @@ refnav.addEventListener("click", function (e) {
     clickedElm = e.target;
     if (e.target.matches("button")) {
         clickedElm.classList.toggle("active_button")
+    } else if (elmAhasElmOfClassBasAncestor(e.target,'button')) {
+        clickedElm = elmAhasElmOfClassBasAncestor(e.target,'button');
+        clickedElm.classList.toggle("active_button")
     }
     //To populate book chapter numbers refnav pane
     if (clickedElm.classList.contains('bkname')) {
@@ -160,8 +163,9 @@ function hideRightClickContextMenu() {
 }
 document.addEventListener('keydown', function (event) {
     if (event.key === "Escape") {
-        hideRefNav('hide');
-        hideRightClickContextMenu();
+        if(bible_nav.matches('.slidein')){hideRefNav('hide',bible_nav);}
+        // else if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
+        else if(refnav.matches('.slidein')){hideRefNav('hide',refnav);}
     }
 });
 
@@ -179,6 +183,7 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
         elHS = refnav
     }
     if (hORs == 'hide') {
+        if(elHS == bible_nav){biblenavigation.classList.remove('active_button')}
         elHS.classList.remove('slidein');
         elHS.classList.add('slideout');
     } else if (hORs == 'show') {

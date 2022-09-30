@@ -278,14 +278,16 @@ function removeCMPevtListner() {
 // }
 
 context_menu.addEventListener("click", codeELmRefClick);
-ppp.addEventListener("mouseover", codeButtons);
 
+/* FOR SHOWING CROSSREFS AND VERSES NOTES */
+ppp.addEventListener("mouseover", codeButtons);
 function codeButtons(e) {
     if(document.getElementById('show_crossref_comments')==null){ //It may get removed on loading new reference
         let newElm = document.createElement('div');
         newElm.classList.add('slideout');
         newElm.id='show_crossref_comments';
-        newElm.innerHTML=`<button class="buttons" id="verse_crossref">TSK</button><button class="buttons" id="verse_notes">Note</button>`;
+        newElm.innerHTML=`<button class="buttons" id="verse_crossref_button"><a>TSK</a></button><button class="buttons" id="verse_notes_button"><a>Note</a></button>`;
+        // newElm.innerHTML=`<a><button class="buttons" id="verse_crossref_button">TSK</button></a><a><button class="buttons" id="verse_notes_button">Note</button></a>`;
         ppp.append(newElm);
     } else if(show_crossref_comments){
         if (e.target.matches('.verse code') && (e.type == 'mouseover')) {

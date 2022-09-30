@@ -5,12 +5,12 @@
     --fontsize-strongstooltip: 13px;
     --ref-hlt: #f8f8f8;
     --ref-hlt: #dde3db;
-    --ref-img: url(R.jpg);
+    --ref-img: url(images/R.jpg);
     --ref-img: #ffffc8;
-    --ref-img: url(background.jpg);
+    --ref-img: url(images/background.jpg);
     --shadow-color:rgb(81, 81, 81);
-    --ref-paper: url(4rKVgAQ.jpg);
-    --ref-paper: url(IyEMTp.jpg);
+    --ref-paper: url(images/4rKVgAQ.jpg);
+    --ref-paper: url(images/IyEMTp.jpg);
     --verse-higlight: #ffff92;
     --verse-higlight: #fffb001b;
     --vmultiple-hover:rgb(246, 239, 227);
@@ -123,9 +123,62 @@ padding-top: 5px;}
 #show_crossref_comments button:not(:first-child){
     margin-left: 2px;
 }
-.showing_crossref #verse_crossref,
-.showing_versenotes #verse_notes{
+.showing_crossref #verse_crossref_button,
+.showing_versenote #verse_notes_button{
     background: rgb(203, 255, 125)!important;
+}
+.crossrefs, .verse_note{
+    box-shadow: 0 2px 2px 0#878787;
+}
+.crossrefs{
+    padding: 5px 5px 0 5px;
+    background: #ffff;
+    overflow: hidden;
+    font-size: 9.5px;
+    transition: max-height .2s ease-in-out;
+    min-height: 10px;
+    max-height: 500px;
+    margin-bottom:5px;
+    line-height: auto;
+    opacity: 1;
+}
+#verse_note{display: none;}
+.verse_note {
+    position: relative;
+    transition: all 0.15s ease-in-out;
+    padding: 5px;
+    background: #fff;
+    overflow: hidden;
+    min-height: 10px;
+    max-height: 300px;
+    margin-bottom:5px;
+    line-height: auto;
+    opacity: 1;
+}
+.note_edit_button{
+    padding: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 12px;
+    height: 12.75px;
+    background: none;
+    border: none;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    box-shadow: 1px 0px 2px 1.5px var(--shadow-color);
+    cursor: pointer;
+}
+.note_edit_button:active{
+    box-shadow: 0px 0px 2px 0px var(--shadow-color);
+}
+.slideup {
+    min-height: 0;
+    max-height: 0;
+    padding: 0;
+    margin-bottom:0;
+    line-height: 0;
+    opacity: 0.1;
 }
 #singleverse_compare_menu {
     /* display: inline-flex; */
@@ -172,9 +225,13 @@ padding-top: 5px;}
 }
 #refnav #app_settings * {
     display: block;
-    width: 22px;
+    width: 18px;
     padding: 0;
-    /* font-size:xx-small; */
+}
+#refnav #app_settings button {
+    width: 22px;
+    padding-left: 1px;
+    padding-right: 1px;
 }
 #bibleversions_btns {
     display: inline-flex;
@@ -401,7 +458,6 @@ span:not(.red) span[strnum^=G] {
 [strnum] {
     cursor: pointer;
 }
-.crossrefs{font-size: 9.5px;}
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
     transition: background 0.05s linear;
@@ -740,7 +796,7 @@ main span {
 #mobilebuttons {
     display: none;
 }
-@media screen and (max-device-width: 500px) {
+/* @media screen and (max-device-width: 500px) {
 
     html {
         font-size: 27px;
@@ -765,9 +821,9 @@ main span {
         position: absolute;
         top: calc(100vh - 150px);
         right: 0;
-        max-width: calc(100vw);
+        max-width: calc(100vw); */
         /* background-color: transparent!important; */
-    }
+    /* }
     .buttons>div {
         width: 100vw;
         height: 100px;
@@ -806,15 +862,16 @@ main span {
     }
     #searchPreview {
         width: calc(100vw - 40px);
-        height: calc(100vh - 200px) !important;
+        height: calc(100vh - 200px) !important; */
         /* left: 20px; */
-        right: 10px;
+        /* right: 10px;
         border: 5px solid red;
     }
     #searchboxtitlebar div {
         font-size: 18px;
         display: flex;
-    }}
+    }
+} */
 /* SCROLL BAR */
 /* width */
 ::-webkit-scrollbar {

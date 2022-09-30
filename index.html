@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <title>LC BibleApp-02</title>
-  <!-- <script src="data/bible.js"></script> -->
-  <style id="verse_alignement">
+  <meta charset="utf-8" name="viewport" content= "width=device-width, initial-scale=1.0">
+
+<style id="verse_alignement">
     .verse {
       display: block;
     }
@@ -14,7 +15,19 @@
 </head>
 
 <body>
+  <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
+  <div name="verse_note" id="verse_note" class="verse_note slideup">
+    <div class="note_edit_button" id="note_edit_button" title="edit verse note"><img src="images\edit-svgrepo-com.svg" alt="🖉" ></div>
 
+    <div id="toolbar">
+      <button id="bold">bold</button><button id="italic">italic</button><button id="h1">H1</button><button id="p">P</button>
+    </div>
+    
+    <!--element to edit-->
+    <!--<div id="editor" data-placeholder="Go on, start editing..."></div>-->
+
+    <div class="text_content" contenteditable="false"></div>
+  </div>
   <div id="pagemaster">
     <div class="buttons">
       <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
@@ -49,23 +62,16 @@
 
     <nav id="refnav" class="slideout" style="display:block">
       <div class="refnav" name="settings" id="app_settings" multiple>
-        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)"
-          title="Bible Navigation">☰</button>
+        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="&☰" ></button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
-        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-            <path
-              d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z">
-            </path>
-            <path d="M0 0h24v24H0z" fill="transparent"></path>
-          </svg>
+        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" ></button>
         </button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)"
           title="Show strongs definition window">Str</button>
-        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings">&#9881;</button>
+        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
       </div>
-      <div id="bible_nav" class="refnav">
+      <div id="bible_nav" class="refnav slidein">
         <div class="bible_nav" name="books" id="bible_books" multiple></div>
         <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
         <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
@@ -170,12 +176,14 @@
     </nav>
     <div id="singleverse_compare_menu" class="slideout"></div>
           
-          <main id="main" contenteditable="false">
-            <div id="context_menu" class="context_menu slideout"></div>
-            <div id="show_crossref_comments" class="slideout"><button class="buttons" id="verse_crossref">TSK</button><button class="buttons" id="verse_notes">Note</button></div>
+    <main id="main" contenteditable="false">
+      <div id="context_menu" class="context_menu slideout"></div>
+      <div id="show_crossref_comments" class="slideout">
+        <button class="buttons" id="verse_crossref_button"><a>TSK</a></button>
+        <button class="buttons" id="verse_notes_button"><a>Note</a></button>
+      </div>
       <div id="ppp"></div>
-      <!-- <div id="pp3">asasdfasdf adsf adsfa dsf asdf asdfads fasdf ads dfhjfhjkgkhltdystfgdsv bsgdhjkhgkjmdfgxzgafdshgsdgvfsdgherhfnd bnf gdgfhs ghbsdfgsdfhg efgdjfxj s</div>
-        <div id="search_section">adfadfadsfasdfadsf</div> -->
+        <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->
       <div id="searchresultwindow" class="displaynone">
         <div class="relative">
           <div id="searchboxtitlebar">
@@ -194,6 +202,7 @@
   </div>
 </body>
 <!-- <script src="data/KJV.js"></script> -->
+<!-- <script src="pell-texteditor/pell.js"></script> -->
 <script src="data/bible.js"></script>
 <script src="script.js/helpers.js"></script>
 <!-- <script src="data/crossReferences.js" charset="utf-8"></script> -->
@@ -217,4 +226,5 @@
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <script>tool_tip.click()</script>
+
 </html>

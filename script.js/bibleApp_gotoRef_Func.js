@@ -113,7 +113,7 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
                 let selected_chapter=document.querySelector(`[value="book_${refb}"]`);
                 getBksChptsNum(selected_chapter)
                 let chptOption = document.querySelector(`[value="bk${refb}ch${ref_chp-1}"]`);
-                getTextOfChapter(chptOption,1,null,true,shouldBrowserHistoryBeUpdated)
+                getTextOfChapter(chptOption,1,null,true,shouldBrowserHistoryBeUpdated);
             }
             bkXchY = `bk${ref_indx}ch${ref_chp}`;
             ref_chpnVer = (ref_chp - 1) + '.' + (ref_ver - 1);

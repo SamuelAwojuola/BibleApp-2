@@ -108,3 +108,36 @@ function relocateElmTo(elm, moveHere){
     elm.remove();
     moveHere.append(elmCopy)
 }
+
+function X_hasNoSibling_Y_b4_Z(x,y,z){
+    let a=x,yes_no=false,Y=null,Z=null,elm2appendAfter=x;
+    while (a.nextElementSibling) {
+        if(a.nextElementSibling.matches(z)){
+            Z=a.nextElementSibling;
+            elm2appendAfter=x;
+            yes_no = true;
+            break
+        } else if(a.nextElementSibling.matches(y)){
+            Y=a.nextElementSibling;
+            elm2appendAfter=Y;
+            aa=Y.nextElementSibling;
+            yes_no = false;
+            while (aa) {
+                if(aa.matches(z)){
+                    Z=aa;
+                    break
+                }
+                aa=aa.nextElementSibling;
+            }
+            break
+        } else {a=a.nextElementSibling;}
+    }
+    return {
+        elm2appendAfter:elm2appendAfter,
+        yes_no:yes_no,
+        elmY:Y,
+        elmZ:Z
+    }
+}
+
+function getSibling_Y_of_X_b4_Z(x,y,z){}

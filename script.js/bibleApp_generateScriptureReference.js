@@ -60,11 +60,14 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     currentBookName = bookName;
     // setItemInLocalStorage('lastBookandChapter', 'book_' + bkid + ',' + xxx.getAttribute("value") + ',' + bookName);
     // clickCurrentBook(xxx);
-    let gotoId = '_' + bkid + '.' + chNumInBk + '.0';
-    // console.log(chNumInBk + ' ' + bkid + ' ' + bookName + ' ' + gotoId)
-    if (document.getElementById(gotoId)) { // IF TEXT IS ALREADY ON PAGE, JUST SCROLL TO IT
+    let gotoId = '_' + bkid + '.' + chNumInBk + '.0'; // console.log(chNumInBk + ' ' + bkid + ' ' + bookName + ' ' + gotoId)
+
+    // IF TEXT IS ALREADY ON PAGE, JUST SCROLL TO IT
+    if (document.getElementById(gotoId)) {
         scrollToVerse(document.getElementById(gotoId));
-    } else { // TEXT NOT ALREADY ON PAGE, SO FRESHLY GENERATE THE CONTENT
+    }
+    // TEXT NOT ALREADY ON PAGE, SO FRESHLY GENERATE THE CONTENT
+    else {
         if (oneChptAtaTime) {
             ppp.replaceChildren();
         } //will only contain one chapter at a time
@@ -81,6 +84,9 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
         if (shouldBrowserHistoryBeUpdated) {
             updateRefBrowserHistory(bookName + ' ' + (Number(chNumInBk) + 1))
         }
+        transliteratedWords_Array.forEach(storedStrnum => {
+            showTransliteration(storedStrnum)
+        });
     }
 }
 

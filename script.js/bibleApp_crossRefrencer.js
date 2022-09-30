@@ -1,21 +1,17 @@
-// main.addEventListener("click", appendCrossReferences);
-ppp.addEventListener("click", showCrossrefnNote);
+ppp.addEventListener("click", appendCrossReferences);
 
-function showCrossrefnNote(e) {
-    if (e.target.matches('#verse_crossref')) {
-        appendCrossReferences(e)
-    }
-    if (e.target.matches('#verse_notes')) {
-        appendVerseNote(e);
-        // masterVerseHolder.classList.remove('showing_versenotes')
-    }
-}
 let bversionName = 'KJV';
+
 function appendCrossReferences(e) {
-    let eTarget = e.target.parentNode.parentNode;
+    if (!e.target.matches('#verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
+        return
+    }
+    let eTarget;
+    if(e.target.matches('#verse_crossref_button')){eTarget = e.target.parentNode.parentNode}
+    else if(e.target.matches('#verse_crossref_button a')){eTarget = e.target.parentNode.parentNode.parentNode}
     let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');
     let siblingCrossREF = masterVerseHolder.nextElementSibling;
-    if (siblingCrossREF==undefined || !siblingCrossREF.matches('.crossrefs')) {
+    if (siblingCrossREF==null || !siblingCrossREF.matches('.crossrefs') || siblingCrossREF==undefined) {
         let refCode = null;
         let vHolder = null;
 
@@ -61,14 +57,16 @@ function appendCrossReferences(e) {
                 crfDiv.append(crfFrag);
                 crfDiv.classList.add('crossrefs');
                 vHolder.parentNode.insertBefore(crfDiv, vHolder.nextSibling);
-                // versionVerse.append(crfDiv);
                 return crfDiv
             }
             parseCrossRef(crossRef, refCode);
         }
     } else {
-        masterVerseHolder.classList.remove('showing_crossref')
-        siblingCrossREF.remove()
+        siblingCrossREF.classList.add('slideup')
+        setTimeout(() => {
+            masterVerseHolder.classList.remove('showing_crossref')
+            siblingCrossREF.remove()
+        }, 500);
     }
 }
 
@@ -90,8 +88,18 @@ function getCrossReference(x) {
     });
     if (crf2get.includes('-')) { //MORE THAN ONE VERSE
         vrs1 = Number(crf2get.split('-')[0].split('.')[2]);
-        chp2 = Number(crf2get.split('-')[1].split('.')[1]);
-        vrs2 = Number(crf2get.split('-')[1].split('.')[2]);
+        let ref_secondHalf = crf2get.split('-')[1].split('.')
+
+        //e.g., Gen.1.3-Gen.1.6
+        if (ref_secondHalf.length > 1) {
+            chp2 = Number(ref_secondHalf[1]);
+            vrs2 = Number(ref_secondHalf[2]);
+        }
+        //e.g., Gen.1.3-6
+        else {
+            chp2 = chp1;
+            vrs2 = Number(ref_secondHalf[0]);
+        }
     }
     let refVrsArr = [];
     let vHolder = new DocumentFragment();

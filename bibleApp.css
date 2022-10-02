@@ -1,8 +1,10 @@
 :root {
-    --fontsize-main: 13px;
+    --fontsize-main: 15px;
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
+    --width-sidebuttons:30px;
+    --width-mainbutton:35px;
     --ref-hlt: #f8f8f8;
     --ref-hlt: #dde3db;
     --ref-img: url(images/R.jpg);
@@ -111,13 +113,12 @@ code{position: relative;
 padding-top: 5px;}
 #show_crossref_comments{
     position: absolute;
-    bottom:10px;
+    bottom:var(--fontsize-ref);
     display: flex;
 }
 #show_crossref_comments button{
-    font-size: 7px;
+    font-size: 11px;
     padding: 0;
-    /* background: transparent; */
     border-width: 0.5px;
 }
 #show_crossref_comments button:not(:first-child){
@@ -134,7 +135,7 @@ padding-top: 5px;}
     padding: 5px 5px 0 5px;
     background: #ffff;
     overflow: hidden;
-    font-size: 9.5px;
+    font-size: var(--fontsize-main);
     transition: max-height .2s ease-in-out;
     min-height: 10px;
     max-height: 500px;
@@ -225,11 +226,12 @@ padding-top: 5px;}
 }
 #refnav #app_settings * {
     display: block;
-    width: 18px;
+    width: var(--width-sidebuttons);
     padding: 0;
 }
 #refnav #app_settings button {
-    width: 22px;
+    /* width: 22px; */
+    width: var(--width-sidebuttons);
     padding-left: 1px;
     padding-right: 1px;
 }
@@ -242,17 +244,18 @@ padding-top: 5px;}
     pointer-events: none;
 }
 #bibleversions_btns button {
-    display: block;
-    padding: 0;
-    width: 35px;
+    /* width: var(--width-sidebuttons);; */
     float: left;
-    font-size: 6.5px !important;
+    /* font-size: var(--width-sidebuttons) !important; */
+    /* display: block;
+    padding: 0;
+    */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 #bible_nav {
-    font-size: small;
+    font-size: var(--fontsize-main);
 }
 .refnav .bible_nav {
     height: 99.5%;
@@ -395,7 +398,10 @@ button {
 .buttons>button,
 .buttons>#searchdiv button,
 .buttons>#refdiv button {
-    font-size: 12px;
+    /* width: var(--width-sidebuttons); */
+    font-size:var(--width-mainbutton);
+    padding: 0;
+    height: 0px;
 }
 .buttons>#searchdiv,
 .buttons>#refdiv {
@@ -796,82 +802,17 @@ main span {
 #mobilebuttons {
     display: none;
 }
-/* @media screen and (max-device-width: 500px) {
+@media screen and (max-device-width: 500px) {
 
-    html {
-        font-size: 27px;
+    :root {
+        --fontsize-main: 17px;
+        --fontsize-scripture: 17px;
+        --fontsize-ref: 12px;
+        --fontsize-strongstooltip: 17px;
+        --width-sidebuttons:40px;
+        --width-mainbutton:45px;
     }
-    #mobilebuttons {
-        display: flex;
-        position: absolute;
-        width: auto;
-        background-color: transparent;
-        top: calc(100vh - 50px);
-        right: 0;
-        ;
-        height: 100px;
-    }
-    #mobilebuttons>button {
-        display: block;
-        width: 100px;
-        height: 50px;
-        font-size: larger;
-    }
-    .buttons {
-        position: absolute;
-        top: calc(100vh - 150px);
-        right: 0;
-        max-width: calc(100vw); */
-        /* background-color: transparent!important; */
-    /* }
-    .buttons>div {
-        width: 100vw;
-        height: 100px;
-    }
-    .buttons * {
-        font-size: 27px !important;
-        min-height: 50px;
-        min-width: 50px;
-    }
-    .buttons button {
-        float: right
-    }
-    #reference {
-        width: 100vw;
-    }
-    #wordsearch {
-        width: 100vw;
-        top: 50px;
-    }
-    #togglenavbtn {
-        min-height: 75px;
-        min-width: 75px;
-        font-size: 50px !important;
-        display: none !important;
-    }
-    #searchdiv,
-    #refdiv {
-        display: none;
-    }
-    h2 {
-        font-size: 20px;
-    }
-    code {
-        font-size: 20px;
-        font-weight: bold;
-    }
-    #searchPreview {
-        width: calc(100vw - 40px);
-        height: calc(100vh - 200px) !important; */
-        /* left: 20px; */
-        /* right: 10px;
-        border: 5px solid red;
-    }
-    #searchboxtitlebar div {
-        font-size: 18px;
-        display: flex;
-    }
-} */
+}
 /* SCROLL BAR */
 /* width */
 ::-webkit-scrollbar {

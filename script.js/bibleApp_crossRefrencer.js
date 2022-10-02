@@ -1,6 +1,6 @@
 ppp.addEventListener("click", appendCrossReferences);
 
-let bversionName = 'KJV';
+// let bversionName = 'KJV';
 
 function appendCrossReferences(e) {
     if (!e.target.matches('#verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {

@@ -3,7 +3,7 @@
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
-    --width-sidebuttons:30px;
+    --width-sidebuttons:27px;
     --width-mainbutton:35px;
     --ref-hlt: #f8f8f8;
     --ref-hlt: #dde3db;
@@ -193,19 +193,24 @@ padding-top: 5px;}
 #refnav #app_settings {
     border-right: 5px solid grey;
     /* background-color: var(--top-bar-bground-color); */
-    /* background-color: var(--buttons); */
     background-image: var(--ref-img);
+    overflow: hidden;
+    /* width: 35px; */
 }
 #refnav #app_settings * {
     display: block;
     width: var(--width-sidebuttons);
-    padding: 0;
 }
-#refnav #app_settings button {
-    /* width: 22px; */
-    width: var(--width-sidebuttons);
+#refnav #app_settings img {
+    margin-left: 1px;
+    margin-right: 1px;
+}
+#refnav #app_settings > button {
+    min-width: var(--width-sidebuttons);
+    width:auto;
     padding-left: 1px;
     padding-right: 1px;
+    font-size: 21px;
 }
 #bibleversions_btns {
     display: inline-flex;

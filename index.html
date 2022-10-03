@@ -62,8 +62,8 @@
 
     <nav id="refnav" class="slideout" style="display:block">
       <div class="refnav" name="settings" id="app_settings" multiple>
-        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="&☰" ></button>
-        <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">&#128218;</button>
+        <button id="biblenavigation" class="active_button" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
+        <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions"><img src="images\books-stack-svgrepo-com.svg" alt="&#128218;" ></button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" ></button>
         </button>
@@ -77,6 +77,7 @@
         <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
       </div>
       <div id="bible_versions" class="slideout">
+        <div class="bible_versions_heading">Available Bible Versions</div>
         <!-- <div><input type="checkbox" id="KJV_version" name="KJV_version" value="KJV" checked><label for="KJV_version" abreviation="KJV" title="King James Version">KJV</label></div> -->
       </div>
 
@@ -132,40 +133,41 @@
           <option value="'Times New Roman', serif">Times New Roman</option>
           <option value="Verdana, sans-serif">Verdana</option>
         </select>
-        <div class="settingssectionheadings" id="change_fontsize">
+        <div class="" id="change_fontsize">
           <div class="settingssectionheadings">Change Font Sizes</div>
-          <table>
+          <table id="cache_table">
             <tr>
               <td>Verse Text</td>
               <td>
                 <button id="decrease_fontsize" onclick="changeFontSize('verse_text','minus')">-</button>
-                <button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button>
+              </td>
+              <td>
+              <button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button>
               </td>
             </tr>
-          </table>
-          <br>
-          <table>
             <tr>
               <td>Refrence Text</td>
               <td>
                 <button id="decrease_fontsize" onclick="changeFontSize('ref_text','minus')">-</button>
-                <button id="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button>
+              </td>
+              <td>
+              <button id="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button>
               </td>
             </tr>
-          </table>
-          <br>
-          <table>
             <tr>
               <td>Strongs Tool Tip</td>
               <td>
                 <button id="decrease_fontsize" onclick="changeFontSize('strongs_tooltip','minus')">-</button>
-                <button id="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button>
+              </td>
+              <td>
+              <button id="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button>
               </td>
             </tr>
           </table>
         </div>
-        <div>Toggle Dark/Light Mode: <button id="darkmodebtn" onclick="darkLightMode()">L</button></div>
-        <div>Hide/Show Highlights: <button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button></div>
+        <div class="settingssectionheadings">DARK/LIGHT MODE</div>
+        <div for="darkmodebtn"><button id="darkmodebtn" onclick="darkLightMode()">L</button>Toggle Dark/Light Mode: </div>
+        <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div>
         <br>
         <div><input type="color" style="width: 100px;height: 25px;padding:0;border:0"></input></div>
       </div>
@@ -211,17 +213,17 @@
 <script src="script.js/bibleApp_contextMenu.js"></script>
 <script src="script.js/bibleApp_versionsLoader.js"></script>
 <script src="script.js/bibleApp_generateScriptureReference.js"></script>
+<script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_refNav.js"></script>
-<script src="script.js/bibleApp_js_cache.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_cache.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script src="script.js/bibleApp.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_search.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_chapterNameOnScroll.js" charset="utf-8"></script>
-<script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
 <!-- <script src="script.js/TSK.js" charset="utf-8"></script> -->
 <script src="data/crossReferences.js" charset="utf-8"></script>
-<script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_ref_browserHistory.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>

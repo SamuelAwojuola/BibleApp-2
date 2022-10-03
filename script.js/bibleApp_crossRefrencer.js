@@ -1,6 +1,31 @@
 ppp.addEventListener("click", appendCrossReferences);
 
-// let bversionName = 'KJV';
+bversionName = 'KJV';
+
+main.addEventListener('mousedown', getCurrentBVN)
+
+function getCurrentBVN(e) {
+    let eTarget = e.target;
+    let classesOfe = null;
+    if (eTarget.matches('.verse')) {
+        classesOfe = eTarget.classList;
+    } else if (eTarget = elmAhasElmOfClassBasAncestor(eTarget, '.verse')) {
+        classesOfe = eTarget.classList;
+    }
+    if (classesOfe) {
+        getBVN(classesOfe)
+    }
+
+    function getBVN(classesOfe) {
+        for (q = 0; q < classesOfe.length; q++) {
+            let cl = classesOfe[q]
+            if (cl.startsWith('v_')) {
+                bversionName = cl.split('v_')[1];
+                return
+            }
+        };
+    }
+}
 
 function appendCrossReferences(e) {
     if (!e.target.matches('#verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
@@ -17,23 +42,6 @@ function appendCrossReferences(e) {
 
         masterVerseHolder.classList.add('showing_crossref')
 
-        function getBVN(classesOfe) {
-            classesOfe.forEach(cl => {
-                if (cl.startsWith('v_')) {
-                    bversionName = cl.split('v_')[1];
-                    return
-                }
-            });
-        }
-        if (eTarget.matches('.verse')) {
-            let classesOfe = eTarget.classList;
-            getBVN(classesOfe)
-            // console.log(bversionName);
-        } else if (classesOfe = elmAhasElmOfClassBasAncestor(eTarget, 'verse')) {
-            classesOfe = classesOfe.classList;
-            getBVN(classesOfe);
-            // console.log(bversionName);
-        }
         let versionVerse, vmultiple_NextSibling = elmAhasElmOfClassBasAncestor(eTarget, 'vmultiple').nextElementSibling;
         if (eTarget.matches('.vmultiple [ref]') && (vmultiple_NextSibling == null || !vmultiple_NextSibling.matches('.crossrefs'))) {
             refCode = eTarget.getAttribute('ref');

@@ -6,26 +6,26 @@ kjvBible.responseType = 'json';
 kjvBible.send();
 
 var KJV;
-kjvBible.onload = function () {
-    let booksChaptersAndVerses = kjvBible.response;
-    KJV = booksChaptersAndVerses['books'];
-    populateBooks();
-    // 
 
-    if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
-        openachapteronpageload() //To display Gensis 1 on pageLoad
-    } else {
-        cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
+window.onload=function(){
+    kjvBible.onload = function () {
+        let booksChaptersAndVerses = kjvBible.response;
+        KJV = booksChaptersAndVerses['books'];
+        populateBooks();
+        // 
+    
+        // if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
+        //     openachapteronpageload() //To display Gensis 1 on pageLoad
+        // } else {
+            cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
+        // }
     }
-}
-
-// window.onload=function(){
 //     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
 //         openachapteronpageload() //To display Gensis 1 on pageLoad
 //     } else {
 //         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
 //     }
-// }
+}
 
 /* LOAD THE BIBLE */
 let availableVersions = {
@@ -170,7 +170,6 @@ function loadVersion(versionName) {
         /* TO ENSURE THE BOOKS ARE ONLY DISPLAYED AFTER THEY HAVE BEEN LOADED */
         if (runCacheFunc2) {
             if (versionsToShow.includes(versionName.toString())) {
-
                 bibleVersionsLoadedFromCACHE.push(versionName);
             }
             if (versionsToShow2.length == bibleVersionsLoadedFromCACHE.length) {

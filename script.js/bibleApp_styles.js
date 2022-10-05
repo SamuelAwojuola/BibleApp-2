@@ -66,6 +66,10 @@ function changeFontSize(targetgroup, plusMinus) {
         targ = '--fontsize-scripture';
         currentSize = rootStyles.getPropertyValue('--fontsize-scripture');
     }
+    if (targetgroup == 'main_font') {
+        targ = '--fontsize-main';
+        currentSize = rootStyles.getPropertyValue('--fontsize-main');
+    }
     if (targetgroup == 'ref_text') {
         targ = '--fontsize-ref';
         currentSize = rootStyles.getPropertyValue('--fontsize-ref');

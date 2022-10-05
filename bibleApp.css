@@ -252,6 +252,7 @@ padding-top: 5px;}
     box-sizing: border-box;
     /* min-width: var(--width-sidebuttons); */
     width:auto;
+    min-width:36px;
     padding-left: 2px;
     padding-right: 2px;
     font-size: 22.5px;
@@ -297,6 +298,10 @@ padding-top: 5px;}
 #refnav .bible_nav *:active {
     /* background-color: var(--verse-higlight); */
     background: var(--ref-img);
+}
+#togglenavbtn{
+    min-width: 40px;
+    height: 100%;
 }
 .ref_hlt {
     font-weight: bold;
@@ -1005,5 +1010,14 @@ span.vmultiple:hover span.vhlt {
     }
     #togglenavbtn{
         width: 120px !important;
+    }
+}
+@media screen and (max-device-width: 300px) {
+    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
+        display: flex;
+        width: 100%;
+    }
+    #refdiv input, #searchdiv input {
+        flex-grow: 1;
     }
 }

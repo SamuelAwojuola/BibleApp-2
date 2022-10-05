@@ -78,6 +78,10 @@ function changeFontSize(targetgroup, plusMinus) {
         targ = '--fontsize-strongstooltip';
         currentSize = rootStyles.getPropertyValue('--fontsize-strongstooltip');
     }
+    if (targetgroup == 'bible_nav') {
+        targ = '--fontsize-scripture-nav';
+        currentSize = rootStyles.getPropertyValue('--fontsize-scripture-nav');
+    }
     currentSize = Number(currentSize.split('px')[0].trim())
     if (plusMinus == 'plus') {
         currentSize = (currentSize + 2) + 'px'
@@ -93,7 +97,9 @@ function styleLocalstorageSet() {
         ["--fontsize-scripture", rootStyles.getPropertyValue('--fontsize-scripture')],
         ["--fontsize-ref", rootStyles.getPropertyValue('--fontsize-ref')],
         ["--fontsize-strongstooltip", rootStyles.getPropertyValue('--fontsize-strongstooltip')],
-        ["--main-font", rootStyles.getPropertyValue('--main-font')]
+        ["--main-font", rootStyles.getPropertyValue('--main-font')],
+        ["--fontsize-scripture-nav", rootStyles.getPropertyValue('--fontsize-scripture-nav')],
+        ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')]
     ]
     setItemInLocalStorage('styles_variables', variableArray);
 }

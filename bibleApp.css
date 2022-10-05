@@ -3,6 +3,7 @@
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
+    --fontsize-title:20px;
     --width-sidebuttons:27px;
     --width-mainbutton:35px;
     --ref-hlt: #f8f8f8;
@@ -55,6 +56,19 @@ html {
     /* background-color: #ffffc8; */
     background: var(--ref-img);
     font-family: var(--main-font);
+}
+.text_content{
+    width: 100% !important;
+    margin-left: 0;
+    margin-right: 0;
+    border:1px solid grey!important;
+    min-height:50px;
+    resize: vertical;
+}
+.text_content:empty::before{
+    content: 'Take down a comment to the verse';
+    font-size: large;
+    font-style: italic;
 }
 body>svg {
     width: 100% !important;
@@ -115,8 +129,9 @@ padding-top: 5px;}
     display: flex;
 }
 #show_crossref_comments button{
-    font-size: 11px;
-    padding: 0;
+    font-size: var(--fontsize-ref);
+    font-weight: bold;
+    padding: 2px 5px;
     border-width: 0.5px;
 }
 #show_crossref_comments button:not(:first-child){
@@ -143,7 +158,10 @@ padding-top: 5px;}
 }
 #verse_note{display: none;}
 .verse_note {
-    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    /* position: relative; */
     transition: all 0.15s ease-in-out;
     padding: 5px;
     background: #fff;
@@ -154,31 +172,46 @@ padding-top: 5px;}
     line-height: auto;
     opacity: 1;
 }
+.save_edit_btns_holder{
+    /* position: absolute;
+    bottom: 0;
+    right: 0; */
+    display:flex;
+    align-content: space-between;
+    justify-content: center;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    align-items: center;    
+}
 .note_edit_button{
-    padding: 0;
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 12px;
-    height: 12.75px;
     background: none;
-    border: none;
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
-    box-shadow: 1px 0px 2px 1.5px var(--shadow-color);
+    /* box-shadow: 1px 0px 2px 1.5px var(--shadow-color); */
     cursor: pointer;
 }
 .note_edit_button:active{
     box-shadow: 0px 0px 2px 0px var(--shadow-color);
 }
+.note_edit_button::before{
+    content: 'Edit';
+    font-style: italic;
+    pointer-events: none;
+}
+.note_save_button{
+    /* float: left; */
+}
+.note_save_button::before{
+    content: 'Save';
+    font-style: italic;
+    pointer-events: none;
+}
 #singleverse_compare_menu {
     /* display: inline-flex; */
 }
 #singleverse_compare_menu button {
-    font-size: xx-small !important;
-    width: 25px;
-    /* height: 15px; */
-    padding: 0px;
+    font-size: var(--fontsize-ref);
+    font-weight: bold;
+    min-width: 25px;
+    padding: 5px;
     text-overflow: ellipsis;
 }
 #singleverse_compare_menu input {
@@ -189,6 +222,14 @@ padding-top: 5px;}
 #refnav>.refnav {
     height: 100%;
     float: left;
+}
+#ref_search_versions_holder #refdiv,
+#ref_search_versions_holder #searchdiv {
+    display: flex;
+}
+#ref_search_versions_holder #refdiv *,
+#ref_search_versions_holder #searchdiv * {
+    font-size: var(--fontsize-title);
 }
 #refnav #app_settings {
     border-right: 5px solid grey;
@@ -369,6 +410,8 @@ button {
     width: 150%;
     height: 10px;
     z-index: -1;
+}#context_menu .cmtitlebar~span{
+    font-size:var(--fontsize-scripture);
 }#context_menu:hover {
     /* border: 1px solid #878787; */
     -webkit-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
@@ -701,19 +744,27 @@ main span {
     /* border-spacing: 2px; */
     /* border-color: grey; */
 }
+#strongsdefinitionwindow {
+    /* resize:horizontal; */
+    min-width: 200px;
+}
 #strongsdefinitionwindow::after {
     content: '';
     background-color: #ccc;
-    /* position: absolute; */
+    position: absolute;
     right: 0;
 }
 #resizerdiv {
     background-color: grey;
     float: right;
-    width: 2px;
+    width: 2.5px;
     height: 100%;
     cursor: ew-resize;
 }
+#resizerdiv:hover,#resizerdiv:active {
+    background-color: greenyellow;
+}
+#strongsdefinitionwindow>*:not(hr),
 #strongsdefinitionwindow>*:not(hr),
 #bible_versions>*:not(hr),
 #bibleapp_cache>*:not(hr) {
@@ -942,5 +993,17 @@ span.vmultiple:hover span.vhlt {
     }
     #refnav #app_settings > button {
         font-size: 32.5px;
+        overflow: hidden;
+        width: 50px!important;
+    }
+    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
+        display: flex;
+        width: 100%;
+    }
+    #refdiv input, #searchdiv input {
+        flex-grow: 1;
+    }
+    #togglenavbtn{
+        width: 120px !important;
     }
 }

@@ -20,11 +20,11 @@ function add_tooltipContextMenu(e) {
             if ((!currentEt.matches('.strnum') && context_menu.getAttribute('strnum') != currentEt.getAttribute('strnum'))) {
                 timer1 = setTimeout(function () {
                     timedFUNC();
-                }, 500)
+                }, 300)
             } else if (!currentEt.matches('.strnum')) {
                 timer1 = setTimeout(function () {
                     timedFUNC();
-                }, 500)
+                }, 300)
             }
         } else {
             timedFUNC()
@@ -154,9 +154,9 @@ function add_tooltipContextMenu(e) {
             context_menu.innerHTML = '';
         }
         // if (e.type == 'mouseover') {
-        timer2 = setTimeout(function () {
+        // timer2 = setTimeout(function () {
             removeContextMenu();
-        }, 750)
+        // }, 10)
         // } else {
         // removeContextMenu()
         // }
@@ -201,8 +201,8 @@ function add_mouseoverContextMenuEventListner() {
     searchPreviewFixed.addEventListener('click', add_tooltipContextMenu, false);
 
     ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
-    ppp.addEventListener('click', add_tooltipContextMenu, false);
-    // ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
+    // ppp.addEventListener('click', add_tooltipContextMenu, false);
+    ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
 }
 
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 200);
@@ -247,7 +247,7 @@ function toolTipOnOff(x) {
 }
 //Hide ContextMenu on clicking outside of main window
 document.addEventListener('click', function (e) {
-    if ((!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, 'context_menu'))) {
+    if ((!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
         hideRightClickContextMenu()
     }
 })
@@ -287,7 +287,6 @@ function codeButtons(e) {
         newElm.classList.add('slideout');
         newElm.id='show_crossref_comments';
         newElm.innerHTML=`<button class="buttons" id="verse_crossref_button"><a>TSK</a></button><button class="buttons" id="verse_notes_button"><a>Note</a></button>`;
-        // newElm.innerHTML=`<a><button class="buttons" id="verse_crossref_button">TSK</button></a><a><button class="buttons" id="verse_notes_button">Note</button></a>`;
         ppp.append(newElm);
     } else if(show_crossref_comments){
         if (e.target.matches('.verse code') && (e.type == 'mouseover')) {

@@ -18,15 +18,14 @@
 <body>
   <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
   <div name="verse_note" id="verse_note" class="verse_note slideup">
-    <div class="note_edit_button" id="note_edit_button" title="edit verse note"><img src="images\edit-svgrepo-com.svg" alt="🖉" ></div>
-
-    <div id="toolbar">
-    </div>
     
     <!--element to edit-->
     <!--<div id="editor" data-placeholder="Go on, start editing..."></div>-->
-
-    <div class="text_content" contenteditable="false"></div>
+  
+    <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
+    <div class="save_edit_btns_holder">
+      <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"><!-- <img src="images\edit-svgrepo-com.svg" alt="🖉" > --></button>
+    </div>
   </div>
   <div id="pagemaster">
     <div class="buttons">
@@ -217,7 +216,7 @@
 <script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_refNav.js"></script>
-<script src="script.js/bibleApp_cache.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_localStorage_cache.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script src="script.js/bibleApp.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
@@ -227,6 +226,7 @@
 <script src="data/crossReferences.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_ref_browserHistory.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <script>tool_tip.click()</script>
 

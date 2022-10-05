@@ -7,24 +7,24 @@ kjvBible.send();
 
 var KJV;
 
-window.onload=function(){
+window.onload = function () {
     kjvBible.onload = function () {
         let booksChaptersAndVerses = kjvBible.response;
         KJV = booksChaptersAndVerses['books'];
         populateBooks();
         // 
-    
+
         // if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
         //     openachapteronpageload() //To display Gensis 1 on pageLoad
         // } else {
-            cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
+        cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
         // }
     }
-//     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
-//         openachapteronpageload() //To display Gensis 1 on pageLoad
-//     } else {
-//         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
-//     }
+    //     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
+    //         openachapteronpageload() //To display Gensis 1 on pageLoad
+    //     } else {
+    //         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
+    //     }
 }
 
 /* LOAD THE BIBLE */
@@ -270,7 +270,23 @@ bibleversions_btns.addEventListener('click', function (e) {
 /* COMPARE SINGLE VERSE */
 function compareThisVerse() {}
 let sverse_comp_backup;
-let clickedVerseRef;
+let clickedVerseRef, clickedChapterNverse;
+function breakDownClickedVerseRef(cvdivider='.') {
+    let fullRefSplit = clickedVerseRef.split(' ')
+    let bN, bC, cV, bCnCv;
+    bCnCv = fullRefSplit.pop().split(':').join(cvdivider);
+    clickedChapterNverse = bCnCv;
+    bC = bCnCv.split('.')[0];
+    cV = bCnCv.split('.')[1];
+    bN = fullRefSplit.join(' ');
+    return {
+        bCnCv:bCnCv,
+        bC:bC,
+        cV:cV,
+        bN:bN,
+        clickedChapterNverse:clickedChapterNverse,
+    }
+}
 
 //To ensure local versions loader does not load if a verse is double clicked
 const add_VersionsLoader_preventDoublick = debounce(local_versionsloader, 300);
@@ -284,7 +300,7 @@ function local_versionsloader(e) {
             clkelm.querySelector('#singleverse_compare_menu').remove();
             return
         }
-        clickedVerseRef = clkelm.querySelector('[ref]').getAttribute('ref')
+        clickedVerseRef = clkelm.querySelector('[ref]').getAttribute('ref');
         let sverse_comp;
         if (document.querySelector('#singleverse_compare_menu')) {
             sverse_comp = singleverse_compare_menu.cloneNode(true);
@@ -325,32 +341,35 @@ function local_versionsloader(e) {
     }
 }
 
-main.addEventListener('click', function (e) {
+main.addEventListener('click', addLocalVersionsLoaderButtons)
+
+function addLocalVersionsLoaderButtons(e) {
     //IF there is 'context_menu', then the first click should remove it. Therefore, the local versions loader should not be loaded if there is context menu in the window.
     if (main.querySelector('#context_menu.slidein') == null) {
         add_VersionsLoader_preventDoublick(e)
     }
-})
-
+}
 //Get and append (or un-append) reference on click of comparison version button
-main.addEventListener('click', function (e) {
+main.addEventListener('click', localVersionLoader)
+
+function localVersionLoader(e) {
     let clkelm = e.target;
     if (clkelm.matches('#singleverse_compare_menu [bversion]')) {
         let verseHolder = elmAhasElmOfClassBasAncestor(clkelm, 'vmultiple');
         let bversion = clkelm.getAttribute('bversion')
         if (!clkelm.matches('.active_button')) {
             let bkID = verseHolder.id.split('.')[0].split('_')[1];
-            let fullRefSplit = clickedVerseRef.split(' ')
-            let bN, bC, cV, bCnCv;
-            bCnCv = fullRefSplit.pop();
-            bC = bCnCv.split(':')[0];
-            cV = bCnCv.split(':')[1];
-            bN = fullRefSplit.join(' ')
-            clkelm.classList.toggle('active_button')
-            parseSingleVerse(null, bC, cV, null, verseHolder, bN, null, true, bversion)
+            
+            let refBreakDownObj = breakDownClickedVerseRef();
+            bC = refBreakDownObj.bC;
+            cV = refBreakDownObj.cV;
+            bN = refBreakDownObj.bN;
+            clkelm.classList.toggle('active_button');
+            parseSingleVerse(null, bC, cV, null, verseHolder, bN, null, true, bversion);
         } else {
             verseHolder.querySelector('.v_' + bversion).remove();
             clkelm.classList.toggle('active_button');
         }
     }
-})
+}
+

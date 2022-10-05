@@ -1,4 +1,5 @@
 ppp.addEventListener("click", showVerseNote);
+ppp.addEventListener("click", save_verse_note_to_indexedDB);
 
 function showVerseNote(e, x) {
     if (e) {
@@ -6,10 +7,8 @@ function showVerseNote(e, x) {
             appendVerseNote(e);
         }
         if (e.target.matches('.note_edit_button')) {
-            editVerseNote(eTarget = e.target, e);
-        }
-        if (e.target.parentNode.matches('.note_edit_button')) {
-            editVerseNote(eTarget = e.target.parentNode, e);
+            let saveBtn = e.target.parentNode.querySelector('.note_save_button')
+            editVerseNote(eTarget = e.target, e, saveBtn);
         }
     } else {
         editVerseNote(x);
@@ -18,14 +17,15 @@ function showVerseNote(e, x) {
 
 function appendVerseNote(e) {
     let eTarget;
-    if (e.target.matches('#verse_notes_button')) {
-        eTarget = e.target
-    } else if (e.target.matches('#verse_notes_button a')) {
-        eTarget = e.target.parentNode
+    // if (e.target.matches('#verse_notes_button')) {
+    eTarget = e.target
+    // } else
+    if (e.target.matches('#verse_notes_button a')) {
+        eTarget = e.target.parentNode;
     }
+    clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
     let siblingVersenote;
     let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');
-
 
     //Make notes always come after crossref
     let whereTOappend = undefined;
@@ -48,6 +48,36 @@ function appendVerseNote(e) {
 
             let newVerseNote = verse_note.cloneNode(true);
             newVerseNote.id = noteID;
+
+            let saveBtn = newVerseNote.querySelector('.note_save_button');
+            let editBtn = newVerseNote.querySelector('.note_edit_button');
+
+            let clickedVerseRefObj = breakDownClickedVerseRef();
+            let bN = clickedVerseRefObj.bN
+            let bCnCv = clickedVerseRefObj.bCnCv
+            //Add refrence book_name to the button
+            saveBtn.setAttribute('bk', bN);
+            saveBtn.setAttribute('b_cv', bCnCv);
+            //Add refrence book_name to the button
+            editBtn.setAttribute('bk', bN);
+            editBtn.setAttribute('b_cv', bCnCv);
+
+            //OPEN DATABASE IF NOT OPEN
+            function ifNoteAppend() {
+                bibleBook_IDB = bN;
+                //if verse already has note, get it
+                let appendHere = newVerseNote.querySelector('.text_content')
+                getNoteFromIDBifAvailable(bN, bCnCv, appendHere)
+            }
+            if (!db) {
+                createDB();
+                setTimeout(() => {
+                    ifNoteAppend()
+                }, 300);
+            } else {
+                ifNoteAppend()
+            }
+
             verseNoteDiv.append(newVerseNote);
 
             whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
@@ -57,6 +87,7 @@ function appendVerseNote(e) {
             setTimeout(() => {
                 siblingVersenote.classList.remove('slideup');
             }, 1);
+
         }
     } else {
         siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
@@ -69,29 +100,39 @@ function appendVerseNote(e) {
     }
 }
 
-function editVerseNote(eTarget, e) {
-    let eTargets_note = eTarget.parentNode.querySelector('.text_content');
+function editVerseNote(eTarget, e, saveBtn) {
+    let eTargets_note = eTarget.parentNode.parentNode.querySelector('.text_content');
     editNotez = eTargets_note;
     if (eTargets_note.contentEditable == 'false') {
         //before this new button click check if another wasn't clicked before it.
-        if(oldeditbtn=ppp.querySelector('.note_edit_button.active')){
-            let oldeditbtn_note = oldeditbtn.parentNode.querySelector('.text_content');
+        if (oldeditbtn = ppp.querySelector('.note_edit_button.active')) {
+            let old_verse_note = elmAhasElmOfClassBasAncestor(oldeditbtn, '.verse_note');
+            let oldeditbtn_note = old_verse_note.querySelector('.text_content');
+            let old_save_btn = old_verse_note.querySelector('.note_save_button');
+            old_save_btn.disabled = true; //disable save verse note button
             oldeditbtn_note.contentEditable = 'false';
             oldeditbtn.style.backgroundColor = '';
             oldeditbtn.classList.remove('active');
             disableCKEditor()
-            noteEditingTarget.id = '';
+            if (oldeditbtn != e.target) {
+                noteEditingTarget.id = '';
+            }
         }
 
+        saveBtn.disabled = false; //enable save verse note button
+
         eTargets_note.contentEditable = 'true';
-        eTargets_note.id = 'noteEditingTarget'
+        eTargets_note.id = 'noteEditingTarget';
         eTarget.style.backgroundColor = 'pink';
         eTarget.classList.add('active');
 
         enableCKEditor('noteEditingTarget', eTarget)
     } else if (eTargets_note.contentEditable == 'true') {
+        saveBtn.disabled = true; //disable save verse note button
+
         eTargets_note.contentEditable = 'false';
         eTarget.style.backgroundColor = '';
+        eTarget.classList.remove('active');
         disableCKEditor()
         noteEditingTarget.id = '';
     }

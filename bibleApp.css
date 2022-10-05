@@ -1,5 +1,6 @@
 :root {
     --fontsize-main: 15px;
+    --fontsize-scripture-nav: 15px;
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
@@ -277,7 +278,7 @@ padding-top: 5px;}
     text-overflow: ellipsis;
 }
 #bible_nav {
-    font-size: var(--fontsize-main);
+    font-size: var(--fontsize-scripture-nav);
 }
 .refnav .bible_nav {
     height: 99.5%;

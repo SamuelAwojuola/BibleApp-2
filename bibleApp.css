@@ -573,7 +573,10 @@ main span {
     display: inline;
     font-weight: bold;
 }
-/* 
+#fontchange {
+    width: 100%;
+}
+#eng2grk_sup_table button {width:45px}
 .strnum:after {
     content: attr(data-lemma);
     font-style: italic;

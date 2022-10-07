@@ -110,12 +110,6 @@
         <div id="searchPreviewFixed"></div>
       </div>
       <div id="bibleapp_cache" class="slideout">
-        <div class="settingssectionheadings">Modify Cache</div>
-        <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"
-          title="Clear transliterated words cache">Forget Transliterated Words</label><br>
-        <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
-          for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label>
-        <br>
         <div class="settingssectionheadings">Change Font</div>
         <select id="fontchange" onchange="changeFontFamily()">
           <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
@@ -183,6 +177,28 @@
             </tr>
           </table>
         </div>
+        <div class="" id="eng2grk_sup">
+          <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
+          <table id="eng2grk_sup_table">
+            <tr>
+              <td>English</td>
+              <td>
+                <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')">OFF</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Heb/Grk</td>
+              <td>
+                <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')">OFF</button>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="settingssectionheadings">Modify Cache</div>
+        <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"
+          title="Clear transliterated words cache">Forget Transliterated Words</label><br>
+        <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
+          for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label>
         <div class="settingssectionheadings">DARK/LIGHT MODE</div>
         <div for="darkmodebtn"><button id="darkmodebtn" onclick="darkLightMode()">L</button>Toggle Dark/Light Mode: </div>
         <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div>

@@ -18,7 +18,7 @@ SCHEMA
 // Create a DataBase
 let nameOfDataBase = "LC_Bible_Notes";
 let db;
-indexedDB.databases().then(r => console.log(r))
+// indexedDB.databases().then(r => console.log(r))
 
 //The notes are under Bible Books, e.g., Genesis, Revelation, ICorinthians, etc.
 //They will be supplied dynamically
@@ -193,14 +193,19 @@ function save_verse_note_to_indexedDB(e) {
         bibleBook_IDB = e.target.getAttribute('bk');
         console.log(bibleBook_IDB)
         let _bCbV = e.target.getAttribute('b_cv');
-        console.log(_bCbV)
+        
+        let verseNote = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
+        
+        let verseNoteInnerHTML = verseNote.innerHTML;
+        let verseNoteInnerText = verseNote.innerText;
+        
+        console.log(verseNoteInnerText)
 
-        let verseNote = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content').innerHTML;
-
-        console.log(verseNote)
-
-        populateDB(_bCbV, verseNote)
-        /* IF verse note exists in indXDB, modify it */
+        if(verseNoteInnerText.trim()!=''){
+            populateDB(_bCbV, verseNoteInnerHTML)
+            /* IF verse note exists in indXDB, modify it */
+            indicateThatVerseHasNote();
+        }
     }
 }
 
@@ -275,10 +280,42 @@ function getAllItems(storeName,callback) {
         }
     };
 }
-
+// USAGE
 // getAllItems('Daniel',function (items) {
 //     var len = items.length;
 //     for (var i = 0; i < len; i += 1) {
 //         console.log(items[i]);
 //     }
 // });
+
+/* To Indicate VErses That Have Notes in the Database */
+
+function indicateThatVerseHasNote() {
+
+    let stringOfversesWithNotes = '',stringOfversesWithNotesSTARRED = '';
+    let allLoadedBooks = main.querySelectorAll('.chptverses');
+    let old_bk_name = null;
+    allLoadedBooks.forEach(code => {
+        let bk_name = code.getAttribute('bookname');
+        if (old_bk_name != bk_name) {
+            let newCodeRef;
+
+            getAllItems(bk_name, function (items) {
+                var len = items.length;
+                for (var i = 0; i < len; i += 1) {
+                    newCodeRef= '[ref="' + bk_name + ' ' + items[i].id.toString().split('.').join(':') + '"]';
+                    let coma;
+                    if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
+                    stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
+                    stringOfversesWithNotesSTARRED = stringOfversesWithNotesSTARRED + coma + newCodeRef + ':before';
+                    refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-bottom:2.5px solid var(--shadow-color); border-radius:2px;}'
+                    +
+                    stringOfversesWithNotesSTARRED + '{content:"* "}'
+                    createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
+                }
+            });
+
+        }
+        old_bk_name = bk_name;
+    });
+}

@@ -64,6 +64,8 @@ html {
     margin-right: 0;
     border:1px solid grey!important;
     min-height:50px;
+    max-height:200px;
+    overflow: auto;
     resize: vertical;
 }
 .text_content:empty::before{

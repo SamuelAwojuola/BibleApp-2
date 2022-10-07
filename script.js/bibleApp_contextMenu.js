@@ -286,7 +286,7 @@ function codeButtons(e) {
         let newElm = document.createElement('div');
         newElm.classList.add('slideout');
         newElm.id='show_crossref_comments';
-        newElm.innerHTML=`<button class="buttons" id="verse_crossref_button"><a>TSK</a></button><button class="buttons" id="verse_notes_button"><a>Note</a></button>`;
+        newElm.innerHTML=`<button class="buttons verse_crossref_button" id="verse_crossref_button"><a>TSK</a></button><button class="buttons verse_notes_button" id="verse_notes_button"><a>Note</a></button>`;
         ppp.append(newElm);
     } else if(show_crossref_comments){
         if (e.target.matches('.verse code') && (e.type == 'mouseover')) {

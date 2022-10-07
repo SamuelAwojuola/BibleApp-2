@@ -16,7 +16,7 @@ function createChaptersVerses(xxx, yyy) {
     selectVerse.querySelectorAll('*').forEach(element => {
         element.remove();
     });
-    getTextOfChapter(xxx, yyy)
+    getTextOfChapter(xxx, yyy);
 }
 
 function getTextOfBook(xxx) {
@@ -88,6 +88,7 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
             showTransliteration(storedStrnum)
         });
     }
+    indicateThatVerseHasNote();//This indicates verses with notes in the database
 }
 
 // function clickCurrentBook(xxx) {
@@ -146,7 +147,7 @@ function generateChapter(xyz) {
     let xyz_bookIdx = Number(xyz.getAttribute("bookindex"));
     let xyz_chNumInBk = Number(xyz.getAttribute("chapterindex"));
     let actualChapter = window[versionsToShow[0]][xyz_bookName][xyz_chNumInBk];
-    currentlyParsedVersion=versionsToShow[0];
+    currentlyParsedVersion = versionsToShow[0];
     // let actualChapter = KJV[xyz_bookName][xyz_chNumInBk];
     for (vNumInChpt = 1, i = 0; i < actualChapter.length; i++, vNumInChpt++) {
         // Create Chapter Heading
@@ -168,25 +169,26 @@ function generateChapter(xyz) {
     chapterVersesSpan.append(chpVersesFragment);
     wholeChapterFragment.append(chapterVersesSpan);
     wholeChapterFragment.prepend(chpHeadingFragment);
-    currentlyParsedVersion=null;
+    currentlyParsedVersion = null;
     return wholeChapterFragment;
     // chpVersesFragment.prepend(chpHeadingFragment);
     // return chpVersesFragment;
 }
 
 let restartRed;
-let currentlyParsedVersion=null;
-let versionWithRedWordsArray=[];
+let currentlyParsedVersion = null;
+let versionWithRedWordsArray = [];
+
 function parseVerseText(vT, verseSpan) {
-    
+
     if (Array.isArray(vT)) {
-        vTLength=Object(vT).length;
-        let redWordFRAG,redWordSpan,startRed,endRed;
-        vT.forEach((wString,i) => {
+        vTLength = Object(vT).length;
+        let redWordFRAG, redWordSpan, startRed, endRed;
+        vT.forEach((wString, i) => {
             let wordSpan = document.createElement('span');
             let wordSpan1 = document.createElement('span');
             let wordSpan2 = document.createElement('span');
-            if (/^""/.test(wString[0])||(restartRed&&versionWithRedWordsArray.includes(currentlyParsedVersion))) {
+            if (/^""/.test(wString[0]) || (restartRed && versionWithRedWordsArray.includes(currentlyParsedVersion))) {
                 startRed = true;
                 redWordFRAG = new DocumentFragment()
                 redWordSpan = document.createElement('span');
@@ -198,22 +200,28 @@ function parseVerseText(vT, verseSpan) {
             };
             if (/""$/.test(wString[0])) {
                 endRed = true;
-                removeItemFromArray(currentlyParsedVersion,versionWithRedWordsArray)
+                removeItemFromArray(currentlyParsedVersion, versionWithRedWordsArray)
             };
 
-            function versespanAppender(arr){
+            function versespanAppender(arr) {
                 if (redWordFRAG) {
-                    arr.forEach(a =>{redWordFRAG.append(a)})
-                    restartRed=false;
-                    if (endRed||i==vTLength-1) {
+                    arr.forEach(a => {
+                        redWordFRAG.append(a)
+                    })
+                    restartRed = false;
+                    if (endRed || i == vTLength - 1) {
                         redWordSpan.append(redWordFRAG);
                         verseSpan.append(redWordSpan);
                         endRed = null;
                         startRed = null;
-                        if(i==vTLength-1){restartRed=true;}
+                        if (i == vTLength - 1) {
+                            restartRed = true;
+                        }
                     }
                 } else {
-                    arr.forEach(a =>{verseSpan.append(a)})
+                    arr.forEach(a => {
+                        verseSpan.append(a)
+                    })
                 }
             }
 
@@ -237,8 +245,8 @@ function parseVerseText(vT, verseSpan) {
                     wordSpan1.setAttribute('data-kjv-trans', ' ' + splt_L[0]);
                     wordSpan1.setAttribute('translation', ' ' + splt_L[0]);
                     wordSpan1.innerHTML = splt_L[0];
-                    versespanAppender([' ',wordSpan1]);
-                    
+                    versespanAppender([' ', wordSpan1]);
+
                     wordSpan2.classList.add('translated');
                     wordSpan2.setAttribute('data-xlit', "");
                     wordSpan2.setAttribute('data-lemma', "");
@@ -259,16 +267,16 @@ function parseVerseText(vT, verseSpan) {
                         wordSpan.setAttribute('data-kjv-trans', ' ' + wStringREGEXED);
                         wordSpan.setAttribute('translation', ' ' + wStringREGEXED);
                     }
-                    
+
                     wordSpan.innerHTML = wStringREGEXED;
-                    versespanAppender([' ',wordSpan]);
+                    versespanAppender([' ', wordSpan]);
                 }
             }
             if (wString.length == 1) {
                 let spacebtwwords = '';
                 if (([".", ",", ":", ";", "?"].includes(wString[0]) == false)) {
                     spacebtwwords = ' ';
-                }                
+                }
                 wStringREGEXED = wString[0];
                 wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
                 wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
@@ -281,7 +289,9 @@ function parseVerseText(vT, verseSpan) {
                 }
             }
             // '<span class="translated" translation="created" data-kjv-trans="created" strnum="H853 H1254" data-xlit="" data-lemma="">created</span>'
-            if(i==vT.lenth-1){console.log(wString)}
+            if (i == vT.lenth - 1) {
+                console.log(wString)
+            }
         });
     } else {
         vT = vT.replace(/<hi type="bold">/g, '<strong>');
@@ -339,7 +349,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
     // /* OTHER VERSIONS */
     if (versionsToShow.length != 0) {
         versionsToShow.forEach(bv2d => {
-            currentlyParsedVersion=bv2d;
+            currentlyParsedVersion = bv2d;
             let trans_lang = bible.Data.supportedVersions[bv2d].language;
             // console.log(window[bv2d][bookName][chNumInBk][vIdx])
             let verseSpan2 = document.createElement('span');
@@ -367,10 +377,47 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
         })
     }
     appendHere.appendChild(verseMultipleSpan);
-    currentlyParsedVersion=null;
+    currentlyParsedVersion = null;
     return appendHere
 }
 
+let arrayOfLoadedVerse, stringOfversesWithNotes;
+
+/* To Indicate VErses That Have Notes in the Database */
+function indicateThatVerseHasNote() {
+
+    let arrayOfLoadedVerse = [],
+        stringOfversesWithNotes = '',
+        stringOfversesWithNotesSTARRED = '';
+    let allLoadedBooks = main.querySelectorAll('.chptverses');
+    let old_bk_name = null;
+    allLoadedBooks.forEach(code => {
+        let bk_name = code.getAttribute('bookname');
+        if (old_bk_name != bk_name) {
+            let newCodeRef;
+
+            getAllItems(bk_name, function (items) {
+                var len = items.length;
+                for (var i = 0; i < len; i += 1) {
+                    newCodeRef= '[ref="' + bk_name + ' ' + items[i].id.toString().split('.').join(':') + '"]';
+                    console.log(newCodeRef);
+                    console.log(items[i]);
+                    let coma;
+                    if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
+                    stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
+                    stringOfversesWithNotesSTARRED = stringOfversesWithNotesSTARRED + coma + newCodeRef + ':before';
+                    refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-bottom:2.5px solid var(--shadow-color); border-radius:2px;}'
+                    +
+                    stringOfversesWithNotesSTARRED + '{content:"*"}'
+                    createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
+                }
+            });
+
+        }
+        old_bk_name = bk_name;
+    });
+
+}
 
 // function getTextOfVerse(xxx) {
 //     vIdx = xxx.getAttribute("verseIndex")

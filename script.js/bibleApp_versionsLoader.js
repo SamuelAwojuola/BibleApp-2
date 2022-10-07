@@ -268,11 +268,16 @@ bibleversions_btns.addEventListener('click', function (e) {
 })
 
 /* COMPARE SINGLE VERSE */
-function compareThisVerse() {}
+// function compareThisVerse() {}
 let sverse_comp_backup;
 let clickedVerseRef, clickedChapterNverse;
-function breakDownClickedVerseRef(cvdivider='.') {
-    let fullRefSplit = clickedVerseRef.split(' ')
+function breakDownClickedVerseRef(cvdivider='.', manual_ref) {
+
+    let in_ref;
+    if(manual_ref){in_ref=manual_ref}
+    else{in_ref=clickedVerseRef}
+
+    let fullRefSplit = in_ref.split(' ');
     let bN, bC, cV, bCnCv;
     bCnCv = fullRefSplit.pop().split(':').join(cvdivider);
     clickedChapterNverse = bCnCv;
@@ -372,4 +377,3 @@ function localVersionLoader(e) {
         }
     }
 }
-

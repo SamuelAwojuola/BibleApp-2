@@ -27,11 +27,20 @@ function findCSSRule(mySheet, selector) {
 //Random color Alternative
 //+'#' + (0x1220000 + Math.random() * 0xFF00FF).toString(16).substr(1,6);
 function createNewStyleSheetandRule(styleID, styleRule) {
-    let headPart = document.getElementsByTagName('head')[0];
-    newStyleInHead = document.createElement('style');
-    newStyleInHead.id = styleID;
-    newStyleInHead.innerHTML = styleRule;
-    headPart.append(newStyleInHead);
+    if (!document.getElementsByTagName('head')[0].querySelector('#'+styleID)) {
+        let headPart = document.getElementsByTagName('head')[0];
+        newStyleInHead = document.createElement('style');
+        newStyleInHead.id = styleID;
+        newStyleInHead.innerHTML = styleRule;
+        headPart.append(newStyleInHead);
+    }else{
+        document.getElementsByTagName('head')[0].querySelector('#'+styleID).remove();
+        let headPart = document.getElementsByTagName('head')[0];
+        newStyleInHead = document.createElement('style');
+        newStyleInHead.id = styleID;
+        newStyleInHead.innerHTML = styleRule;
+        headPart.append(newStyleInHead);
+    }
 }
 
 function addRemoveRuleFromStyleSheet(CS_rule, ruleSelector, targetStyleSheet) {
@@ -98,7 +107,7 @@ function styleLocalstorageSet() {
         ["--fontsize-ref", rootStyles.getPropertyValue('--fontsize-ref')],
         ["--fontsize-strongstooltip", rootStyles.getPropertyValue('--fontsize-strongstooltip')],
         ["--main-font", rootStyles.getPropertyValue('--main-font')],
-        ["--fontsize-scripture-nav", rootStyles.getPropertyValue('--fontsize-scripture-nav')],
+        ["--main-font", rootStyles.getPropertyValue('--main-font')],
         ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')]
     ]
     setItemInLocalStorage('styles_variables', variableArray);

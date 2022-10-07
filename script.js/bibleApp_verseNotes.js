@@ -39,11 +39,20 @@ function appendVerseNote(e) {
         let chapterHolder = elmAhasElmOfClassBasAncestor(masterVerseHolder, '.chptverses');
         console.log(chapterHolder)
         console.log(noteID)
+        
+        //GET CURRENT BOOK NAME (NEEDED FOR INDEXED-DB))
+        let clickedVerseRefObj = breakDownClickedVerseRef();
+        let bN = clickedVerseRefObj.bN;
+        let bCnCv = clickedVerseRefObj.bCnCv;
+        bibleBook_IDB = bN;
+
         if (vnt = chapterHolder.querySelector('#' + noteID)) {
-            vnt.style.display = '';
-            vnt.classList.remove('slideup');
-            masterVerseHolder.classList.add('showing_versenote');
-        } else {
+        console.log('::Has VerseNote::')
+        vnt.style.display = '';
+        vnt.classList.remove('slideup');
+        masterVerseHolder.classList.add('showing_versenote');
+    } else {
+            console.log('::NO-VerseNote::')
             let verseNoteDiv = new DocumentFragment();
 
             let newVerseNote = verse_note.cloneNode(true);
@@ -52,9 +61,6 @@ function appendVerseNote(e) {
             let saveBtn = newVerseNote.querySelector('.note_save_button');
             let editBtn = newVerseNote.querySelector('.note_edit_button');
 
-            let clickedVerseRefObj = breakDownClickedVerseRef();
-            let bN = clickedVerseRefObj.bN
-            let bCnCv = clickedVerseRefObj.bCnCv
             //Add refrence book_name to the button
             saveBtn.setAttribute('bk', bN);
             saveBtn.setAttribute('b_cv', bCnCv);
@@ -64,16 +70,29 @@ function appendVerseNote(e) {
 
             //OPEN DATABASE IF NOT OPEN
             function ifNoteAppend() {
-                bibleBook_IDB = bN;
                 //if verse already has note, get it
-                let appendHere = newVerseNote.querySelector('.text_content')
-                getNoteFromIDBifAvailable(bN, bCnCv, appendHere)
+                if(db){
+                    clearInterval(dbBuildTimer_1);//Since db has been created, clear the setinterval timer
+                    let appendHere = newVerseNote.querySelector('.text_content');
+                    console.log('::db created::')
+                    getNoteFromIDBifAvailable(bN, bCnCv, appendHere);
+                }
             }
+            var dbBuildTimer_1;
             if (!db) {
-                createDB();
-                setTimeout(() => {
-                    ifNoteAppend()
-                }, 300);
+                createDB();//Open (or create) the database
+                //Check at set intervals whether or not the db has been created
+                var dbBuildTimer_1 = setInterval(ifNoteAppend, 300);// If db available get the verse not if available
+                // var dbBuildTimer_2 = setInterval(dbdonecheck, 300);
+                // function dbdonecheck(){
+                //     if(db){
+                //         console.log('::db creation timers Cleared::')
+                //         clearInterval(dbBuildTimer_1);
+                //         clearInterval(dbBuildTimer_2);
+                //     } else {
+                //         console.log('WAITING')
+                //     }    
+                // } 
             } else {
                 ifNoteAppend()
             }
@@ -82,7 +101,7 @@ function appendVerseNote(e) {
 
             whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
             masterVerseHolder.classList.add('showing_versenote');
-            eTarget.querySelector('a').setAttribute('href', '#' + noteID);
+            // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
             siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
             setTimeout(() => {
                 siblingVersenote.classList.remove('slideup');

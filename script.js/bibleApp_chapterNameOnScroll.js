@@ -123,6 +123,7 @@ function loadNewChapterOnScroll() {
     }
     // For Mobile or negative scrolling
     lastScrollTop = mst <= 0 ? 0 : mst;
+    indicateThatVerseHasNote()//to style verse references that have notes in the database
 }
 
 /* Scroll To Target Verse */

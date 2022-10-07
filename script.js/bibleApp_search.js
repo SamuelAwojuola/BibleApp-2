@@ -324,47 +324,47 @@ function minimize(el) {
 }
 
 /* MOBILE */
-function showMobileBtns() {
-    if (showmobilebtns.classList.contains('open')) {
-        showmobilebtns.innerHTML = '&#10094;'
-        showmobilebtns.classList.remove('open');
-    } else {
-        showmobilebtns.innerHTML = '&#10095;';
-        showmobilebtns.classList.add('open')
-    }
-    let pclk = document.querySelector('.prevclicked')
-    if (pclk) {
-        pclk.click();
-        pclk.classList.remove('prevclicked')
-    }
-    mb1.classList.toggle("displaynone");
-    mb2.classList.toggle("displaynone");
-    mb3.classList.toggle("displaynone");
-}
+// function showMobileBtns() {
+//     if (showmobilebtns.classList.contains('open')) {
+//         showmobilebtns.innerHTML = '&#10094;'
+//         showmobilebtns.classList.remove('open');
+//     } else {
+//         showmobilebtns.innerHTML = '&#10095;';
+//         showmobilebtns.classList.add('open')
+//     }
+//     let pclk = document.querySelector('.prevclicked')
+//     if (pclk) {
+//         pclk.click();
+//         pclk.classList.remove('prevclicked')
+//     }
+//     mb1.classList.toggle("displaynone");
+//     mb2.classList.toggle("displaynone");
+//     mb3.classList.toggle("displaynone");
+// }
 
-function showhidemobile(x) {
-    let pclk = document.querySelector('.prevclicked')
-    let currentClick = null;
+// function showhidemobile(x) {
+//     let pclk = document.querySelector('.prevclicked')
+//     let currentClick = null;
 
-    if (x == searchdiv) {
-        currentClick = mb3
-    }
-    if (x == refdiv) {
-        currentClick = mb2
-    }
-    if (x == null) {
-        currentClick = mb1
-    }
-    if ((!currentClick.classList.contains("prevclicked")) && (pclk)) {
-        pclk.click();
-        pclk.classList.remove('prevclicked')
-    }
-    if (currentClick == pclk) {
-        pclk.classList.remove('prevclicked')
-    } else {
-        currentClick.classList.add('prevclicked')
-    }
-    if (x != null) {
-        x.classList.toggle("displayshow");
-    }
-}
+//     if (x == searchdiv) {
+//         currentClick = mb3
+//     }
+//     if (x == refdiv) {
+//         currentClick = mb2
+//     }
+//     if (x == null) {
+//         currentClick = mb1
+//     }
+//     if ((!currentClick.classList.contains("prevclicked")) && (pclk)) {
+//         pclk.click();
+//         pclk.classList.remove('prevclicked')
+//     }
+//     if (currentClick == pclk) {
+//         pclk.classList.remove('prevclicked')
+//     } else {
+//         currentClick.classList.add('prevclicked')
+//     }
+//     if (x != null) {
+//         x.classList.toggle("displayshow");
+//     }
+// }

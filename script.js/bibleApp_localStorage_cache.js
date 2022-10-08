@@ -60,6 +60,9 @@ function cacheFunctions() {
             if(j%2==0){document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i+1]);}
         });
     }
+    //For showing original english translation beside Hebrew/Greek transliteration
+    // This really has nothing to do with the cache
+    engnXlit_supscript('eng')
 }
 function cacheFunctions2() {
     runCacheFunc2=false;

@@ -82,8 +82,9 @@ body {
     /* don't add color to the body, it will hide the svg */
 }
 #pagemaster {
+    margin-top: 1px;
     position: relative;
-    height: 100vh;
+    height: auto;
     /* border: 2px solid red; */
     display: grid;
     /* grid-template-columns: repeat(auto-fill, minmax(min(auto, 100%), 1fr)); */
@@ -384,8 +385,8 @@ button {
     cursor: pointer;
 }#tool_tip {
     /* float:left; */
-    position: fixed;
-    right: 0;
+    /* position: fixed; */
+    /* right: 0; */
 }
 #context_menu .cmtitlebar{
     position: sticky;
@@ -824,28 +825,6 @@ main span {
     cursor: pointer;
 }
 
-/* SCROLL BAR */
-/* width */
-::-webkit-scrollbar {
-    width: 7.5px;
-}
-/* Track */
-::-webkit-scrollbar-track {
-    /* background: #f1f1f1; */
-    background: var(--scroll-track-bg-color);
-}
-/* Handle */
-::-webkit-scrollbar-thumb {
-    background: var(--scroll-thumb-bgcolor);
-    border-top: 2px solid var(--scroll-thumb-border-color);
-    border-bottom: 2px solid var(--scroll-thumb-border-color);
-}
-/* Handle on hover */
-::-webkit-scrollbar-thumb:hover {
-    background: var(--scroll-thumb-hover-bg-color);
-    border-top: 2px solid var(--scroll-thumb-hover-border);
-    border-bottom: 2px solid var(--scroll-thumb-hover-border);
-}
 /* BEREAN BIBLE */
 .section_headings {
     display: none;
@@ -1018,12 +997,24 @@ span.vmultiple:hover span.vhlt {
         width: 120px !important;
     }
 }
-@media screen and (max-device-width: 300px) {
-    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
-        display: flex;
-        width: 100%;
+@media screen and (min-device-width: 500px) {
+    /* SCROLL BAR */
+    ::-webkit-scrollbar {
+        width: 7.5px;
     }
-    #refdiv input, #searchdiv input {
-        flex-grow: 1;
+    ::-webkit-scrollbar-track {
+        /* background: #f1f1f1; */
+        background: var(--scroll-track-bg-color);
+    }
+    ::-webkit-scrollbar-thumb {
+        background: var(--scroll-thumb-bgcolor);
+        border-top: 2px solid var(--scroll-thumb-border-color);
+        border-bottom: 2px solid var(--scroll-thumb-border-color);
+    }
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
+        background: var(--scroll-thumb-hover-bg-color);
+        border-top: 2px solid var(--scroll-thumb-hover-border);
+        border-bottom: 2px solid var(--scroll-thumb-hover-border);
     }
 }

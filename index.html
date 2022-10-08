@@ -45,8 +45,6 @@
             id="forwordsearch" title="Run Search" disabled>...</button>
         </div>
         <div id="bibleversions_btns">
-          <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check"
-              name="ttip_check" value="ttip_check" checked>Tt</button>
         </div>
       </div>
     </div>
@@ -110,6 +108,29 @@
         <div id="searchPreviewFixed"></div>
       </div>
       <div id="bibleapp_cache" class="slideout">
+        <div class="" id="eng2grk_sup">
+          <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
+          <table id="eng2grk_sup_table">
+            <tr>
+              <td>English</td>
+              <td>
+                <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')">OFF</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Heb/Grk</td>
+              <td>
+                <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')">OFF</button>
+              </td>
+            </tr>
+            <tr>
+              <td>Special Tooltip on Hover</td>
+              <td>
+                <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check" checked>Tt</button>
+              </td>
+            </tr>
+          </table>
+        </div>
         <div class="settingssectionheadings">Change Font</div>
         <select id="fontchange" onchange="changeFontFamily()">
           <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
@@ -173,23 +194,6 @@
               </td>
               <td>
               <button class="increase_fontsize" onclick="changeFontSize('main_font','plus')">+</button>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="" id="eng2grk_sup">
-          <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
-          <table id="eng2grk_sup_table">
-            <tr>
-              <td>English</td>
-              <td>
-                <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')">OFF</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Heb/Grk</td>
-              <td>
-                <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')">OFF</button>
               </td>
             </tr>
           </table>
@@ -262,6 +266,11 @@
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
-<script>tool_tip.click()</script>
+<script>
+  window.onload = function() {
+    tool_tip.click();
+    show_eng_superscript.click();
+  }
+</script>
 
 </html>

@@ -190,7 +190,7 @@ function engnXlit_supscript(x) {
                 vertical-align: baseline;
                 top: -0.5em;
                 font-style: italic;
-                color:blue;
+                color:darkslategrey;
             }`;
 
         // Toggle the stylesheet :::: add/remove

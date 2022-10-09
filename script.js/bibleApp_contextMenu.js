@@ -181,9 +181,11 @@ function getCurrentStrongsDef(e) {
     }
 }
 
+const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
+
 ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
 searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu, false);
+searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
 ppp.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span')) {
@@ -198,14 +200,12 @@ main.addEventListener('mouseover', function (e) {
 
 function add_mouseoverContextMenuEventListner() {
     // searchPreviewFixed.addEventListener('mouseover', add_tooltipContextMenu, false);
-    searchPreviewFixed.addEventListener('click', add_tooltipContextMenu, false);
+    searchPreviewFixed.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
 
     ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
     // ppp.addEventListener('click', add_tooltipContextMenu, false);
     ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
 }
-
-const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 200);
 
 function remove_mouseoverContextMenuEventListner() {
     hideRefNav('hide', context_menu); //In case it is on the screen

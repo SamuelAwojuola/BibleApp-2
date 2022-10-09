@@ -214,9 +214,9 @@ pagemaster.addEventListener("dblclick", function (e) {
 })
 
 //HIGHLIGHTING CLICKED WORD
-main.addEventListener("click", strongsHighlighting)
-// main.addEventListener("click", debounce(strongsHighlighting))
-searchPreviewFixed.addEventListener("click", strongsHighlighting)
+const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);
+main.addEventListener("click", strongs_dblclick_prevent)
+searchPreviewFixed.addEventListener("click", strongs_dblclick_prevent)
 main.addEventListener("click", hideBibleNav)
 
 function hideBibleNav() {

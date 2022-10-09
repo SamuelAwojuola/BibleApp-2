@@ -100,16 +100,8 @@ body {
     border-bottom: 0.5px solid grey;
     font-size: small;
 }
-#searchPreviewFixed .chptheading {
-    font-size: xx-small;
-    font-weight: bolder;
-    margin: 0;
-}
 #ppp .verse:not(code) {
     font-size: var(--fontsize-scripture);
-}
-#searchPreviewFixed .chptheading+.verse {
-    margin-top: 5px;
 }
 #ppp>span {
     display: block;
@@ -665,7 +657,7 @@ main span {
     /* z-index: -1; */
 }
 #refnav {
-    font-size: var(--fontsize-scripture);
+    font-size: var(--fontsize-main);
 }
 #refnav input {
     height: 8px;
@@ -677,7 +669,7 @@ main span {
     border-bottom: 1px solid var(--scroll-track-bg-color);
     border-top: 0;
     background-color: var(--ref-hlt);
-    font-size: 10px;
+    font-size: var(--fontsize-main);
 }
 #searchparameters div:first-of-type+div,
 #bibleapp_cache div:first-of-type,
@@ -705,41 +697,18 @@ main span {
     /* display: inline-flex; */
     font-size: var(--fontsize-main);
 }
-#searchparameters div:last-child {
-    display: block;
-    background-color: var(--verse-higlight);
-    background-image: var(--ref-img);
-    border-top: 1.5px solid var(--scroll-track-bg-color);
-    box-shadow: 0 2px 0 grey;
-}
-#searchparameters #where2display {
-    display: block;
-    border-top: 1.1px solid var(--scroll-track-bg-color);
-}
-#hidesearchparameters {
-    padding: 0;
-    margin-top: -2px;
-    float: right;
-    border: 1px solid var(--scroll-track-bg-color);
-    background-color: white;
-    cursor: pointer;
-    height: 15px;
-}
-.hidesearchparameters>*:not(div) {
-    display: none !important;
-}
 #strongsdefinitionwindow,
 #bible_versions,
 #bibleapp_cache {   
     float: left;
-    max-width: 150px;
+    max-width: 300px;
     height: 99.3%;
     border-right: 2px solid grey;
     overflow-y: auto;
     background-color: var(--verse-higlight);
     /* padding-right: 2px; */
     border-bottom: 2px solid;
-    font-size: smaller;
+    font-size: var(--fontsize-main);
 }#bible_versions,
 #bibleapp_cache {
     overflow-y: scroll;
@@ -755,8 +724,8 @@ main span {
     /* border-color: grey; */
 }
 #strongsdefinitionwindow {
-    /* resize:horizontal; */
     min-width: 200px;
+    font-size: var(--fontsize-scripture);
 }
 #strongsdefinitionwindow::after {
     content: '';
@@ -799,19 +768,42 @@ main span {
 }
 #searchPreviewWindowFixed {
     float: left;
-    width: 150px;
+    max-width: 300px;
     height: 99.3%;
     border-right: 5px solid;
     overflow-y: hidden;
     background-color: var(--verse-higlight);
     border-bottom: 2px solid;
-    font-size: 12px;
+    font-size: var(--fontsize-scripture);
+}
+#searchparameters div:last-child {
+    display: block;
+    background-color: var(--verse-higlight);
+    background-image: var(--ref-img);
+    border-top: 1.5px solid var(--scroll-track-bg-color);
+    box-shadow: 0 2px 0 grey;
+}
+#searchparameters #where2display {
+    display: block;
+    border-top: 1.1px solid var(--scroll-track-bg-color);
+}
+#hidesearchparameters {
+    padding: 0;
+    margin-top: -2px;
+    float: right;
+    border: 1px solid var(--scroll-track-bg-color);
+    background-color: white;
+    cursor: pointer;
+    height: 15px;
+}
+.hidesearchparameters>*:not(div) {
+    display: none !important;
 }
 #searchPreviewFixed {
     display: table-row;
     height: 92%;
     float: left;
-    width: 150px;
+    width: 100%;
     overflow-y: scroll;
 }
 #searchPreviewFixed>* {
@@ -821,6 +813,12 @@ main span {
 #searchPreviewFixed>.chptheading,
 #searchPreviewFixed code {
     cursor: pointer;
+    font-size: var(--fontsize-main);
+    font-weight: bolder;
+    margin: 0;
+}
+#searchPreviewFixed .chptheading+.verse {
+    margin-top: 5px;
 }
 
 /* SCROLL BAR */

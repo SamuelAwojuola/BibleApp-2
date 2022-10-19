@@ -48,16 +48,16 @@ bible.Data.books = [
 ["ROMANS","ROM","RO","RM"],
 ["I CORINTHIANS","1COR","1 CO","I CO","1CO","I COR","1 COR","1CORINTHIANS","1 CORINTHIANS","1ST CORINTHIANS","FIRST CORINTHIANS"],
 ["II CORINTHIANS","2 COR","2 CO","II CO","2CO","II COR","2COR","2CORINTHIANS","2 CORINTHIANS","2 CORINTHIANS","2ND CORINTHIANS","SECOND CORINTHIANS"],
-["GAL","GA","GALATIANS","GALATIAN"],
-["EPH","EPHESIAN","EPHESIANS","EPHES"],
+["GALATIANS","GAL","GA","GALATIAN"],
+["EPHESIANS","EPH","EPHESIAN","EPHES"],
 ["PHILIPPIANS","PHILIP","PHILI","PHIL","PHP"],
-["COL","COLOSSIANS"],
+["COLOSSIANS","COL"],
 ["I THESSALONIANS","1TH","1THE","1THES","1 TH","1 THE","1 THESS","I TH","I THE","I THES","I THESS","1THESS","1THESSALONIANS","1 THESSALONIANS","1ST THESSALONIANS","FIRST THESSALONIANS"],
 ["II THESSALONIANS","2TH","2THE","2THES","2 TH","2 THE","2 THESS","II TH","II THE","II THES","II THESS","2THESS","2THESSALONIANS","2 THESSALONIANS","2ND THESSALONIANS","SECOND THESSALONIANS"],
 ["I TIMOTHY","1TI","1TIM","1 TIM","1 TI","I TI","I TIM","1TIMOTHY","1ST TIMOTHY","FIRST TIMOTHY"],
 ["II TIMOTHY","2TI","2TIM","2 TIM","2 TI","II TI","II TIM","2TIMOTHY","2ND TIMOTHY","SECOND TIMOTHY"],
-["TIT","TITUS"],
-["PHM","PHILE","PHILEM","PHILEMON"],
+["TITUS","TIT"],
+["PHILEMON","PHM","PHILE","PHILEM"],
 ["HEB","HEBREWS"],
 ["JAM","JAS","JM","JAMES"],
 ["I PETER","1 PET","1 PE","I PE","1PE","I PET","1PET","I PT","1 PT","1PT","1PETER","1 PETER","1ST PETER","FIRST PETER"],
@@ -66,7 +66,7 @@ bible.Data.books = [
 ["II JOHN","2 JOHN","2 JN","II JN","2JN","II JO","2JO","II JOH","2JOH","2 JOH","II JHN","2 JHN","2JHN","2JOHN","2 JOHN","2ND JOHN","SECOND JOHN"],
 ["III JOHN","3 JOHN","3 JN","III JN","3JN","III JO","3JO","III JOH","3JOH","3 JOH","III JHN","3 JHN","3JHN","3JOHN","3 JOHN","3RD JOHN","THIRD JOHN"],
 ["JUDE","JUD"],
-["REV","RE","THE REVELATION","REVELATION"]
+["REVELATION","REV","RE","THE REVELATION"]
 ];
 //TODO - use the arrays above
 bible.Data.otBooks = ['Genesis','Exodus','Leviticus','Numbers','Deuteronomy','Joshua','Judges','Ruth','I Samuel','II Samuel','I Kings','II Kings','I Chronicles','II Chronicles','Ezra','Nehemiah','Esther','Job','Psalms','Proverbs','Ecclesiastes','Song of Solomon','Isaiah','Jeremiah','Lamentations','Ezekiel','Daniel','Hosea','Joel','Amos','Obadiah','Jonah','Micah','Nahum','Habakkuk','Zephaniah','Haggai','Zechariah','Malachi'];
@@ -108,6 +108,7 @@ bible.Data.supportedVersions = {
 	'FreJND': { name: "Bible J.N.Darby en français", language: 'fr' },
 	'FrePGR': { name: "Bible Perret-Gentil et Rilliet", language: 'fr' },
 	'CKBOKS': { name: "وەشانی بێبەرامبەری کوردیی سۆرانیی ستاندەر", language: 'ckb' },
+	// 'GRKV': { name: "Greek LXX and NT-TR", language: 'gr' },
 };
 bible.Data.interfaceLanguages = {
 	'original': 'Hebrew/Greek',
@@ -118,6 +119,7 @@ bible.Data.interfaceLanguages = {
 	'hlt': 'Matupi Chin',
 	'fr': 'French',
 	'ckb': 'Kurdi Sorani',
+	'gr': 'Greek',
 };
 
 bible.Data.verses = [

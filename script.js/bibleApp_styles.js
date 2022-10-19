@@ -106,7 +106,7 @@ function styleLocalstorageSet() {
         ["--fontsize-scripture", rootStyles.getPropertyValue('--fontsize-scripture')],
         ["--fontsize-ref", rootStyles.getPropertyValue('--fontsize-ref')],
         ["--fontsize-strongstooltip", rootStyles.getPropertyValue('--fontsize-strongstooltip')],
-        ["--main-font", rootStyles.getPropertyValue('--main-font')],
+        ["--fontsize-scripture-nav", rootStyles.getPropertyValue('--fontsize-scripture-nav')],
         ["--main-font", rootStyles.getPropertyValue('--main-font')],
         ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')]
     ]

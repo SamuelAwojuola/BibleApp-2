@@ -116,19 +116,9 @@ body {
 .rtl {
     direction: rtl
 }
-code{position: relative;
-padding-top: 5px;}
-#show_crossref_comments{
-    position: absolute;
-    bottom:var(--fontsize-ref);
-    display: flex;
-}
-#show_crossref_comments button{
-    font-size: var(--fontsize-ref);
-    font-weight: bold;
-    padding: 2px 5px;
-    border-width: 0.5px;
-}
+code{position: relative; padding-top: 5px;}
+#show_crossref_comments{position: absolute;bottom:var(--fontsize-ref);display: flex;}
+#show_crossref_comments button{font-size: var(--fontsize-ref);font-weight: bold;padding: 2px 5px;border-width: 0.5px;}
 #show_crossref_comments button:not(:first-child){
     margin-left: 2px;
 }
@@ -340,10 +330,7 @@ button {
     border-bottom: 2px solid grey;
     display: flex;
 }
-#ref_search_versions_holder {
-    display: flex;
-    flex-wrap: wrap;
-}
+#ref_search_versions_holder {display: flex;flex-wrap: wrap;}
 #context_menu {
     box-sizing: border-box;
     position: absolute;
@@ -364,17 +351,14 @@ button {
     z-index: 10;
     font-size: var(--fontsize-strongstooltip);
     overflow-x:hidden;
-}#context_menu>hr+.strngsdefinition>hr:first-child{display: none;}#context_menu h2 {
-    font-size:x-large;
-}#context_menu i {
-    font-size:small;
-}#context_menu .strngsdefinition div {
-    display: block;
-}.vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:hover {
-    text-decoration: underline;
-    color: blue;
-    cursor: pointer;
-}#tool_tip {
+}
+#context_menu>hr+.strngsdefinition>hr:first-child{display: none;}
+#context_menu h2 {font-size:x-large;}
+#context_menu i {font-size:small;}
+#context_menu .strngsdefinition div {display: block;}
+.vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:hover {text-decoration: underline;color: blue;cursor: pointer;}
+#context_menu div{z-index: 2;}
+#tool_tip {
     /* float:left; */
     /* position: fixed;
     right: 0; */

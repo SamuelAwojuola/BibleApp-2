@@ -132,17 +132,19 @@ function scrollToVerse(targetVerse) {
         targetVerse = targetVerse.parentElement
     } //When verse is put in a verse holder for multiple verses
     if (targetVerse) {
-        if (targetVerse.previousElementSibling) {
-            targetVerse.previousElementSibling.scrollIntoView({
+        if (!targetVerse.previousElementSibling) { //(if no previous-sibling, then it must be the first verse so) scroll to parents sibling (which should be the heading)
+            targetVerse.parentElement.previousElementSibling.scrollIntoView()
+        } else {
+            // targetVerse.previousElementSibling.scrollIntoView({
+            targetVerse.scrollIntoView({
                 // behavior: "smooth"//sometimes does not land on the element properly
             });
-        } else { //(must be first verse so) scroll to parents sibling
-            targetVerse.parentElement.previousElementSibling.scrollIntoView()
         }
-        targetVerse.classList.add('flashit');
-        setTimeout(function () {
-            targetVerse.classList.remove("flashit");
-        }, 5000);
+        // Let the target verse flash
+        // targetVerse.classList.add('flashit');
+        // setTimeout(function () {
+        //     targetVerse.classList.remove("flashit");
+        // }, 5000);
     }
 }
 

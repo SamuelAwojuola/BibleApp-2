@@ -30,95 +30,30 @@ window.onload = function () {
 /* LOAD THE BIBLE */
 let availableVersions = {
     // 'original': {name: 'Original', language: 'original'},
-    'accented': {
-        name: 'Accented original',
-        language: 'original'
-    },
-    'KJV': {
-        name: 'King James Version',
-        language: 'en'
-    },
-    'WEB': {
-        name: 'World English Bible',
-        language: 'en'
-    },
-    'ESV': {
-        name: 'English Standard Version',
-        language: 'en'
-    },
+    'accented': {name: 'Accented original',language: 'original'},
+    'KJV': {name: 'King James Version',language: 'en'},
+    'WEB': {name: 'World English Bible',language: 'en'},
+    'ESV': {name: 'English Standard Version',language: 'en'},
     // 'LC': {name: 'Literal Consistent', language: 'en'},
-    'YLT': {
-        name: 'Young\'s Literal Translation',
-        ge: 'en'
-    },
-    'ASV': {
-        name: 'American Standard Version',
-        language: 'en'
-    },
-    'DARBY': {
-        name: 'Darby Translation',
-        language: 'en'
-    },
-    'GW': {
-        name: 'God\'s Word Translation',
-        language: 'en'
-    },
-    'JUB': {
-        name: 'Jubilee Bible 200',
-        language: 'en'
-    },
-    'LEB': {
-        name: 'Lexham English Bible',
-        language: 'en'
-    },
-    'NET': {
-        name: 'New English Translation',
-        language: 'en'
-    },
-    'WMB': {
-        name: 'World Messianic Bible',
-        language: 'en'
-    },
-    'OPV': {
-        name: 'ترجمه-ی قدام',
-        language: 'fa'
-    },
-    'TPV': {
-        name: 'مژده برای اسرع جدید',
-        language: 'fa'
-    },
-    'NMV': {
-        name: 'ترجمه هزارۀ نو',
-        language: 'fa'
-    },
-    'AraSVD': {
-        name: 'Arabic Bible',
-        language: 'ar'
-    },
-    'RomCor': {
-        name: 'Cornilescu Bible in Romanian  language',
-        language: 'ro'
-    },
-    'MCSB': {
-        name: 'Matupi Chin Standard Bible',
-        language: 'hlt'
-    },
-    'FreSegond1910': {
-        name: "Bible Louis Segond (1910)",
-        language: 'fr'
-    },
-    'FreJND': {
-        name: "Bible J.N.Darby en français",
-        language: 'fr'
-    },
-    'FrePGR': {
-        name: "Bible Perret-Gentil et Rilliet",
-        language: 'fr'
-    },
-    'CKBOKS': {
-        name: "وەشانی بێبەرامبەری کوردیی سۆرانیی ستاندەر",
-        language: 'ckb'
-    },
+    'YLT': {name: 'Young\'s Literal Translation',ge: 'en'},
+    'ASV': {name: 'American Standard Version',language: 'en'},
+    'DARBY': {name: 'Darby Translation',language: 'en'},
+    'GW': {name: 'God\'s Word Translation',language: 'en'},
+    'JUB': {name: 'Jubilee Bible 200',language: 'en'},
+    'LEB': {name: 'Lexham English Bible',language: 'en'},
+    'NET': {name: 'New English Translation',language: 'en'},
+    'WMB': {name: 'World Messianic Bible',language: 'en'},
+	// 'GRKV': { name: "Greek LXX and NT-TR", language: 'en' },
+    'OPV': {name: 'ترجمه-ی قدام',language: 'fa'},
+    'TPV': {name: 'مژده برای اسرع جدید',language: 'fa'},
+    'NMV': {name: 'ترجمه هزارۀ نو',language: 'fa'},
+    'AraSVD': {name: 'Arabic Bible',language: 'ar'},
+    'RomCor': {name: 'Cornilescu Bible in Romanian  language',language: 'ro'},
+    'MCSB': {name: 'Matupi Chin Standard Bible',language: 'hlt'},
+    'FreSegond1910': {name: "Bible Louis Segond (1910)",language: 'fr'},
+    'FreJND': {name: "Bible J.N.Darby en français",language: 'fr'},
+    'FrePGR': {name: "Bible Perret-Gentil et Rilliet",language: 'fr'},
+    'CKBOKS': {name: "وەشانی بێبەرامبەری کوردیی سۆرانیی ستاندەر",language: 'ckb'},
 };
 // let original,accented,WEB,ESV,LC,YLT,ASV,DARBY,GW,JUB,LEB,NET,WMB,OPV,TPV,NMV,AraSVD,RomCor,MCSB,FreSegond1910,FreJND,FrePGR,CKBOKS;
 // var original='original',accented='accented',WEB='WEB',ESV='ESV',LC='LC',YLT='YLT',ASV='ASV',DARBY='DARBY',GW='GW',JUB='JUB',LEB='LEB',NET='NET',WMB='WMB',OPV='OPV',TPV='TPV',NMV='NMV',AraSVD='AraSVD',RomCor='RomCor',MCSB='MCSB',FreSegond1910='FreSegond1910',FreJND='FreJND',FrePGR='FrePGR',CKBOKS='CKBOKS';

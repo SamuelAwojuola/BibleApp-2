@@ -17,15 +17,15 @@
     --ref-paper: url(images/IyEMTp.jpg);
     --verse-higlight: #ffff92;
     --verse-higlight: #fffb001b;
-    --vmultiple-hover:rgb(246, 239, 227);
+    --vmultiple-hover:rgb(225, 241, 239);
     --nav-bg-color: #fbfbfb;
     --vhlt-border: #8080809c;
     --vhlt: #ffffc4;
     --vhlt2: #ffff99;
     --redwords:crimson;
-    --strongword-hover: rgb(255, 241, 137);
-    --strongword-hover: rgb(216, 255, 137);
     --strongword-hover: rgb(237, 213, 222);
+    --strongword-hover: rgb(216, 255, 137);
+    --strongword-hover: rgb(199, 255, 194);
     --strongword-hover: rgb(255, 250, 163);
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
@@ -552,7 +552,22 @@ main span {
 #fontchange {
     width: 100%;
 }
-#eng2grk_sup_table button {width:45px}
+#eng2grk_sup_table{
+    min-width:100%;
+    border-collapse:collapse;
+    border-spacing: 0;
+}
+#eng2grk_sup_table td {
+    min-width:90px;
+    text-align: right;
+}
+#eng2grk_sup_table button {
+    width:100%;
+    min-height:55px;
+    text-transform: lowercase;
+    font-weight:bold;
+    /* font-size: medium!important; */
+}
 .strnum:after {
     content: attr(data-lemma);
     font-style: italic;
@@ -701,12 +716,16 @@ main span {
     display: inline!important;
 }
 #cache_table {
+    width: 100%;
     display: table!important;
     border-collapse:collapse;
     box-sizing: border-box;
     /* border-spacing: 2px; */
     /* border-color: grey; */
 }
+#cache_table td{min-width:40px;}
+#cache_table td button{min-width: 100%;font-weight: bolder;}
+#hidestrongshighlight {display: none;}
 #strongsdefinitionwindow {
     min-width: 200px;
     font-size: var(--fontsize-scripture);

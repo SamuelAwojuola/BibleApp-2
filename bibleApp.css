@@ -343,6 +343,7 @@ button {
     background: var(--ref-img);
     border-bottom: 2px solid grey;
     display: flex;
+    width: 100%;
 }
 #ref_search_versions_holder {display: flex;flex-wrap: wrap;}
 #context_menu {

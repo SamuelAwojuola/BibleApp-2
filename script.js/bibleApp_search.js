@@ -1,4 +1,5 @@
 /* FUNCTION FOR SEARCH FOR SCRIPTURES BY WORDS AND PHRASES */
+let booksToSearchIn=[];
 let wordsearch = document.getElementById('wordsearch')
 wordsearch.addEventListener("keypress", function (e) {
     if (e.key === "Enter") {
@@ -115,20 +116,20 @@ function runWordSearch() {
         // console.log(searchForStrongs)
         
         function loopThroughBibleBooks() {
-            let booksList = bible.Data.bookNamesByLanguage.en;
-            let booksLength = booksList.length;
-            let bookName = null,
-                bookStartIndex = null,
-                bookEndIndex = null,
-                numberOfChapters = null;
+            // let booksList = bible.Data.bookNamesByLanguage.en;
+            //Books to search in
+            let booksToSearchIn = listOfBooksToSearchIn(document.getElementById("biblebooksgroup").value);
+            let booksLength = booksToSearchIn.length;
+            let bookName = null;
+            
+            /* LOOP THROUGH SELECTED BOOKS TO SEARCH IN */
         
-            //Loop through booksList
-            let abc = 0;
             // let allBooksWithContentInVersion = KJV;
             let allBooksWithContentInVersion = window[bversionName];
             for (let x = 0; x < booksLength; x++) {
-                let bookNameInVersion = Object.keys(allBooksWithContentInVersion)[x];
-                bookName = bookNameInVersion;
+                // let bookNameInVersion = Object.keys(allBooksWithContentInVersion)[x];
+                // bookName = bookNameInVersion;
+                bookName = booksToSearchIn[x];
                 let allChaptersInCurrentBook = allBooksWithContentInVersion[bookName];
         
                 //Loop through Chapters
@@ -137,11 +138,6 @@ function runWordSearch() {
                     let currentChapter = allChaptersInCurrentBook[y];
                     let allVersesInCurrentChapter = currentChapter;
                     let chapterVersesLength = currentChapter.length;
-                    // for (z = 0; z < chapterVersesLength; z++) {
-                    //     let currentVerse = allVersesInCurrentChapter[z];
-                    //     abc++;
-                    //     // console.log(`${bookNameInVersion}[${y}][${z}]`)
-                    // }
                     if (searchForStrongs == true) {
                         //If there is a strongs num to be searched for, then you cannot search for a phrase. Rather search for to see if verse contains all words
                         let wordsArray = arrayOfWordsToSearchFor(wordsearch.value).wordsArray;
@@ -368,3 +364,42 @@ function minimize(el) {
 //         x.classList.toggle("displayshow");
 //     }
 // }
+
+//Books to search in.
+function listOfBooksToSearchIn(bkGrp){
+    function findBooksFromA2B(A,B){
+        let booksToSearchIn=[];
+        let bksArray = bible.Data.allBooks;
+        let b = bksArray.indexOf(A);
+        booksToSearchIn.push(bksArray[b]);
+        if(B){
+            for(c=b+1; c<bksArray.length; c++){
+                if(bksArray[c]!=B){
+                    booksToSearchIn.push(bksArray[c]);
+                } else {
+                    booksToSearchIn.push(bksArray[c]);
+                    return booksToSearchIn
+                }
+            }
+        } else {return booksToSearchIn}
+    }
+    let generalBibleBooksGroups = {
+        'allbks' : bible.Data.allBooks,
+        'ot' : bible.Data.otBooks,
+        'nt' : bible.Data.ntBooks,
+        'pentateuch' : findBooksFromA2B('Genesis','Deuteronomy'),
+        'history' : findBooksFromA2B('Joshua','Esther'),
+        'wisdom' : findBooksFromA2B('Job','Song of Solomon'),
+        'majorProphets' : findBooksFromA2B('Isaiah','Daniel'),
+        'minorProphets' : findBooksFromA2B('Hosea','Malachi'),
+        'nt_narrative' : findBooksFromA2B('Matthew','Acts'),
+        'pauline' : findBooksFromA2B('Romans','Hebrews'),
+        'generalEpistles' : findBooksFromA2B('James','Jude'),
+        'revelation' : findBooksFromA2B('Revelation'),
+        'currentbk' : findBooksFromA2B(`${bookName}`)
+    }
+    if (typeof bkGrp === 'string' || bkGrp instanceof String){
+        booksToSearchIn = generalBibleBooksGroups[bkGrp];
+    } else if (Array.isArray(bkGrp)) {booksToSearchIn = bkGrp}
+    return booksToSearchIn
+}

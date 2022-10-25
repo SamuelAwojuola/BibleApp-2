@@ -329,3 +329,21 @@ function remove_resizer_funcs() {
     document.removeEventListener('selectstart', handleSelectAttempt);
     hasBeenClicked = false;
 }
+
+
+/* CHECK UNCHECK RADIO/CHECKBOX INPUT */
+function checkUncheck(x){
+    let arrOfCheckBoxes;
+    if(Array.isArray(x)==false){arrOfCheckBoxes=[x]}
+    else{arrOfCheckBoxes=x}
+
+    arrOfCheckBoxes.forEach(rcbx => {
+        if(rcbx.type=='input'){rcbx.click();}
+        else{if(rcbx.checked==true){rcbx.checked=false}
+        else{rcbx.checked=true}}
+    });
+}
+function toggleClassAndActiveButton(elm, cls,originElm){
+    elm.classList.toggle(cls)
+    originElm.classList.toggle('active_button');
+}

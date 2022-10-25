@@ -193,6 +193,13 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
         if (elHS.classList.contains('slideout')) {
             elHS.classList.remove('slideout');
             elHS.classList.add('slidein');
+            // TO SCROLL BOOK AND CHAPTER INTO VIEW
+            if(elHS == bible_nav){
+                let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
+                higlightedBknChpt.forEach(refHlt => {
+                    refHlt.scrollIntoView(false);
+                });
+            }            
         } else {
             elHS.classList.remove('slidein');
             elHS.classList.add('slideout');

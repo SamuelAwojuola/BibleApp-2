@@ -211,6 +211,7 @@ code{position: relative; padding-top: 5px;}
 #ref_search_versions_holder #refdiv,
 #ref_search_versions_holder #searchdiv {
     display: flex;
+    flex: 1;
 }
 #ref_search_versions_holder #refdiv *,
 #ref_search_versions_holder #searchdiv * {
@@ -288,6 +289,9 @@ code{position: relative; padding-top: 5px;}
     min-width: 40px;
     height: 100%;
 }
+#forreference,#forwordsearch,#titlebar_show_searchsettings{
+    min-width: 50px;
+}
 .ref_hlt {
     font-weight: bold;
     font-style: italic;
@@ -320,12 +324,17 @@ button {
     background-color: var(--buttons);
     border: var(--buttons-border);
 }
-.buttons {
+#top_horizontal_bar{
     grid-column-start: 1;
     grid-column-end: 5;
     grid-row-start: 1;
     grid-row-end: 2;
-    /* background-color: var(--top-bar-bground-color); */
+    border-bottom: 2px solid grey;
+}
+#titlebarsearchparameters{
+}
+
+.buttons {
     background: var(--ref-img);
     border-bottom: 2px solid grey;
     display: flex;
@@ -419,11 +428,14 @@ div.buttons{
     overflow-y: hidden;
 }
 #reference {
+    width: -webkit-fill-available;
     vertical-align: bottom;
     background-color: var(--buttons);
     border: var(--buttons-border);
 }
-input:hover,
+button:disabled {
+    cursor: default;
+}
 button:not(:disabled):hover {
     background-color: var(--chpt) !important;
 }
@@ -518,6 +530,7 @@ main span {
     /* cursor: pointer; */
     background-color: var(--buttons);
     border: var(--buttons-border);
+    width: -webkit-fill-available;
 }
 #wordsearch::-webkit-input-placeholder,
 #reference::-webkit-input-placeholder {
@@ -669,6 +682,10 @@ main span {
     border-top: 0;
     background-color: var(--ref-hlt);
     font-size: var(--fontsize-main);
+}
+.search_param_btns{
+    width: 100%;
+    text-align: left;
 }
 #searchparameters div:first-of-type+div,
 #bibleapp_cache div:first-of-type,
@@ -871,7 +888,7 @@ span.vmultiple:hover span.vhlt {
     padding: 0;
     margin-bottom:0;
     line-height: 0;
-    opacity: 0.1;
+    opacity: 0;
 }
 .slidein {
     display: block;

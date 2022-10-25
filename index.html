@@ -31,50 +31,46 @@
 
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
-    <div class="buttons">
-      <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
-      <!-- <button onclick="showStrongs(this)" class="showing" title="Show Strongs"><b>s+</b><button onclick="showTransliteration()" id="translit"class="translit" title="Transliteration"><b>T</b></button> -->
-      <!-- <button onclick="savefile('p#text')" class="footersection" id="filesaver">Download
-        <button onclick="makeContentEditable()" class="footersection" id="btnfootcontenteditable"title="Make page editable">EditPage -->
-      <div id="ref_search_versions_holder">
-        <div id="refdiv">
-          <input class="footersection" id="reference" title="Type Bible Reference"
-            placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection"
-            id="forreference" title="go to reference"><img src="images/scroll-svgrepo-com.svg"></button>
+        <div class="buttons">
+          <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
+          <div id="ref_search_versions_holder">
+            <div id="refdiv">
+              <input class="footersection" id="reference" title="Type Bible Reference"
+                placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection"
+                id="forreference" title="go to reference"><img src="images/scroll-svgrepo-com.svg"></button>
+            </div>
+            <div id="searchdiv">
+              <button id="titlebar_show_searchsettings" onclick="toggleClassAndActiveButton(titlebarsearchparameters, 'slideup',this)"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button><input class="footersection" id="wordsearch" title="What to search for"
+                placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection"
+                id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
+            </div>
+            <div id="bibleversions_btns">
+            </div>
+          </div>
         </div>
-        <div id="searchdiv">
-          <button id="titlebar_show_searchsettings" onclick="toggleClassAndActiveButton(titlebarsearchparameters, 'slideup',this)"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button><input class="footersection" id="wordsearch" title="What to search for"
-            placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection"
-            id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
-        </div>
-        <div id="bibleversions_btns">
-        </div>
+      <div id="titlebarsearchparameters" class="slideup">
+        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked>All Words-Not Phrase</button>
 
+        <select id="biblebooksgroup">
+          <option value="allbks" selected>ALL BOOKS</option>
+          <option value="ot">OT</option>
+          <optgroup label="Old Testament">
+            <option value="pentateuch">Pentateuch</option>
+            <option value="history">History</option>
+            <option value="wisdom">Wisdom</option>
+            <option value="majorProphets">Major Prophets</option>
+            <option value="minorProphets">Minor Prophets</option>
+          </optgroup>
+          <option value="nt">NT</option>
+          <optgroup label="Old Testament">
+            <option value="nt_narrative">Gospels</option>
+            <option value="pauline">Pauline</option>
+            <option value="generalEpistles">General Epistles</option>
+            <option value="revelation">Revelation</option>
+          </optgroup>
+          <option value="currentbk">Current Book</option>
+        </select>
       </div>
-    </div>
-    <div id="titlebarsearchparameters" class="slideup">
-      <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase">All Words-Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked>All Words-Not Phrase</button>
-
-      <select id="biblebooksgroup">
-        <option value="allbks" selected>ALL BOOKS</option>
-        <option value="ot">OT</option>
-        <optgroup label="Old Testament">
-          <option value="pentateuch">Pentateuch</option>
-          <option value="history">History</option>
-          <option value="wisdom">Wisdom</option>
-          <option value="majorProphets">Major Prophets</option>
-          <option value="minorProphets">Minor Prophets</option>
-        </optgroup>
-        <option value="nt">NT</option>
-        <optgroup label="Old Testament">
-          <option value="nt_narrative">Gospels</option>
-          <option value="pauline">Pauline</option>
-          <option value="generalEpistles">General Epistles</option>
-          <option value="revelation">Revelation</option>
-        </optgroup>
-        <option value="currentbk">Current Book</option>
-      </select>
-    </div>
     </div>
 
     <div id="mobilebuttons">

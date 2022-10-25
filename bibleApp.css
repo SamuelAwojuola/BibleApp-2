@@ -330,6 +330,11 @@ button {
     grid-row-start: 1;
     grid-row-end: 2;
     border-bottom: 2px solid grey;
+    /* z-index: 10; */
+    display: flex;
+    flex-wrap: wrap;
+}
+#top_horizontal_bar>div{
 }
 #titlebarsearchparameters{
 }
@@ -879,16 +884,21 @@ main span {
     flex-grow: 1;
 }
 span.vmultiple:hover span.vhlt {
-    background: var(--vhlt2);
+    background: yellow;
 }
 /* ANIMATIONS CLASSES */
 .slideup {
+    display: none;
     min-height: 0;
     max-height: 0;
     padding: 0;
     margin-bottom:0;
     line-height: 0;
     opacity: 0;
+    -webkit-transition-duration: 0.3s;
+    -moz-transition-duration: 0.3s;
+    -o-transition-duration: 0.3s;
+    transition-duration: 0.3s;
 }
 .slidein {
     display: block;

@@ -87,8 +87,8 @@ body {
     /* border: 2px solid red; */
     display: grid;
     /* grid-template-columns: repeat(auto-fill, minmax(min(auto, 100%), 1fr)); */
-    grid-template-columns: auto 1fr 1fr;
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto 1fr;
     row-gap: 0;
     /* overflow-y:scroll; */
 }
@@ -110,8 +110,9 @@ body {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 2;
-    grid-row-end: 4;
+    grid-row-end: 3;
     display: flex;
+    height: inherit;
 }
 .rtl {
     direction: rtl
@@ -326,7 +327,7 @@ button {
 }
 #top_horizontal_bar{
     grid-column-start: 1;
-    grid-column-end: 5;
+    grid-column-end: 3;
     grid-row-start: 1;
     grid-row-end: 2;
     border-bottom: 2px solid grey;
@@ -464,9 +465,9 @@ span:not(.red) span[strnum^=G] {
     /* border: 3px solid orange; */
     max-width: 100%;
     grid-column-start: 2;
-    grid-column-end: 5;
+    grid-column-end: 3;
     grid-row-start: 2;
-    grid-row-end: 4;
+    grid-row-end: 3;
     overflow-y: scroll;
     display: flex;
     position: relative;
@@ -670,11 +671,10 @@ main span {
     font-size: 10px;
     font-weight: bold;
     border-left: 0.5px solid black;
-    /* color:black;
-    background-color: greenyellow; */
-    /* z-index: -1; */
 }
 #refnav {
+    height: auto;
+    overflow-y: hidden;
     font-size: var(--fontsize-main);
 }
 #refnav input {
@@ -683,7 +683,6 @@ main span {
 }
 #searchparameters {
     min-height: auto;
-    /* display: block; */
     border-bottom: 1px solid var(--scroll-track-bg-color);
     border-top: 0;
     background-color: var(--ref-hlt);
@@ -719,19 +718,31 @@ main span {
     /* display: inline-flex; */
     font-size: var(--fontsize-main);
 }
-#strongsdefinitionwindow,
-#bible_versions,
-#bibleapp_cache {   
+.bible_nav {
     float: left;
+    overflow-y: scroll;
+    height: 100%;
+}
+
+#bible_nav,
+#bible_versions,
+#searchPreviewWindowFixed,
+#strongsdefinitionwindow,
+#bibleapp_cache {
+    box-sizing: border-box;
     max-width: 300px;
-    height: 99.3%;
+    height: 100%;
     border-right: 2px solid grey;
+    font-size: var(--fontsize-main);
+}
+#bible_versions,
+#searchPreviewWindowFixed,
+#strongsdefinitionwindow,
+#bibleapp_cache {
     overflow-y: auto;
     background-color: var(--verse-higlight);
-    /* padding-right: 2px; */
-    border-bottom: 2px solid;
-    font-size: var(--fontsize-main);
-}#bible_versions,
+}
+#bible_versions,
 #bibleapp_cache {
     overflow-y: scroll;
 }
@@ -743,8 +754,6 @@ main span {
     display: table!important;
     border-collapse:collapse;
     box-sizing: border-box;
-    /* border-spacing: 2px; */
-    /* border-color: grey; */
 }
 #cache_table td{min-width:40px;}
 #cache_table td button{min-width: 100%;font-weight: bolder;}
@@ -793,13 +802,7 @@ main span {
     margin-bottom: 10px;
 }
 #searchPreviewWindowFixed {
-    float: left;
-    max-width: 300px;
-    height: 99.3%;
-    border-right: 5px solid;
     overflow-y: hidden;
-    background-color: var(--verse-higlight);
-    border-bottom: 2px solid;
     font-size: var(--fontsize-scripture);
 }
 #searchparameters div:last-child {

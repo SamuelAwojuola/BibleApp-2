@@ -16,22 +16,12 @@
 </head>
 
 <body>
-  <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
-  <div name="verse_note" id="verse_note" class="verse_note slideup">
-    
-    <!--element to edit-->
-    <!--<div id="editor" data-placeholder="Go on, start editing..."></div>-->
-  
-    <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
-    <div class="save_edit_btns_holder">
-      <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"><!-- <img src="images\edit-svgrepo-com.svg" alt="🖉" > --></button>
-    </div>
-  </div>
+
   <div id="pagemaster">
 
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
-        <div class="buttons">
+        <div class="buttons" id="top_horizontal_bar_buttons">
           <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
           <div id="ref_search_versions_holder">
             <div id="refdiv">
@@ -69,20 +59,14 @@
             <option value="revelation">Revelation</option>
           </optgroup>
           <option value="currentbk">Current Book</option>
+          <select></select>
+          <select></select>
         </select>
       </div>
     </div>
 
-    <div id="mobilebuttons">
-      <button class="displaynone" id="mb3" onclick="showhidemobile(searchdiv)" title="search">&#128270;</button>
-      <button class="displaynone" id="mb2" onclick="showhidemobile(refdiv)" title="Reference">Go</button>
-      <button class="displaynone" id="mb1" onclick="toggleNav(), showhidemobile(null)"
-        title="Bible Books and Chapters">&#9776;</button>
-      <button onclick="showMobileBtns()" id="showmobilebtns">&#10094;</button>
-    </div>
-
     <!-- BIBLE REFERENCE SIDE BAR -->
-    <nav id="refnav" class="slideout" style="display:block">
+    <nav id="refnav" class="slideout" style="">
       <div class="refnav" name="settings" id="app_settings" multiple>
         <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">
@@ -94,10 +78,10 @@
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="cache settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
       </div>
-      <div id="bible_nav" class="refnav slideout">
+      <div id="bible_nav" class="slideout">
         <div class="bible_nav" name="books" id="bible_books" multiple></div>
         <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
-        <div class="bible_nav" name="verses" id="bible_verses" multiple></div>
+        <!-- <div class="bible_nav" name="verses" id="bible_verses" multiple></div> -->
       </div>
       <div id="bible_versions" class="slideout">
         <div class="bible_versions_heading">Available Bible Versions</div>
@@ -143,7 +127,7 @@
               </td>
             </tr>
             <tr>
-              <td>Special Tooltip on Hover</td>
+              <td>Tooltip on Hover</td>
               <td>
                 <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check" checked>Tt</button>
               </td>
@@ -233,8 +217,7 @@
       <div id="resizerdiv">
       </div>
     </nav>
-    <div id="singleverse_compare_menu" class="slideout"></div>
-          
+    
     <main id="main" contenteditable="false">
       <div id="context_menu" class="context_menu slideout"></div>
       <div id="show_crossref_comments" class="slideout">
@@ -259,6 +242,20 @@
       </div>
     </main>
   </div>
+  <div id="singleverse_compare_menu" class="slideout"></div>
+
+  <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
+  <div name="verse_note" id="verse_note" class="verse_note slideup">
+  
+    <!--element to edit-->
+    <!--<div id="editor" data-placeholder="Go on, start editing..."></div>-->
+  
+    <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
+    <div class="save_edit_btns_holder">
+      <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"><!-- <img src="images\edit-svgrepo-com.svg" alt="🖉" > --></button>
+    </div>
+  </div>
+
 </body>
 <!-- <script src="data/KJV.js"></script> -->
 <!-- <script src="pell-texteditor/pell.js"></script> -->

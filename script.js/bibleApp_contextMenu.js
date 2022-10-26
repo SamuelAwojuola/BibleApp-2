@@ -120,7 +120,7 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.right = "";
             }
             //IF CONTEXT MENU IS TO CLOSE TO THE BOTTOM
-            let btnsBarHeight = document.querySelector('#pagemaster>.buttons').getBoundingClientRect().height;
+            let btnsBarHeight = document.querySelector('#top_horizontal_bar_buttons').getBoundingClientRect().height;
             let space_above_target = target_top - eParent.scrollTop;
             let space_below_target = window.innerHeight - btnsBarHeight - space_above_target;
             // Space Below Target Enough for ContextMenu

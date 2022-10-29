@@ -12,19 +12,9 @@ window.onload = function () {
         let booksChaptersAndVerses = kjvBible.response;
         KJV = booksChaptersAndVerses['books'];
         populateBooks();
-        // 
-
-        // if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
-        //     openachapteronpageload() //To display Gensis 1 on pageLoad
-        // } else {
         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
         // }
     }
-    //     if (!localStorage.getItem('lastBookandChapter')) { //If there is no page stored in the cache
-    //         openachapteronpageload() //To display Gensis 1 on pageLoad
-    //     } else {
-    //         cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
-    //     }
 }
 
 /* LOAD THE BIBLE */

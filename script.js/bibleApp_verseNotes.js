@@ -118,10 +118,10 @@ function editVerseNote(eTarget, e, saveBtn) {
             oldeditbtn_note.contentEditable = 'false';
             oldeditbtn.style.backgroundColor = '';
             oldeditbtn.classList.remove('active');
-            disableCKEditor()
-            if (oldeditbtn != e.target) {
+            // if (oldeditbtn != e.target) {
                 noteEditingTarget.id = '';
-            }
+            // }
+            disableCKEditor()
         }
 
         saveBtn.disabled = false; //enable save verse note button
@@ -138,8 +138,8 @@ function editVerseNote(eTarget, e, saveBtn) {
         eTargets_note.contentEditable = 'false';
         eTarget.style.backgroundColor = '';
         eTarget.classList.remove('active');
+        eTargets_note.id = '';
         disableCKEditor()
-        noteEditingTarget.id = '';
     }
 }
 

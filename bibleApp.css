@@ -29,11 +29,7 @@
     --strongword-hover: rgb(255, 250, 163);
     --chpt: rgb(238, 227, 202);
     --verse-hover: rgb(248, 246, 241);
-    /* --verse-hover: rgba(192, 176, 98, 0.858);
-    --verse-hover: rgba(230, 183, 72, 0.5);
-    --verse-hover: rgba(255, 252, 165, 0.78); */
     --main-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
-    /* --top-bar-bground-color: #427d7f; */
     --top-bar-bground-color: #212121;
     --darkmode-bg1color: #212121;
     --scroll-track-bg-color: #878787;
@@ -42,7 +38,6 @@
     --scroll-thumb-hover-border: #939cff;
     --scroll-thumb-hover-bg-color: #555;
     --buttons: #f8f8f8;
-    /* --buttons: #FCFCFC 110.00000000000001%; */
     --buttons-border: 0.25px solid #70707072;
 }
 ::selection {
@@ -51,11 +46,7 @@
 html {
     padding: 0;
     font-size: var(--fontsize-main);
-    /* background-color: var(--nav-bg-color); */
-    /* background: var(--verse-higlight); */
-    /* background-color: var(--ref-img); */
-    /* background-color: #ffffc8; */
-    background: var(--ref-img);
+        background: var(--ref-img);
     font-family: var(--main-font);
 }
 .text_content{
@@ -77,20 +68,20 @@ body>svg {
     width: 100% !important;
 }
 body {
+    position: relative;
     margin: 0;
     overflow-y: hidden;
     /* don't add color to the body, it will hide the svg */
 }
 #pagemaster {
-    position: relative;
+    position: fixed;
+    top:0;
+    left: 0;
     height: 100vh;
-    /* border: 2px solid red; */
     display: grid;
-    /* grid-template-columns: repeat(auto-fill, minmax(min(auto, 100%), 1fr)); */
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
     row-gap: 0;
-    /* overflow-y:scroll; */
 }
 #ppp code, #context_menu code {
     font-size: var(--fontsize-ref);
@@ -147,7 +138,6 @@ code{position: relative; padding-top: 5px;}
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    /* position: relative; */
     transition: all 0.15s ease-in-out;
     padding: 5px;
     background: #fff;
@@ -159,19 +149,14 @@ code{position: relative; padding-top: 5px;}
     opacity: 1;
 }
 .save_edit_btns_holder{
-    /* position: absolute;
-    bottom: 0;
-    right: 0; */
     display:flex;
     align-content: space-between;
     justify-content: center;
     flex-wrap: nowrap;
     flex-direction: row;
-    align-items: center;    
-}
+    align-items: center;}
 .note_edit_button{
     background: none;
-    /* box-shadow: 1px 0px 2px 1.5px var(--shadow-color); */
     cursor: pointer;
 }
 .note_edit_button:active{
@@ -183,7 +168,6 @@ code{position: relative; padding-top: 5px;}
     pointer-events: none;
 }
 .note_save_button{
-    /* float: left; */
 }
 .note_save_button::before{
     content: 'Save';
@@ -191,7 +175,6 @@ code{position: relative; padding-top: 5px;}
     pointer-events: none;
 }
 #singleverse_compare_menu {
-    /* display: inline-flex; */
 }
 #singleverse_compare_menu button {
     font-size: var(--fontsize-ref);
@@ -220,10 +203,8 @@ code{position: relative; padding-top: 5px;}
 }
 #refnav #app_settings {
     border-right: 5px solid grey;
-    /* background-color: var(--top-bar-bground-color); */
     background-image: var(--ref-img);
     overflow: hidden;
-    /* width: 35px; */
 }
 #refnav #app_settings * {
     box-sizing: border-box;
@@ -237,7 +218,6 @@ code{position: relative; padding-top: 5px;}
 }
 #refnav #app_settings > button {
     box-sizing: border-box;
-    /* min-width: var(--width-sidebuttons); */
     width:auto;
     min-width:36px;
     padding-left: 2px;
@@ -249,16 +229,10 @@ code{position: relative; padding-top: 5px;}
 }
 #bibleversions_btns input {
     width: 6px;
-    /* margin: 0; */
     pointer-events: none;
 }
 #bibleversions_btns button {
-    /* width: var(--width-sidebuttons);; */
     float: left;
-    /* font-size: var(--width-sidebuttons) !important; */
-    /* display: block;
-    padding: 0;
-    */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -274,16 +248,12 @@ code{position: relative; padding-top: 5px;}
     border-bottom: 2px solid;
 }
 #refnav .bible_nav * {
-    /* font-size: 0.75em; */
     cursor: pointer;
 }
 #refnav .bible_nav *:hover {
     background-color: var(--ref-hlt);
-    /* font-style: italic; */
-    /* background: var(--ref-img); */
 }
 #refnav .bible_nav *:active {
-    /* background-color: var(--verse-higlight); */
     background: var(--ref-img);
 }
 #togglenavbtn{
@@ -314,11 +284,9 @@ code{position: relative; padding-top: 5px;}
     display: none;
 }
 #bible_verses>option {
-    /* display: none; */
     width: 20px;
 }
 .show_verses {
-    /* display: block !important; */
 }
 button {
     cursor: pointer;
@@ -331,7 +299,6 @@ button {
     grid-row-start: 1;
     grid-row-end: 2;
     border-bottom: 2px solid grey;
-    /* z-index: 10; */
     display: flex;
     flex-wrap: wrap;
 }
@@ -350,13 +317,9 @@ button {
 #context_menu {
     box-sizing: border-box;
     position: absolute;
-    /* display: block; */
     background: var(--ref-img);
     border: 1px solid grey;
-    /* border-top: 5px solid grey; */
-    /* border-left: 5px solid grey; */
-    /* border-bottom: 5px solid grey; */
-    min-width: 50px;
+        min-width: 50px;
     max-width: 300px;
     max-height: 400px;
     overflow-y: scroll;
@@ -375,18 +338,12 @@ button {
 .vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:hover {text-decoration: underline;color: blue;cursor: pointer;}
 #context_menu div{z-index: 2;}
 #tool_tip {
-    /* float:left; */
-    /* position: fixed;
-    right: 0; */
 }
 #context_menu .cmtitlebar{
     position: sticky;
     top: 0;
     right: inherit;
     background: var(--ref-img);
-    /* -webkit-box-shadow: 0px -6px 0 0px whitesmoke;
-    -moz-box-shadow: 0px -6px 0 0px whitesmoke;
-    box-shadow: 0px -6px 0 0px whitesmoke; */
     font-size: small;
     font-weight: bold;
 }#context_menu .cmtitlebar::after{
@@ -413,7 +370,6 @@ button {
 }#context_menu .cmtitlebar~span{
     font-size:var(--fontsize-scripture);
 }#context_menu:hover {
-    /* border: 1px solid #878787; */
     -webkit-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
     -moz-box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
     box-shadow: 1px 1px 3px 0px rgba(20, 2, 67, 0.87);
@@ -421,7 +377,6 @@ button {
 .buttons>button,
 .buttons>#searchdiv button,
 .buttons>#refdiv button {
-    /* width: var(--width-sidebuttons); */
     font-size:var(--width-mainbutton);
     padding: 0;
     height: 0px;
@@ -456,13 +411,11 @@ searchsettings.active_button {
     color: rgb(64, 59, 105);
 }span:not(.red) span[strnum^=H],
 span:not(.red) span[strnum^=G] {
-    /* color: black; */
 }
 [strnum]:empty {
     display: none !important;
 }
 #main {
-    /* border: 3px solid orange; */
     max-width: 100%;
     grid-column-start: 2;
     grid-column-end: 3;
@@ -476,10 +429,8 @@ span:not(.red) span[strnum^=G] {
     padding-left: 5px;
 }
 #ppp {
-    /* background-image: var(--ref-paper); */
 }
 #search_section {
-    /* max-width:100px; */
     grid-column-start: 4;
     grid-column-end: 5;
     grid-row-start: 1;
@@ -487,7 +438,6 @@ span:not(.red) span[strnum^=G] {
     background-color: royalblue;
 }
 #ppp>span.verse:last-child {
-    /* margin-bottom: 20px; */
     padding-bottom: 20px;
 }
 [strnum] {
@@ -498,9 +448,7 @@ span.vmultiple:hover {
     transition: background 0.05s linear;
 }
 span.verse:hover:not(.vhlt){
-    /* box-sizing:border-box!important; */
     background-color: var(--verse-hover);
-    /* box-shadow: 0 0 2px 0 rgb(30, 30, 30)*/
     cursor: pointer;
 }span.vmultiple:hover .verse{
     background-color: var(--vmultiple-hover);
@@ -526,15 +474,12 @@ sup {
     font-weight: bold;
 }
 main span {
-    /* font-size: x-small; */
 }
 .translated[trans] {
-    /* font-size: xx-small; */
     font-weight: 600;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
 }
 #wordsearch {
-    /* cursor: pointer; */
     background-color: var(--buttons);
     border: var(--buttons-border);
     width: -webkit-fill-available;
@@ -561,7 +506,6 @@ main span {
     font-style: italic;
     color: whitesmoke;
 }
-/* .strnum:before {content: " " attr(data-xlit) " ";} */
 .eng2grk {
     text-indent: -9999px;
 }
@@ -586,36 +530,26 @@ main span {
     min-height:55px;
     text-transform: lowercase;
     font-weight:bold;
-    /* font-size: medium!important; */
 }
 .strnum:after {
     content: attr(data-lemma);
     font-style: italic;
-}   */
+}
 #searchresultwindow {
     position: absolute;
     top: 12px;
     right: 5px;
-    height: 100%;
-    width: 150px;
+    max-height: 70%;
+    width: 450px;
+    background: white;
+    overflow: scroll;
+    z-index: 99;
 }
 .relative {
     position: relative;
-    /* margin-top: 100px; */
-    /* width: 100%;*/
     height: 100%;
 }
 #searchPreview {
-    position: absolute;
-    top: 5px;
-    right: 0;
-    width: 150px;
-    padding: 5px 0 5px 0;
-    background-color: white;
-    border: 0.5px solid black;
-    min-height: 0px;
-    max-height: 90%;
-    overflow-y: scroll;
 }
 #searchPreview>* {
     display: block;
@@ -627,30 +561,15 @@ main span {
     border: 2px solid gray;
 }
 #searchboxtitlebar {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 12px;
-    border: 0.5px solid whitesmoke;
-    background-color: whitesmoke;
-    cursor: pointer;
-    z-index: 2;
 }
 #searchrelative {
     display: flex;
 }
 #searchclose {
-    /* position: absolute;
-    top: 0px;
-    right: 0px; */
-    /* height: 5px; */
     padding: 0 2px;
     font-size: 10px;
     font-weight: bold;
     border-left: 0.5px solid black;
-    /* color:white;
-    background-color: rgb(158, 42, 0); */
 }
 #searchclose:active,
 #searchminimize:active {
@@ -662,12 +581,7 @@ main span {
 #searchminimize:hover {
     background-color: greenyellow;
 }
-#searchminimize {
-    /* position: absolute;
-    top: 0px;
-    right: 22px; */
-    /* height: 5px; */
-    padding: 0 2px;
+#searchminimize {    padding: 0 2px;
     font-size: 10px;
     font-weight: bold;
     border-left: 0.5px solid black;
@@ -697,7 +611,6 @@ main span {
 #bibleapp_cache .settingssectionheadings {
     border-bottom: 1px solid var(--scroll-track-bg-color);
     border-top: 1px solid var(--scroll-track-bg-color);
-    /* width: 96%; */
     margin: 0;
     box-shadow: 0 0.5px 0 rgb(58, 58, 58);
     background-color: whitesmoke;
@@ -715,7 +628,6 @@ main span {
     text-align: center;
 }
 #bibleapp_cache *:not(.settingssectionheadings) {
-    /* display: inline-flex; */
     font-size: var(--fontsize-main);
 }
 .bible_nav {
@@ -850,36 +762,34 @@ main span {
     margin-top: 5px;
 }
 
-/* SCROLL BAR */
-/* width */
+
+
 ::-webkit-scrollbar {
     width: 7.5px;
 }
-/* Track */
+
 ::-webkit-scrollbar-track {
-    /* background: #f1f1f1; */
     background: var(--scroll-track-bg-color);
 }
-/* Handle */
+
 ::-webkit-scrollbar-thumb {
     background: var(--scroll-thumb-bgcolor);
     border-top: 2px solid var(--scroll-thumb-border-color);
     border-bottom: 2px solid var(--scroll-thumb-border-color);
 }
-/* Handle on hover */
+
 ::-webkit-scrollbar-thumb:hover {
     background: var(--scroll-thumb-hover-bg-color);
     border-top: 2px solid var(--scroll-thumb-hover-border);
     border-bottom: 2px solid var(--scroll-thumb-hover-border);
 }
-/* BEREAN BIBLE */
+
 .section_headings {
     display: none;
 }
 .vmultiple {
     display: flex !important;
     flex-wrap: wrap;
-    /* max-width: 900px; */
 }
 .vmultiple>span {
     padding: 5px 5px;
@@ -890,7 +800,7 @@ main span {
 span.vmultiple:hover span.vhlt {
     background: yellow;
 }
-/* ANIMATIONS CLASSES */
+
 .slideup {
     display: none;
     min-height: 0;
@@ -1019,7 +929,7 @@ span.vmultiple:hover span.vhlt {
 [class^=v_].vhlt{
     background-color: var(--vhlt2);
 }
-/* MEDIA QUERIES */
+
 #mobilebuttons {
     display: none;
 }

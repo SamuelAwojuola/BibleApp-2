@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>LC BibleApp-02</title>
   <meta charset="utf-8" name="viewport" content= "width=device-width, initial-scale=1.0">
-  <!-- <script src="https://cdn.ckeditor.com/4.20.0/standard-all/ckeditor.js"></script> -->
+  <script src="https://cdn.ckeditor.com/4.20.0/standard-all/ckeditor.js"></script>
   <!-- <script src="/ckeditor/ckeditor.js"></script> -->
 <style id="verse_alignement">
     .verse {
@@ -16,7 +16,6 @@
 </head>
 
 <body>
-
   <div id="pagemaster">
 
     <!-- TOP HORIZONTAL BAR -->
@@ -226,21 +225,21 @@
       </div>
       <div id="ppp"></div>
         <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->
-      <div id="searchresultwindow" class="displaynone">
-        <div class="relative">
-          <div id="searchboxtitlebar">
-            <div id="searchrelative">
-              <div id="searchclose" onclick="hideElement(searchresultwindow)" title="Close search result window">CLOSE
-              </div>
-              <div id="searchminimize" onclick="minimize(searchPreview)" title="Minimize search result window">MINIMIZE
-              </div>
-            </div>
+      </main>
+  </div>
+  <div id="searchresultwindow" class="displaynone">
+    <div class="relative">
+      <div id="searchboxtitlebar">
+        <div id="searchrelative">
+          <div id="searchclose" onclick="hideElement(searchresultwindow)" title="Close search result window">CLOSE
           </div>
-          <div id="searchPreview">
+          <div id="searchminimize" onclick="minimize(searchPreview)" title="Minimize search result window">MINIMIZE
           </div>
         </div>
       </div>
-    </main>
+      <div id="searchPreview">
+      </div>
+    </div>
   </div>
   <div id="singleverse_compare_menu" class="slideout"></div>
 
@@ -282,6 +281,8 @@
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_createDownloadFile.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_saveComments.js" charset="utf-8"></script>
 <script>
     tool_tip.click();
   // window.onload = function() {

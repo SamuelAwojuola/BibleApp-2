@@ -111,14 +111,6 @@ function cacheFunctions2() {
     return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
 }
 
-function hideElement(el) {
-    el.classList.add("displaynone")
-}
-
-function showElement(el) {
-    el.classList.remove("displaynone")
-}
-
 function isAsubArrayofB(a, b) {
     let aL = a.length;
     let bL = b.length;

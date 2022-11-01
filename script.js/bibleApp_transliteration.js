@@ -134,7 +134,7 @@ function hideTransliteration(stn) {
 }
 
 function highlightAllStrongs(x) {
-    cs = `span[strnum="` + x + `"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
+    cs = `span[strnum="${x}"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -233,8 +233,8 @@ main.addEventListener('mouseover', function (e) {
         strAtt=elmAhasElmOfClassBasAncestor(e.target, '[strnum]').getAttribute('strnum');
     }
     if (strAtt) {
-        if (document.getElementById('')) {
-            document.getElementById('highlightall').remove();
+        if (document.getElementById('highlightall')) {
+            highlightall.remove();
         }
         let newStyleInHead = document.createElement('style');
         strAtt = strAtt.split(' ');
@@ -263,6 +263,6 @@ main.addEventListener('mouseover', function (e) {
 })
 main.addEventListener('mouseout', function (e) {
     if (e.target.hasAttribute('strnum')) {
-        document.getElementById('highlightall').remove();
+        highlightall.remove();
     }
 })

@@ -200,12 +200,14 @@ function save_verse_note_to_indexedDB(e) {
         let verseNoteInnerText = verseNote.innerText;
         
         console.log(verseNoteInnerText)
-
+        
         if(verseNoteInnerText.trim()!=''){
             populateDB(_bCbV, verseNoteInnerHTML)
             /* IF verse note exists in indXDB, modify it */
             indicateThatVerseHasNote();
         }
+        /* MODIFY THE BIBLE NOTES JSON FILE */
+        // writeToVerseNotesFiles()
     }
 }
 
@@ -308,9 +310,9 @@ function indicateThatVerseHasNote() {
                     if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
                     stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
                     stringOfversesWithNotesSTARRED = stringOfversesWithNotesSTARRED + coma + newCodeRef + ':before';
-                    refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-bottom:2.5px solid var(--shadow-color); border-radius:2px;}'
+                    refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-radius:2px;}'
                     +
-                    stringOfversesWithNotesSTARRED + '{content:"* "}'
+                    stringOfversesWithNotesSTARRED + '{content:"*"}'
                     createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
                 }
             });

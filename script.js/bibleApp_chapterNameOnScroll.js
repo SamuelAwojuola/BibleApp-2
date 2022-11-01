@@ -3,17 +3,23 @@ main.addEventListener('scroll', getHighestVisibleH2)
 
 function getHighestVisibleH2() {
     let hH=null;
-    let higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + 5);
+    function highestElmFromMainTop(distanceFromMainTop=0){
+        let higestElm = null;
+        while (higestElm == null||(!higestElm.matches('.chptheading')&&(!higestElm.matches('.chptverses')||elmAhasElmOfClassBasAncestor(higestElm, 'chptverses'))&&distanceFromMainTop<10)){
+            distanceFromMainTop++;
+            higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + distanceFromMainTop);
+        }
+        return higestElm
+    }
+    let higestElm = highestElmFromMainTop();
 
     if (higestElm.matches('.chptheading')) {
         hH=higestElm;
-    } else {
-        if (higestElm.matches('.chptverses')) {
-            hH = higestElm.previousElementSibling;
-        } else if (elmAhasElmOfClassBasAncestor(higestElm, 'chptverses')) {
-            higestElm = elmAhasElmOfClassBasAncestor(higestElm, 'chptverses');
-            hH = higestElm.previousElementSibling;
-        }
+    } else if (higestElm.matches('.chptverses')) {
+        hH = higestElm.previousElementSibling;
+    } else if (elmAhasElmOfClassBasAncestor(higestElm, 'chptverses')) {
+        higestElm = elmAhasElmOfClassBasAncestor(higestElm, 'chptverses');
+        hH = higestElm.previousElementSibling;
     }
     if(hH!=null&&hH.matches('.chptheading')&&hH.innerText!=reference.value){showCurrentChapterInHeadnSearchBar(hH)}
 

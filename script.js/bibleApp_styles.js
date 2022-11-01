@@ -136,10 +136,10 @@ function darkLightMode() {
         documentROOT.style.setProperty('--verse-hover', dcol);
     }
 }
-let saved_highlightStrongsSheet
 
+let saved_highlightStrongsSheet;
 function hide_strongshighlight() {
-    saved_highlightStrongsSheet = highlightstrongs;
+    saved_highlightStrongsSheet = highlightstrongs;//to be used to restore all the strongsHighlight (not yet implimented)
     highlightstrongs.remove()
 }
 

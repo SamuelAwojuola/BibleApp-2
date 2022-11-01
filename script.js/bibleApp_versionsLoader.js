@@ -198,6 +198,7 @@ let sverse_comp_backup;
 let clickedVerseRef, clickedChapterNverse;
 function breakDownClickedVerseRef(cvdivider='.', manual_ref) {
 
+    // "manual_ref" is manually inputed reference
     let in_ref;
     if(manual_ref){in_ref=manual_ref}
     else{in_ref=clickedVerseRef}

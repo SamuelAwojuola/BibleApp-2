@@ -1,8 +1,17 @@
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
-
+// let context_menu = document.querySelector('#context_menu');
 function add_tooltipContextMenu(e) {
     e.preventDefault();
+    if(!document.querySelector('#context_menu')){
+        // <div id="context_menu" class="context_menu slideout"></div>
+        let context_menu_replacement=document.createElement('div');
+        context_menu_replacement.id = 'context_menu';
+        context_menu_replacement.classList.add('context_menu');
+        context_menu_replacement.classList.add('slideout');
+        main.prepend(context_menu_replacement);
+        context_menu.addEventListener("click", codeELmRefClick);
+    }
     let currentEt = e.target;
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
@@ -48,14 +57,19 @@ function add_tooltipContextMenu(e) {
                 if (eParent.offsetLeft != 0) {
                     extraLeft = eParent.offsetLeft;
                 }
+                //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
                 if (!eParent.querySelector('#context_menu')) {
+                    //move the #context_menu from #searchPreviewFixed to #main
                     let clonedContextMenu = searchPreviewFixed.querySelector('#context_menu').cloneNode(true);
                     searchPreviewFixed.querySelector('#context_menu').remove()
                     main.append(clonedContextMenu)
                 }
-            } else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
+            }
+                //if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
+                else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
                 eParent = document.querySelector('#searchPreviewFixed');
                 if (!eParent.querySelector('#context_menu')) {
+                    //move the #context_menu from #main to #searchPreviewFixed
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
                     main.querySelector('#context_menu').remove()
                     searchPreviewFixed.append(clonedContextMenu)
@@ -247,7 +261,7 @@ function toolTipOnOff(x) {
 }
 //Hide ContextMenu on clicking outside of main window
 document.addEventListener('click', function (e) {
-    if ((!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
+    if (document.querySelector('.context_menu') && (!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
         hideRightClickContextMenu()
     }
 })

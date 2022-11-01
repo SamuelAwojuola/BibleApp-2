@@ -1,5 +1,5 @@
-ppp.addEventListener("click", showVerseNote);
-ppp.addEventListener("click", save_verse_note_to_indexedDB);
+ppp.addEventListener("click", showVerseNote);//For '#verse_notes_button' && '.note_edit_button'
+ppp.addEventListener("click", save_verse_note_to_indexedDB);//For '#note_save_button'
 
 function showVerseNote(e, x) {
     if (e) {
@@ -16,13 +16,7 @@ function showVerseNote(e, x) {
 }
 
 function appendVerseNote(e) {
-    let eTarget;
-    // if (e.target.matches('#verse_notes_button')) {
-    eTarget = e.target
-    // } else
-    if (e.target.matches('#verse_notes_button a')) {
-        eTarget = e.target.parentNode;
-    }
+    let eTarget = e.target;
     clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
     let siblingVersenote;
     let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');

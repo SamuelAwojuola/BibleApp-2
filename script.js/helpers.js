@@ -3,6 +3,7 @@ function isObject(objValue) {
     return objValue && typeof objValue === 'object' && objValue.constructor === Object;
 }
 
+/* Ensure doublick does not run click eventListner */
 function debounce(func, timeout = 300) {
     // function func will only run if it is not clicked twice within 300ms
     var ttt;
@@ -36,6 +37,21 @@ function removeItemFromArray(n, array) {
     return array;
 }
 
+/* Remove single string or array of strings from a string */
+function removeCharacterFromString(xh, str) {
+    if (typeof xh === 'string' || xh instanceof String) {return str.split(xh).join('')}
+    //An array of characters to remove from the string,
+    // e.g., "['.',',','lk']"
+    else if (Array.isArray(xh)){
+        xh.forEach(xh_i=>{str.split(xh_i).join('')});
+        return str
+    }
+}
+
+/* ***************************** */
+/*       DOM MANIPULATIONS       */
+/* ***************************** */
+
 function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
     while (a.parentNode && a.parentNode.tagName.toUpperCase() != limit) {
         if (a.parentNode.classList.contains(ancestorsClass) || a.parentNode.matches(ancestorsClass)) {
@@ -44,36 +60,11 @@ function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
         a = a.parentNode;
     }
     return false
-}
-
-function hideORshowClass(hideOrShow, cls) {
-    if (hideOrShow.toUpperCase() == 'HIDE') {
-        var class2hide = document.querySelectorAll('.' + cls);
-        class2hide.forEach(el => {
-            el.style.display = 'none'
-        });
-    } else if (hideOrShow.toUpperCase() == 'SHOW') {
-        var class2show = document.querySelectorAll('.' + cls);
-        class2show.forEach(el => {
-            el.style.display = ''
-        });
-    }
-}
-
-function disableButton(cls, disableValue) {
-    var class2toggleAttribute = document.querySelectorAll('.' + cls);
-    class2toggleAttribute.forEach(el => {
-        el.disabled = disableValue;
-        if (disableValue) {
-            el.style.pointerEvents = 'none';
-            el.style.color = 'grey';
-            el.style.fontStyle = 'italic';
-        } else if (!disableValue) {
-            el.style.pointerEvents = '';
-            el.style.color = '';
-            el.style.fontStyle = '';
-        }
-    });
+    
+    //The :has() pseudo selector will do this quite easily, but,
+    // First: elmA will have to be represented as a css selector, e.g., 'div>.a', and
+    // Second: It is not yet supported in Mozilla FireFox
+    // E.g: if(querySelector('.ancestorsClass:has(div>.a)'){return true})
 }
 
 function hideORshowID(hideOrShow, id) {
@@ -98,20 +89,75 @@ function hideORshowID(hideOrShow, id) {
         }
     }
 }
+function hideORshowClass(hideOrShow, cls) {
+    if (hideOrShow.toUpperCase() == 'HIDE') {
+        var class2hide = document.querySelectorAll('.' + cls);
+        class2hide.forEach(el => {
+            el.style.display = 'none'
+        });
+    } else if (hideOrShow.toUpperCase() == 'SHOW') {
+        var class2show = document.querySelectorAll('.' + cls);
+        class2show.forEach(el => {
+            el.style.display = ''
+        });
+    }
+}
+
+function hideElement(el) {
+    el.classList.add("displaynone")
+}
+function showElement(el) {
+    el.classList.remove("displaynone")
+}
+
+function toggleClassAndActiveButton(elm, cls,originElm){
+    elm.classList.toggle(cls)
+    originElm.classList.toggle('active_button');
+}
+function disableButton(cls, disableValue) {
+    var class2toggleAttribute = document.querySelectorAll('.' + cls);
+    class2toggleAttribute.forEach(el => {
+        el.disabled = disableValue;
+        if (disableValue) {
+            el.style.pointerEvents = 'none';
+            el.style.color = 'grey';
+            el.style.fontStyle = 'italic';
+        } else if (!disableValue) {
+            el.style.pointerEvents = '';
+            el.style.color = '';
+            el.style.fontStyle = '';
+        }
+    });
+    // Or just create a css style for class, e.g., 'button_disabled',
+    // and then add the class to buttons to be disabled
+}
+
+// Check or uncheck radio/checkbox input
+function checkUncheck(x){
+    let arrOfCheckBoxes;
+    if(Array.isArray(x)==false){arrOfCheckBoxes=[x]}
+    else{arrOfCheckBoxes=x}
+
+    arrOfCheckBoxes.forEach(rcbx => {
+        if(rcbx.type=='input'){rcbx.click();}
+        else{if(rcbx.checked==true){rcbx.checked=false}
+        else{rcbx.checked=true}}
+    });
+}
 
 function insertElmAbeforeElmB(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode);
 }
-
-function removeCharacterFromString(xh, str) {
-    return str.split(xh).join('')
-}
-
 function relocateElmTo(elm, moveHere) {
     let elmCopy = elm.cloneNode(true);
     elm.remove();
     moveHere.append(elmCopy)
 }
+
+
+/* ****************************** */
+/*        DOM EXPLORATIONS        */
+/* ****************************** */
 
 function X_hasNoSibling_Y_b4_Z(x, y, z) {
     let a = x,
@@ -149,27 +195,7 @@ function X_hasNoSibling_Y_b4_Z(x, y, z) {
         elmZ: Z
     }
 }
-
 function getSibling_Y_of_X_b4_Z(x, y, z) {}
-
-/* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
-function codeELmRefClick(e) {
-    if (e.target.tagName == "CODE") {
-        let codeElm = e.target;
-        gotoRef(codeElm.getAttribute('ref'))
-        e.preventDefault();
-    }
-}
-
-// function getFUllBookName(shortBkNm) {
-//     bible.Data.books.forEach((ref_, ref_indx) => {
-//         if (ref_.includes(shortBkNm.toUpperCase())) {
-//             let fullname = bible.Data.bookNamesByLanguage.en[ref_indx]
-//             return fullname;
-//         }
-//     });
-// }
-/* Ensure doublick does not run click eventListner */
 
 function arrayOfNodesBetween(a, b) {
     //first check if they have the same parent
@@ -281,6 +307,25 @@ function arrayOfElementsBetween(a, b) {
     }
 }
 
+/* ********************************************* */
+/* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
+/* ********************************************* */
+function codeELmRefClick(e) {
+    if (e.target.tagName == "CODE") {
+        let codeElm = e.target;
+        gotoRef(codeElm.getAttribute('ref'))
+        e.preventDefault();
+    }
+}
+// function getFUllBookName(shortBkNm) {
+//     bible.Data.books.forEach((ref_, ref_indx) => {
+//         if (ref_.includes(shortBkNm.toUpperCase())) {
+//             let fullname = bible.Data.bookNamesByLanguage.en[ref_indx]
+//             return fullname;
+//         }
+//     });
+// }
+
 /* DIV RESIZER - DRAGGING TO RESIZE */
 const BORDER_SIZE = 10;
 const panel = document.getElementById("strongsdefinitionwindow");
@@ -330,20 +375,10 @@ function remove_resizer_funcs() {
     hasBeenClicked = false;
 }
 
-
-/* CHECK UNCHECK RADIO/CHECKBOX INPUT */
-function checkUncheck(x){
-    let arrOfCheckBoxes;
-    if(Array.isArray(x)==false){arrOfCheckBoxes=[x]}
-    else{arrOfCheckBoxes=x}
-
-    arrOfCheckBoxes.forEach(rcbx => {
-        if(rcbx.type=='input'){rcbx.click();}
-        else{if(rcbx.checked==true){rcbx.checked=false}
-        else{rcbx.checked=true}}
-    });
-}
-function toggleClassAndActiveButton(elm, cls,originElm){
-    elm.classList.toggle(cls)
-    originElm.classList.toggle('active_button');
-}
+/* SORT OBJECTS */
+// function sortObj(obj) {
+//     return Object.keys(obj).sort().reduce(function (result, key) {
+//         result[key] = obj[key];
+//         return result;
+//     }, {});
+// }

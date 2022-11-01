@@ -42,32 +42,89 @@ function downloadFile(text_data, name = "myData", format = "json") {
         ]
 } */
 let currentlyEditedVerseNote;
-function readWriteFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
-    const versenote_promise = fetch(`/bible_notes/notes_${bookName}.json`);
-    versenote_promise
-        .then(response => response.json())
-        .then(jsonObject => {
-            bible_book = jsonObject, getVerseNote()
-        });
+
+function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
+    if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
+        let refObj = breakDownClickedVerseRef();
+        bookName = refObj.bN;
+        chapternumber = refObj.bC;
+        verseNumber = refObj.cV;
+    }
+
+    async function fetchBookNotes() {
+        const response = await fetch(`/bible_notes/notes_${bookName}.json`);
+        return await response.json()
+    }
 
     function getVerseNote() {
-        if (bible_book.notes[chapternumber - 1]['_'+verseNumber]) {
-            //Check for verse number
-            currentlyEditedVerseNote=bible_book.notes[chapternumber - 1]['_'+verseNumber];
-            console.log(currentlyEditedVerseNote);
-            return currentlyEditedVerseNote
+        fetchBookNotes().then(jsonObject => {
+            bible_book = jsonObject,readNotes()
+        })
+        function readNotes(){
+            if (bible_book.notes[chapternumber - 1]['_' + verseNumber]) {
+                //Check for verse number
+                currentlyEditedVerseNote = bible_book.notes[chapternumber - 1]['_' + verseNumber];
+                console.log(bible_book.notes[chapternumber - 1].length);
+                console.log(currentlyEditedVerseNote);
+                return currentlyEditedVerseNote
+            }
         }
     }
+    return getVerseNote()
 }
 
-function modifyVerseNote() {
-    currentVerseInJSON=[innerHTMLofVerseNote];
-    console.log('modifyVerseNote')
-}
-
-function readORwrite() {
-    return {
-        write: modifyVerseNote(),
-        read: getVerseNote()
+function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
+    if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
+        let refObj = breakDownClickedVerseRef();
+        bookName = refObj.bN;
+        chapternumber = refObj.bC;
+        verseNumber = refObj.cV;
     }
+
+    async function fetchBookNotes() {
+        const response = await fetch(`/bible_notes/notes_${bookName}.json`);
+        return await response.json()
+    }
+
+    function modifyCreateVerseNote() {
+        fetchBookNotes().then(jsonObject => {
+            b_bk = jsonObject,writeNote()
+        })
+        function writeNote(){
+            // let newNote = "html so so so";
+            let newNote = noteEditingTarget.innerHTML;
+            /* make copy of all the notes */
+            // let copyOfAllVerseNotesInCurrentBook=b_bk.notes;
+            // let copyOfAllVerseNotesInCurrentBook=b_bk.notes.slice();
+            let copyOfAllVerseNotesInCurrentBook={...b_bk.notes};
+            let originalVerseNotes = copyOfAllVerseNotesInCurrentBook[chapternumber-1];
+            console.log(Object.keys(b_bk.notes).length != 0 && b_bk.notes.constructor != Object)
+            
+            // let copyOfVerseNotes={...originalVerseNotes};
+            // copyOfVerseNotes['_' + verseNumber] = newNote;
+            originalVerseNotes['_' + verseNumber] = newNote;
+            console.log(newNote.constructor)
+
+            /* FUNCTION TO SORT THE VERSE NOTES */
+            function sortVnotesObj(obj) {
+                // keys are in the format '_1'
+                // Therefore, remove the '_' and
+                // Sort then add back the '_' to the sorted numbers
+                let arrayOfKeysInObj = Object.keys(obj);
+                let sortedArrayOfOjectsKeys = arrayOfKeysInObj.map(ky=>Number(ky.substring(1))).sort(function(a, b){return a-b}).map(ky=>"_"+ky)
+                return sortedArrayOfOjectsKeys.reduce(function (result, key) {
+                    result[key] = obj[key];
+                    return result;
+                }, {});
+            }
+
+            /* REPLACE THE PREVIOUS VERSE NOTES FOR THE CHAPTER WITH THE MODIFIED VERSE NOTES */
+            console.log(originalVerseNotes['_' + verseNumber])
+            console.log(copyOfAllVerseNotesInCurrentBook[chapternumber-1] = sortVnotesObj(originalVerseNotes))
+            console.log(copyOfAllVerseNotesInCurrentBook)
+            b_bk['notes']=copyOfAllVerseNotesInCurrentBook
+            downloadFile(JSON.stringify(b_bk), 'notes_'+bookName)
+        }
+    }
+    return modifyCreateVerseNote()
 }

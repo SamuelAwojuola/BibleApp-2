@@ -60,8 +60,8 @@ function arrayOfWordsToSearchFor(w) {
         //Remove last comma in "styleRule"
         styleRule = styleRule.substring(0, styleRule.length - 1);
         styleRule = `${styleRule}{
-            font-weight: bold;
-            border-bottom: 4px solid darkred!important;
+            font-style:italic;
+            border-bottom: 3px solid orange!important;
         }`
         createNewStyleSheetandRule(styleID, styleRule)
     }

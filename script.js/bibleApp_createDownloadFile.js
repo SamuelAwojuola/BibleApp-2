@@ -41,7 +41,7 @@ function downloadFile(text_data, name = "myData", format = "json") {
             }
         ]
 } */
-let currentlyEditedVerseNote;
+let noteForCurrentlyEditedVerse;
 
 function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
     if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
@@ -63,10 +63,10 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
         function readNotes(){
             if (bible_book.notes[chapternumber - 1]['_' + verseNumber]) {
                 //Check for verse number
-                currentlyEditedVerseNote = bible_book.notes[chapternumber - 1]['_' + verseNumber];
+                noteForCurrentlyEditedVerse = bible_book.notes[chapternumber - 1]['_' + verseNumber];
                 console.log(bible_book.notes[chapternumber - 1].length);
-                console.log(currentlyEditedVerseNote);
-                return currentlyEditedVerseNote
+                console.log(noteForCurrentlyEditedVerse);
+                return noteForCurrentlyEditedVerse
             }
         }
     }

@@ -134,7 +134,9 @@ function hideTransliteration(stn) {
 }
 
 function highlightAllStrongs(x) {
-    cs = `span[strnum="${x}"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
+    cs = `span[strnum="${x}"]{background-color:transparent;box-shadow:0 -1.05em 0px 0px ${randomColor(200)} inset;border-radius:2px;color:black!important;
+    transition: box-shadow .1s ease-in;`;
+    // cs = `span[strnum="${x}"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -226,11 +228,24 @@ function hideBibleNav() {
 /* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
 /* This is acomplished by modifying the styles in the head */
 main.addEventListener('mouseover', function (e) {
-    let strAtt;
-    if (e.target.getAttribute('strnum')) {
+    function getBoxShadowColor(elm){
+        return window.getComputedStyle(elm, null).getPropertyValue("box-shadow").split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1');
+    }
+    let strAtt,highlightColor;
+    if (!e.target.matches('#context_menu')&&e.target.getAttribute('strnum')) {
         strAtt = e.target.getAttribute('strnum')
-    } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {//For context_menu when it is serving a strong's number
-        strAtt=elmAhasElmOfClassBasAncestor(e.target, '[strnum]').getAttribute('strnum');
+        highlightColor = getBoxShadowColor(e.target);
+    }
+    //For context_menu when it is serving a strong's number
+    else {
+        if (e.target.matches('#context_menu[strnum]')) {
+            strAtt=e.target.getAttribute('strnum');
+            highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
+        } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {
+            strElm=elmAhasElmOfClassBasAncestor(e.target, '[strnum]');
+            strAtt=strElm.getAttribute('strnum');
+            highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
+        }
     }
     if (strAtt) {
         if (document.getElementById('highlightall')) {
@@ -250,13 +265,16 @@ main.addEventListener('mouseover', function (e) {
         });
         newStyleInHead.id = 'highlightall';
         // newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
+        if(highlightColor=='none'){highlightColor='var(--strongword-hover)'}
         newStyleInHead.innerHTML = `${transStyleSelector}{
-            z-index:2;background-color:var(--strongword-hover)!important;
-            border-radius:2px;border-bottom: 4px dashed var(--redwords)!important;
+            box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,
+            0 5px 5px -2px var(--shadow-color)!important;
+            border-radius:5px;
+            border-bottom:3px dashed maroon !important;
             color:black!important;
-            transition: background-color .1s ease-in;
+            transition: box-shadow .1s ease-in;
             `;
-            /* box-shadow:0 0.5px 1px 0px var(--shadow-color)!important; */
+            /* box-shadow:!important; */
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }

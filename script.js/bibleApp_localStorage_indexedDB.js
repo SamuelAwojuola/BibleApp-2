@@ -204,7 +204,8 @@ function save_verse_note_to_indexedDB(e) {
         if(verseNoteInnerText.trim()!=''){
             populateDB(_bCbV, verseNoteInnerHTML)
             /* IF verse note exists in indXDB, modify it */
-            indicateThatVerseHasNote();
+            indicateThatVerseHasNoteInJSONnotes_file();
+            // indicateThatVerseHasNoteInIndxDB();
         }
         /* MODIFY THE BIBLE NOTES JSON FILE */
         // writeToVerseNotesFiles()
@@ -292,32 +293,34 @@ function getAllItems(storeName,callback) {
 
 /* To Indicate VErses That Have Notes in the Database */
 
-function indicateThatVerseHasNote() {
+// function indicateThatVerseHasNoteInIndxDB() {
 
-    let stringOfversesWithNotes = '',stringOfversesWithNotesSTARRED = '';
-    let allLoadedBooks = main.querySelectorAll('.chptverses');
-    let old_bk_name = null;
-    allLoadedBooks.forEach(code => {
-        let bk_name = code.getAttribute('bookname');
-        if (old_bk_name != bk_name) {
-            let newCodeRef;
+//     let stringOfversesWithNotes = '',stringOfversesWithNotesSTARRED = '';
+//     let allLoadedBooks = main.querySelectorAll('.chptverses');
+//     let old_bk_name = null;
+//     allLoadedBooks.forEach(code => {
+//         let bk_name = code.getAttribute('bookname');
+//         if (old_bk_name != bk_name) {
+//             let newCodeRef;
 
-            getAllItems(bk_name, function (items) {
-                var len = items.length;
-                for (var i = 0; i < len; i += 1) {
-                    newCodeRef= '[ref="' + bk_name + ' ' + items[i].id.toString().split('.').join(':') + '"]';
-                    let coma;
-                    if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
-                    stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
-                    stringOfversesWithNotesSTARRED = stringOfversesWithNotesSTARRED + coma + newCodeRef + ':before';
-                    refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-radius:2px;}'
-                    +
-                    stringOfversesWithNotesSTARRED + '{content:"*"}'
-                    createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
-                }
-            });
+//             // getAllItems(bk_name, function (items) {//works with indexDB
+//             getAllRefsInBookThatHaveNote(bk_name, function (items) {//works iwth JSON files as database
+//                 var len = items.length;
+//                 for (var i = 0; i < len; i += 1) {
+//                     // newCodeRef= '[ref="' + bk_name + ' ' + items[i].id.toString().split('.').join(':') + '"]';//use with 'getAllItems()' 
+//                     newCodeRef= `[ref="${bk_name} ${items[i]}"]`;//use with 'getAllRefsInBookThatHaveNote()'
+//                     let coma;
+//                     if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
+//                     stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
+//                     stringOfversesWithNotesSTARRED = stringOfversesWithNotesSTARRED + coma + newCodeRef + ':before';
+//                     refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{font-weight:bold; font-style:italic; border-radius:2px;}'
+//                     +
+//                     stringOfversesWithNotesSTARRED + '{content:"*"}'
+//                     createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
+//                 }
+//             });
 
-        }
-        old_bk_name = bk_name;
-    });
-}
+//         }
+//         old_bk_name = bk_name;
+//     });
+// }

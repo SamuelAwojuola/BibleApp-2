@@ -40,7 +40,6 @@ function showCurrentChapterInHeadnSearchBar(h, isH2 = true) {
 
     let selectedChapter = bible_chapters.querySelector(`[value="bk${hID.split('.')[0].toString()}ch${Number(hID.split('.')[1])}"]`)
     let bkName = bible_books.querySelector(`[bookname="${h.getAttribute('bookname')}"]`);
-    // console.log('scrollto')
     indicateBooknChapterInNav(bkName, selectedChapter);
     
     reference.value = derivedReference;
@@ -88,23 +87,23 @@ function showOnlyLoadedChapters() {
     main.removeEventListener('scroll', loadNewChapterOnScroll)
 }
 moreChaptersOnScroll()
-
+let prev_bkNumb=null;
 function loadNewChapterOnScroll() {
     let lastScrollTop = 0;
     var mst = main.scrollTop; // Credits: "https://github.com/qeremy/so/blob/master/so.dom.js#L426"
     if (mst > lastScrollTop) {
         // downscroll code
         if (main.scrollHeight - main.scrollTop - main.clientHeight < 100) { //If you have scrolled to the end of the element
-            let lastChapter = main.querySelector('.chptverses:last-child');
-            // console.log(lastChapter)
-            let bkNumb = lastChapter.getAttribute('bookid');
+            let lastChapter = main.querySelector('.chptverses:last-of-type');
+            bkNumb = lastChapter.getAttribute('bookid');
             let chptNumb = lastChapter.getAttribute('chapter') - 1;
             // let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)+1}"]`)//Stops generating chapters at end of book
             let nextChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)}"]`).nextElementSibling;
 
             if (nextChapter) {
-                remove_HIGHEST_Chapter()
+                remove_HIGHEST_Chapter();
                 getTextOfChapterOnScroll(nextChapter, 0);
+                indicateThatVerseHasNoteInJSONnotes_file();
             }
             transliteratedWords_Array.forEach(storedStrnum => {
                 showTransliteration(storedStrnum)
@@ -114,13 +113,14 @@ function loadNewChapterOnScroll() {
         // upscroll code
         if (main.scrollTop < 10) { //If you have scrolled to the top of the element
             let firstChapter = main.querySelector('.chptverses:first-of-type')
-            let bkNumb = firstChapter.getAttribute('bookid');
+            bkNumb = firstChapter.getAttribute('bookid');
             let chptNumb = firstChapter.getAttribute('chapter') - 1;
             // let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)-1}"]`)//Stops generating chapters when scrolling gets to the beginning of book
             let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)}"]`).previousElementSibling
             if (prevChapter) {
                 remove_LOWEST_Chapter()
                 getTextOfChapterOnScroll(prevChapter, true, true);
+                indicateThatVerseHasNoteInJSONnotes_file();
             }
         }
         transliteratedWords_Array.forEach(storedStrnum => {
@@ -129,7 +129,8 @@ function loadNewChapterOnScroll() {
     }
     // For Mobile or negative scrolling
     lastScrollTop = mst <= 0 ? 0 : mst;
-    indicateThatVerseHasNote()//to style verse references that have notes in the database
+    //to style verse references that have notes in the database
+    // indicateThatVerseHasNoteInIndxDB()
 }
 
 /* Scroll To Target Verse */
@@ -146,11 +147,6 @@ function scrollToVerse(targetVerse) {
                 // behavior: "smooth"//sometimes does not land on the element properly
             });
         }
-        // Let the target verse flash
-        // targetVerse.classList.add('flashit');
-        // setTimeout(function () {
-        //     targetVerse.classList.remove("flashit");
-        // }, 5000);
     }
 }
 

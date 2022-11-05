@@ -178,6 +178,11 @@ function toggleNav() {
 // hideRefNav(null, searchPreviewWindowFixed)
 function hideRefNav(hORs, elm2HideShow, runfunc) {
     let elHS;
+    function toShowOnlyOneAtaTime(){
+        //To show only one at a time
+        let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
+        otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+    }
     if (elm2HideShow) {
         elHS = elm2HideShow
     } else {
@@ -188,15 +193,14 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
         elHS.classList.remove('slidein');
         elHS.classList.add('slideout');
     } else if (hORs == 'show') {
-        //To show only one at a time
-        let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
-        otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+        toShowOnlyOneAtaTime()
 
         if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.add('flex');searchsettings.classList.add('active_button')}
         elHS.classList.remove('slideout');
         elHS.classList.add('slidein');
     } else {
         if (elHS.classList.contains('slideout')) {
+            toShowOnlyOneAtaTime()
             if(elHS==searchPreviewWindowFixed){
                 elHS.classList.add('flex');
                 searchsettings.classList.remove('active_button');

@@ -205,7 +205,7 @@ function indicateThatVerseHasNoteInJSONnotes_file() {
                 if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
                 stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
                 // console.log(stringOfversesWithNotes)
-                refsWithVerseNoteStyleRule = stringOfversesWithNotes + '{box-sizing:border-box; font-weight:bolder; font-style:italic; color: maroon; border-radius:2px; background: rgb(203, 255, 125)!important; text-decoration:none!important}';
+                refsWithVerseNoteStyleRule = `${stringOfversesWithNotes}{box-sizing:border-box; font-weight:bolder; font-style:italic; color: maroon;box-shadow: 0 5px 5px -3px var(--shadow-color), 0 -5px 0 0 rgb(255, 243, 148)inset; text-decoration:none!important}`;
                 createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
               }
           });

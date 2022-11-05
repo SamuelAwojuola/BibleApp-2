@@ -382,3 +382,48 @@ function remove_resizer_funcs() {
 //         return result;
 //     }, {});
 // }
+
+//Random Color Generator
+function randomColor(brightness) {
+    function randomChannel(brightness) {
+        var r = 255 - brightness;
+        var n = 0 | ((Math.random() * r) + brightness);
+        var s = n.toString(16);
+    return (s.length == 1) ? '0' + s : s;
+    }
+    return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
+}
+
+function isAsubArrayofB(a, b) {
+    let aL = a.length;
+    let bL = b.length;
+    //b cannot contain a if a is longer
+    if (bL >= aL) {
+        // start comparison where at the last possible starting point of a in b.
+        // E.g., if aL is 3 and bL is 5, then the last possible starting point of a in b is 2
+        let lastPossibleStartIndex = bL - aL;
+        let lind = lastPossibleStartIndex;
+        while (lind >= 0) {
+            let i = 0,
+            j = lind;
+            while (a[i] == b[j]) {
+                if (i == aL - 1) {
+                    return true
+                }
+                i++;
+                j++;
+            }
+            lind--; //move backwards in b array from last possible index to the start of b
+        }
+        return false
+    }
+    return false
+}
+
+function areAllitemsOfAinB(a, b) {
+    if (a.every(elem => b.indexOf(elem) > -1)) {
+        return true
+    } else {
+        return false
+    }
+}

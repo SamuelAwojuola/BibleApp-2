@@ -19,7 +19,9 @@ main.addEventListener('mouseover', function (e) {
             let newStyleInHead = document.createElement('style');
             newStyleInHead.id = 'version_verses_highlightall';
             newStyleInHead.classList.add(currentVversion);
-            newStyleInHead.innerHTML = `.${currentVversion}:not(:only-child){background-color: var(--verse-hover);background-color: var(--vmultiple-hover);box-shadow: 0 2px 2px 0 var(--shadow-color)`;
+            newStyleInHead.innerHTML = `.${currentVversion}:not(:only-child){
+                background-color: var(--vmultiple-hover);
+                box-shadow: 0 2px 2px 0 var(--shadow-color)`;
             headPart.append(newStyleInHead);
         }
         if (vvH = document.getElementById('version_verses_highlightall')) {

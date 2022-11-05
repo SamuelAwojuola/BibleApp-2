@@ -268,7 +268,7 @@ main.addEventListener('mouseover', function (e) {
         if(highlightColor=='none'){highlightColor='var(--strongword-hover)'}
         newStyleInHead.innerHTML = `${transStyleSelector}{
             box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,
-            0 5px 5px -2px var(--shadow-color)!important;
+            0 5px 5px -2px var(--shadow-orange)!important;
             border-radius:5px;
             border-bottom:3px dashed maroon !important;
             color:black!important;

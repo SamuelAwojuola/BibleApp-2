@@ -188,12 +188,19 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
         elHS.classList.remove('slidein');
         elHS.classList.add('slideout');
     } else if (hORs == 'show') {
-        if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.add('flex')}
+        //To show only one at a time
+        let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
+        otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+
+        if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.add('flex');searchsettings.classList.add('active_button')}
         elHS.classList.remove('slideout');
         elHS.classList.add('slidein');
     } else {
         if (elHS.classList.contains('slideout')) {
-            if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.add('flex')}
+            if(elHS==searchPreviewWindowFixed){
+                elHS.classList.add('flex');
+                searchsettings.classList.remove('active_button');
+            }
             elHS.classList.remove('slideout');
             elHS.classList.add('slidein');
             // TO SCROLL BOOK AND CHAPTER INTO VIEW
@@ -204,7 +211,10 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
                 });
             }            
         } else {
-            if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.remove('flex')}
+            if(elHS==searchPreviewWindowFixed){
+                elHS.classList.remove('flex');
+                searchsettings.classList.add('active_button');
+            }
             elHS.classList.remove('slidein');
             elHS.classList.add('slideout');
         }

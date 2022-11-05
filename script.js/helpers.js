@@ -427,3 +427,40 @@ function areAllitemsOfAinB(a, b) {
         return false
     }
 }
+
+
+/* WATCH FOR INACTIVITY IN ELM AND RUN FUNCTION AFTER SET-TIME */
+// https://www.brcline.com/blog/detecting-inactivity-in-javascript
+function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60000, func2run){
+    var timeoutId;
+
+    function resetTimer() { 
+        window.clearTimeout(timeoutId)
+        startTimer();
+    }
+      
+    function startTimer() {
+        // window.setTimeout returns an Id that can be used to start and stop a timer
+        timeoutId = window.setTimeout(doInactive, timeoutInMiliseconds)
+    }
+      
+    function doInactive() {
+        // Clear the eventListeners
+        elm2Watch.removeEventListener("mousemove", resetTimer, false);
+        elm2Watch.removeEventListener("mousedown", resetTimer, false);
+        elm2Watch.removeEventListener("keypress", resetTimer, false);
+        elm2Watch.removeEventListener("touchmove", resetTimer, false);
+        // if(searchsettings.classList.contains('active_button')){searchsettings.click()}
+        // totalfound.innerHTML='Search Cleared';
+        func2run()
+    }
+     
+    // function setupTimers () {
+        elm2Watch.addEventListener("mousemove", resetTimer, false);
+        elm2Watch.addEventListener("mousedown", resetTimer, false);
+        elm2Watch.addEventListener("keypress", resetTimer, false);
+        elm2Watch.addEventListener("touchmove", resetTimer, false);
+         
+        startTimer();
+    // }
+}

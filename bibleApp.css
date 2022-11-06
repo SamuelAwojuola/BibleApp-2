@@ -113,7 +113,8 @@ code{position: relative; padding-top: 5px;}
 }
 .showing_crossref #verse_crossref_button,
 .showing_versenote #verse_notes_button{
-    background: rgb(203, 255, 125)!important;
+    background: rgb(203, 255, 125);
+    font-style: italic;
 }
 .crossrefs, .verse_note{
     box-shadow: 0 2px 2px 0#878787;
@@ -167,10 +168,18 @@ code{position: relative; padding-top: 5px;}
     justify-content: center;
     flex-wrap: nowrap;
     flex-direction: row;
-    align-items: center;}
+    align-items: center;
+}
+.save_edit_btns_holder button{
+    font-size: large;
+    font-weight: bold;
+}
 .note_edit_button{
     background: none;
     cursor: pointer;
+}
+.note_edit_button.active{
+    background: rgb(255, 232, 215);
 }
 .note_edit_button:active{
     box-shadow: 0px 0px 2px 0px var(--shadow-color);
@@ -248,7 +257,7 @@ code{position: relative; padding-top: 5px;}
     text-overflow: ellipsis;
 }
 #bible_nav {
-    font-size: var(--fontsize-scripture-nav);
+    font-size: var(--fontsize-scripture-nav)!important;
 }
 .refnav .bible_nav {
     height: 99.5%;
@@ -811,6 +820,17 @@ main span {
 }
 span.vmultiple:hover span.vhlt {
     background: yellow;
+}
+span.vmultiple.noted code {
+    box-sizing:border-box;
+    font-weight:bolder;
+    font-style:italic;
+    border-bottom: 5px solid green;
+    text-decoration:none!important;
+}
+span.vmultiple.noted code #verse_notes_button {
+    background: white;
+    color: green;
 }
 
 .slideup {

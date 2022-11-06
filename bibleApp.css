@@ -825,7 +825,7 @@ span.vmultiple.noted code {
     box-sizing:border-box;
     font-weight:bolder;
     font-style:italic;
-    border-bottom: 5px solid green;
+    border-bottom: 3px solid orangered;
     text-decoration:none!important;
 }
 span.vmultiple.noted code #verse_notes_button {

@@ -194,19 +194,22 @@ function indicateThatVerseHasNoteInJSONnotes_file() {
   let old_bk_name = null;
   allLoadedBooks.forEach(code => {
       let bk_name = code.getAttribute('bookname');
-      // console.log(bk_name)
+      let bkIndx = '_' + bible.Data.allBooks.indexOf(bk_name);
       if (old_bk_name != bk_name) {
           let newCodeRef;
           getAllRefsInBookThatHaveNote(bk_name, function (items) {//works iwth JSON files as database
               var len = items.length;
               for (var i = 0; i < len; i += 1) {
-                newCodeRef= `[ref="${bk_name} ${items[i]}"]`;//use with 'getAllRefsInBookThatHaveNote()'
-                let coma;
-                if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
-                stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
-                // console.log(stringOfversesWithNotes)
-                refsWithVerseNoteStyleRule = `${stringOfversesWithNotes}{box-sizing:border-box; font-weight:bolder; font-style:italic; color: maroon;box-shadow: 0 5px 5px -3px var(--shadow-color), 0 -5px 0 0 rgb(255, 243, 148)inset; text-decoration:none!important}`;
-                createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
+                // newCodeRef= `[ref="${bk_name} ${items[i]}"]`;//use with 'getAllRefsInBookThatHaveNote()'
+                // let coma;
+                // if(stringOfversesWithNotes==''){coma=''}else{coma=', '}
+                // stringOfversesWithNotes = stringOfversesWithNotes + coma + newCodeRef;
+                // // console.log(stringOfversesWithNotes)
+                // refsWithVerseNoteStyleRule = `${stringOfversesWithNotes}{box-sizing:border-box; font-weight:bolder; font-style:italic; color: maroon;box-shadow: 0 5px 5px -3px var(--shadow-color), 0 -5px 0 0 rgb(255, 243, 148)inset; text-decoration:none!important}`;
+                // createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
+
+                document.getElementById(`${bkIndx}.${Number(items[i].split(':')[0])-1}.${Number(items[i].split(':')[1])-1}`).classList.add('noted')
+                
               }
           });
       }

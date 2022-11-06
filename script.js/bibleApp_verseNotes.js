@@ -125,7 +125,7 @@ function editVerseNote(eTarget, e, saveBtn) {
 
         eTargets_note.contentEditable = 'true';
         eTargets_note.id = 'noteEditingTarget';
-        eTarget.style.backgroundColor = 'pink';
+        // eTarget.style.backgroundColor = 'orange';
         eTarget.classList.add('active');
 
         enableCKEditor('noteEditingTarget', eTarget)

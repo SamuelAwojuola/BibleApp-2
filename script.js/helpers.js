@@ -162,7 +162,7 @@ function getBoxShadowColor(elm){
 }
 
 /* ****************************** */
-/*        DOM EXPLORATIONS        */
+/*    DOM EXPLORATIONS/QUERIES    */
 /* ****************************** */
 
 function X_hasNoSibling_Y_b4_Z(x, y, z) {
@@ -313,6 +313,12 @@ function arrayOfElementsBetween(a, b) {
     }
 }
 
+function windowsSelection(){
+    const selObj = window.getSelection();
+    // return selObj
+    const selRange = selObj.getRangeAt(0);
+    return selRange
+}
 /* ********************************************* */
 /* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
 /* ********************************************* */

@@ -64,10 +64,11 @@ function cacheFunctions() {
         });
     }
     if (localStorage.getItem('versionHighlightingOnHover')) {
-        versionHighlight_ON_OFF(localStorage.getItem('versionHighlightingOnHover'))
+        console.log(localStorage.getItem('versionHighlightingOnHover')) 
+        versionHighlighting_ON_OFF(localStorage.getItem('versionHighlightingOnHover'))
     } else {
         //for the first time the app is run on a browser (it will turn it on)
-        versionHighlight_ON_OFF(true)
+        versionHighlighting_ON_OFF(true)
     }
     //For showing original english translation beside Hebrew/Greek transliteration
     // This really has nothing to do with the cache

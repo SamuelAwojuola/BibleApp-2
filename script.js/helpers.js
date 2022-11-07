@@ -53,11 +53,11 @@ function removeCharacterFromString(xh, str) {
 /* ***************************** */
 
 function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
-    while (a.parentNode && a.parentNode.tagName.toUpperCase() != limit) {
-        if (a.parentNode.classList.contains(ancestorsClass) || a.parentNode.matches(ancestorsClass)) {
+    while (a.parentElement && a.parentElement.tagName.toUpperCase() != limit) {
+        if (a.parentElement.classList.contains(ancestorsClass) || a.parentElement.matches(ancestorsClass)) {
             return a.parentNode
         }
-        a = a.parentNode;
+        a = a.parentElement;
     }
     return false
     
@@ -154,6 +154,12 @@ function relocateElmTo(elm, moveHere) {
     moveHere.append(elmCopy)
 }
 
+// GET FIRST SHADOW COLOR
+function getBoxShadowColor(elm){
+    // Even if element has more than one box-shadow color, it will only get the first one
+    let boxShadowOfElem = window.getComputedStyle(elm, null).getPropertyValue("box-shadow");
+    return boxShadowOfElem.split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1')
+}
 
 /* ****************************** */
 /*        DOM EXPLORATIONS        */
@@ -464,3 +470,13 @@ function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60
         startTimer();
     // }
 }
+
+/* CHECK IF DEVICE IS A MOBILE DEVICE */
+// window.addEventListener("load", () => {
+//     // (A) CHECK FOR MOBILE
+//     isMobile = navigator.userAgent.toLowerCase().match(/mobile/i);
+   
+//     // (B) DO SOMETHING...
+//     if (isMobile) { console.log("Is mobile device"); }
+//     else { console.log("Not mobile device"); }
+//   });

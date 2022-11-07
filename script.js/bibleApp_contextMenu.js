@@ -1,5 +1,6 @@
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
+let rightClickedElm = null;
 // let context_menu = document.querySelector('#context_menu');
 function add_tooltipContextMenu(e) {
     e.preventDefault();
@@ -12,7 +13,8 @@ function add_tooltipContextMenu(e) {
         main.prepend(context_menu_replacement);
         context_menu.addEventListener("click", codeELmRefClick);
     }
-    let currentEt = e.target;
+    rightClickedElm = e.target;
+    firstShadowColorOfElem=getBoxShadowColor(rightClickedElm)
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
     if (e.target.matches('.translated, .strnum, .crossrefs>span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {

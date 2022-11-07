@@ -228,9 +228,6 @@ function hideBibleNav() {
 /* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
 /* This is acomplished by modifying the styles in the head */
 main.addEventListener('mouseover', function (e) {
-    function getBoxShadowColor(elm){
-        return window.getComputedStyle(elm, null).getPropertyValue("box-shadow").split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1');
-    }
     let strAtt,highlightColor;
     if (!e.target.matches('#context_menu')&&e.target.getAttribute('strnum')) {
         strAtt = e.target.getAttribute('strnum')
@@ -238,13 +235,15 @@ main.addEventListener('mouseover', function (e) {
     }
     //For context_menu when it is serving a strong's number
     else {
-        if (e.target.matches('#context_menu[strnum]')) {
-            strAtt=e.target.getAttribute('strnum');
-            highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
+        if (e.target.matches('#context_menu[strnum]')||elmAhasElmOfClassBasAncestor(e.target,'#context_menu[strnum]')) {
+            // 'rightClickedElm' & 'firstShadowColorOfElem' are gotten from the rightclickmenu function
+            strAtt=rightClickedElm.getAttribute('strnum');
+            highlightColor = firstShadowColorOfElem;
         } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {
             strElm=elmAhasElmOfClassBasAncestor(e.target, '[strnum]');
             strAtt=strElm.getAttribute('strnum');
-            highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
+            highlightColor = getBoxShadowColor(e.target);
+            // highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
         }
     }
     if (strAtt) {
@@ -274,7 +273,6 @@ main.addEventListener('mouseover', function (e) {
             color:black!important;
             transition: box-shadow .1s ease-in;
             `;
-            /* box-shadow:!important; */
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);
     }

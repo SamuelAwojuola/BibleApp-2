@@ -103,7 +103,7 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
               //Check for verse number
               noteForCurrentlyEditedVerse = bible_book.notes[chapternumber - 1]['_' + verseNumber];
               // console.log(bible_book.notes[chapternumber - 1].length);
-              // console.log(noteForCurrentlyEditedVerse);
+              console.log(noteForCurrentlyEditedVerse);
               appendHere.innerHTML = noteForCurrentlyEditedVerse;
               return noteForCurrentlyEditedVerse
           }
@@ -207,9 +207,10 @@ function indicateThatVerseHasNoteInJSONnotes_file() {
                 // // console.log(stringOfversesWithNotes)
                 // refsWithVerseNoteStyleRule = `${stringOfversesWithNotes}{box-sizing:border-box; font-weight:bolder; font-style:italic; color: maroon;box-shadow: 0 5px 5px -3px var(--shadow-color), 0 -5px 0 0 rgb(255, 243, 148)inset; text-decoration:none!important}`;
                 // createNewStyleSheetandRule('refs_with_versenotes',refsWithVerseNoteStyleRule);
-
-                document.getElementById(`${bkIndx}.${Number(items[i].split(':')[0])-1}.${Number(items[i].split(':')[1])-1}`).classList.add('noted')
-                
+                let refCodeToMarkAsHavingNote = document.getElementById(`${bkIndx}.${Number(items[i].split(':')[0])-1}.${Number(items[i].split(':')[1])-1}`);
+                if(refCodeToMarkAsHavingNote){
+                  refCodeToMarkAsHavingNote.classList.add('noted')
+                }
               }
           });
       }

@@ -1,22 +1,31 @@
 ppp.addEventListener("click", showVerseNote);//For '#verse_notes_button' && '.note_edit_button'
+ppp.addEventListener("contextmenu", showVerseNote);//For to open verse note in new window
 ppp.addEventListener("click", save_verse_note_to_indexedDB);//For '#note_save_button'
 
 function showVerseNote(e, x) {
-    if (e) {
-        if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
-            appendVerseNote(e);
+    if(e){
+        if (e.type=='click') {
+            if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
+                appendVerseNote(e);
+            }
+            if (e.target.matches('.note_edit_button')) {
+                let saveBtn = e.target.parentNode.querySelector('.note_save_button')
+                editVerseNote(eTarget = e.target, e, saveBtn);
+            }
+        } else if (e.type=='contextmenu') {
+            if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
+                appendVerseNote(e);
+            }
         }
-        if (e.target.matches('.note_edit_button')) {
-            let saveBtn = e.target.parentNode.querySelector('.note_save_button')
-            editVerseNote(eTarget = e.target, e, saveBtn);
-        }
-    } else {
-        editVerseNote(x);
     }
+    else {
+            editVerseNote(x);
+        }
 }
 
 function appendVerseNote(e) {
     let eTarget = e.target;
+    //Get reference of clicked verse
     clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
     let siblingVersenote;
     let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');
@@ -24,15 +33,13 @@ function appendVerseNote(e) {
     //Make notes always come after crossref
     let whereTOappend = undefined;
     whereTOappend = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.crossrefs', '.vmultiple').elm2appendAfter;
-    // if (X_hasNoSibling_Y_b4_Z(masterVerseHolder,'.crossrefs','.vmultiple').yes_no) {
-    // }
 
     //If verse_note is not already attached to verse
     if (!masterVerseHolder.classList.contains('showing_versenote')) {
         let noteID = 'note' + masterVerseHolder.id.replaceAll(".", "_");
         let chapterHolder = elmAhasElmOfClassBasAncestor(masterVerseHolder, '.chptverses');
         
-        //GET CURRENT BOOK NAME (NEEDED FOR INDEXED-DB))
+        //GET CURRENT BOOK NAME, CHAPTER & VERSE (NEEDED TO RETRIEVE VERSE-NOTE))
         let clickedVerseRefObj = breakDownClickedVerseRef();
         let bN = clickedVerseRefObj.bN;
         let bC = clickedVerseRefObj.bC;
@@ -41,55 +48,77 @@ function appendVerseNote(e) {
         bookName=bN, chapternumber=bC, verseNumber=cV;
         bibleBook_IDB = bN;
 
-        if (vnt = chapterHolder.querySelector('#' + noteID)) {
-        vnt.style.display = '';
-        vnt.classList.remove('slideup');
-        masterVerseHolder.classList.add('showing_versenote');
-    } else {
-            let verseNoteDiv = new DocumentFragment();
-
-            let newVerseNote = verse_note.cloneNode(true);
-            newVerseNote.id = noteID;
-
-            let saveBtn = newVerseNote.querySelector('.note_save_button');
-            let editBtn = newVerseNote.querySelector('.note_edit_button');
-
-            //Add refrence book_name to the button
-            saveBtn.setAttribute('bk', bN);
-            saveBtn.setAttribute('b_cv', bCnCv);
-            //Add refrence book_name to the button
-            editBtn.setAttribute('bk', bN);
-            editBtn.setAttribute('b_cv', bCnCv);
-
-            //OPEN DATABASE IF NOT OPEN
-            /* function ifNoteAppend() {
-                //if verse already has note, get it
-                if(db){
-                    clearInterval(dbBuildTimer_1);//Since db has been created, clear the setinterval timer
-                    let appendHere = newVerseNote.querySelector('.text_content');
-                    console.log('::db created::')
-                    getNoteFromIDBifAvailable(bN, bCnCv, appendHere);
-                }
-            }
-            var dbBuildTimer_1;
-            if (!db) {
-                createDB();//Open (or create) the database
-                //Check at set intervals whether or not the db has been created
-                var dbBuildTimer_1 = setInterval(ifNoteAppend, 300);// If db available get the verse not if available
+        if(e.type=='click'){
+            if (vnt = chapterHolder.querySelector('#' + noteID)) {
+                vnt.style.display = '';
+                vnt.classList.remove('slideup');
+                masterVerseHolder.classList.add('showing_versenote');
             } else {
-                ifNoteAppend()
-            } */
-            let appendHere = newVerseNote.querySelector('.text_content');
-            verseNoteDiv.append(newVerseNote);
-            whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
-            masterVerseHolder.classList.add('showing_versenote');
-            // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
-            siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
-            setTimeout(() => {
-                siblingVersenote.classList.remove('slideup');
-            }, 1);
-            readFromVerseNotesFiles(bN, bC, cV,appendHere);
+                let verseNoteDiv = new DocumentFragment();
 
+                let newVerseNote = verse_note.cloneNode(true);
+                newVerseNote.id = noteID;
+
+                let saveBtn = newVerseNote.querySelector('.note_save_button');
+                let editBtn = newVerseNote.querySelector('.note_edit_button');
+
+                //Add refrence book_name to the button
+                saveBtn.setAttribute('bk', bN);
+                saveBtn.setAttribute('b_cv', bCnCv);
+                //Add refrence book_name to the button
+                editBtn.setAttribute('bk', bN);
+                editBtn.setAttribute('b_cv', bCnCv);
+
+                //OPEN INDEXED-DATABASE IF NOT OPEN
+                /* function ifNoteAppend() {
+                    //if verse already has note, get it
+                    if(db){
+                        clearInterval(dbBuildTimer_1);//Since db has been created, clear the setinterval timer
+                        let appendHere = newVerseNote.querySelector('.text_content');
+                        console.log('::db created::')
+                        getNoteFromIDBifAvailable(bN, bCnCv, appendHere);
+                    }
+                }
+                var dbBuildTimer_1;
+                if (!db) {
+                    createDB();//Open (or create) the database
+                    //Check at set intervals whether or not the db has been created
+                    var dbBuildTimer_1 = setInterval(ifNoteAppend, 300);// If db available get the verse not if available
+                } else {
+                    ifNoteAppend()
+                } */
+                let appendHere = newVerseNote.querySelector('.text_content');
+                verseNoteDiv.append(newVerseNote);
+                whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
+                masterVerseHolder.classList.add('showing_versenote');
+                // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
+                siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
+                setTimeout(() => {
+                    siblingVersenote.classList.remove('slideup');
+                }, 1);
+                //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
+                readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
+            }
+        }
+        else if(e.type=='contextmenu'){ 
+            // Open new window and append verse note to the body
+            if(!window2){ // Check if win2 has been opened at any time (check if it has been created)
+                openNewWindow()// the new window is assigned "window2"
+                window2.close()
+                openNewWindow()
+            } else if(!window2.closed){
+                window2.close()
+                openNewWindow()
+            }
+            else if (window2.closed) { // if win2 is closed, reopen it
+                openNewWindow()
+            }
+            window2.onload = function () {
+                let appendHere = window2.document.querySelector('body');// Get the body in the new window and append there
+                readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
+                // window2.focus()// Bring up the window
+            }
+        
         }
     } else {
         siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;

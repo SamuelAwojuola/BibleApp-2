@@ -69,6 +69,12 @@ body {
 body * {
     box-sizing: border-box;
 }
+li li{
+    list-style-type: lower-alpha;
+}
+li li li{
+    list-style-type:lower-roman;
+}
 .verse {z-index: 0;}
 #pagemaster {
     position: fixed;
@@ -131,7 +137,7 @@ code{position: relative; padding-top: 5px;}
     line-height: auto;
     opacity: 1;
 }
-#verse_note{display: none;}
+#verse_note{display: none; position: relative;}
 .verse_note {
     display: flex;
     flex-direction: column;
@@ -150,6 +156,7 @@ code{position: relative; padding-top: 5px;}
     z-index: 1;
 }
 .text_content{
+    position: relative;
     width: 100% !important;
     margin-left: 0;
     margin-right: 0;
@@ -161,6 +168,11 @@ code{position: relative; padding-top: 5px;}
     
     /* margin: 0.25em 0.25em;
     padding: 0.25em 0.25em; */
+}
+.text_content span[ref]{
+    text-decoration: underline;
+    color: blue;
+    cursor: pointer;
 }
 .save_edit_btns_holder{
     display:flex;

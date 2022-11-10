@@ -64,7 +64,7 @@ function cacheFunctions() {
         });
     }
     if (localStorage.getItem('versionHighlightingOnHover')) {
-        console.log(localStorage.getItem('versionHighlightingOnHover')) 
+        // console.log(localStorage.getItem('versionHighlightingOnHover')) 
         versionHighlighting_ON_OFF(localStorage.getItem('versionHighlightingOnHover'))
     } else {
         //for the first time the app is run on a browser (it will turn it on)

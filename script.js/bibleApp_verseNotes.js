@@ -100,7 +100,7 @@ function appendVerseNote(e) {
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
             }
         }
-        else if(e.type=='contextmenu'){ 
+        else if(e.type=='contextmenu'){ // If it is rightClicked, it is to be opened in a new window
             // Open new window and append verse note to the body
             if(!window2){ // Check if win2 has been opened at any time (check if it has been created)
                 openNewWindow()// the new window is assigned "window2"

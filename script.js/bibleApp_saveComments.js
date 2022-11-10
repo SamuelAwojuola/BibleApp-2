@@ -103,7 +103,8 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
               //Check for verse number
               noteForCurrentlyEditedVerse = bible_book.notes[chapternumber - 1]['_' + verseNumber];
               // console.log(bible_book.notes[chapternumber - 1].length);
-              console.log(noteForCurrentlyEditedVerse);
+              // console.log(noteForCurrentlyEditedVerse);
+              noteForCurrentlyEditedVerse = generateRefsInNote(noteForCurrentlyEditedVerse);
               appendHere.innerHTML = noteForCurrentlyEditedVerse;
               return noteForCurrentlyEditedVerse
           }

@@ -17,7 +17,7 @@ function add_tooltipContextMenu(e) {
     firstShadowColorOfElem=getBoxShadowColor(rightClickedElm)
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
-    if (e.target.matches('.translated, .strnum, .crossrefs>span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {
+    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -53,22 +53,33 @@ function add_tooltipContextMenu(e) {
             let addquotes = true;
             let eParent;
             // console.clear()
-            // console.log(elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed'))
-            if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
+            // console.log(elmAhasElmOfClassBasAncestor(e.target, '.verse_note'))
+            // Append to verseNote
+            if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
+                eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
+                if (!eParent.querySelector('#context_menu')) {
+                    //move the #context_menu from #main to #searchPreviewFixed
+                    let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
+                    main.querySelector('#context_menu').remove()
+                    eParent.append(clonedContextMenu)
+                }
+            }
+            // Append to verse
+            else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
                 eParent = document.querySelector('#main');
                 if (eParent.offsetLeft != 0) {
                     extraLeft = eParent.offsetLeft;
                 }
                 //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
-                if (!eParent.querySelector('#context_menu')) {
+                if (!eParent.querySelector('#context_menu')||main.querySelector('.verse_note #context_menu')) {
                     //move the #context_menu from #searchPreviewFixed to #main
-                    let clonedContextMenu = searchPreviewFixed.querySelector('#context_menu').cloneNode(true);
-                    searchPreviewFixed.querySelector('#context_menu').remove()
+                    let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
+                    document.querySelector('#context_menu').remove()
                     main.append(clonedContextMenu)
                 }
             }
                 //if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
-                else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
+            else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
                 eParent = document.querySelector('#searchPreviewFixed');
                 if (!eParent.querySelector('#context_menu')) {
                     //move the #context_menu from #main to #searchPreviewFixed
@@ -107,7 +118,7 @@ function add_tooltipContextMenu(e) {
                 hideRefNav('show', context_menu)
             } else /* if (e.type == 'contextmenu' || e.type == 'mouseover')  */ {
                 context_menu.innerText = null;
-                if (e.target.matches('.crossrefs>span')) {
+                if (e.target.matches('.crossrefs>span, .verse_note span')) {
                     let cmtitlebar = document.createElement('div');
                     cmtitlebar.classList.add('cmtitlebar');
                     let cmtitletext = e.target.innerText;
@@ -204,7 +215,7 @@ searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false
 searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
 ppp.addEventListener('mouseout', function (e) {
-    if (e.target.matches('.translated, .strnum, .crossrefs>span')) {
+    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span')) {
         clearTimeout(timer1)
     }
 });

@@ -278,7 +278,7 @@ main.addEventListener('mouseover', function (e) {
     }
 })
 main.addEventListener('mouseout', function (e) {
-    if (e.target.hasAttribute('strnum')) {
+    if (e.target.hasAttribute('strnum')&&document.getElementById('highlightall')) {
         highlightall.remove();
     }
 })

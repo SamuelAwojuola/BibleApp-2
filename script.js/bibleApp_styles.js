@@ -127,7 +127,7 @@ function darkLightMode() {
     let dcol = 'rgba(0, 120, 112, 0.918)';
     if (document.getElementsByTagName('head')[0].querySelector('#darkmode')) {
         darkmode.remove();
-        console.log(this);
+        // console.log(this);
         darkmodebtn.innerText = 'L'
         documentROOT.style.setProperty('--verse-hover', lcol);
     } else {
@@ -153,7 +153,7 @@ function showEnglishTranslationOfHGtransliteration(evt) {
 }
 
 function engnXlit_supscript(x) {
-    console.log(x)
+    // console.log(x)
     if (x == 'eng') {
         let eng2grk_style = `.verse:not(.v_accented) .eng2grk::after{
             content: attr(translation);

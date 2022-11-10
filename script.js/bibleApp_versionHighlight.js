@@ -2,7 +2,7 @@
 function versionHighlighting_ON_OFF(x) {
     //Turn off versions_highlighting
     if (x == false||x == 'false') {
-        console.log(localStorage.getItem(x))
+        // console.log(localStorage.getItem(x))
         hoveredVersionHiglighting(false)
     }
     else if (hl_hversion_check.checked==true) {

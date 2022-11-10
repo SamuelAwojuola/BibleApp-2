@@ -9,7 +9,6 @@ function debounce(func, timeout = 300) {
     var ttt;
     return function () {
         if (ttt) {
-            console.log('clearing Timeout')
             clearTimeout(ttt)
             ttt = undefined;
         } else {

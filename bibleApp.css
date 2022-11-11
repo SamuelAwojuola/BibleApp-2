@@ -22,6 +22,7 @@
     --vhlt-border: #8080809c;
     --vhlt: #ffffc4;
     --vhlt2: #ffff99;
+    --versenote-contextmenu:white;
     --redwords:crimson;
     --strongword-hover: rgb(237, 213, 222);
     --strongword-hover: rgb(216, 255, 137);
@@ -154,6 +155,13 @@ code{position: relative; padding-top: 5px;}
     font-size: 1.2em;
     box-shadow: 0 4.5px 10px 3px var(--shadow-color);
     z-index: 1;
+}
+.verse_note #context_menu {
+    background: var(--versenote-contextmenu);
+}
+.verse_note #context_menu,
+.verse_note #context_menu .cmtitlebar~span{
+    font-size: inherit!important;
 }
 .text_content{
     position: relative;

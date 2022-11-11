@@ -1,9 +1,12 @@
 ppp.addEventListener("click", showVerseNote);// For '#verse_notes_button' && '.note_edit_button'
 ppp.addEventListener("contextmenu", showVerseNote);// To open verse note in new window
+ppp.addEventListener("dblclick", showVerseNote);// To open verse note in new window
 ppp.addEventListener("click", save_verse_note_to_indexedDB);// For '#note_save_button'
 ppp.addEventListener("click", saveJSONFileToLocalDrive);// To save new/edited verse note to coressponding JSON file
+ppp.addEventListener("keydown", showVerseNote);// To open verse note in new window
 
 function showVerseNote(e, x) {
+
     if(e){
         if (e.type=='click') {
             if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
@@ -17,6 +20,23 @@ function showVerseNote(e, x) {
             if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
                 appendVerseNote(e);
             }
+        } else if (e.type=='dblclick') {//make verseNote editable by double-clicking it
+            if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
+                let verseNoteDiv = elmAhasElmOfClassBasAncestor(e.target, '.verse_note');
+                let editBtn = verseNoteDiv.querySelector('.note_edit_button');
+                let saveBtn = verseNoteDiv.querySelector('.note_save_button');
+                editVerseNote(editBtn, e, saveBtn);
+            }
+        } else if (e.ctrlKey && document.activeElement.matches('#noteEditingTarget')) {
+            let code = e.key;
+            switch (code) {
+            case 's'://Block Ctrl+s
+            case 'S'://Block Ctrl+S
+            e.preventDefault();
+            e.stopPropagation();
+            writeToVerseNotesFiles()
+            break;
+           }
         }
     }
     else {
@@ -160,7 +180,7 @@ function editVerseNote(eTarget, e, saveBtn) {
         eTarget.classList.add('active');
 
         enableCKEditor('noteEditingTarget', eTarget)
-    } else if (eTargets_note.contentEditable == 'true') {
+    } else if (e.type!='dblclick' && eTargets_note.contentEditable == 'true') {
         saveBtn.disabled = true; //disable save verse note button
 
         eTargets_note.contentEditable = 'false';

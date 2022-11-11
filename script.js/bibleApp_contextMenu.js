@@ -62,6 +62,7 @@ function add_tooltipContextMenu(e) {
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
                     main.querySelector('#context_menu').remove()
                     eParent.append(clonedContextMenu)
+                    clonedContextMenu.addEventListener("click", codeELmRefClick)
                 }
             }
             // Append to verse
@@ -122,8 +123,7 @@ function add_tooltipContextMenu(e) {
                     let cmtitlebar = document.createElement('div');
                     cmtitlebar.classList.add('cmtitlebar');
                     let cmtitletext = e.target.innerText;
-                    let bknch = cmtitletext.split('.')[0] + '.' + cmtitletext.split('.')[1];
-                    cmtitletext = bknch.split('.').join(' ') + ':' + cmtitletext.split(bknch + '.').join('') + ' [' + bversionName + ']';
+                    cmtitletext = cmtitletext + ' [' + bversionName + ']';
                     // cmtitlebar.innerText=e.target.innerText;
                     cmtitlebar.innerText = cmtitletext;
                     context_menu.append(cmtitlebar);

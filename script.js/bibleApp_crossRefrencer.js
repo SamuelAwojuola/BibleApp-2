@@ -1,7 +1,5 @@
 ppp.addEventListener("click", appendCrossReferences);
-
 bversionName = 'KJV';
-
 main.addEventListener('mousedown', getCurrentBVN)
 
 function getCurrentBVN(e) {
@@ -52,7 +50,19 @@ function appendCrossReferences(e) {
             refCode = refCode.replace(/(\w)\s([0-9]+)/g, '$1.$2'); //Romans 2:3==>Romans.2:3
             refCode = refCode.replace(/:/g, '.'); //Romans.2:3==>Romans.2.3
             let crossRef = crossReferences_fullName[refCode];
-
+            
+            let narr=[]
+            crossRef.forEach(cf=>{
+                let cfr=cf.split('.')
+                let cv = cfr[0] + '.' + cfr[1] + '.'
+                cf = cfr[0] + '.' + cfr[1] + '.' + cf.split(cv).join('')
+                cf = cf.replace(/(\w)\.([0-9]+)/g, '$1 $2');
+                cf = cf.replace(/\./g, ':');
+                narr.push(cf)
+            })
+            crossRef=narr;
+            parseCrossRef(crossRef, refCode);
+            
             function parseCrossRef(crossRef, refCode) {
                 let crfFrag = new DocumentFragment();
                 crossRef.forEach(crf => {
@@ -67,7 +77,6 @@ function appendCrossReferences(e) {
                 vHolder.parentNode.insertBefore(crfDiv, vHolder.nextSibling);
                 return crfDiv
             }
-            parseCrossRef(crossRef, refCode);
         }
     } else {
         siblingCrossREF.classList.add('slideup')
@@ -123,7 +132,7 @@ function getCrossReference(x) {
             let verseNum = document.createElement('code');
             verseNum.setAttribute('ref', bk + ' ' + (chp1) + ':' + i);
             verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
-            verseNum.prepend(document.createTextNode(`[${(bk)}.${(chp1)}:${i}]`));
+            verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}]`));
             verseNum.title = bversionName + ' ' + bookName;
             verseSpan.prepend(verseNum);
             // if(br){
@@ -139,34 +148,8 @@ function getCrossReference(x) {
     }
     return vHolder;
 }
-
-function generateRefsInNote(txt){
-    let bdb=bible.Data.books;
-    for(i=0;i<bdb.length;i++){
-        for(j=0;j<bdb[i].length;j++){
-            let bdbString=bdb[i][j].toString()
-            if(txt.match(new RegExp(`(?<=\\b(${bdbString})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig'))){
-                console.log(bdbString)
-            }
-            txt = findAndIndicateScriptureRefs(txt,bdbString)
-        }
-    }
-    function findAndIndicateScriptureRefs(txt=htxt,bkName2find){
-        // if(txt.match(new RegExp(`\\b${bkName2find} `,'ig'))){
-        
-        let newBkReg = new RegExp(`(?<=\\b(${bkName2find})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig');
-        txt = txt.replace(newBkReg, '$6 <span ref="$1 $8.$9">$7</span>')
-        newBkReg = new RegExp(`(?<!ref=")\\b(${bkName2find})\\s*((\\d+)[:.]*(\\d+)((-\\d+)*(,\\d+)*))`, 'ig');
-        txt = txt.replace(newBkReg, '<span ref="$1.$3.$4$5">$1 $2</span>')
-        console.log(txt)
-        return txt
-    }
-    return txt
-}
 // generateRefsInNote(htxt)
-
 // main.addEventListener("click", searchPreviewRefClick)
-
 
 function getCrossReference2(x) {
     let crf2get;
@@ -216,7 +199,7 @@ function getCrossReference2(x) {
             let verseNum = document.createElement('code');
             verseNum.setAttribute('ref', bk + ' ' + (chp1) + ':' + i);
             verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
-            verseNum.prepend(document.createTextNode(`[${(bk)}.${(chp1)}:${i}]`));
+            verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}]`));
             verseNum.title = bversionName + ' ' + bookName;
             verseSpan.prepend(verseNum);
             // if(br){
@@ -231,4 +214,29 @@ function getCrossReference2(x) {
         br = '<br>';
     }
     return vHolder;
+}
+
+function generateRefsInNote(txt){
+    let bdb=bible.Data.books;
+    for(i=0;i<bdb.length;i++){
+        for(j=0;j<bdb[i].length;j++){
+            let bdbString=bdb[i][j].toString()
+            if(txt.match(new RegExp(`(?<=\\b(${bdbString})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig'))){
+                console.log(bdbString)
+            }
+            txt = findAndIndicateScriptureRefs(txt,bdbString)
+        }
+    }
+    function findAndIndicateScriptureRefs(txt=htxt,bkName2find){
+        txt = modifyQuotationMarks(txt)
+
+        let newBkReg = new RegExp(`(?<=\\b(${bkName2find})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig');
+        txt = txt.replace(newBkReg, '$6 <span ref="$1 $8.$9">$7</span>');
+        newBkReg = new RegExp(`(?<!ref=")\\b(${bkName2find})\\s*((\\d+)[:.]*(\\d+)((-\\d+)*(,\\d+)*))`, 'ig');
+        txt = txt.replace(newBkReg, '<span ref="$1.$3.$4$5">$1 $2</span>')
+        // console.log(txt)
+        return txt
+            
+    }
+    return txt
 }

@@ -1,6 +1,7 @@
-ppp.addEventListener("click", showVerseNote);//For '#verse_notes_button' && '.note_edit_button'
-ppp.addEventListener("contextmenu", showVerseNote);//For to open verse note in new window
-ppp.addEventListener("click", save_verse_note_to_indexedDB);//For '#note_save_button'
+ppp.addEventListener("click", showVerseNote);// For '#verse_notes_button' && '.note_edit_button'
+ppp.addEventListener("contextmenu", showVerseNote);// To open verse note in new window
+ppp.addEventListener("click", save_verse_note_to_indexedDB);// For '#note_save_button'
+ppp.addEventListener("click", saveJSONFileToLocalDrive);// To save new/edited verse note to coressponding JSON file
 
 function showVerseNote(e, x) {
     if(e){
@@ -24,6 +25,7 @@ function showVerseNote(e, x) {
 }
 
 function appendVerseNote(e) {
+    /* TO GET VERSE NOTE FROM JSON FILE AND APPEND EITHER TO THE VERSENOTE DIV OR TO A NEW HTML PAGE */
     let eTarget = e.target;
     //Get reference of clicked verse
     clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');

@@ -324,6 +324,7 @@ function windowsSelection(){
 function codeELmRefClick(e) {
     if (e.target.tagName == "CODE") {
         let codeElm = e.target;
+        console.log(codeElm.getAttribute('ref'))
         gotoRef(codeElm.getAttribute('ref'))
         e.preventDefault();
     }
@@ -439,7 +440,6 @@ function areAllitemsOfAinB(a, b) {
     }
 }
 
-
 /* WATCH FOR INACTIVITY IN ELM AND RUN FUNCTION AFTER SET-TIME */
 // https://www.brcline.com/blog/detecting-inactivity-in-javascript
 function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60000, func2run){
@@ -485,3 +485,21 @@ function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60
 //     if (isMobile) { console.log("Is mobile device"); }
 //     else { console.log("Not mobile device"); }
 //   });
+
+/* ***************************************** */
+/*                   REGEX                   */
+/* ***************************************** */
+function modifyQuotationMarks(txt){
+    txt = txt.replace(/&nbsp;/ig, ' ');
+    // Modify Opening Quotation Marks
+    txt = txt.replace(/(?<!<[^>]*)(^|[\b\s‘])"/ig, '$1“');
+    txt = txt.replace(/(?<!<[^>]*)"([\d\w…‘])/ig, '“$1');
+    txt = txt.replace(/(?<!<[^>]*)"([\s.,’])/ig, '”$1');
+    txt = txt.replace(/(?<!<[^>]*)([\w\d.,…’])"/ig, '$1”');
+    // Modify Closing Quotation Marks 
+    txt = txt.replace(/(?<!<[^>]*)(^|[\b\s“])'/ig, '$1‘');
+    txt = txt.replace(/(?<!<[^>]*)'([\d\w…“])/ig, '‘$1');
+    txt = txt.replace(/(?<!<[^>]*)'([\s.,”])/ig, '’$1');
+    txt = txt.replace(/(?<!<[^>]*)([\w\d.,…”])'/ig, '$1’');
+    return txt
+}

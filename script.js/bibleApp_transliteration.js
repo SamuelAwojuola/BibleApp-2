@@ -269,7 +269,7 @@ main.addEventListener('mouseover', function (e) {
             box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,
             0 5px 5px -2px var(--shadow-orange)!important;
             border-radius:5px;
-            border-bottom:3px dashed maroon !important;
+            border-bottom:3px solid maroon !important;
             color:black!important;
             transition: box-shadow .1s ease-in;
             `;

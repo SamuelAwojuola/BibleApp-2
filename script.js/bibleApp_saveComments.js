@@ -138,6 +138,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
             newNote="";
             return
           }
+          newNote = modifyQuotationMarks(newNote);
           /* make copy of all the notes */
           let copyOfAllVerseNotesInCurrentBook={...b_bk.notes};
           let originalVerseNotes = copyOfAllVerseNotesInCurrentBook[chapternumber-1];
@@ -175,7 +176,8 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
 }
 /* ******************************************************************* */
 
-ppp.addEventListener("click", saveJSONFileToLocalDrive);//For '#note_save_button'
+// ppp.addEventListener("click", saveJSONFileToLocalDrive);//For '#note_save_button'
+// eventListener above moved to "bibleApp_verseNotes.js" file.
 
 function saveJSONFileToLocalDrive(e) {
   if (e.target.matches('.note_save_button')) {

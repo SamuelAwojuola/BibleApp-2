@@ -158,10 +158,10 @@ function hide_strongshighlight() {
 }
 
 function showEnglishTranslationOfHGtransliteration(evt) {
-    if (evt && evt.key === 'r' && evt.altKey) {
+    if (evt && evt.key.toLowerCase() === 'r' && evt.altKey) {
         engnXlit_supscript('eng')
     }
-    if (evt && evt.key === 't' && evt.altKey) {
+    if (evt && evt.key.toLowerCase() === 't' && evt.altKey) {
         engnXlit_supscript('hebgrk')
     }
 }

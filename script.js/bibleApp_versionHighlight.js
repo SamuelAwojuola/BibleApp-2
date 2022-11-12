@@ -19,8 +19,12 @@ hl_hoveredversion.addEventListener('click', () => {
 });
 //Is modified by escape or alt + h
 document.addEventListener('keydown', evt => {
-    if (evt.key === 'h' && evt.altKey) {
+    if (evt.key.toLowerCase() === 'h' && evt.altKey) {
         versionHighlighting_ON_OFF();
+    }
+    if (evt.key.toLowerCase() === 'd' && evt.altKey) {
+        evt.preventDefault()
+        darkLightMode();
     }
 });
 

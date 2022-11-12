@@ -47,6 +47,7 @@
     --grey-blue: rgb(216, 216, 216);
     --green:green;
     --greenish: #cbff7d;
+    --greenish2: #adffa7;
     --greenyellow: greenyellow;
     --white: #ffff;
     --whitesmoke: whitesmoke;
@@ -193,10 +194,20 @@ code{position: relative; padding-top: 5px;}
     /* margin: 0.25em 0.25em;
     padding: 0.25em 0.25em; */
 }
-.text_content span[ref]{
-    text-decoration: underline;
-    color: var(--blue);
+.text_content span[ref],
+.text_content span[strnum]:not(#context_menu span[strnum]){
+    font-weight: bold;
+    border-bottom: var(--black) 1px solid;
+    color: var(--black);
     cursor: pointer;
+}
+.text_content #context_menu{
+    background: var(--ref-img);
+    /* color: var(--white); */
+}
+.text_content span[ref]:hover{
+    color: var(--grey);
+    border-radius: 5px;
 }
 .save_edit_btns_holder{
     display:flex;
@@ -360,20 +371,29 @@ button {
 #ref_search_versions_holder {display: flex;flex-wrap: wrap;}
 #context_menu {
     position: absolute;
-    background: var(--ref-img);
     background: var(--whitesmoke);
-    border: 1px solid var(--grey);
+    /* border: 1px solid var(--grey); */
     min-width: 50px;
     max-width: 300px;
     max-height: 400px;
     overflow-y: scroll;
     padding: 5px;
-    -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3);
-    -moz-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3);
-    box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3);
+    -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
+    -moz-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
+    box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
     z-index: 10;
     font-size: var(--fontsize-strongstooltip);
     overflow-x:hidden;
+}
+#context_menu:hover {
+    -webkit-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
+    -moz-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
+    box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
+}
+#context_menu:not([strnum]){
+    -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 23px 0px 0px var(--grey);
+    -moz-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 23px 0px 0px var(--grey);
+    box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 23px 0px 0px var(--grey);
 }
 #context_menu>hr+.strngsdefinition>hr:first-child{display: none;}
 #context_menu h2 {font-size:x-large;}
@@ -388,33 +408,33 @@ button {
     background: var(--ref-img);
     font-size: small;
     font-weight: bold;
-}#context_menu .cmtitlebar::after{
+    width: 100%;    
+    /* box-shadow: 21px -10px 0px 11px var(--scroll-track-bg-color),
+    -13px -6px 0px 7px var(--scroll-track-bg-color); */
+}
+#context_menu .cmtitlebar::before{
     position: absolute;
     content: '';
-    left:-10px;
+    left: -9px;
+    top: -5px;
+    background: var(--ref-img),linear-gradient(to top, var(--shadow-color3), 5%, transparent);
+    width: 150%;
+    height: 23.5px;
+    z-index: -1;
+}
+#context_menu .cmtitlebar::after{
+    position: absolute;
+    content: '';
+    left: -10px;
     bottom: -3px;
     border-top: 2px solid var(--scroll-track-bg-color);
     background: var(--ref-img);
-    width: 150%;
-    height: 1px;
+    width: 110%;
+    height: 0px;
     z-index: -1;
-}#context_menu .cmtitlebar::before{
-    position: absolute;
-    content: '';
-    left:-10px;
-    top: -10px;
-    border-top: 2px solid var(--scroll-track-bg-color);
-    background: var(--ref-img);
-    background: var(--ref-img),linear-gradient(to top, var(--shadow-color3), 5%, transparent);
-    width: 150%;
-    height: 10px;
-    z-index: -1;
-}#context_menu .cmtitlebar~span{
+}
+#context_menu .cmtitlebar~span{
     font-size:var(--fontsize-scripture);
-}#context_menu:hover {
-    -webkit-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
-    -moz-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
-    box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
 }
 .buttons>button,
 .buttons>#searchdiv button,

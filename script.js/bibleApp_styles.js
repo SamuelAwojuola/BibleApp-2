@@ -118,22 +118,20 @@ let lcol = rootStyles.getPropertyValue('--verse-hover');
 function darkLightMode() {
     let dark_mode = 'darkmode';
     let darkmodeCSS = `
-    span.verse{background-color:rgb(38, 38, 38); color:white!important;}
-    span.verse span{color:white;}
-    span.verse:hover,
-    span.vmultiple:hover {background: rgb(38, 38, 38);}
-    input{background:rgb(38, 38, 38)!important; color:whitesmoke}
+    span.verse{background:black; color:white!important;}
+    span.verse span, .verse_note span[ref] {color:white!important;}
+    span.verse:hover, span.vmultiple:hover {background: rgb(18, 18, 18);}
+    input{background:rgb(18, 18, 18)!important; color:whitesmoke}
     button.active_button{background:grey; color:black!important;}
-    .buttons {background:rgb(38, 38, 38)}
-    #refnav #app_settings {border-right: 1px solid var(--grey); background:rgb(38, 38, 38)}
-    #bible_versions, #searchPreviewWindowFixed, #strongsdefinitionwindow, #bibleapp_cache {background-color: rgb(38, 38, 38);color:whitesmoke}
+    .buttons {background:rgb(18, 18, 18)}
+    #refnav #app_settings {border-right: 1px solid var(--grey); background:rgb(18, 18, 18)}
+    #bible_versions, #searchPreviewWindowFixed, #strongsdefinitionwindow, #bibleapp_cache {background-color: rgb(18, 18, 18);color:whitesmoke}
     #searchparameters div:first-of-type+div, #bibleapp_cache div:first-of-type, #bibleapp_cache .settingssectionheadings {background:none;}
     #bible_nav {font-size: var(--fontsize-scripture-nav)!important; background:black; color: whitesmoke;}
-    #bible_nav option:hover {color: black;}
-    #searchparameters {background: black;}
+    #bible_nav option:hover, #searchPreviewFixed>.chptheading, .bible_versions_heading {color: black;}
+    #searchparameters, .verse_note {background: rgb(5,10,15); color:white}
+    #main button {background:whitesmoke}
     `
-    // let dcol= 'rgba(0, 50, 112, 0.918)';
-    // let dcol = 'rgba(0, 120, 112, 0.918)';
     let dcol = 'transparent';
     if (document.getElementsByTagName('head')[0].querySelector('#darkmode')) {
         darkmode.remove();
@@ -148,8 +146,8 @@ function darkLightMode() {
         darkmodebtn.innerText = 'D';
         documentROOT.style.setProperty('--verse-hover', dcol);
         documentROOT.style.setProperty('--vmultiple-hover', dcol);
-        documentROOT.style.setProperty('--vhlt', dcol);
-        documentROOT.style.setProperty('--ref-img', 'grey');
+        documentROOT.style.setProperty('--vhlt', 'black');
+        documentROOT.style.setProperty('--ref-img', 'rgb(38, 38, 38)');
     }
 }
 

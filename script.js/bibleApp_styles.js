@@ -119,7 +119,7 @@ function darkLightMode() {
     let dark_mode = 'darkmode';
     let darkmodeCSS = `
     span.verse{background:black; color:white!important;}
-    span.verse span, .verse_note span[ref] {color:white!important;}
+    span.verse span, .verse_note span[ref] {color:white;}
     span.verse:hover, span.vmultiple:hover {background: rgb(18, 18, 18);}
     input{background:rgb(18, 18, 18)!important; color:whitesmoke}
     button.active_button{background:grey; color:black!important;}

@@ -268,7 +268,7 @@ code{position: relative; padding-top: 5px;}
 }
 #refnav #app_settings {
     border-right: 5px solid var(--grey);
-    background-image: var(--ref-img);
+    background: var(--ref-img);
     overflow: hidden;
 }
 #refnav #app_settings * {

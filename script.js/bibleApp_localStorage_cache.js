@@ -1,14 +1,14 @@
 //Settings under refnav.
-cache_strongs.addEventListener('change', function () {
-    if (this.checked) {
-        localStorage.removeItem('transliteratedWords')
-    }
-});
-cache_higlights.addEventListener('change', function () {
-    if (this.checked) {
-        localStorage.removeItem('strongsHighlightStyleSheet')
-    }
-});
+// cache_strongs.addEventListener('change', function () {
+//     if (this.checked) {
+//         localStorage.removeItem('transliteratedWords')
+//     }
+// });
+// cache_higlights.addEventListener('change', function () {
+//     if (this.checked) {
+//         localStorage.removeItem('strongsHighlightStyleSheet')
+//     }
+// });
 let defaultReference; //For browser history
 versionsToShow = ['KJV'];
 

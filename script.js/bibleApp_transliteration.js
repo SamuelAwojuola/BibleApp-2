@@ -136,7 +136,6 @@ function hideTransliteration(stn) {
 function highlightAllStrongs(x) {
     cs = `span[strnum="${x}"]{background-color:transparent;box-shadow:0 -1.05em 0px 0px ${randomColor(200)} inset;border-radius:2px;color:black!important;
     transition: box-shadow .1s ease-in;`;
-    // cs = `span[strnum="${x}"]{background-color:${randomColor(200)};border-radius:2px;color:black!important;`
     //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
     if (!document.querySelector('style#highlightstrongs')) {
         createNewStyleSheetandRule('highlightstrongs', cs)
@@ -235,15 +234,16 @@ main.addEventListener('mouseover', function (e) {
     }
     //For context_menu when it is serving a strong's number
     else {
-        if (e.target.matches('#context_menu[strnum]')||elmAhasElmOfClassBasAncestor(e.target,'#context_menu[strnum]')) {
+        let strElm = null;
+        if (e.target.matches('#context_menu[strnum]')||(strElm=elmAhasElmOfClassBasAncestor(e.target,'#context_menu[strnum]'))) {
             // 'rightClickedElm' & 'firstShadowColorOfElem' are gotten from the rightclickmenu function
-            strAtt=rightClickedElm.getAttribute('strnum');
+            if(strElm){strAtt=strElm.getAttribute('strnum');}
+            else{strAtt=rightClickedElm.getAttribute('strnum');}
             highlightColor = firstShadowColorOfElem;
         } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {
             strElm=elmAhasElmOfClassBasAncestor(e.target, '[strnum]');
             strAtt=strElm.getAttribute('strnum');
             highlightColor = getBoxShadowColor(e.target);
-            // highlightColor = getBoxShadowColor(main.querySelector(`.verse .${strAtt}`));
         }
     }
     if (strAtt) {

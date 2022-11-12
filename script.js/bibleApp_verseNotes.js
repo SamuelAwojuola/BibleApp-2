@@ -37,6 +37,11 @@ function showVerseNote(e, x) {
             writeToVerseNotesFiles()
             break;
            }
+        } else if (e.key === 'Escape' && document.activeElement.matches('#noteEditingTarget')) {
+            let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
+            let editBtn = verseNoteDiv.querySelector('.note_edit_button');
+            let saveBtn = verseNoteDiv.querySelector('.note_save_button');
+            editVerseNote(editBtn, e, saveBtn);
         }
     }
     else {
@@ -153,9 +158,11 @@ function appendVerseNote(e) {
     }
 }
 
-function editVerseNote(eTarget, e, saveBtn) {
+function editVerseNote(eTarget, e, saveBtn) { //Toggles editing of versnote on and off
     let eTargets_note = eTarget.parentNode.parentNode.querySelector('.text_content');
     editNotez = eTargets_note;
+
+    // Turn ON verseNote editing
     if (eTargets_note.contentEditable == 'false') {
         //before this new button click check if another wasn't clicked before it.
         if (oldeditbtn = ppp.querySelector('.note_edit_button.active')) {
@@ -172,6 +179,7 @@ function editVerseNote(eTarget, e, saveBtn) {
             disableCKEditor()
         }
 
+        if(eTargets_note.querySelector('.context_menu')){eTargets_note.querySelector('.context_menu').remove()}
         saveBtn.disabled = false; //enable save verse note button
 
         eTargets_note.contentEditable = 'true';
@@ -180,14 +188,20 @@ function editVerseNote(eTarget, e, saveBtn) {
         eTarget.classList.add('active');
 
         enableCKEditor('noteEditingTarget', eTarget)
-    } else if (e.type!='dblclick' && eTargets_note.contentEditable == 'true') {
+    } 
+
+    // Turn OFF verseNote editing
+    else if (e.type!='dblclick' && eTargets_note.contentEditable == 'true') {
         saveBtn.disabled = true; //disable save verse note button
+        let noteForCurrentlyEditedVerse = generateRefsInNote(eTargets_note.innerHTML);
+        eTargets_note.innerHTML = noteForCurrentlyEditedVerse;
 
         eTargets_note.contentEditable = 'false';
         eTarget.style.backgroundColor = '';
         eTarget.classList.remove('active');
         eTargets_note.id = '';
         disableCKEditor()
+
     }
 }
 
@@ -209,4 +223,29 @@ function disableCKEditor() {
         var instance = CKEDITOR.instances[k];
         instance.destroy();
     }
+}
+
+/* FOR GENERATING RIGHTCLICKABLE REFERENCES AND STRONGS NUMBERS IN THE VERSENOTES */
+function generateRefsInNote(txt){
+    let bdb=bible.Data.books;
+    for(i=0;i<bdb.length;i++){
+        for(j=0;j<bdb[i].length;j++){
+            let bdbString=bdb[i][j].toString();
+            txt = findAndIndicateScriptureRefs(txt,bdbString);
+        }
+    }
+    // Indicate strongs numbers
+    txt = txt.replace(/((H|G)[0-9]+)/g, '<span class="strnum $1" strnum="$1">$1</span>')
+    function findAndIndicateScriptureRefs(txt,bkName2find){
+        txt = modifyQuotationMarks(txt)
+        // Indicate verses
+        txt = txt.replace(/([0-9]+)\s*([,-:])\s*([0-9]+)/g, '$1$2$3')
+        txt = txt.replace(/([0-9]+)\s*([;])/g, '$1$2')
+        let newBkReg = new RegExp(`(?<=\\b(${bkName2find})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig');
+        txt = txt.replace(newBkReg, '$6 <span ref="$1 $8.$9">$7</span>');
+        newBkReg = new RegExp(`(?<!ref=")\\b(${bkName2find})\\s*((\\d+)[:.]*((\\d+)((-\\d+)*((,\\d+)*(-\\d+)*))*))`, 'ig');
+        txt = txt.replace(newBkReg, '<span ref="$1.$3.$4">$1 $2</span>')
+        return txt
+    }
+    return txt
 }

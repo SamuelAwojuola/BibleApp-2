@@ -13,18 +13,17 @@ function add_tooltipContextMenu(e) {
         main.prepend(context_menu_replacement);
         context_menu.addEventListener("click", codeELmRefClick);
     }
-    rightClickedElm = e.target;
-    firstShadowColorOfElem=getBoxShadowColor(rightClickedElm)
+    if(e.target.getAttribute('strnum')&&!e.target.matches('.context_menu')){
+        rightClickedElm = e.target;
+        firstShadowColorOfElem=getBoxShadowColor(rightClickedElm)
+    }
+    
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
     var menusX = e.x;
     if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span') /* && (!e.target.matches('#context_menu')&&!elmAhasElmOfClassBasAncestor(e.target,'#context_menu')) */ ) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
-
-        // console.log(context_menu.getAttribute('strnum'))
-        // console.log(e.target)
-
         if (e.type == 'mouseover') {
             clearTimeout(timer1);
 
@@ -106,12 +105,21 @@ function add_tooltipContextMenu(e) {
                     originalWord = e.target.parentElement.getAttribute("translation")
                 }
                 let menu_inner;
-                if (addquotes) {
-                    menu_inner = `${e.target.getAttribute('data-title')}<hr>“${originalWord.trim()}”`;
-                } else {
-                    menu_inner = `${e.target.getAttribute('data-title')}<hr>${originalWord.trim()}`;
+                if(originalWord){
+                    if (addquotes) {
+                        menu_inner = `${e.target.getAttribute('data-title')}<hr>“${originalWord.trim()}”`;
+                    } else {
+                        menu_inner = `${e.target.getAttribute('data-title')}<hr>${originalWord.trim()}`;
+                    }
+                    context_menu.innerHTML = menu_inner + '<hr>' + newStrongsDef;
+                } else if (e.type=='contextmenu'){// For strongs number in verseNote
+                    context_menu.innerHTML = newStrongsDef;
+                    // context_menu.querySelector('hr').remove();
+                    let h2relocate = context_menu.querySelector('h2');
+                    let h2clone = h2relocate.cloneNode(true);
+                    h2relocate.remove();
+                    context_menu.querySelector('.strngsdefinition').prepend(h2clone)
                 }
-                context_menu.innerHTML = menu_inner + newStrongsDef;
                 // context_menu.removeAttribute('style');
                 context_menu.style.height = null;
                 context_menu.style.left = null;
@@ -173,8 +181,7 @@ function add_tooltipContextMenu(e) {
                 }
             }
         }
-    } else if (context_menu.matches('.slidein') && (!e.target.matches('#context_menu') || !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
-
+    } else if (context_menu.matches('.slidein') && !(e.target.matches('#context_menu') || elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
         function removeContextMenu() {
             hideRefNav('hide', context_menu, removeCMPevtListner());
             context_menu.removeAttribute('strnum');
@@ -201,7 +208,7 @@ function getCurrentStrongsDef(e) {
         context_menu.classList.add('rightclicked')
         context_menu.removeAttribute('strnum')
         context_menu.setAttribute('strnum', strnum)
-        newStrongsDef = '<hr>' + currentStrongsDef;
+        newStrongsDef = currentStrongsDef;
         toolTipOnOff(false);
     } else if (e.type != 'contextmenu') {
         newStrongsDef = '';

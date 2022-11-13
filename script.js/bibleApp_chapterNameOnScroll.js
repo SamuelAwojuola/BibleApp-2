@@ -159,11 +159,13 @@ function checkVisible(elm) {
 
 // SHOW MOUSEDOVER VERSE REFERENCE IN REFERENCE INPUT
 main.addEventListener('mouseover', function (e) {
-    let hoveredRef;
-    if (e.target.matches('.verse')) {
-        hoveredRef = e.target.querySelector('code').getAttribute('ref');
-    } else if (et=elmAhasElmOfClassBasAncestor(e.target,'.verse')) {
-        hoveredRef = et.querySelector('code').getAttribute('ref');
+    if(!document.activeElement.matches('#reference')){
+        let hoveredRef;
+        if (e.target.matches('.verse')) {
+            hoveredRef = e.target.querySelector('code').getAttribute('ref');
+        } else if (et=elmAhasElmOfClassBasAncestor(e.target,'.verse')) {
+            hoveredRef = et.querySelector('code').getAttribute('ref');
+        }
+        if(hoveredRef){reference.value=hoveredRef;}
     }
-    if(hoveredRef){reference.value=hoveredRef;}
 });

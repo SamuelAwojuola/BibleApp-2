@@ -255,7 +255,7 @@ tool_tip.addEventListener('click', () => {
 
 let toolTipON = ttip_check.checked; //Is modified by escape or alt + t
 document.addEventListener('keydown', evt => {
-    if (evt.key.toLowerCase() === 'y' && evt.altKey) {
+    if ((evt.key === 'y'||evt.key === 'Y') && evt.altKey) {
         toolTipOnOff();
         toolTipON = ttip_check.checked;
     }

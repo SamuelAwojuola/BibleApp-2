@@ -237,9 +237,14 @@ main.addEventListener('mouseover', function (e) {
         let strElm = null;
         if (e.target.matches('#context_menu[strnum]')||(strElm=elmAhasElmOfClassBasAncestor(e.target,'#context_menu[strnum]'))) {
             // 'rightClickedElm' & 'firstShadowColorOfElem' are gotten from the rightclickmenu function
-            if(strElm){strAtt=strElm.getAttribute('strnum');}
-            else{strAtt=rightClickedElm.getAttribute('strnum');}
-            highlightColor = firstShadowColorOfElem;
+            if(firstShadowColorOfElem){
+                if(strElm){
+                    strAtt=strElm.getAttribute('strnum');
+                } else{
+                    strAtt=rightClickedElm.getAttribute('strnum');
+                }
+                highlightColor = firstShadowColorOfElem;
+            }
         } else if (elmAhasElmOfClassBasAncestor(e.target, '[strnum]')) {
             strElm=elmAhasElmOfClassBasAncestor(e.target, '[strnum]');
             strAtt=strElm.getAttribute('strnum');

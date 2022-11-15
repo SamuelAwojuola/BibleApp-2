@@ -32,7 +32,7 @@ function createTransliterationAttr(x, l) {
             // CHECK STRONGS DICTIONARY
             for (abc = 0; abc < strongsJSONresponse.length; abc++) {
                 if (strongsJSONresponse[abc].number == wStrnum) {
-                    strNumElm.classList.add(wStrnum)
+                    strNumElm.classList.add(wStrnum);
                     let str_xlit = strongsJSONresponse[abc].xlit;
                     let str_lemma = strongsJSONresponse[abc].lemma;
                     strNumElm.setAttribute("data-xlit", strNumElm.getAttribute("data-xlit") + divider + str_xlit);
@@ -51,6 +51,7 @@ function createTransliterationAttr(x, l) {
         // strNumElm.setAttribute('data-title', '(' + strNumElm.getAttribute("translation") + ')' + strNum_Title);
         strNumElm.setAttribute('data-title', strNum_Title);
     });
+    return x
 }
 let currentStrongsDef = null;
 

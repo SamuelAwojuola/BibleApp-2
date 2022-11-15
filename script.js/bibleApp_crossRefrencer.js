@@ -174,6 +174,7 @@ function getCrossReference(x) {
             vNum();
         }
     }
+    createTransliterationAttr(vHolder)
     return vHolder;
 }
 // main.addEventListener("click", searchPreviewRefClick)

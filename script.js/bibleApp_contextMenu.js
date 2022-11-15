@@ -123,7 +123,9 @@ function add_tooltipContextMenu(e) {
                 // context_menu.removeAttribute('style');
                 context_menu.style.height = null;
                 context_menu.style.left = null;
-                context_menu.setAttribute('strnum', e.target.getAttribute('strnum'))
+                if (strnum = e.target.getAttribute('strnum')) {
+                    context_menu.setAttribute('strnum', strnum)
+                }else{context_menu.removeAttribute('strnum')}
                 hideRefNav('show', context_menu)
             } else /* if (e.type == 'contextmenu' || e.type == 'mouseover')  */ {
                 context_menu.innerText = null;
@@ -140,7 +142,9 @@ function add_tooltipContextMenu(e) {
                 // context_menu.removeAttribute('style');
                 context_menu.style.height = null;
                 context_menu.style.left = null;
-                context_menu.setAttribute('strnum', e.target.getAttribute('strnum'))
+                if (strnum = e.target.getAttribute('strnum')) {
+                    context_menu.setAttribute('strnum', strnum)
+                }else{context_menu.removeAttribute('strnum')}
                 hideRefNav('show', context_menu)
             }
             /* POSITION MENU */
@@ -187,13 +191,7 @@ function add_tooltipContextMenu(e) {
             context_menu.removeAttribute('strnum');
             context_menu.innerHTML = '';
         }
-        // if (e.type == 'mouseover') {
-        // timer2 = setTimeout(function () {
-            removeContextMenu();
-        // }, 10)
-        // } else {
-        // removeContextMenu()
-        // }
+        removeContextMenu();
     }
 }
 let newStrongsDef = '';
@@ -205,9 +203,9 @@ function getCurrentStrongsDef(e) {
         // console.log(strnum)
     }
     if (e.type == 'contextmenu') {
-        context_menu.classList.add('rightclicked')
-        context_menu.removeAttribute('strnum')
-        context_menu.setAttribute('strnum', strnum)
+        context_menu.classList.add('rightclicked');
+        context_menu.removeAttribute('strnum');
+        if(strnum){context_menu.setAttribute('strnum', strnum);}
         newStrongsDef = currentStrongsDef;
         toolTipOnOff(false);
     } else if (e.type != 'contextmenu') {

@@ -1,43 +1,59 @@
-ppp.addEventListener("click", showVerseNote);// For '#verse_notes_button' && '.note_edit_button'
-ppp.addEventListener("contextmenu", showVerseNote);// To open verse note in new window
-ppp.addEventListener("dblclick", showVerseNote);// To open verse note in new window
-ppp.addEventListener("click", save_verse_note_to_indexedDB);// For '#note_save_button'
-ppp.addEventListener("click", saveJSONFileToLocalDrive);// To save new/edited verse note to coressponding JSON file
-ppp.addEventListener("keydown", showVerseNote);// To open verse note in new window
+// For '#verse_notes_button' && '.note_edit_button'
+ppp.addEventListener("click", showVerseNote);
+// To open verse note in new window
+ppp.addEventListener("contextmenu", showVerseNote);
+// To make verseNote editable on doubleClick
+ppp.addEventListener("dblclick", showVerseNote);
+// To save or stop editing currently edited verseNote
+ppp.addEventListener("keydown", showVerseNote);
+// For '#note_save_button'
+ppp.addEventListener("click", save_verse_note_to_indexedDB);
+// To save new/edited verse note to coressponding JSON file
+ppp.addEventListener("click", saveJSONFileToLocalDrive);
 
 function showVerseNote(e, x) {
 
     if(e){
         if (e.type=='click') {
+            // Get verse note, if available, from JSON file and append it
             if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
                 appendVerseNote(e);
             }
+            // Edit verse note
             if (e.target.matches('.note_edit_button')) {
                 let saveBtn = e.target.parentNode.querySelector('.note_save_button')
                 editVerseNote(eTarget = e.target, e, saveBtn);
             }
         } else if (e.type=='contextmenu') {
+            // Open verse note in a new window (on rightClick of #verse_notes_button)
             if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
                 appendVerseNote(e);
             }
-        } else if (e.type=='dblclick') {//make verseNote editable by double-clicking it
-            if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
+        }
+        //make verseNote editable by double-clicking anywhere in the verse note
+        else if (e.type=='dblclick') {
+            if (e.target!=context_menu&&!elmAhasElmOfClassBasAncestor(e.target, '.context_menu')&&elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
                 let verseNoteDiv = elmAhasElmOfClassBasAncestor(e.target, '.verse_note');
                 let editBtn = verseNoteDiv.querySelector('.note_edit_button');
                 let saveBtn = verseNoteDiv.querySelector('.note_save_button');
                 editVerseNote(editBtn, e, saveBtn);
             }
-        } else if (e.ctrlKey && document.activeElement.matches('#noteEditingTarget')) {
-            let code = e.key;
-            switch (code) {
-            case 's'://Block Ctrl+s
-            case 'S'://Block Ctrl+S
+        } 
+        // ctrl+s for saving currently edited verseNote
+        else if (e.ctrlKey && document.activeElement.matches('#noteEditingTarget')) {
+            if(e.key==='s'||e.key==='S'){
+            // let code = e.key;
+            // switch (code) {
+            // case 's'://Block Ctrl+s
+            // case 'S'://Block Ctrl+S
             e.preventDefault();
             e.stopPropagation();
             writeToVerseNotesFiles()
-            break;
+            // break;
            }
-        } else if (e.key === 'Escape' && document.activeElement.matches('#noteEditingTarget')) {
+        }
+        // stop editing by pressing 'Escape' key 
+        else if (e.key === 'Escape' && document.activeElement.matches('#noteEditingTarget')) {
             let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
             let editBtn = verseNoteDiv.querySelector('.note_edit_button');
             let saveBtn = verseNoteDiv.querySelector('.note_save_button');

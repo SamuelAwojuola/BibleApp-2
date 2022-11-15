@@ -324,7 +324,7 @@ function windowsSelection(){
 function codeELmRefClick(e) {
     if (e.target.tagName == "CODE") {
         let codeElm = e.target;
-        console.log(codeElm.getAttribute('ref'))
+        // console.log(codeElm.getAttribute('ref'))
         gotoRef(codeElm.getAttribute('ref'))
         e.preventDefault();
     }

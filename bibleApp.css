@@ -78,6 +78,9 @@ html {
 body>svg {
     width: 100% !important;
 }
+svg{
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
 body {
     position: relative;
     margin: 0;
@@ -86,6 +89,14 @@ body {
 }
 body * {
     box-sizing: border-box;
+}
+.em{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 0.75em;
+}
+sup{
+    font-size: 0.6em;
 }
 li li{
     list-style-type: lower-alpha;
@@ -384,6 +395,7 @@ button {
     z-index: 10;
     font-size: var(--fontsize-strongstooltip);
     overflow-x:hidden;
+    resize: both;
 }
 #context_menu:hover {
     -webkit-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);

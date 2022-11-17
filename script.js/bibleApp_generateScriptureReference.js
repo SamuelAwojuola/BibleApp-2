@@ -92,18 +92,6 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     // indicateThatVerseHasNoteInIndxDB();
 }
 
-// function clickCurrentBook(xxx) {
-//     bookName = xxx.getAttribute("bookname");
-//     currentBookName = bookName;
-//     let bk_option = bible_books.querySelector('[bookname="' + bookName + '"]');
-//     return {
-//         indicateBknChpt: indicateBooknChapterInNav(bk_option, xxx),
-//         clickBook: bk_option.click(),
-//         clickChpt: xxx.click(),
-//         book: bk_option
-//     }
-// }
-
 function prependORappendChapters(prependORnot, what_to_append) {
     if (!prependORnot) {
         ppp.appendChild(what_to_append);
@@ -184,7 +172,8 @@ function parseVerseText(vT, verseSpan) {
 
     if (Array.isArray(vT)) {
         vTLength = Object(vT).length;
-        let redWordFRAG, redWordSpan, startRed, endRed, restartRed;
+        let redWordFRAG, redWordSpan, startRed, endRed, restartRed, italicStart=false, italicEnd=true;
+        let italicElm;
         vT.forEach((wString, i) => {
             let wordSpan = document.createElement('span');
             let wordSpan1 = document.createElement('span');
@@ -239,6 +228,20 @@ function parseVerseText(vT, verseSpan) {
                     versespanAppender([wordSpan2]);
                 } else {
                     wStringREGEXED = wString[0];
+                    
+                    if((italicStart==false)&&(/<i>/i.test(wStringREGEXED))){
+                        console.log('emS')
+                        italicStart=true;
+                        italicEnd=false;
+                        wStringREGEXED = wStringREGEXED.replace(/<i>/g, '');
+                    }
+                    if(/<ii>/i.test(wStringREGEXED)){
+                        console.log('emE')
+                        italicEnd=true;
+                        wStringREGEXED = wStringREGEXED.replace(/<ii>/g, '');
+                    }
+                    wStringREGEXED = wStringREGEXED.replace(/\{/g, '<sup>');
+                    wStringREGEXED = wStringREGEXED.replace(/\}/g, '</sup>');
                     wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
                     wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
                     if (wString[1] != 'added') {
@@ -249,6 +252,13 @@ function parseVerseText(vT, verseSpan) {
                         // wordSpan.classList.add(wString[1]);
                         wordSpan.setAttribute('data-kjv-trans', ' ' + wStringREGEXED);
                         wordSpan.setAttribute('translation', ' ' + wStringREGEXED);
+                        if(italicStart==true){
+                            wordSpan.classList.add('em');
+                            if(italicEnd==true){
+                                italicStart=false;
+                                wStringREGEXED=wStringREGEXED+'<hr>'
+                            }
+                        }
                     }
 
                     wordSpan.innerHTML = wStringREGEXED;
@@ -260,18 +270,31 @@ function parseVerseText(vT, verseSpan) {
                 if (([".", ",", ":", ";", "?"].includes(wString[0]) == false)) {
                     spacebtwwords = ' ';
                 }
-                wStringREGEXED = wString[0];
-                wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
-                wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
-                if (startRed) {
-                    redWordFRAG.append(spacebtwwords);
-                    redWordFRAG.append(wStringREGEXED);
+
+                if (wString[0].match(/\{\d\}/)) {// ABP word order number
+                    spacebtwwords = '';
+                    wStringREGEXED = wString[0];
+                    wStringREGEXED = wStringREGEXED.replace(/\{/g, '<sup>');
+                    wStringREGEXED = wStringREGEXED.replace(/\}/g, '</sup>');
+                    verseSpan.append(' ');
+                    verseSpan.innerHTML=verseSpan.innerHTML+wStringREGEXED;
                 } else {
-                    verseSpan.append(spacebtwwords);
-                    verseSpan.append(wStringREGEXED);
+                    wStringREGEXED = wString[0];
+                    wStringREGEXED = wStringREGEXED.replace(/(^"")|(^")/g, '“');
+                    wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
+                    if (startRed) {
+                        redWordFRAG.append(spacebtwwords);
+                        redWordFRAG.append(wStringREGEXED);
+                    } else {
+                        verseSpan.append(spacebtwwords);
+                        verseSpan.append(wStringREGEXED);
+                    }
                 }
             }
-            // '<span class="translated" translation="created" data-kjv-trans="created" strnum="H853 H1254" data-xlit="" data-lemma="">created</span>'
+            if(/<\/i>/i.test(wStringREGEXED)){
+                console.log('emE')
+            }
+            verseSpan.innerHTML = verseSpan.innerHTML.replace(/<\/sup> /g, '</sup>');
             if (i == vT.lenth - 1) {
                 console.log(wString)
             }

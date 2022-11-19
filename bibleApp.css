@@ -291,8 +291,8 @@ code{position: relative; padding-top: 5px;}
     width: var(--width-sidebuttons);
 }
 #refnav #app_settings > button {
-    width:auto;
-    min-width:36px;
+    width:100%;
+    /* min-width:36px; */
     padding-left: 2px;
     padding-right: 2px;
     font-size: 22.5px;
@@ -470,7 +470,8 @@ div.buttons{
     border: var(--buttons-border);
     font-weight:bolder;
     font-size: 2em!important;
-    width: 100%;
+    /* min-width: min-content;
+    max-width: 100%; */
 }
 button:disabled {
     cursor: default;
@@ -744,6 +745,7 @@ sup {
     right: 0;
 }
 #resizerdiv {
+    display: none;
     background-color: var(--grey);
     float: right;
     width: 2.5px;
@@ -943,39 +945,5 @@ span.vmultiple.noted code #verse_notes_button {
 
 #mobilebuttons {
     display: none;
-}
-@media screen and (max-device-width: 500px) {
-    :root {
-        --fontsize-main: 17px;
-        --fontsize-scripture: 17px;
-        --fontsize-ref: 12px;
-        --fontsize-strongstooltip: 17px;
-        --width-sidebuttons:40px;
-        --width-mainbutton:45px;
-    }
-    #refnav #app_settings > button {
-        font-size: 32.5px;
-        overflow: hidden;
-        width: 50px!important;
-    }
-    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
-        display: flex;
-        width: 100%;
-    }
-    #refdiv input, #searchdiv input {
-        flex-grow: 1;
-    }
-    #togglenavbtn{
-        width: 120px !important;
-    }
-}
-@media screen and (max-device-width: 300px) {
-    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
-        display: flex;
-        width: 100%;
-    }
-    #refdiv input, #searchdiv input {
-        flex-grow: 1;
-    }
 }
 button{font-weight: bolder!important;}

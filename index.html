@@ -13,6 +13,7 @@
     }
   </style>
   <link rel="stylesheet" href="bibleApp.css">
+  <link rel="stylesheet" href="bibleApp-2.css">
 </head>
 
 <body>
@@ -21,7 +22,7 @@
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
         <div class="buttons" id="top_horizontal_bar_buttons">
-          <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav">&#9776;</button>
+          <button onclick="toggleNav()" class="togglenav" id="togglenavbtn" title="Toggle Nav"></button>
           <div id="ref_search_versions_holder">
             <div id="refdiv">
               <input class="footersection" id="reference" title="Type Bible Reference"
@@ -211,7 +212,11 @@
         <div for="darkmodebtn"><button id="darkmodebtn" onclick="darkLightMode()">L</button>Toggle Dark/Light Mode: </div>
         <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div>
         <br>
-        <div><input type="color" style="width: 100px;height: 25px;padding:0;border:0"></input></div>
+        <div>
+          <h3>Change Background</h3>
+          <input type="color" style="width: 100px;height: 25px;padding:0;border:0" onchange="changeBackGround(this.value,'--ref-img')"></input>
+          <button onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
+        </div>
         
         <!-- <div class="settingssectionheadings">Modify Cache</div>
         <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"

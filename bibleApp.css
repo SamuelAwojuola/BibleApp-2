@@ -334,7 +334,7 @@ code{position: relative; padding-top: 5px;}
     height: 100%;
 }
 #forreference,#forwordsearch,#titlebar_show_searchsettings{
-    min-width: 50px;
+    min-width: 70px;
 }
 .ref_hlt {
     font-weight: bold;
@@ -358,11 +358,6 @@ code{position: relative; padding-top: 5px;}
 }
 #bible_verses>option {
     width: 20px;
-}
-button {
-    cursor: pointer;
-    background-color: var(--buttons);
-    border: var(--buttons-border);
 }
 #top_horizontal_bar{
     grid-column-start: 1;
@@ -946,4 +941,11 @@ span.vmultiple.noted code #verse_notes_button {
 #mobilebuttons {
     display: none;
 }
-button{font-weight: bolder!important;}
+button{
+    font-weight: bolder!important;
+    cursor: pointer;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: var(--buttons);
+    border: var(--buttons-border);
+    font-size: 0.95em;
+}

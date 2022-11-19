@@ -44,8 +44,26 @@
     height: 100%;
     cursor: ew-resize;
 }
-#ppp {
-    border: var(--buttons-border);
+
+@media screen and (min-device-width: 1025px) {
+    #togglenavbtn {
+        min-width: 44.5px;
+    }    
+    #togglenavbtn::before {
+        content: '\2261';
+        font-size: 75px;
+        font-weight: 400;
+    }
+    #refnav #app_settings > button{
+        min-width: 45px;
+    }
+}
+@media screen and (max-device-width: 1024px) {
+    #togglenavbtn::before {
+        content: '\2261';
+        font-size: 50px;
+        font-weight: 400;
+    }
 }
 @media screen and (max-device-width: 912px) {
      :root {
@@ -101,13 +119,14 @@
         height: calc(100vh - 57px);
     }
     #reference {
+        width: 100%;
         font-size: 1.5em!important;
     }
-    #togglenavbtn::before {
-        content: '\2261';
-        font-size: xxx-large;
-        font-weight: 400;
-    }
+/* @media only screen and (max-width: 400px) and (min-width: 374px)  {
+    #reference {
+        width: 50px;
+} */
+
 }
 @media screen and (max-device-width: 400px) {
      :root {
@@ -151,14 +170,4 @@
     #reference {
         font-size: 1em!important;
     }
-    #togglenavbtn::before {
-        content: '\2261';
-        font-size: xxx-large;
-        font-weight: 400;
-    }
-}
-#togglenavbtn::before {
-    content: '\2261';
-    font-size: 75px;
-    font-weight: 400;
 }

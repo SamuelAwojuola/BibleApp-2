@@ -291,8 +291,8 @@ code{position: relative; padding-top: 5px;}
     width: var(--width-sidebuttons);
 }
 #refnav #app_settings > button {
-    width:100%;
-    /* min-width:36px; */
+    width:auto;
+    min-width:36px;
     padding-left: 2px;
     padding-right: 2px;
     font-size: 22.5px;
@@ -334,7 +334,7 @@ code{position: relative; padding-top: 5px;}
     height: 100%;
 }
 #forreference,#forwordsearch,#titlebar_show_searchsettings{
-    min-width: 70px;
+    min-width: 50px;
 }
 .ref_hlt {
     font-weight: bold;
@@ -358,6 +358,11 @@ code{position: relative; padding-top: 5px;}
 }
 #bible_verses>option {
     width: 20px;
+}
+button {
+    cursor: pointer;
+    background-color: var(--buttons);
+    border: var(--buttons-border);
 }
 #top_horizontal_bar{
     grid-column-start: 1;
@@ -465,8 +470,6 @@ div.buttons{
     border: var(--buttons-border);
     font-weight:bolder;
     font-size: 2em!important;
-    /* min-width: min-content;
-    max-width: 100%; */
 }
 button:disabled {
     cursor: default;
@@ -740,7 +743,6 @@ sup {
     right: 0;
 }
 #resizerdiv {
-    display: none;
     background-color: var(--grey);
     float: right;
     width: 2.5px;
@@ -937,15 +939,7 @@ span.vmultiple.noted code #verse_notes_button {
 [class^=v_].vhlt{
     background-color: var(--vhlt2);
 }
-
 #mobilebuttons {
     display: none;
 }
-button{
-    font-weight: bolder!important;
-    cursor: pointer;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    background-color: var(--buttons);
-    border: var(--buttons-border);
-    font-size: 0.95em;
-}
+button{font-weight: bolder!important;}

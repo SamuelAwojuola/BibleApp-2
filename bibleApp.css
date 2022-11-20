@@ -272,6 +272,7 @@ code{position: relative; padding-top: 5px;}
 #ref_search_versions_holder #searchdiv {
     display: flex;
     flex: 1;
+    min-width: 500px;
 }
 #ref_search_versions_holder #refdiv *,
 #ref_search_versions_holder #searchdiv * {

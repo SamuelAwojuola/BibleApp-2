@@ -942,4 +942,11 @@ span.vmultiple.noted code #verse_notes_button {
 #mobilebuttons {
     display: none;
 }
-button{font-weight: bolder!important;}
+button{
+    font-weight: bolder!important;
+    cursor: pointer;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: var(--buttons);
+    border: var(--buttons-border);
+    font-size: 0.95em;
+}

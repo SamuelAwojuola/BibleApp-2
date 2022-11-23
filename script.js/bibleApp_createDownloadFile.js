@@ -52,6 +52,7 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
     }
 
     async function fetchBookNotes() {
+        console.log('fetching note')
         const response = await fetch(`/bible_notes/notes_${bookName}.json`);
         return await response.json()
     }

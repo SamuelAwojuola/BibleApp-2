@@ -71,6 +71,10 @@
     font-weight: bold;
     font-size: 0.75em;
 }
+.missing{
+    font-weight:normal;
+    font-size: 0.8em;
+}
 html {
     padding: 0;
     font-size: var(--fontsize-main);
@@ -190,7 +194,7 @@ code{position: relative; padding-top: 5px;}
     background: var(--versenote-contextmenu);
 }
 .verse_note #context_menu,
-.verse_note #context_menu .cmtitlebar~span{
+.verse_note #context_menu .cmtitlebar~span {
     font-size: inherit!important;
 }
 .text_content{
@@ -368,7 +372,7 @@ button {
     background: var(--whitesmoke);
     /* border: 1px solid var(--grey); */
     min-width: 50px;
-    max-width: 300px;
+    max-width: 500px;
     max-height: 400px;
     overflow-y: scroll;
     padding: 5px;
@@ -391,21 +395,27 @@ button {
     box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 23px 0px 0px var(--grey);
 }
 #context_menu>hr+.strngsdefinition>hr:first-child{display: none;}
-#context_menu h2 {font-size:x-large;}
-#context_menu i {font-size:small;}
+#context_menu h2, #context_menu i  {font-size:inherit;}
 #context_menu .strngsdefinition div {display: block;}
-.vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:hover {text-decoration: underline;color: var(--blue);cursor: pointer;}
+.vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:not(.cmtitlebar code):hover {text-decoration: underline;color: var(--blue);cursor: pointer;}
+#context_menu .cmtitlebar code{font-size:inherit}
 #context_menu div{z-index: 2;}
+#context_menu hr:not(:last-child){margin-top:0}
+#context_menu hr:last-child{margin-bottom:0}
+#context_menu .strngsdefinition:last-child hr:last-of-type{display: none;}
 #context_menu .cmtitlebar{
     position: sticky;
     top: 0;
     right: inherit;
     background: var(--ref-img);
-    font-size: small;
+    font-size: 0.8em;
     font-weight: bold;
-    width: 100%;    
-    /* box-shadow: 21px -10px 0px 11px var(--scroll-track-bg-color),
-    -13px -6px 0px 7px var(--scroll-track-bg-color); */
+    width: 100%;
+    padding-bottom: 10px;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0px 7.5px 10px 0px var(--scroll-track-bg-color)/* ,
+    -13px -6px 0px 7px var(--scroll-track-bg-color) */;
 }
 #context_menu .cmtitlebar::before{
     position: absolute;

@@ -124,10 +124,8 @@ function getCrossReference(x) {
     let br = '';
     if (crf2get.includes(',')) {
         let vrsGrpsByCommas = crf2get.split(',');
-        console.log(vrsGrpsByCommas)
         let grp1 = vrsGrpsByCommas.shift(); // Will contain a full reference, c.g., Gen 2:16-17
         let vRange1 = verseRange(grp1);
-        console.log(vRange1);
         getVersesInVerseRange(vRange1);
         let vRanges = [];
         vrsGrpsByCommas.forEach(vg=>getVranges(vg))
@@ -148,7 +146,6 @@ function getCrossReference(x) {
     }
     function verseRange(crf2get){
         if (crf2get.includes('-')) { //MORE THAN ONE VERSE
-            console.log('vran')
             vrs1 = Number(crf2get.split('-')[0].split('.')[2]);
             let ref_secondHalf = crf2get.split('-')[1].split('.')
 

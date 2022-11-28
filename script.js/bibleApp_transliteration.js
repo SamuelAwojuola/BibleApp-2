@@ -64,7 +64,7 @@ function getsStrongsDefinition(x) {
                 let str_xlit = strongsJSONresponse[abc].xlit;
                 let str_lemma = strongsJSONresponse[abc].lemma;
                 let str_definition = strongsJSONresponse[abc].description;
-                _text = _text + `<div class="strngsdefinition"><hr><h2>${wStrnum}</h2>
+                _text = `${_text}<div class="strngsdefinition"><h2>${wStrnum}</h2>
                 <div><i>Lemma</i>: <h2>${str_lemma}</h2></div>
                 <div><i>Transliteration</i>: <h2>${str_xlit}</h2></div>
                 <div><h2><hr>Definition:</h2></div><hr> ${str_definition}<hr>
@@ -76,6 +76,25 @@ function getsStrongsDefinition(x) {
             }
         }
     });
+}
+
+function getsStrongsLemmanNxLit(wStrnum) {
+    strongsdefinitionwindow.innerHTML = '';
+    let _text = '';
+    let str_xlit, str_lemma, str_definition;
+    for (abc = 0; abc < strongsJSONresponse.length; abc++) {
+        if (strongsJSONresponse[abc].number == wStrnum) {
+            str_xlit = strongsJSONresponse[abc].xlit;
+            str_lemma = strongsJSONresponse[abc].lemma;
+            str_definition = strongsJSONresponse[abc].description;
+            break
+        }
+    }
+    return {
+        xlit: str_xlit,
+        lemma: str_lemma,
+        definition: str_definition
+    }
 }
 
 //TO SHOW TRANSLITERATION OF WORDS

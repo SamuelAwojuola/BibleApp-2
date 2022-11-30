@@ -369,6 +369,7 @@ function parseVerseText(vT, verseSpan) {
         }
     } else {
         // console.log(previousVT)
+        // console.log(vT)
         // if (/'missing'/.test(vT)){console.log(vT)}
         vT = vT.replace(/<hi type="bold">/g, '<span class="b">');
         vT = vT.replace(/<hi type="italic">/g, '<span class="i">');

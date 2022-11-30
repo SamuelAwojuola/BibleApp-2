@@ -111,8 +111,8 @@ function add_tooltipContextMenu(e) {
                     let xlitNlemma='',br='';
                     arrOfStrnums.forEach((sn,i) => {
                         br='</code>',st='';
-                        if(arrOfStrnums.length>i+1){br=`</code><br><code>&#9726; `}// if it is not the last (or only) strnums
-                        if(i==0){st=`<code>&#9726; `}
+                        if(arrOfStrnums.length>i+1){br=`</code><br><code><div>&#9726;</div> `}// if it is not the last (or only) strnums
+                        if(i==0){st=`<code><div>&#9726;</div> `}
                         xlitNlemma=`${st}${xlitNlemma}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}${br}`
                     });
                     if (addquotes) {
@@ -212,7 +212,6 @@ function getCurrentStrongsDef(e) {
     if (strnum = e.target.getAttribute('strnum')) {
         strnum = strnum.split(' ');
         getsStrongsDefinition(strnum);
-        // console.log(strnum)
     }
     if (e.type == 'contextmenu') {
         context_menu.classList.add('rightclicked');

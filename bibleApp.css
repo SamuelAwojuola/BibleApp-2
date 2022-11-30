@@ -371,9 +371,11 @@ button {
     position: absolute;
     background: var(--whitesmoke);
     /* border: 1px solid var(--grey); */
-    min-width: 50px;
-    max-width: 500px;
-    max-height: 400px;
+    min-width: 400px;
+    max-width: 600px;
+    /* width: 500px; */
+    /* max-height: 400px; */
+    max-height: 80vh;
     overflow-y: scroll;
     padding: 5px;
     -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
@@ -385,9 +387,9 @@ button {
     resize: both;
 }
 #context_menu:hover {
-    -webkit-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
-    -moz-box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
-    box-shadow: 1px 1px 3px 0px var(--shadow-ctxtmenu-hover);
+    -webkit-box-shadow: 5px 5px 15px 0px var(--shadow-ctxtmenu-hover);
+    -moz-box-shadow: 5px 5px 15px 0px var(--shadow-ctxtmenu-hover);
+    box-shadow: 5px 5px 15px 0px var(--shadow-ctxtmenu-hover);
 }
 #context_menu:not([strnum]){
     -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 23px 0px 0px var(--grey);
@@ -398,6 +400,7 @@ button {
 #context_menu h2, #context_menu i  {font-size:inherit;}
 #context_menu .strngsdefinition div {display: block;}
 .vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:not(.cmtitlebar code):hover {text-decoration: underline;color: var(--blue);cursor: pointer;}
+#context_menu .cmtitlebar code {display: inline-flex;}
 #context_menu .cmtitlebar code{font-size:inherit}
 #context_menu div{z-index: 2;}
 #context_menu hr:not(:last-child){margin-top:0}
@@ -416,6 +419,7 @@ button {
     margin-bottom: 10px;
     box-shadow: 0px 7.5px 10px 0px var(--scroll-track-bg-color)/* ,
     -13px -6px 0px 7px var(--scroll-track-bg-color) */;
+    z-index: 3;
 }
 #context_menu .cmtitlebar::before{
     position: absolute;
@@ -600,7 +604,7 @@ sup {
     border-left: 0.5px solid var(--black);
 }
 #refnav {
-    height: auto;
+    /* height: auto; */
     overflow-y: hidden;
     font-size: var(--fontsize-main);
 }
@@ -635,7 +639,7 @@ sup {
 .bible_versions_heading{
     box-shadow: 0 0.5px 0 var(--shadow-color);
     background-color: var(--whitesmoke);
-    background-image: var(--ref-img);
+    /* background-image: var(--ref-img); */
     font-style: italic;
     font-weight: bold;
     text-align: center;
@@ -649,12 +653,62 @@ sup {
     height: 100%;
 }
 
+#strongsdefinitionwindow details, details {
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    padding: .5em .5em 0;
+    z-index: -10;
+}
+
+#strongsdefinitionwindow summary, summary {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    /* font-weight: bold; */
+    margin: -.5em -.5em 0;
+    padding: .5em;
+    cursor: pointer;
+    z-index: -10;
+    list-style: none;
+}
+#strongsdefinitionwindow summary i, summary i {
+    font-size: 0.7em;
+}
+#strongsdefinitionwindow summaryh2, summaryh2 {
+    font-size: 1em;
+}
+/* #strongsdefinitionwindow summary>div, summary>div {
+    background: url(images/up-arrow-svgrepo-com.svg) center no-repeat;
+} */
+#strongsdefinitionwindow summary>div:first-of-type, summary>div:first-of-type {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    min-width: 1em;
+    height: 2em;
+    margin: 10px;
+}
+
+#strongsdefinitionwindow details[open], details[open] {
+    /* background-color:#cbff7d24; */
+}
+
+#strongsdefinitionwindow details[open] summary, details[open] summary {
+    /* background-color:#fdff7f25; */
+    border-bottom: 1px solid #aaa;
+    margin-bottom: .5em;
+}
+
+#strongsdefinitionwindow details[open] summary > div:first-of-type,
+details[open] summary > div:first-of-type {
+    background: url(images/arrow-down-svgrepo-com.svg) center no-repeat;
+    /* min-width: 1em; */
+    /* height: 2em; */
+    /* margin: 10px; */
+}
+
 #bible_nav,
 #bible_versions,
-#searchPreviewWindowFixed,
-#strongsdefinitionwindow,
 #bibleapp_cache {
-    max-width: 300px;
+    max-width: 600px;
     height: 100%;
     border-right: 2px solid var(--grey);
     font-size: var(--fontsize-main);
@@ -682,7 +736,7 @@ sup {
 #cache_table td button{min-width: 100%;font-weight: bolder;}
 #hidestrongshighlight {display: none;}
 #strongsdefinitionwindow {
-    min-width: 200px;
+    min-width: 400px;
     font-size: var(--fontsize-scripture);
 }
 #strongsdefinitionwindow::after {
@@ -690,6 +744,11 @@ sup {
     background-color: #ccc;
     position: absolute;
     right: 0;
+}
+#searchPreviewWindowFixed,
+#strongsdefinitionwindow{
+    width: 600px;
+    max-width: 600px;
 }
 #resizerdiv {
     background-color: var(--grey);
@@ -716,6 +775,7 @@ sup {
 .strngsdefinition h2,
 .strngsdefinition h3,
 .strngsdefinition h4 {
+    font-size: inherit;
     display: inline;
     padding-top: 0;
     margin-top: 0;
@@ -732,6 +792,8 @@ sup {
     flex-direction: column;
     overflow-y: hidden;
     font-size: var(--fontsize-scripture);
+    padding-bottom: 7px;
+    margin-bottom: 7px;
 }
 #searchparameters div:last-child {
     display: block;
@@ -855,7 +917,7 @@ span.vmultiple.noted code #verse_notes_button {
 }
 .slideout {
     display: none;
-    margin-left: -500px;
+    margin-left: -900px;
     margin-top: 0;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;

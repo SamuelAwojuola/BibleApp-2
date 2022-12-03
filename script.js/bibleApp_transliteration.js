@@ -56,7 +56,7 @@ function createTransliterationAttr(x, l) {
 let currentStrongsDef = null;
 
 function getsStrongsDefinition(x) {
-    console.log(x)
+    // console.log(x)
     strongsdefinitionwindow.innerHTML = '';
     _text = '';
     let openOrclose='';
@@ -82,7 +82,7 @@ function getsStrongsDefinition(x) {
     });
     currentStrongsDef = _text;
     strongsdefinitionwindow.innerHTML = _text;
-    console.log(_text)
+    // console.log(_text)
     return _text
 }
 
@@ -109,7 +109,8 @@ var transliteratedWords_Array = [];
 function showTransliteration(stn) {
     let allSimilarWords;
     if(/G|H\d+/i.test(stn)&&stn!=='G*'){
-        allSimilarWords = pagemaster.querySelectorAll('.' + stn);
+        allSimilarWords = pagemaster.querySelectorAll('.' + stn + ':not(.vnotestrnum)');
+        // ':not(.vnotestrnum)' so as to exempt strnums in verseNotes
     } else {return}
     // allSimilarWords = pagemaster.querySelectorAll('.' + stn);
     // let allSimilarWords = document.getElementsByClassName(stn);
@@ -156,7 +157,8 @@ function showTransliteration(stn) {
 }
 
 function hideTransliteration(stn) {
-    let allSimilarWords = pagemaster.querySelectorAll('.' + stn);
+    let allSimilarWords = pagemaster.querySelectorAll('.' + stn + ':not(.vnotestrnum)');
+    // ':not(.vnotestrnum)' so as to exempt strnums in verseNotes
     allSimilarWords.forEach(elm => {
         elm.classList.remove('eng2grk');
         elm.innerHTML = '';

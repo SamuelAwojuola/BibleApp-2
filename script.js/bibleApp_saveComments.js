@@ -167,7 +167,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
           copyOfAllVerseNotesInCurrentBook[chapternumber-1] = sortVnotesObj(originalVerseNotes)
           // console.log(copyOfAllVerseNotesInCurrentBook)
           b_bk['notes']=copyOfAllVerseNotesInCurrentBook;
-          let newJSON_data = JSON.stringify(b_bk, null, 0);
+          let newJSON_data = JSON.stringify(b_bk, null, 4);
           // downloadFile(newJSON_data, 'notes_'+bookName);
           saveToLocalDrive(newJSON_data);
       }
@@ -181,8 +181,12 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
 
 function saveJSONFileToLocalDrive(e) {
   if (e.target.matches('.note_save_button')) {
+    bookName=e.target.getAttribute('bk');
+    let cNv=e.target.getAttribute('b_cv').split('.')
+    chapternumber=cNv[0];
+    verseNumber=cNv[1];
       /* MODIFY THE BIBLE NOTES JSON FILE */
-      writeToVerseNotesFiles();
+      writeToVerseNotesFiles(bookName, chapternumber, verseNumber);
   }
 }
 

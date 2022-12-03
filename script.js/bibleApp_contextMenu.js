@@ -269,7 +269,7 @@ document.addEventListener('keydown', evt => {
         toolTipOnOff();
         toolTipON = ttip_check.checked;
     }
-    if (evt.key === 'Escape') {
+    if (evt.key === 'Escape' && context_menu) {
         hideRefNav('hide', context_menu);
         context_menu.innerHTML = '';
     }

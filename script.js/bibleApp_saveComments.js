@@ -25,7 +25,7 @@
 /* ******************************************************************* */
 /* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
 function saveToLocalDrive(jsonVerseNoteData) {
-  // store a reference to our file handle
+  // store a reference to file handle
   let fileHandle;
   let fileName = `notes_${bookName}.json`; //File name should be bookName with .json extension, e.g., Romans.json
   const pickerOpts = {
@@ -53,6 +53,18 @@ function saveToLocalDrive(jsonVerseNoteData) {
       saveFileAs();
     } else {
     let stream = await fileHandle.createWritable(pickerOpts);
+      // ensure it is not empty
+      let jvnd=jsonVerseNoteData;
+      console.log(jvnd.length);
+      if((jvnd==false)||(jvnd==undefined)||(jvnd==null)){
+        alert('FILE IS EMPTY!! err1');
+        return
+      } else if((jvnd=="")||jvnd.trim().length == 0){
+        alert('FILE IS EMPTY!! err2');
+        return
+      } else {
+        console.log("File is fine")
+      }
     await stream.write(jsonVerseNoteData)
     await stream.close()}
   }
@@ -78,10 +90,16 @@ function saveToLocalDrive(jsonVerseNoteData) {
 /* ******************************************************************* */
 /* MODIFY JSON VERSE NOTES FILE */
 let noteForCurrentlyEditedVerse;
+let currentURLisGithubSamAwo = /github.com\/SamuelAwojuola/.test(window.location.href);
 
 async function fetchBookNotes(jsBkNm) {
   if(!jsBkNm){jsBkNm=bookName}
-  const response = await fetch(`/bible_notes/notes_${jsBkNm}.json`);
+  let response;
+  if(currentURLisGithubSamAwo){
+    response = await fetch(`https://github.com/SamuelAwojuola/BibleApp-2/tree/main/bible_notes/notes_${jsBkNm}.json`);
+  } else {
+    response = await fetch(`/bible_notes/notes_${jsBkNm}.json`);
+  }
   return await response.json()
 }
 

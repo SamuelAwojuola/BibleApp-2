@@ -62,7 +62,12 @@
     }
     #refdiv input,
     #searchdiv input {
+        width: 100%;
         flex-grow: 1;
+        /* font-size: 18px; */
+    }
+    #bibleversions_btns button {
+        font-size: 12px;
     }
     #forreference,
     #forwordsearch,

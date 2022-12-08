@@ -90,17 +90,12 @@ function saveToLocalDrive(jsonVerseNoteData) {
 /* ******************************************************************* */
 /* MODIFY JSON VERSE NOTES FILE */
 let noteForCurrentlyEditedVerse;
-let currentURLisGithubSamAwo = /github.com\/SamuelAwojuola/.test(window.location.href);
+// let currentURLisGithubSamAwo = /samuelawojuola\.github\.io/.test(window.location.href);
 
 async function fetchBookNotes(jsBkNm) {
   if(!jsBkNm){jsBkNm=bookName}
-  let response;
-  if(currentURLisGithubSamAwo){
-    response = await fetch(`https://github.com/SamuelAwojuola/BibleApp-2/tree/main/bible_notes/notes_${jsBkNm}.json`);
-  } else {
-    response = await fetch(`/bible_notes/notes_${jsBkNm}.json`);
-  }
-  return await response.json()
+  let response = await fetch(`bible_notes/notes_${jsBkNm}.json`);
+    return await response.json()
 }
 
 function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHere) {
@@ -140,7 +135,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
   }
 
   async function fetchBookNotes() {
-      const response = await fetch(`/bible_notes/notes_${bookName}.json`);
+      const response = await fetch(`bible_notes/notes_${bookName}.json`);
       return await response.json()
   }
 
@@ -248,7 +243,8 @@ function indicateThatVerseHasNoteInJSONnotes_file() {
   }
   function getAllRefsInBookThatHaveNote(bookName,callback) {
     fetchBookNotes(bookName).then(jsonObject => {
-        bible_book = jsonObject,versesWithNotes()
+        bible_book = jsonObject;
+        versesWithNotes()
     })
     function versesWithNotes(){
       var items = [];

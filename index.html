@@ -78,6 +78,7 @@
         </button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="available_notes" onclick="appendAllRefsWithNote(), hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\fireplace-home-svgrepo-com.svg" alt="Site Home"></a></button>
       </div>
       <div id="bible_nav" class="slideout">
@@ -225,6 +226,9 @@
           title="Clear transliterated words cache">Forget Transliterated Words</label><br>
         <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
           for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label> -->
+      </div>
+      <div id="bibleapp_available_notes" class="slideout">
+        bibleapp_available_notes
       </div>
       <div id="strongsdefinitionwindow" class="slideout">
       </div>

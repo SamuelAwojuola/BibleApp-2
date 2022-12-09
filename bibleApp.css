@@ -115,11 +115,12 @@ li li li{
     position: fixed;
     top:0;
     left: 0;
-    height: 100vh;
+    height: 100%;
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
     row-gap: 0;
+    border-bottom: 5px solid var(--scroll-thumb-hover-bg-color);
 }
 #ppp code, #context_menu code {
     font-size: var(--fontsize-ref);
@@ -1059,4 +1060,58 @@ span.vmultiple.noted code #verse_notes_button {
 }
 #titlebarsearchparameters > *{
     font-size: 1.75em;
+}
+
+/* AVAILABLE NOTES */
+#bibleapp_available_notes{
+    width: 250px;
+    overflow-y: auto;
+    cursor: pointer;
+    background: white;
+}
+#bibleapp_available_notes em {
+    display: block;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    background: var(--grey);
+    color: var(--white);
+    font-weight: bold;
+}
+#bibleapp_available_notes code {
+    box-sizing: border-box;
+    height: 1.1em;
+    padding-left: 0.1em;
+}
+#bibleapp_available_notes code:hover {
+    color: var(--redwords);
+    font-weight: bold;
+    box-shadow: 0px -25px 0px 0px var(--verse-higlight) inset;
+}
+#bibleapp_available_notes span:not(:first-child) {
+    border-left: 0.15em solid grey;
+    padding-left: 0.1em;
+}
+#bibleapp_available_notes span:hover {
+    border-bottom: 5px solid var(--grey);
+    border-radius: 5px;
+    background: var(--verse-higlight);
+}
+#bibleapp_available_notes b {
+    font-size: 1.2em;
+}
+#bibleapp_available_notes details summary {
+    color: var(--black);
+    background: var(--whitesmoke);
+    font-weight: bold;
+    display:list-item;
+    list-style: inside disclosure-closed;
+}
+#bibleapp_available_notes details[open] summary {
+    list-style: inside disclosure-open;
+}
+/* #bibleapp_available_notes details:hover {
+    background: var(--verse-hover);
+} */
+#bibleapp_available_notes details:hover summary {
+    background: var(--selection);
 }

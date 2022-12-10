@@ -354,6 +354,7 @@ button {
     align-items: center;
     justify-content: center;
     font-size: var(--fontsize-main);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     cursor: pointer;
     border: var(--buttons-border);
     background-color: var(--buttons);
@@ -1015,6 +1016,7 @@ span.vmultiple.noted code #verse_notes_button {
     vertical-align: bottom;
     background-color: var(--buttons);
     border: var(--buttons-border);
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-weight:bolder;
     font-size: 40px;
     flex-grow: 1;

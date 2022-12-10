@@ -17,7 +17,7 @@
 @media screen and (max-device-width: 1024px) {
     #togglenavbtn::before {
         content: '\2261';
-        font-size: 50px;
+        font-size: calc(var(--fontsize-refnsearch) * 3);
         font-weight: 400;
     }
 }

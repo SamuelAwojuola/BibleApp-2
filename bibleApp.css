@@ -1,11 +1,13 @@
 :root {
     --fontsize-main: 15px;
+    --fontsize-refnsearch: 30px;
     --fontsize-scripture-nav: 15px;
     --fontsize-scripture: 13px;
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
     --fontsize-title:20px;
     --width-sidebuttons:27px;
+    --heighWidth-refnsrchbtn:58px;
     --width-mainbutton:35px;
     --ref-hlt: #dde3db;
     --ref-img: url(images/background.jpg);
@@ -328,9 +330,6 @@ code{position: relative; padding-top: 5px;}
     min-width: 40.5px;
     height: 100%;
 }
-#forreference,#forwordsearch,#titlebar_show_searchsettings{
-    min-width: 53px;
-}
 .ref_hlt {
     font-weight: bold;
     font-style: italic;
@@ -355,27 +354,24 @@ code{position: relative; padding-top: 5px;}
     width: 20px;
 }
 button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-size: var(--fontsize-main);
-    /* font-weight: bolder!important;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif; */
     cursor: pointer;
     border: var(--buttons-border);
     background-color: var(--buttons);
 }
 .buttons {
+    width: auto;
     background: var(--ref-img);
     border-bottom: 2px solid #70707072;
-    display: flex;
-    width: auto;
 }
 #context_menu {
     position: absolute;
     background: var(--whitesmoke);
-    /* border: 1px solid var(--grey); */
     min-width: 400px;
     max-width: 600px;
-    /* width: 500px; */
-    /* max-height: 400px; */
     max-height: 80vh;
     overflow-y: scroll;
     padding: 5px;
@@ -997,20 +993,24 @@ span.vmultiple.noted code #verse_notes_button {
     /* flex: 1 0 50%; */
     /* display: inline-flex; */
 }
-#refdiv *, #searchdiv button {
-    font-size: var(--fontsize-title);
-}
 #refdiv input,
 #searchdiv input{
     width: 100%;
-    font-size: 30px;
+    font-size: var(--fontsize-refnsearch);
     flex-grow: 1;
 }
-
-#searchdiv button,
-#refdiv button {
-    font-size:var(--width-mainbutton);
-    padding: 0;
+#refdiv input{
+    font-size: calc(var(--fontsize-refnsearch)*1.5);
+}
+#refdiv button, #searchdiv button {
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    min-width: calc(var(--fontsize-refnsearch) * 2.5);
+    min-height: calc(var(--fontsize-refnsearch) * 2);
+    font-size: calc(var(--fontsize-refnsearch) * 2);
+    /* width:3em; */
+    /* height:3em; */
 }
 
 /* REFERENCE */
@@ -1052,6 +1052,8 @@ span.vmultiple.noted code #verse_notes_button {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    font-weight:bold;
+    font-size: calc(var(--fontsize-refnsearch) * 0.8);
 }
 
 /* SEARCH PARAMETERS */

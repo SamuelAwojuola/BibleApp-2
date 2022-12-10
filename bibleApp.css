@@ -326,10 +326,6 @@ code{position: relative; padding-top: 5px;}
 #refnav .bible_nav *:active {
     background: var(--ref-img);
 }
-#togglenavbtn {
-    min-width: 40.5px;
-    height: 100%;
-}
 .ref_hlt {
     font-weight: bold;
     font-style: italic;
@@ -1002,7 +998,7 @@ span.vmultiple.noted code #verse_notes_button {
 #refdiv input{
     font-size: calc(var(--fontsize-refnsearch)*1.5);
 }
-#refdiv button, #searchdiv button {
+#refdiv button, #searchdiv button, #togglenavbtn {
     display: flex;
     align-items: center;
     padding: 2px;
@@ -1053,7 +1049,7 @@ span.vmultiple.noted code #verse_notes_button {
     overflow: hidden;
     text-overflow: ellipsis;
     font-weight:bold;
-    font-size: calc(var(--fontsize-refnsearch) * 0.8);
+    font-size: calc(var(--fontsize-refnsearch) * 0.9);
 }
 
 /* SEARCH PARAMETERS */
@@ -1116,4 +1112,12 @@ span.vmultiple.noted code #verse_notes_button {
 } */
 #bibleapp_available_notes details:hover summary {
     background: var(--selection);
+}
+#togglenavbtn {
+    font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
+    font-weight: 400;
+}
+#togglenavbtn img {
+    width: calc(var(--fontsize-refnsearch) * 2)!important;
+    max-width: 60.5px!important;
 }

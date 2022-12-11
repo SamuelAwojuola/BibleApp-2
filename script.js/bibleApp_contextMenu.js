@@ -1,3 +1,5 @@
+// Check if device is a mobile device
+let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
 let rightClickedElm = null;
@@ -91,6 +93,12 @@ function add_tooltipContextMenu(e) {
             }
 
             if (e.target.matches('.translated, .strnum')) {
+                // On Mobile Devices
+                if (isMobileDevice) {
+                    // remove windows selection
+                    window.getSelection().removeRange(window.getSelection().getRangeAt(0))
+                    // (because on mobile, the user has to press and hold for contextmenu which also selects the text)
+                }
                 if (e.target.getAttribute("translation")) {
                     originalWord = e.target.getAttribute("translation");
                     if (truexlit = e.target.getAttribute("data-true-xlit")) {
@@ -269,7 +277,7 @@ document.addEventListener('keydown', evt => {
         toolTipOnOff();
         toolTipON = ttip_check.checked;
     }
-    if (evt.key === 'Escape' && context_menu) {
+    if (evt.key === 'Escape' && document.querySelector('#context_menu')) {
         hideRefNav('hide', context_menu);
         context_menu.innerHTML = '';
     }

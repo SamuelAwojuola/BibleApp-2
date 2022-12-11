@@ -82,6 +82,14 @@
         width: 100%;
         font-size: 1.5em!important;
     }
+    /* ADDED BY PASTOR SAM ELYAH */
+    #searchPreviewWindowFixed, #strongsdefinitionwindow {
+        min-width: calc(100vw - 56px)!important;
+        max-width: calc(100vw - 56px)!important;
+    }
+    #searchPreviewWindowFixed *, #strongsdefinitionwindow * {
+        max-width: calc(100vw - 56px)!important;
+    }
 }
 @media screen and (max-device-width: 400px) {
      :root {
@@ -109,14 +117,6 @@
         min-width: calc(100vw - 25px)!important;
         max-width: calc(100vw - 25px)!important;
     }
-    /* ADDED BY PASTOR SAM ELYAH */
-    #searchPreviewWindowFixed, #strongsdefinitionwindow {
-        min-width: calc(100vw - 56px)!important;
-        max-width: calc(100vw - 56px)!important;
-    }
-    #searchPreviewWindowFixed *, #strongsdefinitionwindow * {
-        max-width: calc(100vw - 56px)!important;
-    }
 }
 @media screen and (max-device-width: 300px) {
     #togglenavbtn {
@@ -140,14 +140,6 @@
     }
     #reference {
         font-size: 1em!important;
-    }
-    /* ADDED BY PASTOR SAM ELYAH */
-    #searchPreviewWindowFixed, #strongsdefinitionwindow {
-        min-width: calc(100vw - 56px)!important;
-        max-width: calc(100vw - 56px)!important;
-    }
-    #searchPreviewWindowFixed *, #strongsdefinitionwindow * {
-        max-width: calc(100vw - 56px)!important;
     }
 }
 @media screen and (max-device-height: 360px) {

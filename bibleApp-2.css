@@ -81,7 +81,7 @@
     #reference {
         width: 100%;
         font-size: 1.5em!important;
-    }/
+    }
     /* ADDED BY PASTOR SAM ELYAH */
     #searchPreviewWindowFixed, #strongsdefinitionwindow {
         min-width: calc(100vw - 56px)!important;
@@ -89,13 +89,14 @@
     }
     #searchPreviewWindowFixed *, #strongsdefinitionwindow * {
         max-width: calc(100vw - 56px)!important;
-    }    
+    }
     #context_menu {
         right: 10px!important;
         left: 10px!important;
         width: calc(100% - 25px)!important;
         min-width: calc(100vw - 25px)!important;
         max-width: calc(100vw - 25px)!important;
+        height: auto!important;
     }
 }
 @media screen and (max-device-width: 400px) {

@@ -261,6 +261,11 @@ code{position: relative; padding-top: 5px;}
     font-style: italic;
     pointer-events: none;
 }
+#singleverse_compare_menu {
+    /* float: right; */
+    display: flex;
+    width: fit-content;
+}
 #singleverse_compare_menu button {
     font-size: var(--fontsize-ref);
     font-weight: bold;

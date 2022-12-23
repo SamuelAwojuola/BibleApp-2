@@ -1,0 +1,76 @@
+body {
+    font-size: 1.5em;
+    background-color: whitesmoke;
+    display: flex;
+    height: 100vh;
+}
+body * {
+    box-sizing: border-box;
+}
+#col1 {
+    font-size: 0.95em;
+    min-width: fit-content;
+    /* max-width: 200px; */
+    height: 100vh;
+    border-right: 2px solid black;
+    overflow-y: scroll;
+}
+#col2 {
+    overflow-y: auto;
+    height: 100vh;
+    /* min-width: calc(100vw - 200px)!important; */
+    width: 100%;
+    position: relative;
+
+}
+#bibleapp_available_notes {
+    min-width: 0px!important;
+    max-width: 200px!important;
+}
+#bibleapp_available_notes > em {
+    display: none!important;
+}
+#bibleapp_available_notes details, #bibleapp_available_notes summary {
+    width: 200px!important;
+}
+#bibleapp_available_notes span {
+    display: block!important;
+    margin-top: 2px;
+}
+#bibleapp_available_notes span:hover {
+    border-bottom: 0;
+}
+details summary {
+    margin-bottom: 0!important;
+}
+#win2_bcv_ref, .win2_bcv_ref {
+    font-size: 1.5em;
+    display: inline;
+}
+span[ref], .strnum {
+    font-weight: bold;
+    border-radius: 5px;
+    border-bottom: 1px solid maroon !important;
+    cursor: pointer;
+}
+span[ref]:hover, .strnum:hover {
+    box-shadow: 0 -1.07em 0px 0px rgba(255, 223, 117, 0.663) inset, 0 5px 5px -2px var(--shadow-orange)!important;
+    color: black!important;
+    transition: box-shadow .1s ease-in;
+}
+#win2_noteholder, .win2_noteholder{
+    position: relative;
+}
+#context_menu {
+    font-size: 1em;
+}
+summary, #context_menu summary, #context_menu .cmtitlebar, #context_menu .cmtitlebar::before {
+    background: rgb(250, 255, 200);
+}
+#context_menu .cmtitlebar::before {
+    height: 2em;
+    width: 105%;
+}
+#context_menu code {
+    font-size: 0.85em;
+}

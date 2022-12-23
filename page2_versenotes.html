@@ -6,21 +6,37 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- <link rel="stylesheet" href="bibleApp.css"> -->
+    <link rel="stylesheet" href="bibleApp.css">
+    <link rel="stylesheet" href="bibleApp-2.css">
+    <link rel="stylesheet" href="page2_versenotes.css">
     <title>Page 2</title>
-<style>
-    body {
-        font-size: 2em;
-        background-color: whitesmoke;
-    }
-</style>
 </head>
 
-<body>
-    <h1>Hello There</h1>
+<body id="versenotepage">
+    <div id="col1">
+        <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button>
+        <div id="bibleapp_available_notes" class="slidein"></div>
+    </div>
+    <div id="col2">
+        <div id="context_menu" class="context_menu slideout"></div>
+        <details open>
+            <summary>
+                <div class='openCloseIconHolder'></div>
+                <h1 id="win2_bcv_ref" class="win2_bcv_ref">Loading...</h1>
+            </summary>
+            <div id="win2_noteholder" class="win2_noteholder"></div>
+        </details>
+    </div>
 </body>
-<script>
-
-</script>
-
+<script src="data/bible.js"></script>
+<script src="script.js/helpers.js"></script>
+<script src="script.js/bibleApp_contextMenu_mainFunc.js"></script>
+<script src="script.js/bibleApp_contextMenu_notesPage.js"></script>
+<script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_refNav.js"></script>
+<script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_generateScriptureReference.js"></script>
+<script src="script.js/bibleApp_crossRefrencer.js" charset="utf-8"></script>
 </html>

@@ -90,7 +90,7 @@
     #searchPreviewWindowFixed *, #strongsdefinitionwindow * {
         max-width: calc(100vw - 56px)!important;
     }
-    #refdiv button, #searchdiv button {
+    #refdiv button, #searchdiv button, #togglenavbtn {
         min-width: calc((var(--fontsize-refnsearch) - 6px) * 2.5);
         min-height: calc((var(--fontsize-refnsearch) - 6px) * 2);
         font-size: calc((var(--fontsize-refnsearch) - 6px) * 2);

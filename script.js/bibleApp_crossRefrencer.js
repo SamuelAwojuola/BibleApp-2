@@ -1,8 +1,14 @@
+/* FOR GENERATING GETTING AND APPENDING CROSSREFERNCES (TSK) OF VERSES THAT HAVE THEM */
 bversionName = 'KJV';
 if(document.querySelector('#homepage')){
-    ppp.addEventListener("click", appendCrossReferences);
+    ppp.addEventListener('click', appendCrossReferences);
     main.addEventListener('mousedown', getCurrentBVN)
 }
+// else if(versenotepage = document.querySelector('body#versenotepage')){
+//     versenotepage.addEventListener('contextmenu', appendCrossReferences);
+//     clog({33:e.target})
+//     clog({eTarget:e.target})
+// }
 
 function getCurrentBVN(e) {
     let eTarget = e.target;

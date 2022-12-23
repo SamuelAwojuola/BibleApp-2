@@ -69,37 +69,38 @@ var currentBookValue = null;
 // var strgsInVerseSpan;
 
 //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
-refnav.addEventListener("click", function (e) {
-    clickedElm = e.target;
-    if (e.target.matches("button")) {
-        clickedElm.classList.toggle("active_button")
-    } else if (elmAhasElmOfClassBasAncestor(e.target,'button')) {
-        clickedElm = elmAhasElmOfClassBasAncestor(e.target,'button');
-        clickedElm.classList.toggle("active_button")
-    }
-    //To populate book chapter numbers refnav pane
-    if (clickedElm.classList.contains('bkname')) {
-        getBksChptsNum(clickedElm);
-        goto = 0;
-        currentBookValue = clickedElm.getAttribute('value');
-    }
-    //To Get Text of Selected Chapter
-    else if (clickedElm.classList.contains('chptnum')) {
-        //For previous and next chapter
-        if (clickedElm.previousElementSibling) {
-            prevBibleChapter = clickedElm.previousElementSibling;
+if(!document.querySelector('body').matches('#versenotepage')){
+    refnav.addEventListener("click", function (e) {
+        clickedElm = e.target;
+        if (e.target.matches("button")) {
+            clickedElm.classList.toggle("active_button")
+        } else if (elmAhasElmOfClassBasAncestor(e.target,'button')) {
+            clickedElm = elmAhasElmOfClassBasAncestor(e.target,'button');
+            clickedElm.classList.toggle("active_button")
         }
-        if (clickedElm.nextElementSibling) {
-            nextBibleChapter = clickedElm.nextElementSibling;
+        //To populate book chapter numbers refnav pane
+        if (clickedElm.classList.contains('bkname')) {
+            getBksChptsNum(clickedElm);
+            goto = 0;
+            currentBookValue = clickedElm.getAttribute('value');
         }
-        // clickedElm.scrollIntoView(false)
-        clearPageIfChapterNotPresent(clickedElm)
-        getTextOfChapter(clickedElm, null, null, true, true);
-        indicateBooknChapterInNav(null, clickedElm)
-        currentChapterValue = clickedElm.getAttribute('value')
-        // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
-    }
-})
+        //To Get Text of Selected Chapter
+        else if (clickedElm.classList.contains('chptnum')) {
+            //For previous and next chapter
+            if (clickedElm.previousElementSibling) {
+                prevBibleChapter = clickedElm.previousElementSibling;
+            }
+            if (clickedElm.nextElementSibling) {
+                nextBibleChapter = clickedElm.nextElementSibling;
+            }
+            // clickedElm.scrollIntoView(false)
+            clearPageIfChapterNotPresent(clickedElm)
+            getTextOfChapter(clickedElm, null, null, true, true);
+            indicateBooknChapterInNav(null, clickedElm)
+            currentChapterValue = clickedElm.getAttribute('value')
+            // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
+        }
+})}
 
 function indicateBooknChapterInNav(bk, chpt) {
     if (bk == null) bk = bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);
@@ -158,15 +159,15 @@ function hideRightClickContextMenu() {
         context_menu.classList.remove('rightclicked')
         hideRefNav('hide', context_menu);
         newStrongsDef = '';
-        if(toolTipON==true){toolTipOnOff();}
+        if(!versenotepage && toolTipON==true){toolTipOnOff();}
     }
 }
 document.addEventListener('keydown', function (e) {
     // let e = e || window.event;//Get event
     if (e.key === "Escape") {
-        if(bible_nav.matches('.slidein')){hideRefNav('hide',bible_nav);}
+        if(bible_nav && bible_nav.matches('.slidein')){hideRefNav('hide',bible_nav);}
         // else if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
-        else if(refnav.matches('.slidein')){hideRefNav('hide',refnav);}
+        else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
     } /* else if (e.ctrlKey && document.activeElement.matches('#noteEditingTarget')) {
         var code = e.key;
         switch (code) {
@@ -200,7 +201,7 @@ function hideRefNav(hORs, elm2HideShow, runfunc) {
         elHS = refnav
     }
     if (hORs == 'hide') {
-        if(elHS == bible_nav){biblenavigation.classList.remove('active_button')}
+        if(elHS == document.querySelector('#bible_nav')){biblenavigation.classList.remove('active_button')}
         elHS.classList.remove('slidein');
         elHS.classList.add('slideout');
     } else if (hORs == 'show') {

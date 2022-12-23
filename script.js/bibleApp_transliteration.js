@@ -56,11 +56,8 @@ function createTransliterationAttr(x, l) {
 let currentStrongsDef = null;
 
 function getsStrongsDefinition(x) {
-    // console.log(x)
-    strongsdefinitionwindow.innerHTML = '';
     _text = '';
     let openOrclose='';
-    // if(x.length==1){openOrclose='open'}
     x.forEach((wStrnum,i) => {
         if(i!=0){openOrclose=''}// only the first detail element will be open
         let xlit_lemma_definition=getsStrongsLemmanNxLit(wStrnum);
@@ -81,8 +78,10 @@ function getsStrongsDefinition(x) {
         </details>`;
     });
     currentStrongsDef = _text;
-    strongsdefinitionwindow.innerHTML = _text;
-    // console.log(_text)
+    if(!document.querySelector('body').matches('#versenotepage')){
+        strongsdefinitionwindow.innerHTML = '';
+        strongsdefinitionwindow.innerHTML = _text;
+    }
     return _text
 }
 
@@ -241,7 +240,7 @@ function strongsHighlighting(e) {
 //window.onload = () => cacheFunctions();
 //Moved to after loading of first chapter
 
-pagemaster.addEventListener("dblclick", function (e) {
+if(document.querySelector('#pagemaster')){pagemaster.addEventListener("dblclick", function (e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
         let allstn = hoverElm.getAttribute('strnum').split(' '); //Some words are translated from more than one word
@@ -265,19 +264,21 @@ pagemaster.addEventListener("dblclick", function (e) {
         })
     }
     setItemInLocalStorage('transliteratedWords', transliteratedWords_Array);
-})
+})}
 
 //HIGHLIGHTING CLICKED WORD
 const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);
 main.addEventListener("click", strongs_dblclick_prevent)
-searchPreviewFixed.addEventListener("click", strongs_dblclick_prevent)
-main.addEventListener("click", hideBibleNav)
+if(!document.querySelector('body').matches('#versenotepage')){
+    searchPreviewFixed.addEventListener("click", strongs_dblclick_prevent)
+    main.addEventListener("click", hideBibleNav)
+}
 
 function hideBibleNav() {
     hideRefNav('hide', bible_nav)
 } //HIDE refnav SIDE BAR IF OPEN BY CLICKING ANYWHERE ON THE PAGE
 
-/* EVENT LISTENERS FOR THE HIGHLIGHING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
+/* EVENT LISTENERS FOR HIGHLIGHTING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
 /* This is acomplished by modifying the styles in the head */
 main.addEventListener('mouseover', function (e) {
     let strAtt,highlightColor;
@@ -289,7 +290,7 @@ main.addEventListener('mouseover', function (e) {
     else {
         let strElm = null;
         if (e.target.matches('#context_menu[strnum]')||(strElm=elmAhasElmOfClassBasAncestor(e.target,'#context_menu[strnum]'))) {
-            // 'rightClickedElm' & 'firstShadowColorOfElem' are gotten from the rightclickmenu function
+            /* 'rightClickedElm' & 'firstShadowColorOfElem' are gotten from the rightclickmenu function */
             if(firstShadowColorOfElem){
                 if(strElm){
                     strAtt=strElm.getAttribute('strnum');

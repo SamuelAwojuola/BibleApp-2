@@ -78,7 +78,7 @@ function arrayOfWordsToSearchFor(w) {
         //Remove last comma in "styleRule"
         styleRule = styleRule.substring(0, styleRule.length - 1);
         styleRule = `${styleRule}{
-            font-style:italic;color:maroon;border-bottom: 3px solid orange!important;
+            font-style:italic;color:var(--searchedword-hlt);border-bottom: 3px solid orange!important;
         }`
         createNewStyleSheetandRule(styleID, styleRule)
     }

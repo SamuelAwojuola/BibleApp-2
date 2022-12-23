@@ -1,3 +1,7 @@
+let bible_nav = document.querySelector('#bible_nav');
+let refnav = document.querySelector('#refnav');
+
+function clog(x){console.log(x)}
 /* GENERAL HELPER FUNCTIONS */
 function isObject(objValue) {
     return objValue && typeof objValue === 'object' && objValue.constructor === Object;
@@ -324,9 +328,40 @@ function windowsSelection(){
 function codeELmRefClick(e) {
     if (e.target.tagName == "CODE") {
         let codeElm = e.target;
-        // console.log(codeElm.getAttribute('ref'))
-        gotoRef(codeElm.getAttribute('ref'))
+        
+        // If it is the verseNotePage and not the index.html.
+        if(document.querySelector('body').matches('#versenotepage')){
+            
+            let col2 = document.querySelector('#col2');
+            col2.innerHTML = `<div id="context_menu" class="context_menu slideout"></div><details open><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${codeElm.getAttribute('ref')}</h1></summary><div class="win2_noteholder"><em>loading...</em></div></details>`;
+            
+            win2_noteholder = col2.querySelector('.win2_noteholder')
+
+            let refDetails = refDetails4rmCodeElm(codeElm);
+            // clog({bN, bC, cV,win2_noteholder})
+            bN = refDetails.bookName;
+            bC = refDetails.bookChapter;
+            cV = refDetails.chapterVerse;
+            bookName = bN;
+            chapternumber = bC;
+            verseNumber = cV;
+            readFromVerseNotesFiles(bN, bC, cV,win2_noteholder)
+        }
+        else{
+            gotoRef(codeElm.getAttribute('ref'))
+        }
         e.preventDefault();
+    }
+}
+function refDetails4rmCodeElm(codeElm){
+    let bC=codeElm.getAttribute('chpt').trim();
+    let bkNvrs=codeElm.getAttribute('ref').split(' ' + bC + ':');
+    let bN=bkNvrs[0].trim();
+    let cV=bkNvrs[1].trim();
+    return {
+        bookName:bN,
+        bookChapter:bC,
+        chapterVerse:cV
     }
 }
 // function getFUllBookName(shortBkNm) {
@@ -546,6 +581,19 @@ function findMissingIncompleteChapters(translation){
     }else{
         return reportOBJ
     }
+}
+
+/* Check If element is in view on page */
+function isScrolledIntoView(el) {
+    var rect = el.getBoundingClientRect();
+    var elemTop = rect.top;
+    var elemBottom = rect.bottom;
+
+    // Only completely visible elements return true:
+    var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
+    // Partially visible elements return true:
+    //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+    return isVisible;
 }
 
 /* ***************************************************** */

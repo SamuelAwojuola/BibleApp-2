@@ -28,6 +28,7 @@ function changeSingleStringToTitleCase(str) {
 }
 
 function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
+    clog(ref_to_get)
     let currentBook = bible_books.querySelector('.ref_hlt');
     let currentBookName = currentBook.getAttribute('bookname');
     let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;

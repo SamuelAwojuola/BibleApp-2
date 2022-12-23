@@ -1,18 +1,19 @@
-// For '#verse_notes_button' && '.note_edit_button'
-ppp.addEventListener("click", showVerseNote);
-// To open verse note in new window
-ppp.addEventListener("contextmenu", showVerseNote);
-// To make verseNote editable on doubleClick
-ppp.addEventListener("dblclick", showVerseNote);
-// To save or stop editing currently edited verseNote
-ppp.addEventListener("keydown", showVerseNote);
-// For '#note_save_button'
-ppp.addEventListener("click", save_verse_note_to_indexedDB);
-// To save new/edited verse note to coressponding JSON file
-ppp.addEventListener("click", saveJSONFileToLocalDrive);
+if(!document.querySelector('body').matches('#versenotepage')){
+    // For '#verse_notes_button' && '.note_edit_button'
+    ppp.addEventListener("click", showVerseNote);
+    // To open verse note in new window
+    ppp.addEventListener("contextmenu", showVerseNote);
+    // To make verseNote editable on doubleClick
+    ppp.addEventListener("dblclick", showVerseNote);
+    // To save or stop editing currently edited verseNote
+    ppp.addEventListener("keydown", showVerseNote);
+    // For '#note_save_button'
+    ppp.addEventListener("click", save_verse_note_to_indexedDB);
+    // To save new/edited verse note to coressponding JSON file
+    ppp.addEventListener("click", saveJSONFileToLocalDrive);
+}
 
 function showVerseNote(e, x) {
-
     if(e){
         if (e.type=='click') {
             // Get verse note, if available, from JSON file and append it
@@ -32,7 +33,7 @@ function showVerseNote(e, x) {
         }
         //make verseNote editable by double-clicking anywhere in the verse note
         else if (e.type=='dblclick') {
-            if ((context_menu && (e.target!=context_menu && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) && elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
+            if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note') && !document.querySelector('.verse_note #context_menu') || (document.querySelector('.verse_note #context_menu') && (e.target!=context_menu && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu')))) {
                 let verseNoteDiv = elmAhasElmOfClassBasAncestor(e.target, '.verse_note');
                 let editBtn = verseNoteDiv.querySelector('.note_edit_button');
                 let saveBtn = verseNoteDiv.querySelector('.note_save_button');
@@ -62,8 +63,8 @@ function showVerseNote(e, x) {
         }
     }
     else {
-            editVerseNote(x);
-        }
+        editVerseNote(x);
+    }
 }
 
 /* TO GET VERSE NOTE FROM JSON FILE AND APPEND EITHER TO THE VERSENOTE DIV OR TO A NEW HTML PAGE */
@@ -146,10 +147,14 @@ function appendVerseNote(e) {
                 }, 1);
                 //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
-                console.log('retrieving note')
+                // clog('retrieving note')
+                // clog(appendHere)
+                // clog(newVerseNote)
+                // clog(noteID)
             }
         }
-        else if(e.type=='contextmenu'){ // If it is rightClicked, it is to be opened in a new window
+        // If it is rightClicked, it is to be opened in a new window
+        else if(e.type=='contextmenu'){
             // Open new window and append verse note to the body
             if(!window2){ // Check if win2 has been opened at any time (check if it has been created)
                 openNewWindow()// the new window is assigned "window2"
@@ -163,7 +168,8 @@ function appendVerseNote(e) {
                 openNewWindow()
             }
             window2.onload = function () {
-                let appendHere = window2.document.querySelector('body');// Get the body in the new window and append there
+                window2.document.querySelector('#win2_bcv_ref').innerText = `${bN} ${bC}:${cV}`;// Make the ref the header
+                let appendHere = window2.document.querySelector('#win2_noteholder, .win2_noteholder');// Get the body in the new window and append there
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
                 // window2.focus()// Bring up the window
             }
@@ -253,22 +259,33 @@ function disableCKEditor() {
 function generateRefsInNote(txt){
     let bdb=bible.Data.books;
     for(i=0;i<bdb.length;i++){
-        for(j=0;j<bdb[i].length;j++){
-            let bdbString=bdb[i][j].toString();
-            txt = findAndIndicateScriptureRefs(txt,bdbString);
-        }
+        if(bdb[i].some((bkNabrv) => txt.toUpperCase().includes(bkNabrv))){
+            for(j=0;j<bdb[i].length;j++){
+                let bdbString=bdb[i][j];
+                txt = findAndIndicateScriptureRefs(txt,bdbString);
+        }}
     }
     // Indicate strongs numbers
     txt = txt.replace(/((H|G)[0-9]+)/g, '<span class="strnum $1 vnotestrnum" strnum="$1">$1</span>')
     function findAndIndicateScriptureRefs(txt,bkName2find){
+        // Wrap scripture references in spans
+        txt = txt.replace(/([0-9]+)\s*([,-:])\s*([0-9]+)/g, '$1$2$3')//remove undesired spaces
+        txt = txt.replace(/([0-9]+)\s*([;])/g, '$1$2')//remove undesired spaces
+        // prevent it from converting references in img tags--(?<!notes_img\/)
+        let newBkReg = new RegExp(`\\b((?<!notes_img\/)${bkName2find})((\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*)*;*)+)`, 'ig');
+        txt = txt.replace(newBkReg, function (x) {
+            let xSplit = x.split(';');
+            if(xSplit.length>1){
+                let refWithName = xSplit.shift();
+                let bkn = refWithName.match(/[iI0-9]*\s*([a-zA-Z]+\s*)/)[0].trim();
+                return `<span ref="${refWithName.split(' ').join('.').split(':').join('.')}">${refWithName}</span>` + xSplit.map(y => `; <span bkn="${bkn}" ref="${bkn}.${y.trim().split(':').join('.')}">${y}</span>`).join('')
+            }
+            else{
+                let refWithName = xSplit.shift();
+                return `<span ref="${refWithName.split(' ').join('.').split(':').join('.')}">${refWithName}</span>`
+            }
+        })
         txt = modifyQuotationMarks(txt)
-        // Indicate verses
-        txt = txt.replace(/([0-9]+)\s*([,-:])\s*([0-9]+)/g, '$1$2$3')
-        txt = txt.replace(/([0-9]+)\s*([;])/g, '$1$2')
-        let newBkReg = new RegExp(`(?<=\\b(${bkName2find})\\s*\\d+[:.]\\d+([-]\\d+)*([,]*\\d+([-]\\d+)*))(([;])\\s*((\\d+)[:](\\d+(-\\d+)*)))`, 'ig');
-        txt = txt.replace(newBkReg, '$6 <span ref="$1 $8.$9">$7</span>');
-        newBkReg = new RegExp(`(?<!ref=")\\b(${bkName2find})\\s*((\\d+)[:.]*((\\d+)((-\\d+)*((,\\d+)*(-\\d+)*))*))`, 'ig');
-        txt = txt.replace(newBkReg, '<span ref="$1.$3.$4">$1 $2</span>')
         return txt
     }
     return txt

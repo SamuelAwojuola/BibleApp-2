@@ -114,6 +114,7 @@ function appendAllRefsWithNote(){
   return detailSum
 }
 bibleapp_available_notes.addEventListener("click", codeELmRefClick)
+bibleapp_available_notes.addEventListener("click", appendAllNotesInChapter)// Open all notes in chapter on click of chapter number of a reference with available verseNote
 // TO CLOSE OR OPEN ALL DETAILS ON RIGHT CLICK OF SUMMARY
 bibleapp_available_notes.addEventListener("contextmenu", openCloseAllAvailableNotesDetail)
 if(document.querySelector('#col2')){
@@ -123,7 +124,7 @@ if(document.querySelector('#col2')){
 function openCloseAllAvailableNotesDetail(e){
   let etarget=e.target;
   if(etarget.matches('summary')){
-    clog('sumry')
+    // clog('sumry')
     let details2openORclose,eParent;
     if(etarget.matches('#col2>details>summary')){
       details2openORclose = '#col2>details';
@@ -132,7 +133,7 @@ function openCloseAllAvailableNotesDetail(e){
       details2openORclose = 'details';
       eParent = bibleapp_available_notes;
     }
-    clog(details2openORclose)
+    // clog(details2openORclose)
     if(etarget.parentElement.open){
       eParent.querySelectorAll(details2openORclose).forEach(dtl=>{dtl.open=false})
     } else {
@@ -337,8 +338,13 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
 }
 
 function appendAllNotesInChapter(e){
-  if (e.target.matches('code[ref]')) {
-    let codeElm = e.target;
+  let eTarget = null;
+  if(e.type == 'contextmenu' && e.target.matches('code[ref]')){eTarget=e.target}
+  else if (e.target.matches('code[ref] > b')) {
+    eTarget=e.target.parentElement;
+  }
+  if(eTarget){
+    let codeElm = eTarget;
     let refDetails = refDetails4rmCodeElm(codeElm);
     bN = refDetails.bookName;
     bC = refDetails.bookChapter;

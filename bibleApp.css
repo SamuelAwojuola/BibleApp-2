@@ -1074,7 +1074,7 @@ span.vmultiple.noted code #verse_notes_button {
 
 /* AVAILABLE NOTES */
 #bibleapp_available_notes{
-    min-width: 250px;
+    max-width: 250px;
     overflow-y: auto;
     cursor: pointer;
     background: white;

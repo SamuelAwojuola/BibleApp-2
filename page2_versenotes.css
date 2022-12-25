@@ -1,7 +1,8 @@
 body {
+    position: relative;
+    display: flex;
     font-size: 1.5em;
     background-color: whitesmoke;
-    display: flex;
     height: 100vh;
 }
 body * {
@@ -67,10 +68,33 @@ span[ref]:hover, .strnum:hover {
 summary, #context_menu summary, #context_menu .cmtitlebar, #context_menu .cmtitlebar::before {
     background: rgb(250, 255, 200);
 }
+summary h1, summary .openCloseIconHolder, summary div {
+    margin-top: 0!important;
+    margin-bottom: 0!important;
+    padding: 0;
+}
+summary:has(.openCloseIconHolder) {
+    padding: 0;
+}
 #context_menu .cmtitlebar::before {
     height: 2em;
     width: 105%;
 }
 #context_menu code {
     font-size: 0.85em;
+}
+#hide_col1{
+    position: absolute;
+    top: 2px;
+    right: 7px;
+    z-index: 99;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: transparent;
+    padding: 1px!important;
+}
+#hide_col1:hover{
+    border-radius: 100px;
+    background: rgb(179, 255, 66)!important;
 }

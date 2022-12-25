@@ -13,6 +13,7 @@
 </head>
 
 <body id="versenotepage">
+    <button id="hide_col1" onclick="toggleCol2()"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button>
     <div id="col1">
         <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button>
         <div id="bibleapp_available_notes" class="slidein"></div>
@@ -32,11 +33,17 @@
 <script src="script.js/helpers.js"></script>
 <script src="script.js/bibleApp_contextMenu_mainFunc.js"></script>
 <script src="script.js/bibleApp_contextMenu_notesPage.js"></script>
+<script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_refNav.js"></script>
 <script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_generateScriptureReference.js"></script>
+<script src="script.js/bibleApp_localStorage_cache.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_crossRefrencer.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
+<script>
+    function toggleCol2(){if(col1.matches('.slideout')){col1.classList.add('slidein');col1.classList.remove('slideout')}else{col1.classList.add('slideout');col1.classList.remove('slidein')}}
+</script>
 </html>

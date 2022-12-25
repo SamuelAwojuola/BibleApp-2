@@ -96,7 +96,7 @@ function add_tooltipContextMenu(e) {
             /* WHERE TO APPEND CONTEXT-MENU */
             /* Append to verseNote */
             if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
-                clog('1')
+                // clog('1')
                 eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
                 if (!eParent.querySelector('#context_menu')) {
                     //move the #context_menu from #main to #searchPreviewFixed
@@ -134,7 +134,7 @@ function add_tooltipContextMenu(e) {
             /* Append to #win2_noteholder */
             else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
                 eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
-                clog(eParent)
+                // clog(eParent)
                 if (!eParent.querySelector('#context_menu')) {
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
                     main.querySelector('#context_menu').remove()
@@ -295,7 +295,7 @@ function add_tooltipContextMenu(e) {
                     context_menu.style.right = "";
                 }       
             }
-            console.table({subfunct, ePWidth:eP.offsetWidth, leftCoord, space2dRight,cmMaxWidth})
+            // console.table({subfunct, ePWidth:eP.offsetWidth, leftCoord, space2dRight,cmMaxWidth})
 
 
             //IF CONTEXT MENU IS TOO CLOSE TO THE BOTTOM

@@ -595,7 +595,6 @@ function isScrolledIntoView(el) {
     //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
     return isVisible;
 }
-
 /* ***************************************************** */
 /* DOWNLOAD MODIFIED JSON FILE */
 /* function downloadFile(text_data, name = "myData", format = "json") {

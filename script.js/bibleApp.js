@@ -1,5 +1,17 @@
+// ServiceWorker is a progressive technology. Ignore unsupported browsers
+// if ('serviceWorker' in navigator) {
+//     console.log('CLIENT: service worker registration in progress.');
+//     navigator.serviceWorker.register('/service-worker.js').then(function () {
+//         console.log('CLIENT: service worker registration complete.');
+//     }, function () {
+//         console.log('CLIENT: service worker registration failure.');
+//     });
+// } else {
+//     console.log('CLIENT: service worker is not supported.');
+// }
+
 //GENERATE ALL CHAPTERS IN A BOOK ON DOUBLE-CLICKING IT
-document.addEventListener("dblclick", function (e) {
+/* document.addEventListener("dblclick", function (e) {
     // goto=0;
     let dbl_clickedElm = e.target;
     //To DISPLAY THE TEXT OF ALL CHAPTERS IN A BOOK
@@ -35,6 +47,6 @@ function getAllChapters(dbl_clickedElm) {
     }
     // let endTime = performance.now();
     // console.log(`Duration: ${endTime - startTime} milliseconds`)
-}
+} */
 // ppp.addEventListener("scroll", realine) //for Scripture Text Highligher
 function realine() {} //This empty

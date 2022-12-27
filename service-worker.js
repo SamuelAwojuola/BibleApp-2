@@ -1,58 +1,3 @@
-// var version = 'v1::';
-// self.addEventListener("install", function(event) {
-//     console.log('WORKER: install event in progress.');
-//     event.waitUntil(
-//       /* The caches built-in is a promise-based API that helps you cache responses,
-//          as well as finding and deleting them.
-//       */
-//       caches
-//         /* You can open a cache by name, and this method returns a promise. We use
-//            a versioned cache name here so that we can remove old cache entries in
-//            one fell swoop later, when phasing out an older service worker.
-//         */
-//         .open(version + 'fundamentals')
-//         .then(function(cache) {
-//           /* After the cache is opened, we can fill it with the offline fundamentals.
-//              The method below will add all resources we've indicated to the cache,
-//              after making HTTP requests for each of them.
-//           */
-//           return cache.addAll([
-//             '/',
-//             '/bibleApp.css',
-//             '/bibleApp-2.css',
-//             '/page2_versenotes.css'
-//             // ,
-//             // 'data/bible.js',
-//             // 'data/crossReferences.js',
-//             // 'script.js/helpers.js',
-//             // 'script.js/bibleApp_newWindow.js',
-//             // 'data/bibleApp_reKeyedCrossReference.js',
-//             // 'script.js/bibleApp_crossRefrencer.js',
-//             // 'script.js/bibleApp_contextMenu_mainFunc.js',
-//             // 'script.js/bibleApp_contextMenu_mainPage.js',
-//             // 'script.js/bibleApp_versionsLoader.js',
-//             // 'script.js/bibleApp_generateScriptureReference.js',
-//             // 'script.js/bibleApp_transliteration.js',
-//             // 'script.js/bibleApp_transliteratorGreek.js',
-//             // 'script.js/bibleApp_refNav.js',
-//             // 'script.js/bibleApp_localStorage_cache.js',
-//             // 'script.js/bibleApp_styles.js',
-//             // 'script.js/bibleApp_gotoRef_Func.js',
-//             // 'script.js/bibleApp_search.js',
-//             // 'script.js/bibleApp_chapterNameOnScroll.js',
-//             // 'script.js/bibleApp_ref_browserHistory.js',
-//             // 'script.js/bibleApp_versionHighlight.js',
-//             // 'script.js/bibleApp_localStorage_indexedDB.js',
-//             // 'script.js/bibleApp_verseNotesSave.js',
-//             // 'script.js/bibleApp_verseNotes.js'
-//           ]);
-//         })
-//         .then(function() {
-//           console.log('WORKER: install completed');
-//         })
-//     );
-// });
-
 "use strict";
 
 console.log('WORKER: executing.');
@@ -60,7 +5,7 @@ console.log('WORKER: executing.');
 /* A version number is useful when updating the worker logic,
    allowing you to remove outdated cache entries during the update.
 */
-var version = 'v1::';
+var version = 'v2::';
 
 /* These resources will be downloaded and cached by the service worker
    during the installation process. If any resource fails to be downloaded,
@@ -72,15 +17,17 @@ var offlineFundamentals = [
     '/bibleApp-2.css',
     '/page2_versenotes.css',
     '/script.js/bibleApp.js',
-    'images/hamburger-menu-svgrepo-com.svg',
-    'images/scroll-svgrepo-com.svg',
-    'images/settings-gear-svgrepo-com.svg',
-    'images/search-svgrepo-com (2).sv',
-    'images/books-stack-svgrepo-com.svg',
-    'images/search-svgrepo-com(2).svg',
-    'images/book-pencil-svgrepo-com.svg',
-    'images/settings-svgrepo-com.svg',
-    'images/home-svgrepo-com(maroon).svg',
+    '/images/hamburger-menu-svgrepo-com.svg',
+    '/images/scroll-svgrepo-com.svg',
+    '/images/settings-gear-svgrepo-com.svg',
+    '/images/search-svgrepo-com (2).svg',
+    '/images/books-stack-svgrepo-com.svg',
+    '/images/search-svgrepo-com(2).svg',
+    '/images/book-pencil-svgrepo-com.svg',
+    '/images/settings-svgrepo-com.svg',
+    '/images/home-svgrepo-com(maroon).svg',
+    '/images/arrow-up-svgrepo-com.svg',
+    '/images/arrow-down-svgrepo-com.svg',
     '/page2_versenotes.html'
 ];
 
@@ -91,9 +38,9 @@ var offlineFundamentals = [
 self.addEventListener("install", function(event) {
   console.log('WORKER: install event in progress.');
   /* Using event.waitUntil(p) blocks the installation process on the provided
-     promise. If the promise is rejected, the service worker won't be installed.
+  promise. If the promise is rejected, the service worker won't be installed.
   */
-  event.waitUntil(
+ event.waitUntil(
     /* The caches built-in is a promise-based API that helps you cache responses,
        as well as finding and deleting them.
     */

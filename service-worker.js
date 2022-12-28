@@ -15,7 +15,7 @@ var offlineFundamentals = [
    '',
    'bibleApp.css',
    'bibleApp-2.css',
-   '/page2_versenotes.css',
+   'page2_versenotes.css',
 //     '/images/hamburger-menu-svgrepo-com.svg',
 //     '/images/scroll-svgrepo-com.svg',
 //     '/images/settings-gear-svgrepo-com.svg',
@@ -27,7 +27,7 @@ var offlineFundamentals = [
 //     '/images/home-svgrepo-com(maroon).svg',
 //     '/images/arrow-up-svgrepo-com.svg',
 //     '/images/arrow-down-svgrepo-com.svg',
-   '/page2_versenotes.html'
+   'page2_versenotes.html'
 ];
 
 /* The install event fires when the service worker is first installed.

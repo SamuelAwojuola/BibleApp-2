@@ -5,7 +5,7 @@ console.log('WORKER: executing.');
 /* A version number is useful when updating the worker logic,
    allowing you to remove outdated cache entries during the update.
 */
-var version = 'v2::';
+var version = 'v3::';
 
 /* These resources will be downloaded and cached by the service worker
    during the installation process. If any resource fails to be downloaded,
@@ -34,6 +34,7 @@ var offlineFundamentals = [
    You can use this event to prepare the service worker to be able to serve
    files while visitors are offline.
 */
+console.log(offlineFundamentals);
 self.addEventListener("install", function(event) {
   console.log('WORKER: install event in progress.');
   /* Using event.waitUntil(p) blocks the installation process on the provided

@@ -5,7 +5,7 @@ console.log('WORKER: executing.');
 /* A version number is useful when updating the worker logic,
    allowing you to remove outdated cache entries during the update.
 */
-var version = 'v4::';
+var version = 'v5::';
 
 /* These resources will be downloaded and cached by the service worker
    during the installation process. If any resource fails to be downloaded,
@@ -14,8 +14,8 @@ var version = 'v4::';
 var offlineFundamentals = [
    '',
    'bibleApp.css',
-   'bibleApp-2.css'
-//,     '/page2_versenotes.css',
+   'bibleApp-2.css',
+   '/page2_versenotes.css',
 //     '/images/hamburger-menu-svgrepo-com.svg',
 //     '/images/scroll-svgrepo-com.svg',
 //     '/images/settings-gear-svgrepo-com.svg',
@@ -27,7 +27,7 @@ var offlineFundamentals = [
 //     '/images/home-svgrepo-com(maroon).svg',
 //     '/images/arrow-up-svgrepo-com.svg',
 //     '/images/arrow-down-svgrepo-com.svg',
-//     '/page2_versenotes.html'
+   '/page2_versenotes.html'
 ];
 
 /* The install event fires when the service worker is first installed.

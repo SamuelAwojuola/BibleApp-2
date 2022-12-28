@@ -12,10 +12,10 @@ var version = 'v1::';
    then the service worker won't be installed either.
 */
 var offlineFundamentals = [
-    '/',
-    '/bibleApp.css',
-    '/bibleApp-2.css'
+   '/'
 //    ,
+//     '/bibleApp.css',
+//     '/bibleApp-2.css',
 //     '/page2_versenotes.css',
 //     '/images/hamburger-menu-svgrepo-com.svg',
 //     '/images/scroll-svgrepo-com.svg',

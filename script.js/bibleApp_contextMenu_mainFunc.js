@@ -67,27 +67,6 @@ function add_tooltipContextMenu(e) {
         } else {
             timedFUNC()
         }
-
-        /* getBoundingClientRect()
-            The getBoundingClientRect() method returns
-                i.  The size of an element and
-                ii. Its position relative to the viewport.
-                
-                Note: The scrolling that has been done is taken into account. This means that the rectangle's edges (top, left, bottom, and right) change their values every time the scrolling position changes.
-                
-                It returns a DOMRect object with eight properties: left, top, right, bottom, x, y, width, height.
-            */
-
-        /* offset... (offsetLeft/offsetRight/offsetWidth/offsetHeight/offsetParent)
-                Definition and Usage:
-                    i.  The offsetLeft property returns the left position (in pixels) relative to the parent.
-                    ii. The returned value includes:
-                        a. the left position, and
-                        b. margin of the element
-                        c. the left padding,
-                        d. scrollbar and
-                        e. border of the parent
-            */
         function timedFUNC() {
             let originalWord, extraLeft = 0, addquotes = true, eParent;
             eTarget = e.target;
@@ -96,7 +75,6 @@ function add_tooltipContextMenu(e) {
             /* WHERE TO APPEND CONTEXT-MENU */
             /* Append to verseNote */
             if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
-                // clog('1')
                 eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
                 if (!eParent.querySelector('#context_menu')) {
                     //move the #context_menu from #main to #searchPreviewFixed
@@ -123,7 +101,7 @@ function add_tooltipContextMenu(e) {
             /* Append to #searchPreviewFixed */
             else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
                 eParent = document.querySelector('#searchPreviewFixed');
-                if (!eParent.querySelector('#context_menu')) {
+                if (!searchPreviewWindowFixed.querySelector('#context_menu')) {
                     // if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
                     // move the #context_menu from #main to #searchPreviewFixed
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
@@ -134,7 +112,6 @@ function add_tooltipContextMenu(e) {
             /* Append to #win2_noteholder */
             else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
                 eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
-                // clog(eParent)
                 if (!eParent.querySelector('#context_menu')) {
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
                     main.querySelector('#context_menu').remove()
@@ -195,7 +172,7 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.left = null;
                 if (strnum = e.target.getAttribute('strnum')) {
                     context_menu.setAttribute('strnum', strnum)
-                }else{context_menu.removeAttribute('strnum')}
+                } else {context_menu.removeAttribute('strnum')}
                 hideRefNav('show', context_menu)
             }
             /* If eTarget is a Scripture Reference */
@@ -227,104 +204,73 @@ function add_tooltipContextMenu(e) {
         /* ------------------------------------------ */
             /* POSITION & COORDINATES OF CONTEXT MENU */
             eP = eParent;
-            let cmMaxWidth;//-->max width of contextMenu
-            if(eParent.offsetWidth<1000){cmMaxWidth = 500}else{cmMaxWidth = 600}
-            if(eParent.offsetWidth<=500){cmMaxWidth = eParent.offsetWidth}
+            parentElement = eParent;
 
-            // let target_right = e.target.getBoundingClientRect().right;
-            let target_right = eParent.offsetWidth - (eTarget.offsetLeft + eTarget.offsetWidth);
-            if(target_right<0){target_right=0}// multiline spans at the edge return a very large width
-            // let target_left = e.target.offsetLeft.toFixed();
-            let target_left = e.target.getBoundingClientRect().left;
-            let target_top = e.target.offsetTop;
-            // let target_top = e.target.getBoundingClientRect().top;
-            if(document.querySelector('body').matches('#versenotepage')){
-                target_left = e.target.offsetLeft;
-            }
+            // Get the position of the child element that was right-clicked
+            eTarget = e.target;
+            eTargetRect = eTarget.getBoundingClientRect();
+            eTargetTop = eTargetRect.top;
+            eTargetBottom = eTargetRect.bottom;
+            eTargetLeft = eTargetRect.left;
+            eTargetRight = eTargetRect.right;
+            eTargetWidth = eTargetRect.width;
+            eTargetHeight = eTargetRect.height;
 
-            // let leftCoord = target_left + window.scrollX - extraLeft;
-            let leftCoord;
-            if(main.matches('#col2')){leftCoord = eTarget.offsetLeft - extraLeft;}
-            else{leftCoord = eTarget.getBoundingClientRect().left - extraLeft;}
-            let right4rmLeft = target_right;
-            // let right4rmLeft = eParent.offsetWidth - (target_right + eParent.offsetLeft);
-            // let right4rmLeft = eParent.offsetWidth - (eTarget.offsetLeft + eTarget.offsetWidth);
-            let rightCoord = right4rmLeft - window.scrollX;
-            
-            // aligns to the left by default
-            if(leftCoord<0){leftCoord=0}
-            context_menu.style.left = '';
-            context_menu.style.right = '';
-            let subfunct;
-            // ContextMenu fit
-            let space2dRight = target_right + eTarget.offsetWidth + extraLeft;
-            // Width of parent window smaller than context menu
-            if (eParent.offsetWidth <= cmMaxWidth) {
-                subfunct = 'parentWidth2SMALL';
-                // Not enough space to the right for context menu
-                context_menu.style.right = 0;
-                context_menu.style.left = 0;
-                context_menu.style.minWidth = cmMaxWidth + "px"        
-                context_menu.style.width = cmMaxWidth + "px" 
+            // Get the boundaries of the parent element
+            parentElementRect = parentElement.getBoundingClientRect();
+            parentElementTop = parentElementRect.top;
+            parentElementLeft = parentElementRect.left;
+            parentElementWidth = parentElementRect.width;
+            parentElementHeight = parentElementRect.height;
+
+            // Get the scrolled position of the parent element
+            parentElementScrollTop = parentElement.scrollTop;
+            parentElementScrollLeft = parentElement.scrollLeft;
+
+            // Calculate the position of the menu
+            menuTop = eTargetTop - parentElementTop + eTargetHeight + parentElementScrollTop;
+            menuBottom = eTargetTop - parentElementTop + parentElementScrollTop;
+            menuLeft = eTargetLeft - parentElementLeft + parentElementScrollLeft;
+            menuRight = parentElementWidth - eTargetRight - parentElementScrollLeft - 7.5;
+
+            // Space above and below target
+            spaceAbove = eTargetTop - parentElementTop + parentElementScrollTop;
+            spaceBelow = parentElementHeight - eTargetBottom + parentElementScrollTop + parentElementTop;
+            function appendLeft(){
+                context_menu.style.right = '';
+                context_menu.style.left = menuLeft + 'px';
             }
-            // Not enough space to the right for context menu
-            else if (space2dRight <= cmMaxWidth) {
-                subfunct = 'Right2Small';
-                if(target_left<cmMaxWidth){
-                    context_menu.style.right = e.offsetWidth - (target_right + target_left) + "px";
+            function appendRight(){
+                if (menuRight - context_menu.offsetWidth > parentElementLeft + parentElementScrollLeft){
+                    context_menu.style.right = menuRight + 'px';
                 } else {
-                    context_menu.style.right = target_right + "px";
+                    context_menu.style.right = 0 + 'px';
                 }
                 context_menu.style.left = '';
             }
-            else {
-                subfunct = 'Left-2-Right';
-                if(main.matches('#col2')){
-                    if((leftCoord + cmMaxWidth) > eP.offsetWidth){
-                        context_menu.style.left = "";
-                        context_menu.style.right = 0;
-                    }
-                    else {
-                        context_menu.style.left = leftCoord + "px";
-                        context_menu.style.right = "";
-                    }
-                }
-                else{
-                    leftCoord = target_left + window.scrollX - extraLeft;
-                    context_menu.style.left = leftCoord + "px";
-                    context_menu.style.right = "";
-                }       
+            function appendBottom(){
+                context_menu.style.top = eTargetBottom - parentElementTop + parentElementScrollTop + 'px';
+                context_menu.style.bottom = '';
             }
-            // console.table({subfunct, ePWidth:eP.offsetWidth, leftCoord, space2dRight,cmMaxWidth})
-
-
-            //IF CONTEXT MENU IS TOO CLOSE TO THE BOTTOM
-            let target_height = e.target.offsetHeight;
-            let btnsBarHeight;
-            if(top_horizontal_bar_buttons = document.querySelector('#top_horizontal_bar_buttons')){btnsBarHeight = top_horizontal_bar_buttons.getBoundingClientRect().height;}else{btnsBarHeight=0}
-            let space_above_target;
-            if(eParent){space_above_target = target_top - eParent.scrollTop;}
-            else{space_above_target = target_top - e.target.scrollTop}
-            let space_below_target = window.innerHeight - btnsBarHeight - space_above_target;
-
-            // Space Below Target Enough for ContextMenu
-            if (space_below_target >= context_menu.offsetHeight) {
-                // context_menu.style.height = space_below_target - eParent.offsetTop - target_height + "px";
-                context_menu.style.top = target_top + target_height + "px";
+            function appendTop(){
+                context_menu.style.top = '';
+                context_menu.style.bottom = parentElementHeight - eTarget.offsetTop + 'px';
             }
-            // Space Below Target NOT Enough for ContextMenu
-            else {
-                if (space_below_target >= space_above_target) {
-                    context_menu.style.height = space_below_target - eParent.offsetTop - target_height + "px";
-                    context_menu.style.top = target_top + target_height + "px";
-                } else {
-                    if (space_above_target >= context_menu.offsetHeight) {
-                        context_menu.style.top = target_top - context_menu.offsetHeight + "px";
-                    } else {
-                        context_menu.style.height = space_above_target + "px";
-                        context_menu.style.top = target_top - context_menu.offsetHeight + "px";
-                    }
-                }
+
+            // context_menu.style.display = 'none'
+            // TOP & BOTTOM
+            if ((parentElementHeight <= context_menu.offsetHeight)||(eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight) && (spaceAbove > spaceBelow) ) {
+                // If there is not enough space below the child element, show the menu above it
+                appendTop()
+            } else {
+                appendBottom()
+            }
+            // LEFT & RIGHT
+            if ((menuLeft + context_menu.offsetWidth > parentElementWidth)) {
+                // If there is not enough space to the right of the child element, show the menu to the left of it
+                appendRight()
+            }else{
+                appendLeft()
             }
         }
         context_menu.scrollTop = 0;//scroll contextMenu back to top incase it has been srolled

@@ -2,7 +2,7 @@ const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 
 
 ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
 searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
+// searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
 ppp.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span')) {

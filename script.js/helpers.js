@@ -474,7 +474,9 @@ function areAllitemsOfAinB(a, b) {
         return false
     }
 }
-
+const findMatch = (array, value) => {
+    return array.find(element => element === value);
+}
 /* WATCH FOR INACTIVITY IN ELM AND RUN FUNCTION AFTER SET-TIME */
 // https://www.brcline.com/blog/detecting-inactivity-in-javascript
 function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60000, func2run){

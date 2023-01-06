@@ -101,6 +101,7 @@ Search may include Strongs Number
 */
 let runWordSearchCount = 0;
 function runWordSearch() {
+    let wholeWordChecked=whole_word.checked;
     verseCount=0;
     if (wordsearch.value.trim() == '' || wordsearch.value.trim().length < 2) {
         return
@@ -191,11 +192,13 @@ function runWordSearch() {
                             let originalText = allVersesInCurrentChapter[z].toString().toLowerCase();
                             // let vText=originalText;
                             for (let j = 0; j < wordsArray.length; j++) {
-                                // let nreg = new RegExp(wordsArray[j]);
-                                // if (!nreg.test(originalText)) {
-                                    
                                 //IT HAS TO INCLUDE ALL THE WORDS (won't work for a search that is for any of the words)
-                                if (!originalText.includes(wordsArray[j].toLowerCase())) {
+                                let nreg;
+                                // If wholeWord is checked or current word is a strong's number search for whole word (will not search for a partially matching strong's num)
+                                if(wholeWordChecked||(/[GHgh]\d+/.test(wordsArray[j]))){
+                                    nreg = new RegExp("\\b" + wordsArray[j].toLowerCase() + "\\b");
+                                } else {nreg = new RegExp(wordsArray[j].toLowerCase());}
+                                if (!nreg.test(originalText)) {
                                     containsAll = false;
                                     break
                                 }

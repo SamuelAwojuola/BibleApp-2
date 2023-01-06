@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <title>LC BibleApp</title>
   <link rel="shortcut icon" href="images/favicon.ico">
+  <link rel="manifest" href="manifest.json">
   <meta charset="utf-8" name="viewport" content= "width=device-width, initial-scale=1.0">
-  <script src="https://cdn.ckeditor.com/4.20.0/standard-all/ckeditor.js"></script>
-  <!-- <script src="ckeditor/ckeditor.js"></script> -->
+  <script src="ckeditor-standard/ckeditor.js"></script>
 <style id="verse_alignement">
     .verse {
       display: block;
@@ -282,8 +282,9 @@
       <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"><!-- <img src="images\edit-svgrepo-com.svg" alt="🖉" > --></button>
     </div>
   </div>
-
+  <!-- <button id="btnAdd">Add to home screen</button> -->
 </body>
+
 <!-- <script src="data/KJV.js"></script> -->
 <!-- <script src="pell-texteditor/pell.js"></script> -->
 <!-- <script src="data/crossReferences.js" charset="utf-8"></script> -->
@@ -311,13 +312,11 @@
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
-<!-- <script src="script.js/bibleApp_createDownloadFile.js" charset="utf-8"></script> -->
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
+<script src="/install-prompt.js"></script>
 <script>
     tool_tip.click();
-  // window.onload = function() {
-  //   show_eng_superscript.click();
-  // }
+  // window.onload = function() {show_eng_superscript.click()}
 </script>
 
 </html>

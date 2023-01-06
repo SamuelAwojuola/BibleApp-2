@@ -207,14 +207,12 @@ code{position: relative; padding-top: 5px;}
     width: 100% !important;
     margin-left: 0;
     margin-right: 0;
-    border:1px solid var(--grey)!important;
+    /* border:1px solid var(--grey)!important; */
     min-height:50px;
     max-height:80vh;
     overflow: auto;
     resize: vertical;
-    
-    /* margin: 0.25em 0.25em;
-    padding: 0.25em 0.25em; */
+    padding: 10px;
 }
 .text_content span[ref],
 .text_content span[strnum]:not(#context_menu span[strnum]){
@@ -374,9 +372,10 @@ button {
 #context_menu {
     position: absolute;
     background: var(--whitesmoke);
-    min-width: 400px;
+    width: 400px;
+    /* min-width: 400px; */
     /* max-width: 600px; */
-    max-width: 525px;
+    /* max-width: 525px; */
     max-height: 80vh;
     overflow-y: scroll;
     padding: 5px;
@@ -793,11 +792,13 @@ details[open] summary > div:first-of-type {
     display: flex!important;;
 }
 #searchPreviewWindowFixed {
+    position: relative;
     flex-direction: column;
     overflow-y: hidden;
     font-size: var(--fontsize-scripture);
     padding-bottom: 7px;
     margin-bottom: 7px;
+    height: 100%;
 }
 #searchparameters div:last-child {
     display: block;
@@ -823,10 +824,8 @@ details[open] summary > div:first-of-type {
     display: none !important;
 }
 #searchPreviewFixed {
-    /* display: table-row; */
-    /* height: 92%; */
-    /* float: left; */
-    /* width: 100%; */
+    position: relative;
+    height: 100%;
     overflow-y: auto;
 }
 #searchPreviewFixed>* {
@@ -1135,3 +1134,16 @@ span.vmultiple.noted code #verse_notes_button {
     max-width: 60.5px!important;
 }
 div>br:first-child{display: none;}
+
+#btnAdd {
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #333;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 16px;
+    cursor: pointer;
+}

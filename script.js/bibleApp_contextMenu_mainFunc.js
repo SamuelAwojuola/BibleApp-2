@@ -1,4 +1,5 @@
 // Check if device is a mobile device
+let formerContextMenu_Coordinates={};
 let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
@@ -28,7 +29,9 @@ if(document.querySelector('body').matches('#versenotepage')){
 // let context_menu = document.querySelector('#context_menu');
 function add_tooltipContextMenu(e) {
     e.preventDefault();
+    parentIsContextMenu = 0;
 
+    // clog('CMENU')
     // If there isn't a contextMenu already, create one
     if(!document.querySelector('#context_menu')){
         let context_menu_replacement=document.createElement('div');
@@ -52,6 +55,7 @@ function add_tooltipContextMenu(e) {
         clearTimeout(timer2);
         let currentEt=e.target;
 
+
         if (e.type == 'mouseover') {
             clearTimeout(timer1);
 
@@ -64,9 +68,11 @@ function add_tooltipContextMenu(e) {
                     timedFUNC();
                 }, 300)
             }
+
         } else {
             timedFUNC()
         }
+
         function timedFUNC() {
             let originalWord, extraLeft = 0, addquotes = true, eParent;
             eTarget = e.target;
@@ -119,87 +125,90 @@ function add_tooltipContextMenu(e) {
                     clonedContextMenu.addEventListener("click", codeELmRefClick)
                 }
             }
-            
-            /* If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself */
-            if (e.target.matches('.translated, .strnum')) {
-                // On Mobile Devices
-                if (isMobileDevice) {
-                    // remove windows selection
-                    window.getSelection().removeRange(window.getSelection().getRangeAt(0))
-                    // (because on mobile, the user has to press and hold for contextmenu which also selects the text)
-                }
-                if (e.target.getAttribute("translation")) {
-                    originalWord = e.target.getAttribute("translation");
-                    if (truexlit = e.target.getAttribute("data-true-xlit")) {
-                        if (elmAhasElmOfClassBasAncestor(e.target, 'rtl')) {
-                            originalWord = `“${originalWord.trim()} : ”${truexlit}`;
-                        } //because of the direction of the text
-                        else {
-                            originalWord = `“${originalWord.trim()}” : ${truexlit}`;
-                        }
-                        addquotes = false;
+        
+        /* If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself */
+        if (e.target.matches('.translated, .strnum')) {
+            // On Mobile Devices
+            if (isMobileDevice) {
+                // remove windows selection
+                window.getSelection().removeRange(window.getSelection().getRangeAt(0))
+                // (because on mobile, the user has to press and hold for contextmenu which also selects the text)
+            }
+            if (e.target.getAttribute("translation")) {
+                originalWord = e.target.getAttribute("translation");
+                if (truexlit = e.target.getAttribute("data-true-xlit")) {
+                    if (elmAhasElmOfClassBasAncestor(e.target, 'rtl')) {
+                        originalWord = `“${originalWord.trim()} : ”${truexlit}`;
+                    } //because of the direction of the text
+                    else {
+                        originalWord = `“${originalWord.trim()}” : ${truexlit}`;
                     }
+                    addquotes = false;
+                }
+            if(elmAhasElmOfClassBasAncestor(e.target, '.context_menu')){parentIsContextMenu=1;}
+            } else {
+                originalWord = e.target.parentElement.getAttribute("translation")
+            }
+            let menu_inner;
+            if(originalWord){
+                let arrOfStrnums=e.target.getAttribute('strnum').split(' ');
+                let xlitNlemma='',br='';
+                arrOfStrnums.forEach((sn,i) => {
+                    br='</code>',st='';
+                    if(arrOfStrnums.length>i+1){br=`</code><br><code><div>&#9726;</div> `}// if it is not the last (or only) strnums
+                    if(i==0){st=`<code><div>&#9726;</div> `}
+                    xlitNlemma=`${st}${xlitNlemma}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}${br}`
+                });
+                if (addquotes) {
+                    // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
+                    menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;
                 } else {
-                    originalWord = e.target.parentElement.getAttribute("translation")
+                    // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
+                    menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
                 }
-                let menu_inner;
-                if(originalWord){
-                    let arrOfStrnums=e.target.getAttribute('strnum').split(' ');
-                    let xlitNlemma='',br='';
-                    arrOfStrnums.forEach((sn,i) => {
-                        br='</code>',st='';
-                        if(arrOfStrnums.length>i+1){br=`</code><br><code><div>&#9726;</div> `}// if it is not the last (or only) strnums
-                        if(i==0){st=`<code><div>&#9726;</div> `}
-                        xlitNlemma=`${st}${xlitNlemma}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}${br}`
-                    });
-                    if (addquotes) {
-                        // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
-                        menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;
-                    } else {
-                        // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
-                        menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
-                    }
-                    context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}</div>${newStrongsDef}`;
-                } else if (e.type=='contextmenu'){// For strongs number in verseNote
-                    context_menu.innerHTML = newStrongsDef;
-                    // context_menu.querySelector('hr').remove();
-                    let h2relocate = context_menu.querySelector('h2');
-                    let h2clone = h2relocate.cloneNode(true);
-                    h2relocate.remove();
-                    context_menu.querySelector('.strngsdefinition').prepend(h2clone)
-                }
-                context_menu.style.height = null;
-                context_menu.style.left = null;
-                if (strnum = e.target.getAttribute('strnum')) {
-                    context_menu.setAttribute('strnum', strnum)
-                } else {context_menu.removeAttribute('strnum')}
-                hideRefNav('show', context_menu)
+                context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}</div>${newStrongsDef}`;
+            } else if (e.type=='contextmenu'){// For strongs number in verseNote
+                context_menu.innerHTML = newStrongsDef;
+                // context_menu.querySelector('hr').remove();
+                let h2relocate = context_menu.querySelector('h2');
+                let h2clone = h2relocate.cloneNode(true);
+                h2relocate.remove();
+                context_menu.querySelector('.strngsdefinition').prepend(h2clone)
             }
-            /* If eTarget is a Scripture Reference */
-            else {
-                context_menu.innerText = null;
-                context_menu.classList.add('win2');
-                if (e.target.matches('.crossrefs>span, span[ref]')) {
-                    let cmtitlebar = document.createElement('div');
-                    cmtitlebar.classList.add('cmtitlebar');
-                    let cmtitletext;
-                    if(bkn=e.target.getAttribute('bkn')){
-                        cmtitletext = bkn + ' ' + e.target.innerText;
-                    }
-                    else{cmtitletext = e.target.innerText;}
-                    cmtitletext = cmtitletext + ' [' + bversionName + ']';
-                    // cmtitlebar.innerText=e.target.innerText;
-                    cmtitlebar.innerText = cmtitletext;
-                    context_menu.append(cmtitlebar);
+            context_menu.style.height = null;
+            context_menu.style.left = null;
+            context_menu.style.width = null;
+            if (strnum = e.target.getAttribute('strnum')) {
+                context_menu.setAttribute('strnum', strnum)
+            } else {context_menu.removeAttribute('strnum')}
+            hideRefNav('show', context_menu)
+        }
+        /* If eTarget is a Scripture Reference */
+        else {
+            context_menu.innerText = null;
+            context_menu.classList.add('win2');
+            if (e.target.matches('.crossrefs>span, span[ref]')) {
+                let cmtitlebar = document.createElement('div');
+                cmtitlebar.classList.add('cmtitlebar');
+                let cmtitletext;
+                if(bkn=e.target.getAttribute('bkn')){
+                    cmtitletext = bkn + ' ' + e.target.innerText;
                 }
-                context_menu.append(getCrossReference(e.target));
-                context_menu.style.height = null;
-                context_menu.style.left = null;
-                if (strnum = e.target.getAttribute('strnum')) {
-                    context_menu.setAttribute('strnum', strnum)
-                }else{context_menu.removeAttribute('strnum')}
-                hideRefNav('show', context_menu)
+                else{cmtitletext = e.target.innerText;}
+                cmtitletext = cmtitletext + ' [' + bversionName + ']';
+                // cmtitlebar.innerText=e.target.innerText;
+                cmtitlebar.innerText = cmtitletext;
+                context_menu.append(cmtitlebar);
             }
+            context_menu.append(getCrossReference(e.target));
+            context_menu.style.height = null;
+            context_menu.style.left = null;
+            context_menu.style.width = null;
+            if (strnum = e.target.getAttribute('strnum')) {
+                context_menu.setAttribute('strnum', strnum)
+            }else{context_menu.removeAttribute('strnum')}
+            hideRefNav('show', context_menu)
+        }
 
         /* ------------------------------------------ */
             /* POSITION & COORDINATES OF CONTEXT MENU */
@@ -236,41 +245,78 @@ function add_tooltipContextMenu(e) {
             // Space above and below target
             spaceAbove = eTargetTop - parentElementTop + parentElementScrollTop;
             spaceBelow = parentElementHeight - eTargetBottom + parentElementScrollTop + parentElementTop;
+            
             function appendLeft(){
-                context_menu.style.right = '';
+                menuRight = '';
+                context_menu.style.right = menuRight;
                 context_menu.style.left = menuLeft + 'px';
+                formerContextMenu_Coordinates.right=menuRight;
+                formerContextMenu_Coordinates.left=menuLeft + 'px';
             }
             function appendRight(){
                 if (menuRight - context_menu.offsetWidth > parentElementLeft + parentElementScrollLeft){
                     context_menu.style.right = menuRight + 'px';
+                    formerContextMenu_Coordinates.right=menuRight + 'px';
                 } else {
-                    context_menu.style.right = 0 + 'px';
+                    context_menu.style.right = '0px';
+                    formerContextMenu_Coordinates.right='0px';
                 }
-                context_menu.style.left = '';
-            }
-            function appendBottom(){
-                context_menu.style.top = eTargetBottom - parentElementTop + parentElementScrollTop + 'px';
-                context_menu.style.bottom = '';
+                menuLeft = '';
+                context_menu.style.left = menuLeft;
+                formerContextMenu_Coordinates.left=menuLeft;
             }
             function appendTop(){
-                context_menu.style.top = '';
-                context_menu.style.bottom = parentElementHeight - eTarget.offsetTop + 'px';
+                menuBottom = parentElementHeight - eTarget.offsetTop + 'px';
+                menuTop = '';
+
+                context_menu.style.top = menuTop;
+                context_menu.style.bottom = menuBottom;
+                
+                formerContextMenu_Coordinates.top=menuTop;
+                formerContextMenu_Coordinates.bottom=menuBottom;
+            }
+            function appendBottom(){
+                menuBottom = '';
+                menuTop = eTargetBottom - parentElementTop + parentElementScrollTop + 'px';
+
+                context_menu.style.top = menuTop;
+                context_menu.style.bottom = '';
+
+                formerContextMenu_Coordinates.bottom=menuBottom;
+                formerContextMenu_Coordinates.top=menuTop;
             }
 
-            // context_menu.style.display = 'none'
-            // TOP & BOTTOM
-            if ((parentElementHeight <= context_menu.offsetHeight)||(eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight) && (spaceAbove > spaceBelow) ) {
-                // If there is not enough space below the child element, show the menu above it
-                appendTop()
+            // If the eTarget is in the contextMenu, create a new context menu using the coordinates of the present one
+            if(parentIsContextMenu){
+                context_menu.style.top = formerContextMenu_Coordinates.top;
+                context_menu.style.bottom = formerContextMenu_Coordinates.bottom;
+                context_menu.style.left = formerContextMenu_Coordinates.left;
+                context_menu.style.right = formerContextMenu_Coordinates.right;
             } else {
-                appendBottom()
-            }
-            // LEFT & RIGHT
-            if ((menuLeft + context_menu.offsetWidth > parentElementWidth)) {
-                // If there is not enough space to the right of the child element, show the menu to the left of it
-                appendRight()
-            }else{
-                appendLeft()
+                // TOP & BOTTOM
+                if ((!parentElement.matches('.text_content')) && /* (parentElementHeight <= context_menu.offsetHeight)|| */(eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight) && (spaceAbove > spaceBelow) ) {
+                    // If there is not enough space below the child element, show the menu above it
+                    // If it is in a versnote div, it will always be appended to the bottom of the eTarget
+                    // clog('appendTop')
+                    appendTop()
+                } else {
+                    // clog('appendBottom')
+                    appendBottom()
+                }
+                // LEFT & RIGHT
+                if ((menuLeft + context_menu.offsetWidth > parentElementWidth)) {
+                    // If there is not enough space to the right of the child element, show the menu to the left of it
+                    // clog('appendRight')
+                    appendRight()
+                }else{
+                    // clog('appendLeft')
+                    appendLeft()
+                }
+                
+                // Ensure Context Menu Is Not Wider than ParentElement
+                if((context_menu.style.right=='0px' && context_menu.getBoundingClientRect().x<0)||(context_menu.style.left=='0px' && context_menu.offsetWidth>parentElementWidth)){
+                    context_menu.style.width = '100%';
+                }
             }
         }
         context_menu.scrollTop = 0;//scroll contextMenu back to top incase it has been srolled

@@ -155,11 +155,10 @@ function indicateBooknChapterInNav(bk, chpt) {
 
 //Hide refnav when escape is pressed
 function hideRightClickContextMenu() {
-    if (context_menu.matches('.rightclicked')) {
-        context_menu.classList.remove('rightclicked')
+    if (context_menu.matches('.slidein')) {
         hideRefNav('hide', context_menu);
         newStrongsDef = '';
-        if(!versenotepage && toolTipON==true){toolTipOnOff();}
+        if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
     }
 }
 document.addEventListener('keydown', function (e) {

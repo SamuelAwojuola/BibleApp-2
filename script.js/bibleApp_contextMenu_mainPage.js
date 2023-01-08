@@ -1,6 +1,6 @@
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
 
-ppp.addEventListener('contextmenu', add_tooltipContextMenu, false);
+main.addEventListener('contextmenu', add_tooltipContextMenu, false);
 searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
 // searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
@@ -69,7 +69,8 @@ function toolTipOnOff(x) {
 }
 //Hide ContextMenu on clicking outside of main window
 document.addEventListener('click', function (e) {
-    if (document.querySelector('.context_menu') && (!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
+    if (document.querySelector('.context_menu') && (/* !e.target.matches('[strnum]') && */ !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
+        clog('3.16:JESUS')
         hideRightClickContextMenu()
     }
 })

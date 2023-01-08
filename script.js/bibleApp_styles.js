@@ -148,7 +148,7 @@ function darkLightMode() {
     #bible_nav {font-size: var(--fontsize-scripture-nav)!important; background:black; color: whitesmoke;}
     #bible_nav option:hover, #searchPreviewFixed>.chptheading, .bible_versions_heading {color: black;}
     #ppp .chptheading {background:none}
-    #searchparameters, .verse_note {background: rgb(5,10,15); color:white}
+    #searchparameters, .verse_note, .crossrefs {background: rgb(5,10,15); color:white}
     #main button {background:whitesmoke}
     #bibleapp_cache *:not(.settingssectionheadings) {font-size: var(--fontsize-main);background: black; color: whitesmoke;}
     #strongsdefinitionwindow details, details{background:rgb(0, 0, 6)!important}

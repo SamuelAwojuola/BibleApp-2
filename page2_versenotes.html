@@ -13,8 +13,15 @@
 </head>
 
 <body id="versenotepage">
-    <button id="hide_col1" onclick="toggleCol2()"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button>
-    <div id="col1">
+    <div class="button-container">
+        <button id="hide_col1" class="reveal-button" onclick="toggleCol2()"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button>
+        <div class="button-group">
+            <!-- <button>KJV</button>
+            <button>ESV</button>
+            <button>NIV</button> -->
+        </div>
+    </div>
+      <div id="col1">
         <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button>
         <div id="bibleapp_available_notes" class="slidein"></div>
     </div>
@@ -46,5 +53,16 @@
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script>
     function toggleCol2(){if(col1.matches('.slideout')){col1.classList.add('slidein');col1.classList.remove('slideout')}else{col1.classList.add('slideout');col1.classList.remove('slidein')}}
+    /* SHOW HIDE BUTTONS */
+    const buttonContainer = document.querySelector('.button-container');
+    const buttonGroup = document.querySelector('.button-group');
+
+    buttonContainer.addEventListener('mouseenter', () => {
+    buttonGroup.classList.add('visible');
+    });
+
+    buttonContainer.addEventListener('mouseleave', () => {
+    buttonGroup.classList.remove('visible');
+    });
 </script>
 </html>

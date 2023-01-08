@@ -9,20 +9,19 @@ body * {
     box-sizing: border-box;
 }
 #col1 {
-    font-size: 0.95em;
-    min-width: fit-content;
+    font-size: 0.8em;
+    /* min-width: fit-content; */
     /* max-width: 200px; */
-    height: 100vh;
+    height: 100%;
     border-right: 2px solid black;
     overflow-y: scroll;
 }
 #col2 {
-    overflow-y: auto;
-    height: 100vh;
+    height: 100%;
     /* min-width: calc(100vw - 200px)!important; */
     width: 100%;
     position: relative;
-
+    overflow-y: auto;
 }
 #bibleapp_available_notes {
     min-width: 0px!important;
@@ -31,8 +30,11 @@ body * {
 #bibleapp_available_notes > em {
     display: none!important;
 }
-#bibleapp_available_notes details, #bibleapp_available_notes summary {
-    width: 200px!important;
+#bibleapp_available_notes summary {
+    padding-left: 5px;
+}
+#bibleapp_available_notes summary::marker {
+    font-size: 0.7em;
 }
 #bibleapp_available_notes span {
     display: block!important;
@@ -83,16 +85,37 @@ summary:has(.openCloseIconHolder) {
 #context_menu code {
     font-size: 0.85em;
 }
-#hide_col1{
+
+/* HIDE SHOW BUTTONS */
+.button-container {
+    display: flex;
+    align-items: center;
     position: absolute;
-    top: 2px;
-    right: 7px;
+    top: 5px;
+    right: 50px;
     z-index: 99;
+}   
+.button-group {
+    position: absolute;
+    top: 0%;
+    left: 0;
+    right: 0;
+    overflow: hidden;
+    height: 0;
+}
+.button-group.visible {
+    height: 100px;
+    top: 100%;
+    transition: top 0.5s ease-in-out;
+}
+
+#hide_col1{
     width: 40px;
     height: 40px;
     background: transparent;
     border: transparent;
     padding: 1px!important;
+    z-index: 2;
 }
 #hide_col1:hover{
     border-radius: 100px;

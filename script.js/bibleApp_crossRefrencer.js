@@ -59,7 +59,7 @@ function appendCrossReferences(e) {
             refCode = refCode.replace(/:/g, '.'); //Romans.2:3==>Romans.2.3
             let crossRef = crossReferences_fullName[refCode];
             currentVerseCrossRefrence=crossRef;
-            
+            if (!crossRef) {return}
             let narr=[]
             crossRef.forEach(cf=>{
                 let cfr=cf.split('.')
@@ -98,20 +98,25 @@ function appendCrossReferences(e) {
 
 function getCrossReference(x) {
     let crf2get;
-    if(x.hasAttribute('ref')){
-        crf2get = x.getAttribute('ref');
-    }
-    else if(x.matches('.reference')){
-        //refine the reference
-        let bkname=x.value;
-        bkname.replace(/([a-zA-Z])(\d)/ig, '$1 $2'); // Rom1 => Rom 1
-        let bkNchv=bkname.split(/(?<=[a-zA-Z])\s+(?=\d)/ig);// 1 Cor 2:14-16 => ['1 Cor','2:14-16']
-        let bk=bkNchv[0].replace(/i\s/i, '1').replace(/ii\s/, '2').replace(/\s+/, '');
-        crf2get=bk+bkNchv[1];
-        console.log(crf2get)
+    if(typeof (x)=='string'){
+        crf2get = x.replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
     }
     else {
-        crf2get = x.innerText;
+            if(x.hasAttribute('ref')){
+            crf2get = x.getAttribute('ref');
+        }
+        else if(x.matches('.reference')){
+            //refine the reference
+            let bkname=x.value;
+            bkname.replace(/([a-zA-Z])(\d)/ig, '$1 $2'); // Rom1 => Rom 1
+            let bkNchv=bkname.split(/(?<=[a-zA-Z])\s+(?=\d)/ig);// 1 Cor 2:14-16 => ['1 Cor','2:14-16']
+            let bk=bkNchv[0].replace(/i\s/i, '1').replace(/ii\s/, '2').replace(/\s+/, '');
+            crf2get=bk+bkNchv[1];
+            console.log(crf2get)
+        }
+        else {
+            crf2get = x.innerText;
+        }
     }
     // Requires that book name not have space: Not Valid: '1 Cor'. Valid: '1Cor'
     crf2get = crf2get.split(' ').join('.').split(':').join('.');

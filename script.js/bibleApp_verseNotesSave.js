@@ -60,6 +60,7 @@ let noteForCurrentlyEditedVerse;
 let allBibleBooks = bible.Data.allBooks, objOfRefsWithNote={}, bkIdx=0;
 let notesCount = 1;
 function findAllBookChptnVersesWithNote(){
+  // This generates 'arrOfrefs' which is used by 'appendAllRefsWithNote()'
     let i = bkIdx;
     bookName=allBibleBooks[i];
     arrayOfRefsWithNote=[];
@@ -75,8 +76,9 @@ function findAllBookChptnVersesWithNote(){
       bkIdx=i;
       if(i<allBibleBooks.length){
         findAllBookChptnVersesWithNote()
+      } else {
+        available_notes.click()// To automatically open the side menu of notes in verseNotesPage
       }
-      available_notes.click()// To automatically open the side menu of notes in verseNotesPage
     })
   return objOfRefsWithNote
 }
@@ -330,7 +332,7 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
       if((i+1)%2==1){
         openOrnot='';
         if(fullRef == x){openOrnot = 'open id="opened_detail"'}
-        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${x}</h1></summary><div class="win2_noteholder">${generateRefsInNote(items[i+1])}</div></details>`;
+        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${x}</h1></summary><div class="win2_noteholder"><blockquote>${docFrag2String(getCrossReference(fullRef)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(items[i+1])}</div></details>`;
       }
     })
     document.querySelector('#opened_detail').scrollIntoView({behavior: "smooth",block: "start", inline: "nearest"})

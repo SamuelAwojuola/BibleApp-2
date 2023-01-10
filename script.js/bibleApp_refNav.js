@@ -60,8 +60,6 @@ function openachapteronpageload() {
     bible_books.querySelector('[bookname="Genesis"]').click();
     currentBookName = 'Genesis';
     bible_chapters.querySelector('[chapterindex="0"]').click();
-    // document.querySelector('body>div.buttons').querySelector('button.showing').click();
-    // togglenavbtn.click();
 }
 
 var stl = 0;
@@ -186,53 +184,35 @@ function toggleNav() {
 
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
-function hideRefNav(hORs, elm2HideShow, runfunc) {
-    let elHS;
+function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
+    let el2HS;
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){
             let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
-            otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})}
+            otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+        }
     }
     if (elm2HideShow) {
-        elHS = elm2HideShow
+        el2HS = elm2HideShow
     } else {
-        elHS = refnav
+        el2HS = refnav;
     }
-    if (hORs == 'hide') {
-        if(elHS == document.querySelector('#bible_nav')){biblenavigation.classList.remove('active_button')}
-        elHS.classList.remove('slidein');
-        elHS.classList.add('slideout');
-    } else if (hORs == 'show') {
+    if ((hideOrShow == 'show')||(el2HS.classList.contains('slideout'))) {
         toShowOnlyOneAtaTime()
-
-        if(elHS.id == 'searchPreviewWindowFixed'){elHS.classList.add('flex');searchsettings.classList.add('active_button')}
-        elHS.classList.remove('slideout');
-        elHS.classList.add('slidein');
+        el2HS.classList.remove('slideout');
+        el2HS.classList.add('slidein');
+        
+        // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
+        if(el2HS == bible_nav){
+            let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
+            higlightedBknChpt.forEach(refHlt => {
+                refHlt.scrollIntoView(false);
+            });
+        }            
     } else {
-        if (elHS.classList.contains('slideout')) {
-            toShowOnlyOneAtaTime()
-            if(elHS==searchPreviewWindowFixed){
-                elHS.classList.add('flex');
-                searchsettings.classList.remove('active_button');
-            }
-            elHS.classList.remove('slideout');
-            elHS.classList.add('slidein');
-            // TO SCROLL BOOK AND CHAPTER INTO VIEW
-            if(elHS == bible_nav){
-                let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
-                higlightedBknChpt.forEach(refHlt => {
-                    refHlt.scrollIntoView(false);
-                });
-            }            
-        } else {
-            if(elHS==searchPreviewWindowFixed){
-                elHS.classList.remove('flex');
-                searchsettings.classList.add('active_button');
-            }
-            elHS.classList.remove('slidein');
-            elHS.classList.add('slideout');
-        }
+        el2HS.classList.remove('slidein');
+        el2HS.classList.add('slideout');
     }
     runfunc
 }

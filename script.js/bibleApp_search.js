@@ -298,18 +298,18 @@ function runWordSearch() {
             searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
             searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
         }
-        let searchFragmentClone = searchFragment.cloneNode(true)
-        if (!searchresultdisplay.checked) {
-            searchPreview.append(searchFragment);
-            showElement(searchresultwindow)
-        }
-        searchPreviewFixed.append(searchFragmentClone);
+        // if (!searchresultdisplay.checked) {
+        // const searchFragmentClone = searchFragment.cloneNode(true)
+        //     searchPreview.append(searchFragmentClone);
+        //     showElement(searchresultwindow)
+        // }
+        searchPreviewFixed.append(searchFragment);
         runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)//To Clear "searchPreviewFixed" Window after given time
     }
     searchJSON();
     hideRefNav('show');
-    hideRefNav('hide', bible_nav);
     hideRefNav('show', searchPreviewWindowFixed);
+    searchsettings.classList.add('active_button')
     
     if (!showreturnedverses.checked) {
         hideAllVerseInSearch()

@@ -1,7 +1,7 @@
 let bible_nav = document.querySelector('#bible_nav');
 let refnav = document.querySelector('#refnav');
 
-function clog(x){console.log(x)}
+function clog(x){console.log(x);console.trace(x)}
 /* GENERAL HELPER FUNCTIONS */
 function isObject(objValue) {
     return objValue && typeof objValue === 'object' && objValue.constructor === Object;
@@ -620,3 +620,13 @@ function isScrolledIntoView(el) {
 } */
 /* https://www.youtube.com/watch?v=io2blfAlO6E */
 /* ***************************************************** */
+
+// CONVERT DOCUMENT FRAGMENT INTO STRING
+function docFrag2String(dfrg){
+    const serializer = new XMLSerializer();
+    const document_fragment_string = serializer.serializeToString(dfrg);
+    // const xmlnAttribute = ' xmlns="http://www.w3.org/1999/xhtml"';
+    // const regEx = new RegExp(xmlnAttribute, 'g');
+    // document_fragment_string = document_fragment_string.replace(regEx, '');
+    return document_fragment_string
+}

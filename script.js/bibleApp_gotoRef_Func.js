@@ -113,7 +113,7 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     ref_Abrev.forEach((ref_, ref_indx) => {
         if (ref_.includes(ref_bkname.toUpperCase())) {
             ref_bkname = bible.Data.bookNamesByLanguage.en[ref_indx]
-            refb = ref_indx;
+            let refb = ref_indx;
             if (/* !currentBook ||  */currentBook != refb) {
                 // document.querySelector(`[value="book_${refb}"]`).click(); //click on book
                 let selected_chapter=document.querySelector(`[value="book_${refb}"]`);

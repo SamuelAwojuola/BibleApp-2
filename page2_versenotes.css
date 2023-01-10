@@ -121,3 +121,8 @@ summary:has(.openCloseIconHolder) {
     border-radius: 100px;
     background: rgb(179, 255, 66)!important;
 }
+blockquote:first-child{
+    font-family: 'Lucida Sans';
+    color: maroon;
+    font-style:italic;
+}

@@ -4,22 +4,12 @@
     }
     #togglenavbtn {
         min-width: 44.5px;
-    }    
-    /* #togglenavbtn::before {
-        content: '\2261';
-        font-size: 75px;
-        font-weight: 400;
-    } */
+    }
     #refnav #app_settings > button {
         min-width: 45px;
     }
 }
 @media screen and (max-device-width: 1024px) {
-    /* #togglenavbtn::before {
-        content: '\2261';
-        font-size: calc(var(--fontsize-refnsearch) * 3);
-        font-weight: 400;
-    } */
 }
 @media screen and (max-device-width: 912px) {
      :root {
@@ -103,7 +93,18 @@
         max-width: calc(100vw - 25px)!important;
         height: auto!important;
     }
+    .slideup {
+        margin-top: -150px!important;
+    }
+    #titlebarsearchparameters > button {
+        flex-basis: 50%;
+    }
+    #titlebarsearchparameters > #biblebooksgroup {
+        order: -1;
+        flex-basis: 100%;
+    }
 }
+
 @media screen and (max-device-width: 400px) {
      :root {
         --fontsize-title: 16px;

@@ -40,7 +40,7 @@
           </div>
         </div>
       <div id="titlebarsearchparameters" class="slideup">
-        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked>All Words-Not Phrase</button>
+        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words-Not Phrase</button>
 
         <select id="biblebooksgroup">
           <option value="allbks" selected>ALL BOOKS</option>
@@ -60,15 +60,15 @@
             <option value="revelation">Revelation [Rev]</option>
           </optgroup>
           <option value="currentbk">Current Book</option>
-          <select></select>
-          <select></select>
+          <!-- <select></select> -->
+          <!-- <select></select> -->
         </select>
       </div>
     </div>
 
     <!-- BIBLE REFERENCE SIDE BAR -->
-    <nav id="refnav" class="slideout" style="">
-      <div class="refnav" name="settings" id="app_settings" multiple>
+    <nav id="refnav" class="slideout">
+      <div id="app_settings" class="refnav" name="settings" multiple>
         <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->

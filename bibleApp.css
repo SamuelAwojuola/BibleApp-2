@@ -263,9 +263,13 @@ code{position: relative; padding-top: 5px;}
     pointer-events: none;
 }
 #singleverse_compare_menu, #titlebarsearchparameters {
-    /* float: right; */
     display: flex;
+    flex-wrap: wrap;
     width: fit-content;
+}
+#titlebarsearchparameters > * {
+    flex-grow: 1;
+    justify-content: left;
 }
 #singleverse_compare_menu button {
     font-size: var(--fontsize-ref);
@@ -753,7 +757,7 @@ details[open] summary > div:first-of-type {
 }
 #searchPreviewWindowFixed,
 #strongsdefinitionwindow{
-    width: 600px;
+    min-width: 300px;
     max-width: 600px;
 }
 #resizerdiv {
@@ -900,26 +904,54 @@ span.vmultiple.noted code #verse_notes_button {
 }
 
 .slideup {
-    display: none;
-    min-height: 0;
-    max-height: 0;
+    /* display: none; */
     padding: 0;
     margin-bottom:0;
     line-height: 0;
     opacity: 0;
+    margin-top: -150px!important;
+    z-index: -1;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
     transition-duration: 0.3s;
 }
+#refnav>.refnav{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#bible_nav{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#bible_versions{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#searchPreviewWindowFixed{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#strongsdefinitionwindow{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#bible_versions{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
+#refnav>#bibleapp_cache{
+    margin-left: 0px;
+    transition-duration: 0.3s;
+}
 .slidein {
     display: block;
-    margin-left: 0;
+    /* margin-left: 0;
     margin-top: 0;
     -webkit-transition-duration: 0.3s;
     -moz-transition-duration: 0.3s;
     -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    transition-duration: 0.3s; */
 }
 .slideout {
     display: none;
@@ -965,6 +997,7 @@ span.vmultiple.noted code #verse_notes_button {
 }
 /* TOP-HORIZONTAL BAR */
 #top_horizontal_bar{
+    position: relative;
     grid-column-start: 1;
     grid-column-end: 3;
     grid-row-start: 1;
@@ -972,14 +1005,13 @@ span.vmultiple.noted code #verse_notes_button {
     border-bottom: 2px solid var(--grey);
     display: flex;
     flex-wrap: wrap;
+    z-index: 10;
 }
 #top_horizontal_bar_buttons{
     background: var(--ref-img);
     border-bottom: 2px solid #70707072;
     display: flex;
-    /* flex-wrap: wrap; */
-    /* width: calc(100vw - 5.5px); */
-    /* overflow-y: hidden; */
+    z-index: 1;
 }
 /* #ref_search_versions_holder > div input:not([type=checkbox]) {
     width: 100px;
@@ -1070,6 +1102,8 @@ span.vmultiple.noted code #verse_notes_button {
 /* SEARCH PARAMETERS */
 #titlebarsearchparameters {
     font-size: 12px;
+    margin-top: 0;
+    transition-duration: 0.3s;
 }
 #titlebarsearchparameters > *{
     font-size: 1.2em;

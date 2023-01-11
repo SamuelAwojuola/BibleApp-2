@@ -944,6 +944,9 @@ span.vmultiple.noted code #verse_notes_button {
     margin-left: 0px;
     transition-duration: 0.3s;
 }
+#refnav img, #top_horizontal_bar img {
+    pointer-events: none;
+}
 .slidein {
     display: block;
     /* margin-left: 0;

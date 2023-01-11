@@ -9,8 +9,6 @@
         min-width: 45px;
     }
 }
-@media screen and (max-device-width: 1024px) {
-}
 @media screen and (max-device-width: 912px) {
      :root {
         --width-sidebuttons: 37px;
@@ -104,7 +102,6 @@
         flex-basis: 100%;
     }
 }
-
 @media screen and (max-device-width: 400px) {
      :root {
         --fontsize-title: 16px;

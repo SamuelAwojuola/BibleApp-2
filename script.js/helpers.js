@@ -331,6 +331,7 @@ function codeELmRefClick(e) {
         
         // If it is the verseNotePage and not the index.html.
         if(document.querySelector('body').matches('#versenotepage')){
+            // console.log('Page2');
             
             let col2 = document.querySelector('#col2');
             col2.innerHTML = `<div id="context_menu" class="context_menu slideout"></div><details open><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${codeElm.getAttribute('ref')}</h1></summary><div class="win2_noteholder"><em>loading...</em></div></details>`;

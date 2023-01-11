@@ -64,6 +64,7 @@ function getsStrongsDefinition(x) {
         let str_xlit = xlit_lemma_definition.xlit;
         let str_lemma = xlit_lemma_definition.lemma;
         let str_definition = xlit_lemma_definition.definition;
+        str_definition = str_definition.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');
         _text = `${_text}
         <details class="strngsdefinition" ${openOrclose}>
         <summary>

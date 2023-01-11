@@ -69,11 +69,12 @@ var currentBookValue = null;
 //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
 if(!document.querySelector('body').matches('#versenotepage')){
     refnav.addEventListener("click", function (e) {
+        // if((e.target===(undefined||null))||(e.target.toString().replace(/[\s\r\n]+/g, '').length==0)){return}
         clickedElm = e.target;
         if (e.target.matches("button")) {
             clickedElm.classList.toggle("active_button")
-        } else if (elmAhasElmOfClassBasAncestor(e.target,'button')) {
-            clickedElm = elmAhasElmOfClassBasAncestor(e.target,'button');
+        } else if (cE = elmAhasElmOfClassBasAncestor(e.target,'button')) {
+            clickedElm = cE;
             clickedElm.classList.toggle("active_button")
         }
         //To populate book chapter numbers refnav pane
@@ -106,7 +107,6 @@ function indicateBooknChapterInNav(bk, chpt) {
     if (bible_books.querySelector('.tmp_hlt')) {
         bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt');
     }
-    // console.log(bk)
     if (bk) {
         if (refbk = bible_books.querySelector('.ref_hlt')) {
             refbk.classList.remove('ref_hlt')
@@ -160,21 +160,11 @@ function hideRightClickContextMenu() {
     }
 }
 document.addEventListener('keydown', function (e) {
-    // let e = e || window.event;//Get event
     if (e.key === "Escape") {
         if(bible_nav && bible_nav.matches('.slidein')){hideRefNav('hide',bible_nav);}
-        // else if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
         else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
-    } /* else if (e.ctrlKey && document.activeElement.matches('#noteEditingTarget')) {
-        var code = e.key;
-        switch (code) {
-        case 's'://Block Ctrl+S
-        e.preventDefault();
-        e.stopPropagation();
-        break;
-       }
-       writeToVerseNotesFiles()
-    } */
+        if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
+    }
 });
 
 function toggleNav() {
@@ -185,34 +175,31 @@ function toggleNav() {
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
 function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
-    let el2HS;
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){
             let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
-            otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+            // otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
+            otherActiveButtonsToHide.forEach(o_btns=>{o_btns.classList.remove('active_button')})
+            refnav.querySelectorAll('.slidein').forEach(x=>{x.classList.remove('slidein'); x.classList.add('slideout')})
         }
     }
-    if (elm2HideShow) {
-        el2HS = elm2HideShow
-    } else {
-        el2HS = refnav;
-    }
-    if ((hideOrShow == 'show')||(el2HS.classList.contains('slideout'))) {
+    if ((elm2HideShow==null||elm2HideShow==undefined)){elm2HideShow = refnav;}
+    if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideout')))) {
         toShowOnlyOneAtaTime()
-        el2HS.classList.remove('slideout');
-        el2HS.classList.add('slidein');
+        elm2HideShow.classList.remove('slideout');
+        elm2HideShow.classList.add('slidein');
         
         // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
-        if(el2HS == bible_nav){
+        if(elm2HideShow == bible_nav){
             let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
             higlightedBknChpt.forEach(refHlt => {
                 refHlt.scrollIntoView(false);
             });
         }            
-    } else {
-        el2HS.classList.remove('slidein');
-        el2HS.classList.add('slideout');
+    } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideout'))||(elm2HideShow.classList.contains('slidein'))))) {
+        elm2HideShow.classList.remove('slidein');
+        elm2HideShow.classList.add('slideout');
     }
     runfunc
 }

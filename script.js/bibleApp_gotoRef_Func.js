@@ -28,9 +28,7 @@ function changeSingleStringToTitleCase(str) {
 }
 
 function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
-    clog(ref_to_get)
-    let currentBook = bible_books.querySelector('.ref_hlt');
-    let currentBookName = currentBook.getAttribute('bookname');
+    // clog(ref_to_get)
     let ref_bkname, ref_chpnVer, ref_chp, ref_ver, refDisplay;
     let ref;
     if(ref_to_get){ref=ref_to_get}else{ref=reference.value;}
@@ -90,7 +88,8 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
         }
         //Just chapter and verse reference without book name. E.g., '5:5'. Default to current opened book
         else if (Number(refArrbySpace[0]) && Number(refArrbySpace[1])) {
-            ref_bkname = currentBookName;
+            let currentBook = bible_books.querySelector('.ref_hlt');
+            ref_bkname = currentBook.getAttribute('bookname');
             ref_chp = refArrbySpace[0];
             ref_ver = refArrbySpace[1];
         }
@@ -103,7 +102,8 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
         }
         //Just the chapter without the book name and verse reference. E.g., '10'. Default to current book and verse 1
         else if (Number(refArrbySpace[0])) {
-            ref_bkname = currentBookName;
+            let currentBook = bible_books.querySelector('.ref_hlt');
+            ref_bkname = currentBook.getAttribute('bookname');
             ref_chp = refArrbySpace[0];
             ref_ver = 1;
         }

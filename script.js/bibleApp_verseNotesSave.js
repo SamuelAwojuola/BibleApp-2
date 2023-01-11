@@ -180,7 +180,14 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
         noteForCurrentlyEditedVerse = bible_book.notes[chapternumber - 1]['_' + verseNumber];
         // console.log(bible_book.notes[chapternumber - 1].length);
         // console.log(noteForCurrentlyEditedVerse);
-        noteForCurrentlyEditedVerse = generateRefsInNote(noteForCurrentlyEditedVerse);
+        
+        if(document.querySelector('body').matches('#versenotepage')){  
+          const fullRef = `${bookName} ${chapternumber}:${verseNumber}`
+          noteForCurrentlyEditedVerse = `<blockquote>${docFrag2String(getCrossReference(fullRef)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(noteForCurrentlyEditedVerse)}`;
+        }else{
+          noteForCurrentlyEditedVerse = generateRefsInNote(noteForCurrentlyEditedVerse);
+        }
+        
         appendHere.innerHTML = noteForCurrentlyEditedVerse;
         return noteForCurrentlyEditedVerse
       }

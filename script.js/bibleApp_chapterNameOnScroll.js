@@ -3,15 +3,18 @@ main.addEventListener('scroll', getHighestVisibleH2)
 
 function getHighestVisibleH2() {
     let hH=null;
-    function highestElmFromMainTop(distanceFromMainTop=0){
+    function highestElmFromMainTop(){
+        let distanceFromMainTop = 0;
         let higestElm = null;
-        while (higestElm == null||(!higestElm.matches('.chptheading')&&(!higestElm.matches('.chptverses')||elmAhasElmOfClassBasAncestor(higestElm, 'chptverses'))&&distanceFromMainTop<10)){
-            distanceFromMainTop++;
-            higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + distanceFromMainTop);
+        // Will only check for highest elm over a distance of 10px from the start of the main
+        while (((higestElm != null && (!higestElm.matches('.chptheading')&&(!higestElm.matches('.chptverses')||elmAhasElmOfClassBasAncestor(higestElm, 'chptverses')))) || (higestElm == null)) && distanceFromMainTop<10){
+                distanceFromMainTop++;
+                higestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + distanceFromMainTop);
         }
         return higestElm
     }
     let higestElm = highestElmFromMainTop();
+    if(higestElm == null){return}
 
     if (higestElm.matches('.chptheading')) {
         hH=higestElm;
@@ -22,6 +25,8 @@ function getHighestVisibleH2() {
         hH = higestElm.previousElementSibling;
     }
     if(hH!=null&&hH.matches('.chptheading')&&hH.innerText!=reference.value){showCurrentChapterInHeadnSearchBar(hH)}
+
+    return higestElm
 
 }
 

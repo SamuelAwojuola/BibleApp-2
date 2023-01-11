@@ -6,9 +6,11 @@ let timer1, timer2;
 let rightClickedElm = null;
 let main;
 let newStrongsDef = '';
+let append2BottomOfTarget = 0;
 
 // Check if it is index page or verseNotes page
 if(document.querySelector('body').matches('#versenotepage')){
+    append2BottomOfTarget = 1;
     main=document.querySelector('#col2')
     // Load KJV bible for scripture tooltip
     var KJV;
@@ -128,6 +130,7 @@ function add_tooltipContextMenu(e) {
         
         /* If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself */
         if (e.target.matches('.translated, .strnum')) {
+            if(elmAhasElmOfClassBasAncestor(e.target, '.context_menu')){parentIsContextMenu=1;}
             // On Mobile Devices
             if (isMobileDevice) {
                 // remove windows selection
@@ -145,7 +148,6 @@ function add_tooltipContextMenu(e) {
                     }
                     addquotes = false;
                 }
-            if(elmAhasElmOfClassBasAncestor(e.target, '.context_menu')){parentIsContextMenu=1;}
             } else {
                 originalWord = e.target.parentElement.getAttribute("translation")
             }
@@ -265,17 +267,29 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.left = menuLeft;
                 formerContextMenu_Coordinates.left=menuLeft;
             }
-            function appendTop(){
-                menuBottom = parentElementHeight - eTarget.offsetTop + 'px';
-                menuTop = '';
-
-                context_menu.style.top = menuTop;
-                context_menu.style.bottom = menuBottom;
+            function appendAbove(){
                 
-                formerContextMenu_Coordinates.top=menuTop;
-                formerContextMenu_Coordinates.bottom=menuBottom;
+                // else {
+                    menuBottom = parentElementHeight - eTarget.offsetTop + 'px';
+                    menuTop = '';
+                    
+                    context_menu.style.top = menuTop;
+                    context_menu.style.bottom = menuBottom;
+                    
+                    formerContextMenu_Coordinates.top=menuTop;
+                    formerContextMenu_Coordinates.bottom=menuBottom;
+                // }
+                //To always appendBelow in verseNotesPage
+                if(append2BottomOfTarget){
+                    let newHeight = eTarget.offsetTop + parentElement.offsetTop;
+                    context_menu.style.maxHeight = col2.getBoundingClientRect().height/2 + 'px';
+                    if(context_menu.getBoundingClientRect().height > newHeight){
+                        context_menu.style.height = newHeight + 'px';
+                    }
+                    // appendBelow()
+                }
             }
-            function appendBottom(){
+            function appendBelow(){
                 menuBottom = '';
                 menuTop = eTargetBottom - parentElementTop + parentElementScrollTop + 'px';
 
@@ -288,20 +302,27 @@ function add_tooltipContextMenu(e) {
 
             // If the eTarget is in the contextMenu, create a new context menu using the coordinates of the present one
             if(parentIsContextMenu){
+                // console.log('parent is ContextMenu');
                 context_menu.style.top = formerContextMenu_Coordinates.top;
                 context_menu.style.bottom = formerContextMenu_Coordinates.bottom;
                 context_menu.style.left = formerContextMenu_Coordinates.left;
                 context_menu.style.right = formerContextMenu_Coordinates.right;
+                context_menu.querySelector('details').open = true;
             } else {
+                // console.log('parent is NOT ContextMenu');
                 // TOP & BOTTOM
-                if ((!parentElement.matches('.text_content')) && /* (parentElementHeight <= context_menu.offsetHeight)|| */(eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight) && (spaceAbove > spaceBelow) ) {
+                if ((!parentElement.matches('.text_content')) 
+                    && /* (parentElementHeight <= context_menu.offsetHeight)|| */
+                    (eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight)
+                    &&
+                    (spaceAbove > spaceBelow) ) {
                     // If there is not enough space below the child element, show the menu above it
                     // If it is in a versnote div, it will always be appended to the bottom of the eTarget
-                    // clog('appendTop')
-                    appendTop()
+                    // clog('appendAbove')
+                    appendAbove()
                 } else {
-                    // clog('appendBottom')
-                    appendBottom()
+                    // clog('appendBelow')
+                    appendBelow()
                 }
                 // LEFT & RIGHT
                 if ((menuLeft + context_menu.offsetWidth > parentElementWidth)) {

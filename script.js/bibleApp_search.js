@@ -11,9 +11,9 @@ wordsearch.addEventListener('keyup', function(){
     if(wordsearch.value.trim()!=''){forwordsearch.disabled=false;}
     else{forwordsearch.disabled=true;}
   });
-if (!searchresultdisplay.checked) {
-    searchPreview.addEventListener("click", codeELmRefClick)
-}
+// if (!searchresultdisplay.checked) {
+//     searchPreview.addEventListener("click", codeELmRefClick)
+// }
 searchPreviewFixed.addEventListener("click", codeELmRefClick);
 let verseCount;
 function returnStrippedTextOfVerse(vTxt) {
@@ -267,7 +267,7 @@ function runWordSearch() {
         }
         
         loopThroughBibleBooks();
-        searchPreview.innerHTML = '';
+        // searchPreview.innerHTML = '';
         searchPreviewFixed.innerHTML = '';
 
         let caseSensitiveSearch;
@@ -295,7 +295,7 @@ function runWordSearch() {
             wholeWordSearch = 'PARTIAL MATCH';
         }
         if (findAnything == false) {
-            searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
+            // searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
             searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
         }
         // if (!searchresultdisplay.checked) {

@@ -1,58 +1,3 @@
-/* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
-function saveToLocalDrive(jsonVerseNoteData) {
-  // store a reference to file handle
-  let fileHandle;
-  let fileName = `notes_${bookName}.json`; //File name should be bookName with .json extension, e.g., Romans.json
-  const pickerOpts = {
-    suggestedName: fileName, // `note_Romans.json`
-    // startIn: 'C:\/Users\/samue\/OneDrive\/Desktop\/Folders on Desktop\/LC Apps\/LC BibleApp 2.0\/bible_notes',
-    types: [{
-      description: 'Text Files',
-      accept: {
-        'text/plain': ['.json'],
-      }
-    }, ],
-    excludeAcceptAllOption: true,
-    multiple: false
-  };
-
-  //Get file
-  async function getFileToSaveTo() {
-    [fileHandle] = await window.showOpenFilePicker(pickerOpts);
-    let fileData = await fileHandle.getFile();
-    let fileText = await jsonVerseNoteData;
-  }
-  // Save to file
-  async function saveFile() {
-    if (!fileHandle) {
-      saveFileAs();
-    } else {
-      let stream = await fileHandle.createWritable(pickerOpts);
-      // ensure it is not empty
-      let jvnd = jsonVerseNoteData;
-      // clog(jvnd.length);
-      if ((jvnd == false) || (jvnd == undefined) || (jvnd == null)) {
-        alert('FILE IS EMPTY!! err1');
-        return
-      } else if ((jvnd == "") || jvnd.trim().length == 0) {
-        alert('FILE IS EMPTY!! err2');
-        return
-      } else {
-        // clog("File is fine")
-      }
-      await stream.write(jsonVerseNoteData)
-      await stream.close()
-    }
-  }
-
-  async function saveFileAs() {
-    fileHandle = await window.showSaveFilePicker(pickerOpts);
-    saveFile()
-  }
-
-  return saveFile()
-}
-
 /* MODIFY JSON VERSE NOTES FILE */
 let noteForCurrentlyEditedVerse;
 // let currentURLisGithubSamAwo = /samuelawojuola\.github\.io/.test(window.location.href);
@@ -170,6 +115,8 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
       // Scroll the verseNote into view
       if(appendHere && !isScrolledIntoView(appendHere.parentElement)){
           appendHere.parentElement.scrollIntoView({behavior: "smooth",block: "end", inline: "nearest"})
+          // transliteratedWords_Array.forEach(storedStrnum => {
+          //   showTransliteration(storedStrnum)})
       }
     })
 
@@ -189,6 +136,7 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
         }
         
         appendHere.innerHTML = noteForCurrentlyEditedVerse;
+        transliterateAllStoredWords()
         return noteForCurrentlyEditedVerse
       }
     }
@@ -215,7 +163,6 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
     })
 
     function writeNote() {
-      // let newNote = "html so so so";
       let newNote = noteEditingTarget.innerHTML;
       if (newNote == "<p><br><\/p>") {
         noteEditingTarget.innerHTML = null;
@@ -335,14 +282,15 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
       }
     }
     let openOrnot='';
-    items.forEach((x,i)=>{
+    items.forEach((ref_,i)=>{
       if((i+1)%2==1){
         openOrnot='';
-        if(fullRef == x){openOrnot = 'open id="opened_detail"'}
-        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${x}</h1></summary><div class="win2_noteholder"><blockquote>${docFrag2String(getCrossReference(fullRef)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(items[i+1])}</div></details>`;
+        if(fullRef == ref_){openOrnot = 'open id="opened_detail"'}
+        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${ref_}</h1></summary><div class="win2_noteholder"><blockquote>${docFrag2String(getCrossReference(ref_)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(items[i+1])}</div></details>`;
       }
     })
     document.querySelector('#opened_detail').scrollIntoView({behavior: "smooth",block: "start", inline: "nearest"})
+    transliterateAllStoredWords()
   }
 }
 

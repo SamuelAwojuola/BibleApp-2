@@ -104,8 +104,17 @@ function getsStrongsLemmanNxLit(wStrnum) {
 }
 
 //TO SHOW TRANSLITERATION OF WORDS
-var transliteratedWords_Array = [];
+if(document.querySelector('#pagemaster')){
+    pagemaster = document.querySelector('#pagemaster')
+} else if(document.querySelector('body').matches('#versenotepage')){
+    pagemaster = document.querySelector('body#versenotepage')
+}
+pagemaster.addEventListener("dblclick",transliterateWordsOnDoubleClick)
 
+var transliteratedWords_Array = [];
+function transliterateAllStoredWords(){
+    transliteratedWords_Array.forEach(storedStrnum => {showTransliteration(storedStrnum)});
+}
 function showTransliteration(stn) {
     let allSimilarWords;
     if(/G|H\d+/i.test(stn)&&stn!=='G*'){
@@ -238,34 +247,33 @@ function strongsHighlighting(e) {
     }
 }
 //ON PAGE LOAD, GET TRANSLITERATED ARRAY FROM CACHE
-//window.onload = () => cacheFunctions();
-//Moved to after loading of first chapter
+//window.onload = () => cacheFunctions(); //Moved to after loading of first chapter
 
-if(document.querySelector('#pagemaster')){pagemaster.addEventListener("dblclick", function (e) {
+function transliterateWordsOnDoubleClick(e) {
     hoverElm = e.target;
     if (hoverElm.nodeName == 'SPAN' && hoverElm.classList.contains('translated') && !hoverElm.classList.contains('eng2grk')) {
-        let allstn = hoverElm.getAttribute('strnum').split(' '); //Some words are translated from more than one word
-        allstn.forEach(stn => {
-            if (transliteratedWords_Array.indexOf(stn) == -1) {
-                /* ADD THE WORD TO THE transliteratedWords_Array */
-                transliteratedWords_Array.push(stn);
-            }
-            if(/G|H\d+/i.test(stn)){
-                showTransliteration(stn)
-            }
-        })
-    } else if (hoverElm.classList.contains('strnum')) {
-        let allstn = hoverElm.parentElement.getAttribute('strnum').split(' ');
-        allstn.forEach(stn => {
-            if (transliteratedWords_Array.indexOf(stn) != -1) {
-                /* REMOVE THE WORD FROM THE transliteratedWords_Array */
-                transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(stn), 1);
+            let allstn = hoverElm.getAttribute('strnum').split(' '); //Some words are translated from more than one word
+            allstn.forEach(stn => {
+                if (transliteratedWords_Array.indexOf(stn) == -1) {
+                    /* ADD THE WORD TO THE transliteratedWords_Array */
+                    transliteratedWords_Array.push(stn);
+                }
+                if(/G|H\d+/i.test(stn)){
+                    showTransliteration(stn)
+                }
+            })
+        } else if (hoverElm.classList.contains('strnum')) {
+            let allstn = hoverElm.parentElement.getAttribute('strnum').split(' ');
+            allstn.forEach(stn => {
+                if (transliteratedWords_Array.indexOf(stn) != -1) {
+                    /* REMOVE THE WORD FROM THE transliteratedWords_Array */
+                    transliteratedWords_Array.splice(transliteratedWords_Array.indexOf(stn), 1);
             }
             hideTransliteration(stn)
         })
     }
     setItemInLocalStorage('transliteratedWords', transliteratedWords_Array);
-})}
+}
 
 //HIGHLIGHTING CLICKED WORD
 const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);

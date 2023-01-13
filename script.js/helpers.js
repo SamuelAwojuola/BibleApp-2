@@ -599,6 +599,62 @@ function isScrolledIntoView(el) {
     return isVisible;
 }
 /* ***************************************************** */
+/* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
+function saveToLocalDrive(file_text_content, fileName, format='json') {
+    // store a reference to file handle
+    let fileHandle;
+    if(!fileName){
+      // It works by default for saving verseNotes 
+      fileName = `notes_${bookName}.json`; //File name should be bookName with .json extension, e.g., Romans.json
+    }
+    const pickerOpts = {
+      suggestedName: fileName, // `note_Romans.json`
+      // startIn: 'C:\/Users\/samue\/OneDrive\/Desktop\/Folders on Desktop\/LC Apps\/LC BibleApp 2.0\/bible_notes',
+      types: [{
+        description: 'Text Files',
+        accept: {
+          'text/plain': [`.${format}`],
+        }
+      }, ],
+      excludeAcceptAllOption: true,
+      multiple: false
+    };
+    
+    //Get file
+    async function getFileToSaveTo() {
+      [fileHandle] = await window.showOpenFilePicker(pickerOpts);
+      let fileData = await fileHandle.getFile();
+      let fileText = await file_text_content;
+    }
+    // Save to file
+    async function saveFile() {
+        if (!fileHandle) {
+          saveFileAs();
+        } else {
+          let stream = await fileHandle.createWritable(pickerOpts);
+          // ensure it is not empty
+          let jvnd = file_text_content;
+          // clog(jvnd.length);
+          if ((jvnd == false) || (jvnd == undefined) || (jvnd == null)) {
+            alert('FILE IS EMPTY!! err1');
+            return
+          } else if ((jvnd == "") || jvnd.trim().length == 0) {
+            alert('FILE IS EMPTY!! err2');
+            return
+          } else {
+            // clog("File is fine")
+          }
+          await stream.write(file_text_content)
+          await stream.close()
+      }
+    }
+    
+    async function saveFileAs() {
+        fileHandle = await window.showSaveFilePicker(pickerOpts);
+        saveFile()
+    }
+    return saveFile()
+}
 /* DOWNLOAD MODIFIED JSON FILE */
 /* function downloadFile(text_data, name = "myData", format = "json") {
   // const blob = new Blob([JSON.stringify(obj, null, 2)], {

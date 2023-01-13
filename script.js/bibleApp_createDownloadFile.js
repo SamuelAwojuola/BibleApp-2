@@ -1,24 +1,3 @@
-/* https://www.youtube.com/watch?v=io2blfAlO6E */
-function downloadFile(text_data, name = "myData", format = "json") {
-    // const blob = new Blob([JSON.stringify(obj, null, 2)], {
-    //     type: "application/json",
-    //   });
-    // console.log(name)
-    const blob = new Blob([text_data], {
-        type: "application/octet-stream",
-    });
-    const href = URL.createObjectURL(blob);
-    const a = Object.assign(document.createElement('a'), {
-        href,
-        styles: "display:none",
-        download: `${name}.${format}` // myData.json
-    })
-    document.body.appendChild(a);
-    a.click();
-    URL.revokeObjectURL(href);
-    a.remove(a);
-}
-
 // FINAL FORMAT
 /* {
         "book":"Daniel",

@@ -4,27 +4,23 @@ let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMo
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
 let rightClickedElm = null;
-let main;
 let newStrongsDef = '';
 let append2BottomOfTarget = 0;
 
 // Check if it is index page or verseNotes page
 if(document.querySelector('body').matches('#versenotepage')){
     append2BottomOfTarget = 1;
-    main=document.querySelector('#col2')
+    // main=document.querySelector('#col2')
     // Load KJV bible for scripture tooltip
-    var KJV;
-    // window.onload = function () {
-        var request_KJV_URL = 'bibles/KJV.json';
-        var kjvBible = new XMLHttpRequest();
-        kjvBible.open('GET', request_KJV_URL);
-        kjvBible.responseType = 'json';
-        kjvBible.send();
-        kjvBible.onload = function () {
-            let booksChaptersAndVerses = kjvBible.response;
-            KJV = booksChaptersAndVerses['books'];
-            // cacheFunctions() //GET TRANSLITERATED ARRAY FROM CACHE
-        }
+    // var KJV;
+    // var request_KJV_URL = 'bibles/KJV.json';
+    // var kjvBible = new XMLHttpRequest();
+    // kjvBible.open('GET', request_KJV_URL);
+    // kjvBible.responseType = 'json';
+    // kjvBible.send();
+    // kjvBible.onload = function () {
+    //     let booksChaptersAndVerses = kjvBible.response;
+    //     KJV = booksChaptersAndVerses['books'];
     // }
 }else{main=document.querySelector('#main');}
 
@@ -210,6 +206,7 @@ function add_tooltipContextMenu(e) {
                 context_menu.setAttribute('strnum', strnum)
             }else{context_menu.removeAttribute('strnum')}
             hideRefNav('show', context_menu)
+            transliterateAllStoredWords()
         }
 
         /* ------------------------------------------ */

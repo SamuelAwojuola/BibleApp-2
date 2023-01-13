@@ -67,7 +67,7 @@ span[ref]:hover, .strnum:hover {
 #context_menu {
     font-size: 1em;
 }
-summary, #context_menu summary, #context_menu .cmtitlebar, #context_menu .cmtitlebar::before {
+summary, #context_menu summary {
     background: rgb(250, 255, 200);
 }
 summary h1, summary .openCloseIconHolder, summary div {
@@ -84,6 +84,9 @@ summary:has(.openCloseIconHolder) {
 }
 #context_menu code {
     font-size: 0.85em;
+}
+#context_menu[strnum]>.cmtitlebar {
+    display: none;
 }
 
 /* HIDE SHOW BUTTONS */

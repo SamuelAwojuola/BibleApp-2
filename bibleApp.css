@@ -380,8 +380,8 @@ button {
     width: 400px;
     max-width: 100%;
     max-height: 80vh;
-    overflow-y: scroll;
     padding: 5px;
+    overflow-y: scroll;
     -webkit-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
     -moz-box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
     box-shadow: 3px 3px 3.5px 0px var(--shadow-color2), 0 5px 5px 2px var(--shadow-color3), inset 0px 0.5px 0px 0px var(--grey);
@@ -389,6 +389,14 @@ button {
     font-size: var(--fontsize-strongstooltip);
     overflow-x:hidden;
     resize: both;
+}
+#context_menu[strnum] {
+    padding: 0px;
+}
+#context_menu[strnum]>.cmtitlebar {
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 0.7em;
 }
 #context_menu:hover {
     -webkit-box-shadow: 5px 5px 15px 0px var(--shadow-ctxtmenu-hover);
@@ -420,8 +428,8 @@ button {
     width: 100%;
     padding-bottom: 10px;
     padding-right: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0px -21.5px 13px 28px var(--scroll-track-bg-color);
+    /* margin-bottom: 10px; */
+    /* box-shadow: 0px -21.5px 13px 28px var(--scroll-track-bg-color); */
     z-index: 3;
 }
 .verse_note #context_menu .cmtitlebar{
@@ -436,7 +444,7 @@ button {
     width: 120%;
     height: 115%;
     background: var(--ref-img);
-    box-shadow: 0px -21px 3px 25px var(--scroll-track-bg-color);
+    /* box-shadow: 0px -21px 3px 25px var(--scroll-track-bg-color); */
     z-index: -1;
 }
 /* #context_menu .cmtitlebar::after{
@@ -701,14 +709,14 @@ sup {
     /* background-color:#cbff7d24; */
 }
 
-#strongsdefinitionwindow details[open] summary, details[open] summary {
+#strongsdefinitionwindow details[open] > summary, details[open] summary {
     /* background-color:#fdff7f25; */
     border-bottom: 1px solid #aaa;
     margin-bottom: .5em;
 }
 
-#strongsdefinitionwindow details[open] summary > div:first-of-type,
-details[open] summary > div:first-of-type {
+#strongsdefinitionwindow details[open] > summary > div:first-of-type,
+details[open] > summary > div:first-of-type {
     background: url(images/arrow-down-svgrepo-com.svg) center no-repeat;
     /* min-width: 1em; */
     /* height: 2em; */
@@ -1149,20 +1157,20 @@ span.vmultiple.noted code #verse_notes_button {
 #bibleapp_available_notes b {
     font-size: 1.2em;
 }
-#bibleapp_available_notes details summary {
+#bibleapp_available_notes details > summary {
     color: var(--black);
     background: var(--whitesmoke);
     font-weight: bold;
     display:list-item;
     list-style: inside disclosure-closed;
 }
-#bibleapp_available_notes details[open] summary {
+#bibleapp_available_notes details[open] > summary {
     list-style: inside disclosure-open;
 }
 /* #bibleapp_available_notes details:hover {
     background: var(--verse-hover);
 } */
-#bibleapp_available_notes details:hover summary {
+#bibleapp_available_notes details:hover > summary {
     background: var(--selection);
 }
 #togglenavbtn {

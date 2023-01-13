@@ -1,0 +1,96 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>LC-BibleApp CodeDocumentation</title><link rel="stylesheet" href="codeDocumentation.css"></head>
+        <body>
+            <h1>LightCity Bible App Code Documentation</h1>
+            <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button><main id="main" contenteditable="false"><h1>Generating Rerefences</h1>
+
+<h1>Searching the Bible</h1>
+
+<h1>Verse Notes</h1>
+
+<ol>
+	<li>A JSON file is dedicated to each bible book where its notes are saved and generated from.</li>
+</ol>
+
+<h2>Retrieving Notes</h2>
+
+<p>To retrieve a verse note, the following are required—the Bible book name and the chapter and verse</p>
+
+<ol>
+	<li><em><span style="color:#8e44ad"><strong>readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHere)</strong></span></em>: This is the primary FUNCTION for retrieving verse notes from their JSON files. It requires the following parameters
+
+	<ol>
+		<li><strong>bookName</strong>—<em>this is part of the name of the JSON file</em></li>
+		<li><strong>chapternumber</strong>,</li>
+		<li><strong>verseNumber</strong>,</li>
+		<li><strong>appendHere</strong>—<em>html element where the retrieved element will be appended</em>
+		<ol>
+		</ol>
+		</li>
+	</ol>
+	</li>
+</ol>
+
+<h3>RightClickable Strong’s Numbers and Bible References In Notes</h3>
+
+<ol>
+	<li><em><span style="color:#8e44ad"><u><strong>generateRefsInNote(txt)</strong></u></span></em><strong>: </strong>This is the primary FUNCTION for generating rightclickable references and strong’s numbers in notes
+
+	<ol>
+		<li>The ‘txt’ parameter passed into the <span style="color:#16a085"><u><strong>generateRefsInNote(txt)</strong></u></span> function is the raw verse note retrieved from the verse note JSON file.</li>
+		<li>The references and strong’s numbers are wrapped in spans that the contextMenu eventListener is targeting</li>
+	</ol>
+	</li>
+</ol>
+
+<h2>Editing Notes</h2>
+
+<h2>Saving Notes</h2>
+
+<ol>
+	<li><em><span style="color:#8e44ad"><u><strong>writeToVerseNotesFiles(bookName, chapternumber, verseNumber)</strong></u></span></em>: This is the FUNCTION that writes the notes to their respective files
+
+	<ol>
+		<li>It copies the innerHTML of the verse note and locates the precise verse in its book’s JSON file and writes over it.</li>
+		<li>It requires three parameters in order—<strong>bookName, chapternumber, verseNumber</strong></li>
+		<li>This function requires some other functions to process and finally save the note to the drive
+		<ol>
+			<li><u><span style="color:#c0392b"><strong>modifyQuotationMarks(newNote)</strong></span></u>: Modifies the text of the file with regex to make it readable. For example, it changes quotation marks into proper ones for reading.</li>
+			<li><span style="color:#c0392b"><u><strong>sortVnotesObj(obj)</strong></u></span>: The parameter supplied is the full content of the verseNotes JSON file. This function ensures that the new entry fits in the right place sequentially corresponding to its verse number.</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li><em><span style="color:#8e44ad"><u><strong>saveToLocalDrive(file_text_content, fileName, format=‘json’)</strong></u></span></em>: This is the function that actually saves the file to the local drive. This is a generalized function that can save any text to any file in any format. It requires three parameters:
+	<ol>
+		<li><strong>file_text_content: </strong>the actual (text) content of the file<strong>,</strong></li>
+		<li><strong>fileName</strong>: the name of the file, and</li>
+		<li><strong>format</strong>: the format of the file, e.g., json, html, txt, etc.</li>
+		<li><em>PS: for saving the verseNotes, only the <strong>file_text_content</strong> parameter is supplied. The <strong>fileName</strong> and <strong>format</strong> parameters are automatically generated.</em></li>
+	</ol>
+	</li>
+</ol>
+
+<h1>Storing and Retrieving From Cache</h1>
+
+<h1>Transliteration</h1>
+
+<ol>
+	<li><span style="color:#8e44ad"><u><em><strong>transliterateWordsOnDoubleClick(e)</strong></em></u></span>: Main function for transliterating selected words
+
+	<ol>
+		<li>I use it with a dblclick event listener</li>
+		<li>It saves the transliterated word in the <strong><em>transliteratedWords_Array</em></strong> and in the cache</li>
+	</ol>
+	</li>
+	<li><u><strong><span style="color:#8e44ad"><em>showTransliteration(storedStrnum)</em></span></strong></u>: is the actual function that changes the text
+	<ol>
+		<li><strong>PS: </strong>It transliterates one word at a time</li>
+	</ol>
+	</li>
+	<li><strong><em><u><span style="color:#8e44ad">transliterateAllStoredWords()</span></u></em>: </strong>Transliterates every strong’s words stored in the transliteratedWords_Array that is on the page.
+	<ol>
+		<li>It uses the <strong><span style="color:#8e44ad"><em>showTransliteration(storedStrnum)</em></span></strong> function.</li>
+	</ol>
+	</li>
+</ol>
+</main></body><script src="/script.js/helpers.js" charset="utf-8"></script><script src="codeDocumentation.js" charset="utf-8"></script></html>

@@ -20,8 +20,9 @@
     --vmultiple2-hover:rgba(255, 213, 0, 0.527);
     --nav-bg-color: #fbfbfb;
     --vhlt-border: #8080809c;
-    --vhlt: #ffffc4;
+    --vhlt: #ffffdd;
     --vhlt2: #ffff99;
+    --vhlt3: #ffffc4;
     --versenote-contextmenu:white;
     --noteEdit-active:#ffe8d7;
     --strgs-num:#403b69;
@@ -515,23 +516,40 @@ span.verse:hover:not(.vhlt){
 span.vmultiple:hover{
     background-color: var(--vmultiple-hover);
     background-color: var(--verse-hover);
+    background-color: var(--whitesmoke);
     background-color: var(--span-hover);
     transition: box-shadow 0.05s linear;
     /* box-shadow: inset 1px 2.5px 3px -2px var(--shadow-color),
     inset 3px -3px 1.5px -1px var(--shadow-color)!important; */
     box-shadow: inset 0px 0px 5px 1px var(--shadow-color)!important;
-    z-index: 2;
+    z-index: 99;
+    transition: 500ms;
 }
 span[class^=v_]:hover {
-    background-color: var(--span-hover)!important;
-    background-color: var(--vhlt)!important;
-    z-index:5;
-    box-shadow: 0px 0px 3px 2px var(--shadow-color)!important; 
+    /* background-color: var(--span-hover)!important; */
+    background-color: var(--vhlt3)!important;
+    box-shadow: 2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color),2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color)!important; 
+    z-index:1;
+    transition: 500ms;
 }
 span.translated:hover {
     border-bottom: 1px solid var(--span-trans-hover);
     color: var(--brown);
 }
+:has(.v_KJV:hover) span.v_KJV,
+:has(.v_ESV:hover) span.v_ESV,
+:has(.v_NET:hover) span.v_NET,
+:has(.v_ABP-en:hover) span.v_ABP-en,
+:has(.v_NIV’84:hover) span.v_NIV’84,
+:has(.v_accented:hover) span.v_accented,
+:has(.v_ABP-gr:hover) span.v_ABP-gr {
+    background-color: var(--span-hover);
+    background-color: var(--whitesmoke);
+    box-shadow: inset 2px 0px 0px 0px var(--grey),
+    inset -2px 0px 0px 0px var(--grey);
+    transition: 500ms;
+}
+
 sup {
     font-weight: bold;
 }

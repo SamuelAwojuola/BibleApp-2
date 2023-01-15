@@ -1,7 +1,56 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>LC-BibleApp CodeDocumentation</title><link rel="stylesheet" href="codeDocumentation.css"></head>
         <body>
             <h1>LightCity Bible App Code Documentation</h1>
-            <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button><main id="main" contenteditable="false"><h1>Generating Rerefences</h1>
+            <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button><main id="main" contenteditable="false"><h1>Bible Versions</h1>
+
+<h1>Generating Rerefences</h1>
+
+<h2>Main Reference Generating Functions</h2>
+
+<ol>
+	<li><em><strong><span style="color:#8e44ad">getCrossReference(fullRef)</span></strong></em>: Generates the parsed verse text from a full reference, e.g., “Romans 1:5”, supplied to it. It only returns the parsed verse text and does not append it anywhere.
+
+	<ol>
+		<li>This function
+		<ol>
+			<li><strong><u>Retrieves</u> the bible verse text</strong> from the bible version set in the “<strong><u><em>bversionName</em></u></strong>” global variable. <em>In the main BibleApp, this is set to the version of any verse that was last cliked in the main window.</em></li>
+			<li><strong><u>Returns</u> a documentFragment</strong> containing a <strong>span element</strong> with the parsed verse in it,</li>
+			<li><strong><u>Parses</u> the verse text</strong> <em>(using the ‘</em><strong><em><span style="color:#8e44ad">parseVerseText(vT, verseSpan)</span></em></strong><em>’ function—see below)</em></li>
+		</ol>
+		</li>
+		<li>This function is used by
+		<ol>
+			<li>The <strong>contextMenu </strong>for generating text from cross refs,</li>
+			<li><strong>versenote </strong>in the verseNotePage</li>
+			<li><strong>getCrossReference(x)</strong></li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li><span style="color:#8e44ad"><em><strong>parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch = false, bibleVersionName)</strong></em></span>:
+	<ol>
+		<li>This function
+		<ol>
+			<li><strong><u>Retrieves</u> the bible verse text</strong> from the different bible versions JSON files,</li>
+			<li><strong><u>Creates</u> the html element</strong> to which they will be appended after being parsed, i.e., changed into HTML format,</li>
+			<li><strong><u>Parses</u> them</strong> <em>(using the ‘</em><span style="color:#8e44ad"><strong><em>parseVerseText(vT, verseSpan)’ </em></strong></span><em>function—see below)</em></li>
+			<li>Appends version and verse reference text of verse in code element to the generated verse</li>
+		</ol>
+		</li>
+		<li>It requires
+		<ol>
+			<li><em><strong>versionsToShow </strong></em>variable which is an array of the names of all the loaded versions.</li>
+		</ol>
+		</li>
+	</ol>
+	</li>
+	<li><span style="color:#8e44ad"><strong><em>parseVerseText(vT, verseSpan)</em></strong></span>: This is the <em>lowest level </em>function that generates the individual verses. It must be supplied the raw JSON data <em>(verse text)</em> and where it is to append the parsed html. It does not retrieve the text data from the bible JSON file itself but must be supplied the text. It requires the following parameters in order,
+	<ol>
+		<li><em><strong>vT</strong></em>—the verse text, i.e., the text JSON data of the verse gotten from the bible JSON file.</li>
+		<li><em><strong>verseSpan</strong></em>—the SPAN element <em>(or any other)</em> to which it is to append the parsed <em>(converted)</em> verse text.</li>
+	</ol>
+	</li>
+</ol>
 
 <h1>Searching the Bible</h1>
 

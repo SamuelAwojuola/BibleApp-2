@@ -15,7 +15,7 @@ document.addEventListener('keydown', e => {
         if (main.contentEditable == 'true') {
             disableCKEditor(main)
         }
-        const text_content_head = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>LC-BibleApp CodeDocumentation</title><link rel="stylesheet" href="codeDocumentation.css"></head>
+        const text_content_head = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>CodeDoc4LC-BibleApp</title><link rel="stylesheet" href="codeDocumentation.css"></head>
         <body>
             <h1>LightCity Bible App Code Documentation</h1>
             <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button><main id="main" contenteditable="false">`;
@@ -58,8 +58,8 @@ function toggleDarkLightMode(cls){
     document.querySelector('body').classList.toggle(cls)
 }
 
-
 function toggleH1to6siblings(e, eTarget){
+    if(main.contentEditable=='true'){return}
     const h1to6arr = ['H1','H2','H3','H4','H5','H6'];
     let hElm;
     if(e){hElm = e.target}else{hElm = eTarget}

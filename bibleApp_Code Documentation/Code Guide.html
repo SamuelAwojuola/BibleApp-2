@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>LC-BibleApp CodeDocumentation</title><link rel="stylesheet" href="codeDocumentation.css"></head>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="/ckeditor-standard/ckeditor.js"></script><title>CodeDoc4LC-BibleApp</title><link rel="stylesheet" href="codeDocumentation.css"></head>
         <body>
             <h1>LightCity Bible App Code Documentation</h1>
             <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button><main id="main" contenteditable="false"><h1>Bible Versions</h1>
@@ -57,6 +57,7 @@
 <h1>Verse Notes</h1>
 
 <ol>
+	<li>Reading and saving of verseNote JSON files is done using the <strong>File System Access API</strong>. The primary function is <em>“saveToLocalDrive(file_text_content, fileName, format=‘json’)"</em></li>
 	<li>A JSON file is dedicated to each bible book where its notes are saved and generated from.</li>
 </ol>
 
@@ -141,5 +142,38 @@
 		<li>It uses the <strong><span style="color:#8e44ad"><em>showTransliteration(storedStrnum)</em></span></strong> function.</li>
 	</ol>
 	</li>
+</ol>
+
+<h1>Context Menu</h1>
+
+<ol>
+	<li><em><span style="color:#8e44ad"><strong>createNewContextMenu()</strong></span></em>: creates new context menu if there is none</li>
+	<li><em><span style="color:#8e44ad"><strong>add_tooltipContextMenu(e)</strong></span></em>: This is the main context menu function that appends it to the page assign
+	<ol>
+		<li><strong>Content</strong> and</li>
+		<li><strong>Dimensions</strong> </li>
+	</ol>
+	</li>
+	<li><span style="color:#8e44ad"><em><strong>hideRightClickContextMenu()</strong></em></span>: This hides the context menu adding the “slideout”.
+	<ol>
+		<li>It uses <strong>“hideRefNav(‘hide’, context_menu)"</strong> to hide it</li>
+	</ol>
+	</li>
+</ol>
+
+<h1>Dragging Element <em>(Context Menu)</em></h1>
+
+<p>I used the ‘<strong>interact.js</strong>’ library</p>
+
+<ul>
+	<li>It is set in the head—<em>(&lt;script src=“https://cdn.jsdelivr.net/npm/interactjs/dist/interact.min.js”&gt;&lt;/script&gt;)</em></li>
+</ul>
+
+<p>For dragging the “<strong>context_menu</strong>”,</p>
+
+<ol>
+	<li>I set what the mouse/drag event interacts with to be the title_bar—<strong><em>’.cmtitlebar’</em></strong></li>
+	<li>In the “<strong>dragMoveListener(event)</strong>” function, rather than actual set the translation style of the ‘<strong>.cmtitlebar</strong>’, I set the translation of the ‘<strong>context_menu</strong>’ parent element.</li>
+	<li>Whenever ‘<strong>add_tooltipContextMenu(e)</strong>’ function <em>(which is what generates the context menus)</em> is called, I reset the ‘<strong>transform</strong>’ style to ‘<strong>null</strong>’ in the context—<em>‘context_menu.style.transform = null’</em>.</li>
 </ol>
 </main></body><script src="/script.js/helpers.js" charset="utf-8"></script><script src="codeDocumentation.js" charset="utf-8"></script></html>

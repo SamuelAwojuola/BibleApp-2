@@ -5,29 +5,30 @@
 /* A version number is useful when updating the worker logic,
    allowing you to remove outdated cache entries during the update.
 */
-var version = 'v10::';
+var version = 'v02::';
 
 /* These resources will be downloaded and cached by the service worker
    during the installation process. If any resource fails to be downloaded,
    then the service worker won't be installed either.
 */
 var offlineFundamentals = [
-    '',
-    'bibleApp.css',
-    'bibleApp-2.css',
-    'page2_versenotes.css',
-    'images/hamburger-menu-svgrepo-com.svg',
-    'images/scroll-svgrepo-com.svg',
-    'images/settings-gear-svgrepo-com.svg',
-    'images/search-svgrepo-com (2).svg',
-    'images/books-stack-svgrepo-com.svg',
-    'images/search-svgrepo-com(2).svg',
-    'images/book-pencil-svgrepo-com.svg',
-    'images/settings-svgrepo-com.svg',
-    'images/home-svgrepo-com(maroon).svg',
-    'images/arrow-up-svgrepo-com.svg',
-    'images/arrow-down-svgrepo-com.svg',
-    'page2_versenotes.html'
+    ''
+    // ,
+    /* 'bibleApp.css', */
+    // 'bibleApp-2.css',
+    // 'page2_versenotes.css',
+    // 'images/hamburger-menu-svgrepo-com.svg',
+    // 'images/scroll-svgrepo-com.svg',
+    // 'images/settings-gear-svgrepo-com.svg',
+    // 'images/search-svgrepo-com (2).svg',
+    // 'images/books-stack-svgrepo-com.svg',
+    // 'images/search-svgrepo-com(2).svg',
+    // 'images/book-pencil-svgrepo-com.svg',
+    // 'images/settings-svgrepo-com.svg',
+    // 'images/home-svgrepo-com(maroon).svg',
+    // 'images/arrow-up-svgrepo-com.svg',
+    // 'images/arrow-down-svgrepo-com.svg',
+    // 'page2_versenotes.html'
 ];
 
 /* The install event fires when the service worker is first installed.

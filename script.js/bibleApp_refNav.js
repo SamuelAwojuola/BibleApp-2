@@ -155,7 +155,11 @@ function indicateBooknChapterInNav(bk, chpt) {
 function hideRightClickContextMenu() {
     if (context_menu.matches('.slidein')) {
         hideRefNav('hide', context_menu);
+        interact('.cmtitlebar').unset();
+        console.log('interact');
         newStrongsDef = '';
+        // context_menu.innerHTML = '';
+        context_menu.style.right = null;
         if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
     }
 }

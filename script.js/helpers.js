@@ -530,6 +530,7 @@ function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60
 function modifyQuotationMarks(txt){
     txt = txt.replace(/&nbsp;/ig, ' ');
     // Modify Opening Quotation Marks
+    txt = txt.replace(/<\/em><em>/ig, '');
     txt = txt.replace(/(?<!<[^>]*)(.)\.\.\./ig, '$1…');
     txt = txt.replace(/”…/ig, '“…');
     txt = txt.replace(/(?<!<[^>]*)([\d\w])['‘]([\w…])/ig, '$1’$2');
@@ -601,6 +602,12 @@ function isScrolledIntoView(el) {
 /* ***************************************************** */
 /* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
 function saveToLocalDrive(file_text_content, fileName, format='json') {
+    if (!file_text_content.replace(/\s\n\r/g, '').length){
+        // I am trying to prevent it from saving an empty file
+        // It will only work if the "file_text_content" being empty is what makes it to sometimes save empty files 
+        alert ("Error: Empty File.\nPlease Try Again");
+        return
+    }
     // store a reference to file handle
     let fileHandle;
     if(!fileName){
@@ -682,8 +689,7 @@ function saveToLocalDrive(file_text_content, fileName, format='json') {
 function docFrag2String(dfrg){
     const serializer = new XMLSerializer();
     const document_fragment_string = serializer.serializeToString(dfrg);
-    // const xmlnAttribute = ' xmlns="http://www.w3.org/1999/xhtml"';
-    // const regEx = new RegExp(xmlnAttribute, 'g');
-    // document_fragment_string = document_fragment_string.replace(regEx, '');
-    return document_fragment_string
+    const xmlnAttribute = ' xmlns="http://www.w3.org/1999/xhtml"';
+    const regEx = new RegExp(xmlnAttribute, 'g');
+    return document_fragment_string.replace(regEx, '')
 }

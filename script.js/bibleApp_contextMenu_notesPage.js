@@ -17,6 +17,8 @@ function remove_mouseoverContextMenuEventListner() {
     //In case it is on the screen
     // context_menu.classList.remove('slidein');
     // context_menu.classList.add('slideout');
+    interact('.cmtitlebar').unset();
+    console.log('interact');
     col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
     col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
 }

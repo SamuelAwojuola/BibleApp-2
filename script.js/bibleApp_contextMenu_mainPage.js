@@ -26,7 +26,7 @@ function add_mouseoverContextMenuEventListner() {
 }
 
 function remove_mouseoverContextMenuEventListner() {
-    hideRefNav('hide', context_menu); //In case it is on the screen
+    // hideRefNav('hide', context_menu); //In case it is on the screen
     if(document.querySelector('body').matches('#versenotepage')){
         col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
     }else {
@@ -48,8 +48,11 @@ document.addEventListener('keydown', evt => {
         toolTipON = ttip_check.checked;
     }
     if (evt.key === 'Escape' && document.querySelector('#context_menu')) {
-        hideRefNav('hide', context_menu);
-        context_menu.innerHTML = '';
+        hideRightClickContextMenu()
+        // hideRefNav('hide', context_menu);
+        // interact('.cmtitlebar').unset();
+        // console.log('interact');
+        // context_menu.innerHTML = '';
     }
 });
 

@@ -80,6 +80,7 @@
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
         <button id="available_notes" onclick="appendAllRefsWithNote(), hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="darkmodebtn" onclick="darkLightMode()">L</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
       </div>
       <div id="bible_nav" class="slideout">
@@ -137,7 +138,7 @@
               </td>
             </tr>
             <tr>
-              <td>Highlight Hovered Version</td>
+              <td>Hovered Version</td>
               <td>
                 <button id="hl_hoveredversion" title="highlight hovered version" class="active_button"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
               </td>
@@ -210,7 +211,7 @@
               </td>
             </tr>
             <tr>
-              <td>Reference & Search Topbar</td>
+              <td>Topbar-<br><i>(Ref/Search)</i></td>
               <td>
                 <button class="decrease_fontsize" onclick="changeFontSize('refnsrch','minus')">-</button>
               </td>
@@ -218,15 +219,22 @@
               <button class="increase_fontsize" onclick="changeFontSize('refnsrch','plus')">+</button>
               </td>
             </tr>
+            <tr>
+              <td>Topbar-<br><i>(Versions)</i></td>
+              <td>
+                <button class="decrease_fontsize" onclick="changeFontSize('versionsbuttons','minus')">-</button>
+              </td>
+              <td>
+              <button class="increase_fontsize" onclick="changeFontSize('versionsbuttons','plus')">+</button>
+              </td>
+            </tr>
           </table>
         </div>
         
-        <div class="settingssectionheadings">DARK/LIGHT MODE</div>
-        <div for="darkmodebtn"><button id="darkmodebtn" onclick="darkLightMode()">L</button>Toggle Dark/Light Mode: </div>
-        <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div>
-        <br>
+        <div class="settingssectionheadings">Change Background</div>
+        <!-- <div for="darkmodebtn">Toggle Dark/Light Mode: </div> -->
+        <!-- <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div> -->
         <div>
-          <h3>Change Background</h3>
           <input type="color" style="width: 100px;height: 25px;padding:0;border:0" onchange="changeBackGround(this.value,'--ref-img')"></input>
           <button onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
         </div>

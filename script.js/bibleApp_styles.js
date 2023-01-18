@@ -101,6 +101,10 @@ function changeFontSize(targetgroup, plusMinus) {
         targ = '--fontsize-refnsearch';
         currentSize = rootStyles.getPropertyValue('--fontsize-refnsearch');
     }
+    if (targetgroup == 'versionsbuttons') {
+        targ = '--fontsize-versionsbuttons';
+        currentSize = rootStyles.getPropertyValue('--fontsize-versionsbuttons');
+    }
     currentSize = Number(currentSize.split('px')[0].trim())
     if (plusMinus == 'plus') {
         currentSize = (currentSize + 2) + 'px'
@@ -124,7 +128,8 @@ function styleLocalstorageSet() {
         ["--fontsize-scripture-nav", rootStyles.getPropertyValue('--fontsize-scripture-nav')],
         ["--main-font", rootStyles.getPropertyValue('--main-font')],
         ["--fontsize-refnsearch", rootStyles.getPropertyValue('--fontsize-refnsearch')],
-        ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')]
+        ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')],
+        ["--fontsize-versionsbuttons", rootStyles.getPropertyValue('--fontsize-main')]
     ]
     setItemInLocalStorage('styles_variables', variableArray);
 }
@@ -141,7 +146,7 @@ function darkLightMode() {
     input{background:rgb(18, 18, 18)!important; color:whitesmoke;}
     button.active_button{color:black!important;}
     .buttons {background:rgb(18, 18, 18)}
-    button {background:var(--grey);}
+    button {background:rgb(255 240 143)}
     #refnav #app_settings {border-right: 1px solid var(--grey); background:rgb(18, 18, 18)}
     #bible_versions, #searchPreviewWindowFixed, #strongsdefinitionwindow, #bibleapp_cache {background-color: rgb(18, 18, 18);color:whitesmoke}
     #searchparameters div:first-of-type+div, #bibleapp_cache div:first-of-type, #bibleapp_cache .settingssectionheadings {background:none;}
@@ -167,6 +172,8 @@ function darkLightMode() {
         documentROOT.style.setProperty('--vhlt2', '#ffff99');
         documentROOT.style.setProperty('--black', 'black');
         documentROOT.style.setProperty('--searchedword-hlt', 'maroon');
+        documentROOT.style.setProperty('--whitesmoke', 'whitesmoke');
+        documentROOT.style.setProperty('--vhlt3', '#ffffc4');
     } else {
         createNewStyleSheetandRule(dark_mode, darkmodeCSS);
         darkmodebtn.innerText = 'D';
@@ -178,6 +185,9 @@ function darkLightMode() {
         documentROOT.style.setProperty('--selection', 'rgba(0, 255, 0, 0.6)');
         documentROOT.style.setProperty('--black', 'white');
         documentROOT.style.setProperty('--searchedword-hlt', 'orange');
+        documentROOT.style.setProperty('--whitesmoke', 'rgb(18, 18, 18)');
+        documentROOT.style.setProperty('--vhlt3', '#000d5870');
+
     }
 }
 

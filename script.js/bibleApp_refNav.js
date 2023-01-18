@@ -165,7 +165,8 @@ function hideRightClickContextMenu() {
 }
 document.addEventListener('keydown', function (e) {
     if (e.key === "Escape") {
-        if(bible_nav && bible_nav.matches('.slidein')){hideRefNav('hide',bible_nav);}
+        if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
+            hideRefNav('hide',openRefnavWin);}
         else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
         if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
     }
@@ -179,6 +180,7 @@ function toggleNav() {
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
 function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
+    // if(typeof elm2HideShow === 'string'){elm2HideShow=refnav.querySelector('#'+elm2HideShow)}
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){

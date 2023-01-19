@@ -11,11 +11,11 @@
         font-size: 50px;
     }
     #refnav #app_settings>button {
-        font-size: 35.5px;
-        overflow: hidden;
-        width: 60px!important;
-        min-width: 60px;
-        padding: 8px 2px;
+        /* font-size: 35.5px; */
+        /* overflow: hidden; */
+        /* width: 60px!important;
+        min-width: 60px; */
+        /* padding: 8px 2px; */
     }
 }
 @media screen and (max-device-width: 540px) {
@@ -27,11 +27,11 @@
         --width-mainbutton: 45px;
     }
     #refnav #app_settings>button {
-        font-size: 32.5px;
-        overflow: hidden;
-        width: 50px!important;
-        min-width: 50px;
-        padding: 6px 2px;
+        /* font-size: 32.5px; */
+        /* overflow: hidden; */
+        /* width: 50px!important;
+        min-width: 50px; */
+        /* padding: 6px 2px; */
     }
     #togglenavbtn {
         min-width: 50.3px;
@@ -102,10 +102,10 @@
         min-width: 46.3px;
     }
     #refnav #app_settings>button {
-        font-size: 28.5px;
-        min-width: 46px!important;
-        width:var(--width-sidebuttons)!important;
-        height:var(--width-sidebuttons);
+        /* font-size: 28.5px; */
+        /* min-width: 46px!important; */
+        /* width:var(--width-sidebuttons)!important; */
+        /* height:var(--width-sidebuttons); */
     }
     #forreference,
     #forwordsearch,
@@ -124,10 +124,10 @@
         --width-sidebuttons: 27px;
     }
     #refnav #app_settings>button {
-        font-size: 22.5px;
-        width: 42px!important;
-        min-width: 42px!important;
-        padding: 4px 2px;
+        /* font-size: 22.5px; */
+        /* width: 42px!important; */
+        /* min-width: 42px!important; */
+        /* padding: 4px 2px; */
     }
     #forreference,
     #forwordsearch,

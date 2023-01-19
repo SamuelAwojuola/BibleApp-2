@@ -71,9 +71,9 @@ if(!document.querySelector('body').matches('#versenotepage')){
     refnav.addEventListener("click", function (e) {
         // if((e.target===(undefined||null))||(e.target.toString().replace(/[\s\r\n]+/g, '').length==0)){return}
         clickedElm = e.target;
-        if (e.target.matches("button")) {
+        if (e.target.matches("button:not(#darkmodebtn)")) {
             clickedElm.classList.toggle("active_button")
-        } else if (cE = elmAhasElmOfClassBasAncestor(e.target,'button')) {
+        } else if (cE = elmAhasElmOfClassBasAncestor(e.target,'button:not(#darkmodebtn)')) {
             clickedElm = cE;
             clickedElm.classList.toggle("active_button")
         }
@@ -168,7 +168,7 @@ document.addEventListener('keydown', function (e) {
         if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
             hideRefNav('hide',openRefnavWin);}
         else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
-        if(context_menu.matches('.slidein')){hideRightClickContextMenu();}
+        if(context_menu && context_menu.matches('.slidein')){hideRightClickContextMenu();}
     }
 });
 
@@ -180,21 +180,41 @@ function toggleNav() {
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
 function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
-    // if(typeof elm2HideShow === 'string'){elm2HideShow=refnav.querySelector('#'+elm2HideShow)}
+    const hdtime = 100;
+    function changeMarginLeft(x,l=null){
+        if(l==null) {x.style.marginLeft = "-" + x.offsetWidth + 'px'}
+        else {x.style.marginLeft = "-" + l + 'px'}
+    }
+    if ((elm2HideShow==null||elm2HideShow==undefined)){
+        if(refnav.matches('.slidein') && refnav.querySelector('.slidein')){
+            elm2HideShow = refnav.querySelector('.slidein')
+        } else {elm2HideShow = refnav;}
+    }
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){
             let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
             // otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
-            otherActiveButtonsToHide.forEach(o_btns=>{o_btns.classList.remove('active_button')})
-            refnav.querySelectorAll('.slidein').forEach(x=>{x.classList.remove('slidein'); x.classList.add('slideout')})
+            otherActiveButtonsToHide.forEach(o_btns=>{
+                o_btns.classList.remove('active_button')
+            })
+            refnav.querySelectorAll('.slidein').forEach(x=>{
+                x.classList.remove('slidein');
+                x.classList.add('slideout');
+                changeMarginLeft(x);
+                setTimeout(()=>{x.classList.add('displaynone')}, hdtime)
+            })
         }
     }
-    if ((elm2HideShow==null||elm2HideShow==undefined)){elm2HideShow = refnav;}
     if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideout')))) {
-        toShowOnlyOneAtaTime()
-        elm2HideShow.classList.remove('slideout');
-        elm2HideShow.classList.add('slidein');
+        elm2HideShow.classList.remove('displaynone');
+        // To ensure that the display none is no longer applied (it cancels the animation)
+        setTimeout(()=>{
+            toShowOnlyOneAtaTime()
+            changeMarginLeft(elm2HideShow,0);
+            elm2HideShow.classList.remove('slideout');
+            elm2HideShow.classList.add('slidein')
+        }, 1)
         
         // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
         if(elm2HideShow == bible_nav){
@@ -206,6 +226,9 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
     } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideout'))||(elm2HideShow.classList.contains('slidein'))))) {
         elm2HideShow.classList.remove('slidein');
         elm2HideShow.classList.add('slideout');
+        changeMarginLeft(elm2HideShow)
+        
+        setTimeout(()=>{elm2HideShow.classList.add('displaynone')}, hdtime);
     }
     runfunc
 }

@@ -162,8 +162,9 @@ function darkLightMode() {
     let dcol = 'transparent';
     if (document.getElementsByTagName('head')[0].querySelector('#darkmode')) {
         darkmode.remove();
-        // console.log(this);
-        darkmodebtn.innerText = 'L'
+        // darkmodebtn.innerText = 'L'
+        // darkmodebtn.innerText = '☀'
+        darkmodebtn.innerText = '🌤'
         documentROOT.style.setProperty('--verse-hover', lcol);
         documentROOT.style.setProperty('--vmultiple-hover', '#fff39b');
         documentROOT.style.setProperty('--vhlt', '#ffffc4');
@@ -176,7 +177,8 @@ function darkLightMode() {
         documentROOT.style.setProperty('--vhlt3', '#ffffc4');
     } else {
         createNewStyleSheetandRule(dark_mode, darkmodeCSS);
-        darkmodebtn.innerText = 'D';
+        // darkmodebtn.innerText = 'D';
+        darkmodebtn.innerText = '🌑';
         documentROOT.style.setProperty('--verse-hover', dcol);
         documentROOT.style.setProperty('--vmultiple-hover', 'rgb(0, 13, 13)');
         documentROOT.style.setProperty('--vhlt', 'rgb(0, 21, 21)');

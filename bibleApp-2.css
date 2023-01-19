@@ -2,17 +2,8 @@
     #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
         min-width: 500px!important;
     }
-    #togglenavbtn {
-        min-width: 44.5px;
-    }
-    #refnav #app_settings > button {
-        min-width: 45px;
-    }
 }
 @media screen and (max-device-width: 912px) {
-     :root {
-        --width-sidebuttons: 37px;
-    }
     #togglenavbtn {
         min-width: 60.5px;
     }
@@ -33,7 +24,6 @@
         --fontsize-scripture: 17px;
         --fontsize-ref: 12px;
         --fontsize-strongstooltip: 17px;
-        --width-sidebuttons: 40px;
         --width-mainbutton: 45px;
     }
     #refnav #app_settings>button {
@@ -99,8 +89,9 @@
         flex-basis: 100%;
     }
     #topbartogglebtn {
-        right: 1em;
+        /* right: 1em; */
         /* top: 90vh; */
+        opacity: 0.8;
     }
 }
 @media screen and (max-device-width: 400px) {
@@ -112,8 +103,9 @@
     }
     #refnav #app_settings>button {
         font-size: 28.5px;
-        width: 46px!important;
         min-width: 46px!important;
+        width:var(--width-sidebuttons)!important;
+        height:var(--width-sidebuttons);
     }
     #forreference,
     #forwordsearch,

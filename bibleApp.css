@@ -7,7 +7,7 @@
     --fontsize-ref: 8px;
     --fontsize-strongstooltip: 13px;
     --fontsize-title:20px;
-    --width-sidebuttons:27px;
+    --width-sidebuttons:60px;
     --heighWidth-refnsrchbtn:58px;
     --width-mainbutton:35px;
     --ref-hlt: #dde3db;
@@ -310,30 +310,25 @@ code{position: relative; padding-top: 5px;}
     overflow: hidden;
     z-index: 1;
 }
-#refnav #app_settings>button {
-    width: auto;
-    min-width: 40px;
-    padding: 6px 2px;
-    font-size: 22.5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 #refnav #app_settings * {
     display: block;
 }
 #refnav #app_settings img {
-    margin-left: 1px;
-    margin-right: 1px;
-    width: var(--width-sidebuttons);
+    margin-left: 5px;
+    margin-right: 5px;
+    width: calc(var(--width-sidebuttons) * 0.8);
 }
-#refnav #app_settings > button {
-    width:auto;
-    min-width:36px;
-    padding-left: 2px;
-    padding-right: 2px;
+#refnav #app_settings>button {
+    min-width: 45px;
+    width:var(--width-sidebuttons)!important;
+    height:var(--width-sidebuttons);
+    padding: 6px 2px;
     font-size: 22.5px;
-}
+    font-size:calc(var(--width-sidebuttons)*0.65)!important;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}    
 #bible_nav {
     font-size: var(--fontsize-scripture-nav)!important;
 }
@@ -705,6 +700,10 @@ sup {
     float: left;
     overflow-y: scroll;
     height: 100%;
+}
+.bible_nav {
+    font-weight: bold;
+    padding: 5px;
 }
 
 #strongsdefinitionwindow details, details {
@@ -1235,6 +1234,8 @@ span.vmultiple.noted code #verse_notes_button {
 #togglenavbtn {
     font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
     font-weight: 400;
+    width: var(--width-sidebuttons)!important;
+    min-width: var(--width-sidebuttons)!important;
 }
 #togglenavbtn img {
     width: calc(var(--fontsize-refnsearch) * 2)!important;

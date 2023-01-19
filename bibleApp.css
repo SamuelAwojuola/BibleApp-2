@@ -1030,7 +1030,8 @@ span.vmultiple.noted code #verse_notes_button {
 #topbartogglebtn {
     position:absolute;
     top:100%;
-    right:1em;
+    scale: 1.2;
+    right:0;
     width: 1.35rem;
     height: 1.15rem;
     background: var(--ref-img);

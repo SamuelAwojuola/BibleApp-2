@@ -105,6 +105,10 @@ function changeFontSize(targetgroup, plusMinus) {
         targ = '--fontsize-versionsbuttons';
         currentSize = rootStyles.getPropertyValue('--fontsize-versionsbuttons');
     }
+    if (targetgroup == 'widthsidebuttons') {
+        targ = '--width-sidebuttons';
+        currentSize = rootStyles.getPropertyValue('--width-sidebuttons');
+    }
     currentSize = Number(currentSize.split('px')[0].trim())
     if (plusMinus == 'plus') {
         currentSize = (currentSize + 2) + 'px'
@@ -129,7 +133,8 @@ function styleLocalstorageSet() {
         ["--main-font", rootStyles.getPropertyValue('--main-font')],
         ["--fontsize-refnsearch", rootStyles.getPropertyValue('--fontsize-refnsearch')],
         ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')],
-        ["--fontsize-versionsbuttons", rootStyles.getPropertyValue('--fontsize-main')]
+        ["--fontsize-versionsbuttons", rootStyles.getPropertyValue('--fontsize-versionsbuttons')],
+        ["--width-sidebuttons", rootStyles.getPropertyValue('--width-sidebuttons')]
     ]
     setItemInLocalStorage('styles_variables', variableArray);
 }

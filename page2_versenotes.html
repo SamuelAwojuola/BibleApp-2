@@ -15,16 +15,21 @@
 
 <body id="versenotepage">
     <div class="button-container">
-        <button id="hide_col1" class="reveal-button" onclick="toggleCol2()"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button>
+        <!-- <button id="hide_col1" class="reveal-button"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button> -->
         <div class="button-group">
             <!-- <button>KJV</button>
             <button>ESV</button>
             <button>NIV</button> -->
         </div>
+        <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button>
     </div>
       <div id="col1">
         <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button>
-        <div id="bibleapp_available_notes" class="slidein"></div>
+        <div id="bibleapp_available_notes" class=""></div>
+        <button id="sidebar_togglebtn" onclick="toggleCol2()">
+            <span></span>
+            <span></span>
+        </button>
     </div>
     <div id="col2">
         <div id="context_menu" class="context_menu slideout"></div>
@@ -54,7 +59,12 @@
 <script src="script.js/bibleApp_crossRefrencer.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script>
-    function toggleCol2(){if(col1.matches('.slideout')){col1.classList.add('slidein');col1.classList.remove('slideout')}else{col1.classList.add('slideout');col1.classList.remove('slidein')}}
+    function toggleCol2(){
+        bibleapp_available_notes.classList.toggle('slideout');
+        available_notes.classList.toggle('slideout');
+        sidebar_togglebtn.classList.toggle('active_button')
+    }
+    
     /* SHOW HIDE BUTTONS */
     const buttonContainer = document.querySelector('.button-container');
     const buttonGroup = document.querySelector('.button-group');
@@ -66,5 +76,9 @@
     buttonContainer.addEventListener('mouseleave', () => {
     buttonGroup.classList.remove('visible');
     });
+    
+    function toggleDarkLightMode(cls){
+        document.querySelector('body').classList.toggle(cls)
+    }
 </script>
 </html>

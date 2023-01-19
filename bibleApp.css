@@ -149,7 +149,21 @@ li li li{
     grid-row-start: 2;
     grid-row-end: 3;
     display: flex;
+    flex-direction: row;
     height: inherit;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+}
+/* #refnav>div {
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
+} */
+button#darkmodebtn {
+    font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
 }
 .rtl {
     direction: rtl
@@ -294,6 +308,7 @@ code{position: relative; padding-top: 5px;}
     border-right: 0.25px solid var(--grey);
     background: var(--ref-img);
     overflow: hidden;
+    z-index: 1;
 }
 #refnav #app_settings>button {
     width: auto;
@@ -508,7 +523,7 @@ button:not(:disabled):hover {
 }
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
-    transition: background 0.05s linear;
+    transition: background 0.05s ease-in-out;
     border-radius: 0.25em;
 }
 span.verse:hover:not(.vhlt){
@@ -521,19 +536,19 @@ span.vmultiple:hover{
     background-color: var(--span-hover);
     background-color: var(--vhlt);
     background-color: var(--whitesmoke);
-    transition: box-shadow 0.05s linear;
+    transition: box-shadow 0.05s ease-in-out;
     /* box-shadow: inset 1px 2.5px 3px -2px var(--shadow-color),
     inset 3px -3px 1.5px -1px var(--shadow-color)!important; */
     box-shadow: inset 0px 0px 5px 1px var(--shadow-color)!important;
     z-index: 99;
-    transition: 250ms;
+    transition: 250ms ease-in-out;
 }
 span[class^=v_]:hover {
     /* background-color: var(--span-hover)!important; */
     background-color: var(--vhlt3)!important;
     box-shadow: 2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color),2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color)!important; 
     z-index:1;
-    transition: 250ms;
+    transition: 250ms ease-in-out;
 }
 span.translated:hover {
     border-bottom: 1px solid var(--span-trans-hover);
@@ -550,7 +565,7 @@ span.translated:hover {
     background-color: var(--whitesmoke);
     box-shadow: inset 2px 0px 0px 0px var(--grey),
     inset -2px 0px 0px 0px var(--grey);
-    transition: 250ms;
+    transition: 250ms ease-in-out;
 }
 
 sup {
@@ -934,69 +949,52 @@ span.vmultiple.noted code #verse_notes_button {
 }
 
 .slideup {
-    /* display: none; */
     padding: 0;
     margin-bottom:0;
     line-height: 0;
     opacity: 0;
     margin-top: -150px!important;
     z-index: -1;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
-#refnav>.refnav{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#bible_nav{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#bible_versions{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#searchPreviewWindowFixed{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#strongsdefinitionwindow{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#bible_versions{
-    margin-left: 0px;
-    transition-duration: 0.3s;
-}
-#refnav>#bibleapp_cache{
-    margin-left: 0px;
-    transition-duration: 0.3s;
+#refnav>.refnav,
+#refnav>#bible_nav,
+#refnav>#bible_versions,
+#refnav>#searchPreviewWindowFixed,
+#refnav>#strongsdefinitionwindow,
+#refnav>#bible_versions,
+#refnav>#bibleapp_cache {
+    /* margin-left: 0px; */
+    transition: all 0.2s ease-in-out;
 }
 #refnav img, #top_horizontal_bar img {
     pointer-events: none;
 }
 .slidein {
     display: block;
-    /* margin-left: 0;
+    margin-left: 0px;
     margin-top: 0;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s; */
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 .slideout {
-    display: none;
     margin-left: -900px;
     margin-top: 0;
-    -webkit-transition-duration: 0.3s;
-    -moz-transition-duration: 0.3s;
-    -o-transition-duration: 0.3s;
-    transition-duration: 0.3s;
+    -webkit-transition: all 0.2s ease-in-out;
+    -moz-transition: all 0.2s ease-in-out;
+    -o-transition: all 0.2s ease-in-out;
+    transition: all 0.2s ease-in-out;
 }
 .displaynone {
     display: none !important;
+}
+#refnav_col2 > .slidein.displaynone{
+    display: null!important;
 }
 .displayshow {
     display: block !important;
@@ -1028,6 +1026,40 @@ span.vmultiple.noted code #verse_notes_button {
 #mobilebuttons {
     display: none;
 }
+/* TOP-BAR TOGGLE BUTTON */
+#topbartogglebtn {
+    position:absolute;
+    top:100%;
+    right:1em;
+    width: 1.35rem;
+    height: 1.15rem;
+    background: var(--ref-img);
+    border-radius: 0 0 0.15em 0.15em;
+    box-shadow: 0 0 2.75px 0.05em darkgrey;
+}
+#topbartogglebtn span {
+    top: 0.5rem;
+    position: absolute;
+    width: 0.75rem;
+    height: 0.1rem;
+    background-color: var(--black);
+    display: inline-block;
+    transition: all 0.2s ease;
+}
+#topbartogglebtn.active_button span:first-of-type {
+    transform: rotate(-45deg);
+}
+#topbartogglebtn span:first-of-type {
+    left: 0;
+    transform: rotate(45deg);
+}
+#topbartogglebtn.active_button span:last-of-type {
+    transform: rotate(45deg);
+}
+#topbartogglebtn span:last-of-type {
+    right: 0;
+    transform: rotate(-45deg);
+}
 /* TOP-HORIZONTAL BAR */
 #top_horizontal_bar{
     position: relative;
@@ -1045,6 +1077,10 @@ span.vmultiple.noted code #verse_notes_button {
     border-bottom: 2px solid #70707072;
     display: flex;
     z-index: 1;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    transition: all 0.3s ease-in-out;
 }
 /* #ref_search_versions_holder > div input:not([type=checkbox]) {
     width: 100px;

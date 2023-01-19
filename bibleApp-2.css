@@ -102,9 +102,9 @@
         flex-basis: 100%;
     }
     #topbartogglebtn {
-        scale: 2;
+        scale: 1.2;
         right: 1em;
-        top: 110%;
+        top: 100%;
         /* top: 90vh; */
     }
 }

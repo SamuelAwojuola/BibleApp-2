@@ -396,7 +396,6 @@ function getCurrentStrongsDef(e) {
 /* MAKING CONTEXT_MENU DRAGGABLE */
 // target elements with the "draggable" class
 function enableInteractJSonEl(dragTarget, elmAffected) {
-    console.log('enabled');
     interact(dragTarget).draggable({
         // enable inertial throwing
         inertia: true,

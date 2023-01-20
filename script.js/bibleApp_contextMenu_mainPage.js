@@ -102,19 +102,19 @@ context_menu.addEventListener("click", codeELmRefClick);
 ppp.addEventListener("mouseover", codeButtons);
 function codeButtons(e) {
     if(document.getElementById('show_crossref_comments')==null){ //It may get removed on loading new reference
+        console.log('1');
         let newElm = document.createElement('div');
-        newElm.classList.add('slideout');
+        newElm.classList.add('displaynone');
         newElm.id='show_crossref_comments';
         newElm.innerHTML=`<button class="buttons verse_crossref_button" id="verse_crossref_button"><a>TSK</a></button><button class="buttons verse_notes_button" id="verse_notes_button"><a>Note</a></button>`;
         ppp.append(newElm);
     } else if(show_crossref_comments){
+        console.log('2');
         if (e.target.matches('.verse code') && (e.type == 'mouseover')) {
             relocateElmTo(show_crossref_comments, e.target);
-            show_crossref_comments.classList.remove('slideout');
-            show_crossref_comments.classList.add('slidein');
+            show_crossref_comments.classList.remove('displaynone');
         } else if (!e.target.matches('.verse code') && (e.type == 'mouseout')) {
-            show_crossref_comments.classList.remove('slidein');
-            show_crossref_comments.classList.add('slideout');
+            show_crossref_comments.classList.add('displaynone');
         }
     }
 }

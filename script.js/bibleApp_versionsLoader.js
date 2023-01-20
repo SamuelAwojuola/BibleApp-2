@@ -275,7 +275,7 @@ function local_versionsloader(e) {
         }
         clkelm.append(sverse_comp)
         main.addEventListener('click', local_versionsloader)
-        sverse_comp.classList.remove('slideout')
+        sverse_comp.classList.remove('displaynone')
         // sverse_comp.classList.add('slidein')
     }
 }

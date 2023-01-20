@@ -29,7 +29,7 @@ function findAllBookChptnVersesWithNote(){
 }
 findAllBookChptnVersesWithNote()
 function appendAllRefsWithNote(){
-  let detailSum='<em>Notes are available for the following...</em>';
+  let detailSum='<em>Available Notes</em>';
   let openORclose='';// or ' open' if you want it open
   // objOfRefsWithNote = findAllBookChptnVersesWithNote();
     for (key in objOfRefsWithNote) {

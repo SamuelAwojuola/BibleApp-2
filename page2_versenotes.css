@@ -242,3 +242,19 @@ body.darkmode #sidebar_togglebtn {
 body.darkmode #sidebar_togglebtn span {
     background-color: whitesmoke;
 }
+@media screen and (max-device-width: 540px) {
+    #col1 {
+        font-size: 1.3em;
+    }
+    #bibleapp_available_notes {
+        min-width: 0px!important;
+        max-width: 80vw!important;
+    }
+    details b {
+        display: block;
+        font-size: 1.5em!important;
+        margin-top: -40px;
+        border-top: 1px solid grey;
+        border-bottom: 1px solid grey;
+    }
+}

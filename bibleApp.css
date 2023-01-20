@@ -402,6 +402,9 @@ button {
     overflow-x:hidden;
     resize: both;
 }
+#context_menu.slidein, #context_menu.slideout {
+    transition: none;
+}
 #context_menu[strnum] {
     padding: 0px;
 }
@@ -1184,6 +1187,7 @@ span.vmultiple.noted code #verse_notes_button {
     overflow-y: auto;
     cursor: pointer;
     background: white;
+    height: 100%;
 }
 #bibleapp_available_notes em {
     display: block;
@@ -1192,6 +1196,7 @@ span.vmultiple.noted code #verse_notes_button {
     background: var(--grey);
     color: var(--white);
     font-weight: bold;
+    font-size: var(--fontsize-main);
 }
 #bibleapp_available_notes code {
     box-sizing: border-box;

@@ -7,6 +7,7 @@
   <link rel="shortcut icon" href="images/favicon.ico">
   <!-- <link rel="manifest" href="manifest.json"> -->
   <meta charset="utf-8" name="viewport" content= "width=device-width, initial-scale=1.0">
+  <meta name="mobile-web-app-capable" content="yes">
   <script src="ckeditor-standard/ckeditor.js"></script>
   <script src="script.js/interact.min.js"></script>
 <style id="verse_alignement">
@@ -97,14 +98,19 @@
         <div id="searchPreviewWindowFixed" class="slideout displaynone">
           <div id="searchparameters" class="hidesearchparameters">
             <div>
-              <button id="hidesearchparameters" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">&#9660;</button>
+              <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
+              <button id="showonlysearchinput" class="displaynone" onclick="toggleClassAndActiveButton([searchprametersbtnholder,where2display], 'displaynone', this)" class="active_button">+</button>
             </div>
             <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">Search Parameters</div>
-            
-            <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
-            <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
-            <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>
-            <button class="search_param_btns" onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked>All Words-Not Phrase</button>
+            <div id="searchdiv_fixed">
+              <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
+            </div>
+            <div id="searchprametersbtnholder">
+              <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
+              <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
+              <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>
+              <button class="search_param_btns" onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked>All Words-Not Phrase</button>
+            </div>
   
             <span id="where2display">
               <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"

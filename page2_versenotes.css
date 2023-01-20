@@ -49,6 +49,9 @@ body * {
 #bibleapp_available_notes span:hover {
     border-bottom: 0;
 }
+details {
+    width: 100%;
+}
 details summary {
     margin-bottom: 0!important;
 }

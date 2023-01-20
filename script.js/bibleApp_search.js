@@ -1,19 +1,34 @@
 /* FUNCTION FOR SEARCH FOR SCRIPTURES BY WORDS AND PHRASES */
 let booksToSearchIn=[];
-let wordsearch = document.getElementById('wordsearch')
-wordsearch.addEventListener("keypress", function (e) {
-    if (e.key === "Enter") {
-        runWordSearch()
-        e.preventDefault();
-    }
-});
-wordsearch.addEventListener('keyup', function(){
-    if(wordsearch.value.trim()!=''){forwordsearch.disabled=false;}
-    else{forwordsearch.disabled=true;}
-  });
-// if (!searchresultdisplay.checked) {
-//     searchPreview.addEventListener("click", codeELmRefClick)
-// }
+/* Below I sync the two places (wordsearch & wordsearch_fixed) where search can be run from */
+['wordsearch', 'wordsearch_fixed'].forEach(wsId=>{
+    let forws=document.querySelector('#for' + wsId); 
+    let ws=document.querySelector('#' + wsId);
+    let disableornot;
+
+    /* TO DISABLE ENABLE WORD-SEARCH BUTTON */
+    ws.addEventListener('keyup', function(){
+        if(ws.value.trim()!=''){disableornot=false;}
+        else{disableornot=true;}
+        forws.disabled=disableornot;
+        if(ws==wordsearch){
+            wordsearch_fixed.value = ws.value
+            forwordsearch_fixed.disabled=disableornot;
+        } else {
+            wordsearch.value = ws.value
+            forwordsearch.disabled=disableornot;
+        }
+    });
+
+    /* RUN RUNWORDSEARCH() FUNCTION ON PRESSING ENTER KEY */
+    ws.addEventListener("keypress", function (e) {
+        if (e.key === "Enter") {
+            runWordSearch()
+            e.preventDefault();
+        }
+    });
+})
+
 searchPreviewFixed.addEventListener("click", codeELmRefClick);
 let verseCount;
 function returnStrippedTextOfVerse(vTxt) {

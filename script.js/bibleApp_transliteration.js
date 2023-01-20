@@ -81,7 +81,7 @@ function getsStrongsDefinition(x) {
     currentStrongsDef = _text;
     if(!document.querySelector('body').matches('#versenotepage')){
         strongsdefinitionwindow.innerHTML = '';
-        strongsdefinitionwindow.innerHTML = _text;
+        strongsdefinitionwindow.innerHTML = _text.replace(/(<details class="strngsdefinition")/i,'$1 open');
     }
     return _text
 }

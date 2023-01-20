@@ -114,8 +114,14 @@ function showElement(el) {
 }
 
 function toggleClassAndActiveButton(elm, cls,originElm){
-    elm.classList.toggle(cls)
-    originElm.classList.toggle('active_button');
+    if(Array.isArray(elm)){
+        elm.forEach(x=>{
+            x.classList.toggle(cls)
+        })
+    } else {
+        elm.classList.toggle(cls)
+    }
+    if(originElm){originElm.classList.toggle('active_button');}
 }
 function disableButton(cls, disableValue) {
     var class2toggleAttribute = document.querySelectorAll('.' + cls);

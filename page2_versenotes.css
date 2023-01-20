@@ -244,7 +244,7 @@ body.darkmode #sidebar_togglebtn span {
 }
 @media screen and (max-device-width: 540px) {
     #col1 {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
     #bibleapp_available_notes {
         min-width: 0px!important;
@@ -253,8 +253,7 @@ body.darkmode #sidebar_togglebtn span {
     details b {
         display: block;
         font-size: 1.5em!important;
-        margin-top: -40px;
-        border-top: 1px solid grey;
+        margin-top: -0.5em;
         border-bottom: 1px solid grey;
     }
 }

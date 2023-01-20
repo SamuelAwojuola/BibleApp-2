@@ -75,6 +75,7 @@ span[ref]:hover, .strnum:hover {
 }
 summary, #context_menu summary {
     background: rgb(250, 255, 200);
+    background: #f6f6e3;
 }
 summary h1, summary .openCloseIconHolder, summary div {
     margin-top: 0!important;
@@ -97,13 +98,14 @@ summary:has(.openCloseIconHolder) {
 
 /* HIDE SHOW BUTTONS */
 .button-container {
-    display: flex;
-    align-items: center;
     position: absolute;
+    display: flex;
+    flex-direction: column;
     top: 5px;
     right: 5px;
+    scale: 0.9;
     z-index: 99;
-}   
+}
 .button-group {
     position: absolute;
     top: 0%;
@@ -135,13 +137,23 @@ blockquote:first-child{
     color: maroon;
     font-style:italic;
 }
-/* TOP-BAR TOGGLE BUTTON */
+/* SIDE-BAR TOGGLE BUTTON */
 #sidebar_togglebtn {
+    height: 4rem;
+    margin-top: 10px;
+    border-radius: 0.05em;
+    box-shadow: 0 0 2px 0.05em darkgrey;
+    /* background-color: var(--buttons)!important;
+    background-color: rgba(255, 255, 153, 0.49)!important; */
+    background-color: rgba(253, 255, 127, 0.145)!important;
+    transition: all 0.2s ease;
+    z-index: 99;
+    scale: 1;
+}
+/* #sidebar_togglebtn {
     position:absolute;
-    /* bottom:0; */
     top: 40px;
     left:100%;
-/*  right: 10px; */
     width: 3rem;
     height: 4rem;
     background: var(--ref-img);
@@ -151,7 +163,8 @@ blockquote:first-child{
     transition: all 0.2s ease;
     z-index: 99;
     scale: 0.75;
-}
+} */
+
 #sidebar_togglebtn:hover {
     opacity: 1;
     transition: all 0.2s ease;
@@ -180,6 +193,13 @@ blockquote:first-child{
     transform: rotate(-45deg);
 }
 /* DARKMODE */
+button, #darkmode_btn{
+    border-radius: 0.05em;
+    background-color: rgb(255, 255, 153);
+    background-color: rgb(246, 246, 227);
+    box-shadow: 0 0 2px 0.05em darkgrey;
+    font-size: x-large;
+}
 body.darkmode {
     background: rgb(19, 24, 24);
     color: white;
@@ -205,10 +225,6 @@ body.darkmode #context_menu {
     border: 0.5px solid grey!important;
     box-shadow: 2px 2px 2px 5px whitesmoke!important;
 }
-body.darkmode details > summary > div:first-of-type {
-    background-color: whitesmoke;
-    border: 2px solid whitesmoke!important;
-}
 body.darkmode .cmtitlebar,
 body.darkmode .cmtitlebar.cmtitlebar::before  {
     background: black!important;
@@ -216,6 +232,13 @@ body.darkmode .cmtitlebar.cmtitlebar::before  {
 }
 body.darkmode #darkmode_btn, body.darkmode #available_notes {
     background: black!important;
-    box-shadow: 0px 0px 0px 1px grey!important;
+    box-shadow: 0 0 2px 1px white;
     color: whitesmoke;
+}
+body.darkmode #sidebar_togglebtn {
+    background: black!important;
+    box-shadow: 0 0 2px 1px white;
+}
+body.darkmode #sidebar_togglebtn span {
+    background-color: whitesmoke;
 }

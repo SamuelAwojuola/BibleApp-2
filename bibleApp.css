@@ -743,6 +743,12 @@ sup {
     height: 2em;
     margin: 10px;
 }
+.darkmode #strongsdefinitionwindow summary>div:first-of-type, .darkmode summary>div:first-of-type {
+    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
+    min-width: 1em;
+    height: 2em;
+    margin: 10px;
+}
 
 #strongsdefinitionwindow details[open], details[open] {
     /* background-color:#cbff7d24; */
@@ -757,6 +763,13 @@ sup {
 #strongsdefinitionwindow details[open] > summary > div:first-of-type,
 details[open] > summary > div:first-of-type {
     background: url(images/arrow-down-svgrepo-com.svg) center no-repeat;
+    /* min-width: 1em; */
+    /* height: 2em; */
+    /* margin: 10px; */
+}
+.darkmode #strongsdefinitionwindow details[open] > summary > div:first-of-type,
+.darkmode details[open] > summary > div:first-of-type {
+    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
     /* min-width: 1em; */
     /* height: 2em; */
     /* margin: 10px; */

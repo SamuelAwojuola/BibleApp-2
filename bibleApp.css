@@ -597,7 +597,6 @@ sup {
 #eng2grk_sup_table button {
     width:100%;
     min-height:55px;
-    text-transform: lowercase;
     font-weight:bold;
 }
 #bibleapp_cache td:first-child {
@@ -812,9 +811,9 @@ details[open] > summary > div:first-of-type {
 #bibleapp_cache {
     overflow-y: scroll;
 }
-#bibleapp_cache label,#bibleapp_cache input {
+/* #bibleapp_cache label,#bibleapp_cache input {
     display: inline!important;
-}
+} */
 #cache_table {
     width: 100%;
     display: table!important;
@@ -1307,5 +1306,42 @@ div>br:first-child{display: none;}
     border-radius: 4px;
     padding: 8px 16px;
     font-size: 16px;
+    cursor: pointer;
+}
+button:has(.checkboxreplacement){
+    position: relative;
+    padding-left: 2em;
+}
+button .checkboxreplacement:has(input[type="checkbox"]) input[type="checkbox"] {
+    display: none;
+}
+button .checkboxreplacement:has(input[type="checkbox"]) {
+    /* display: block; */
+    /* background-color: #ccc; */
+    width: 2em;
+    height: 2em!important;
+    margin-right: 0.1em;
+    border: solid grey;
+    flex-basis: 100%;
+    scale: 0.7;
+    position: absolute;
+    left: 0;
+}
+button .checkboxreplacement:has(input[type="checkbox"]):before {
+    content: "";
+    background: url(images/cancel-svgrepo-com.svg) center no-repeat;
+    background-color: #eee;
+    display: flex;
+    width:100%!important;
+    height:100%!important;
+}
+button:hover .checkboxreplacement:has(input[type="checkbox"]):before {
+    background-color: #ccc;
+}
+button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
+    background: url(images/check-box-svgrepo-com.svg) center no-repeat;
+    background-color: var(--chpt);
+}
+#searchparametertitlebar {
     cursor: pointer;
 }

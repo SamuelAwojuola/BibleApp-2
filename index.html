@@ -93,7 +93,6 @@
         </div>
         <div id="bible_versions" class="slideout displaynone">
           <div class="bible_versions_heading">Available Bible Versions</div>
-          <!-- <div><input type="checkbox" id="KJV_version" name="KJV_version" value="KJV" checked><label for="KJV_version" abreviation="KJV" title="King James Version">KJV</label></div> -->
         </div>
         <div id="searchPreviewWindowFixed" class="slideout displaynone">
           <div id="searchparameters" class="hidesearchparameters">
@@ -101,7 +100,7 @@
               <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
               <button id="showonlysearchinput" class="displaynone" onclick="toggleClassAndActiveButton([searchprametersbtnholder,where2display], 'displaynone', this)" class="active_button">+</button>
             </div>
-            <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word])">Search Parameters</div>
+            <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
             <div id="searchdiv_fixed">
               <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
             </div>
@@ -116,7 +115,8 @@
               <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"
                 checked><label for="searchresultdisplay">Show search results in this window only</label><br>
               <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"
-                checked><label for="showreturnedverses">Show all verses</label>
+                checked><label for="showreturnedverses">Show all verses</label><br>
+              <input type="checkbox" id="keepsearchopen" name="keepsearchopen" value="keep search open"><label for="keepsearchopen">Cancel Search Autohide</label>
             </span>
             <div id="totalfound"></div>
           </div>
@@ -129,13 +129,13 @@
               <tr>
                 <td>English</td>
                 <td>
-                  <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')">OFF</button>
+                  <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')"><input type="checkbox" id="showEnSup_check" name="showEnSup_check" value="showEnSup_check">OFF</button>
                 </td>
               </tr>
               <tr>
                 <td>Heb/Grk</td>
                 <td>
-                  <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')">OFF</button>
+                  <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
                 </td>
               </tr>
               <tr>
@@ -250,9 +250,9 @@
           <div class="settingssectionheadings">Change Background</div>
           <!-- <div for="darkmodebtn">Toggle Dark/Light Mode: </div> -->
           <!-- <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div> -->
-          <div>
-            <input type="color" style="width: 100px;height: 25px;padding:0;border:0" onchange="changeBackGround(this.value,'--ref-img')"></input>
-            <button onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
+          <div style="display: flex">
+            <input type="color" style="width: 100px;height: 100px;padding:0;border:0;flex-basis: 50%;" onchange="changeBackGround(this.value,'--ref-img')"></input>
+            <button style="flex-basis: 50%;" onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
           </div>
           
           <!-- <div class="settingssectionheadings">Modify Cache</div>

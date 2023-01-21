@@ -66,17 +66,16 @@ var stl = 0;
 var currentBookValue = null;
 // var strgsInVerseSpan;
 
-//CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
 if(!document.querySelector('body').matches('#versenotepage')){
     refnav.addEventListener("click", function (e) {
         // if((e.target===(undefined||null))||(e.target.toString().replace(/[\s\r\n]+/g, '').length==0)){return}
         clickedElm = e.target;
-        if (e.target.matches("button:not(#darkmodebtn)")) {
-            clickedElm.classList.toggle("active_button")
-        } else if (cE = elmAhasElmOfClassBasAncestor(e.target,'button:not(#darkmodebtn)')) {
-            clickedElm = cE;
-            clickedElm.classList.toggle("active_button")
+        function toggleActiveButtonClass(x){
+            if(x.matches("#app_settings .active_button")){x.classList.remove("active_button")}
+            else if(x.matches("#app_settings button")){x.classList.add("active_button")}
         }
+        if (cE = elmAhasElmOfClassBasAncestor(e.target,'button:not(#darkmodebtn)')) {clickedElm = cE;}
+        //CLICKING ON BOOK-NAME AND CHAPTER-NUMBER
         //To populate book chapter numbers refnav pane
         if (clickedElm.classList.contains('bkname')) {
             getBksChptsNum(clickedElm);
@@ -93,13 +92,17 @@ if(!document.querySelector('body').matches('#versenotepage')){
                 nextBibleChapter = clickedElm.nextElementSibling;
             }
             // clickedElm.scrollIntoView(false)
-            clearPageIfChapterNotPresent(clickedElm)
+            clearPageIfChapterNotPresent(clickedElm);
             getTextOfChapter(clickedElm, null, null, true, true);
-            indicateBooknChapterInNav(null, clickedElm)
-            currentChapterValue = clickedElm.getAttribute('value')
+            indicateBooknChapterInNav(null, clickedElm);
+            currentChapterValue = clickedElm.getAttribute('value');
+            hideRefNav(null, bible_nav);
+            bible_chapters.classList.remove('active_button')
             // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
         }
-})}
+        toggleActiveButtonClass(clickedElm)
+    }
+)}
 
 function indicateBooknChapterInNav(bk, chpt) {
     if (bk == null) bk = bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);
@@ -152,17 +155,6 @@ function indicateBooknChapterInNav(bk, chpt) {
 }
 
 //Hide refnav when escape is pressed
-function hideRightClickContextMenu() {
-    if (context_menu.matches('.slidein')) {
-        hideRefNav('hide', context_menu);
-        interact('.cmtitlebar').unset();
-        console.log('interact');
-        newStrongsDef = '';
-        // context_menu.innerHTML = '';
-        context_menu.style.right = null;
-        if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
-    }
-}
 document.addEventListener('keydown', function (e) {
     if (e.key === "Escape") {
         if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
@@ -193,10 +185,14 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){
+            let btnID = new RegExp(elm2HideShow.id);
             let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
-            // otherActiveButtonsToHide.forEach(o_btns=>{o_btns.click()})
             otherActiveButtonsToHide.forEach(o_btns=>{
-                o_btns.classList.remove('active_button')
+                // Don't run if btn is the orginating button
+                // (the orginating btn will have the id of the 'elm2HideShow' in its onclick function)
+                if(btnID.test(o_btns.onclick.toString())==false){
+                    o_btns.classList.remove('active_button')
+                }
             })
             refnav.querySelectorAll('.slidein').forEach(x=>{
                 x.classList.remove('slidein');

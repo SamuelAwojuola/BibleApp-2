@@ -699,3 +699,12 @@ function docFrag2String(dfrg){
     const regEx = new RegExp(xmlnAttribute, 'g');
     return document_fragment_string.replace(regEx, '')
 }
+
+/* REPLACE ALL CHECKBOXES */
+let allCheckboxes = document.querySelectorAll("input[type=checkbox]")
+allCheckboxes.forEach(cbx=>{
+    let checkboxreplacement = document.createElement('SPAN');
+    checkboxreplacement.classList.add('checkboxreplacement');
+    insertElmAbeforeElmB(checkboxreplacement, cbx);
+    relocateElmTo(cbx, checkboxreplacement);
+})

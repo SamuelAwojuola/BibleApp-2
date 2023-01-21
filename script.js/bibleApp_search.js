@@ -319,7 +319,8 @@ function runWordSearch() {
         //     showElement(searchresultwindow)
         // }
         searchPreviewFixed.append(searchFragment);
-        runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)//To Clear "searchPreviewFixed" Window after given time
+        //To Clear "searchPreviewFixed" Window after given time
+        if(!keepsearchopen.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}
     }
     searchJSON();
     hideRefNav('show');
@@ -435,6 +436,7 @@ function listOfBooksToSearchIn(bkGrp){
 /* CLEAR THE SEARCH WINDOW IF IT HAS BEEN INACTIVE AFTER 1min */
 function clearSearchWindow(){
     searchPreviewFixed.innerHTML='';
-    if(searchsettings.classList.contains('active_button')){searchsettings.click()}
-        totalfound.innerHTML='Search window was cleared';
+    hideRefNav(null, searchPreviewWindowFixed)
+    searchsettings.classList.remove('active_button')
+    totalfound.innerHTML='Search window was cleared';
 }

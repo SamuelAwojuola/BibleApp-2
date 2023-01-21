@@ -393,6 +393,18 @@ function getCurrentStrongsDef(e) {
     }
 }
 
+//Hide RightClickContextMenu
+function hideRightClickContextMenu() {
+    if (context_menu.matches('.slidein')) {
+        hideRefNav('hide', context_menu);
+        interact('.cmtitlebar').unset();
+        newStrongsDef = '';
+        // context_menu.innerHTML = '';
+        context_menu.style.right = null;
+        if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
+    }
+}
+
 /* MAKING CONTEXT_MENU DRAGGABLE */
 // target elements with the "draggable" class
 function enableInteractJSonEl(dragTarget, elmAffected) {

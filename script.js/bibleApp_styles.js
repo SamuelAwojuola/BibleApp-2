@@ -215,7 +215,16 @@ function showEnglishTranslationOfHGtransliteration(evt) {
 }
 
 function engnXlit_supscript(x) {
-    // console.log(x)
+    function changeElmTextNodeTo(elm,txt){
+        if(elmLabel = elm.querySelector('label')){elmLabel.innerText = txt}
+        else {
+            Array.from(elm.childNodes).filter(function(x) {
+                return x.nodeType == Node.TEXT_NODE;
+            })[0].remove();
+            elm.append(txt);
+        }
+        checkUncheck(elm.querySelector('input'))
+    }
     if (x == 'eng') {
         let eng2grk_style = `.verse:not(.v_accented) .eng2grk::after{
             content: attr(translation);
@@ -231,10 +240,10 @@ function engnXlit_supscript(x) {
         // Toggle the stylesheet :::: add/remove
         if (engofgrknhb = document.querySelector('head').querySelector('#engofgrknhb')) {
             engofgrknhb.remove();
-            show_eng_superscript.innerText = 'OFF';
+            changeElmTextNodeTo(show_eng_superscript,'OFF');
         } else {
             createNewStyleSheetandRule('engofgrknhb', eng2grk_style)
-            show_eng_superscript.innerText = 'ON';
+            changeElmTextNodeTo(show_eng_superscript,'ON');
         }
     }
     if (x == 'hebgrk') {
@@ -258,10 +267,10 @@ function engnXlit_supscript(x) {
         // Toggle the stylesheet :::: add/remove
         if (xlitofhebngrk = document.querySelector('head').querySelector('#xlitofhebngrk')) {
             xlitofhebngrk.remove();
-            show_hebgrk_superscript.innerText = 'OFF';
+            changeElmTextNodeTo(show_hebgrk_superscript,'OFF')
         } else {
             createNewStyleSheetandRule('xlitofhebngrk', eng2grk_style)
-            show_hebgrk_superscript.innerText = 'ON';
+            changeElmTextNodeTo(show_hebgrk_superscript,'ON')
         }
     }
 }

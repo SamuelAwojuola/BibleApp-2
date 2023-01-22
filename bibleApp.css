@@ -552,7 +552,8 @@ span.translated:hover {
     border-bottom: 1px solid var(--span-trans-hover);
     color: var(--brown);
 }
-:has(.v_KJV:hover) span.v_KJV,
+/* HIGHLIGHT VERSION */
+/* :has(.v_KJV:hover) span.v_KJV,
 :has(.v_ESV:hover) span.v_ESV,
 :has(.v_NET:hover) span.v_NET,
 :has(.v_ABP-en:hover) span.v_ABP-en,
@@ -564,7 +565,7 @@ span.translated:hover {
     box-shadow: inset 2px 0px 0px 0px var(--grey),
     inset -2px 0px 0px 0px var(--grey);
     transition: 250ms ease-in-out;
-}
+} */
 
 sup {
     font-weight: bold;
@@ -1344,4 +1345,41 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
 }
 #searchparametertitlebar {
     cursor: pointer;
+}
+#sidemenubtn_rightbottom {
+    opacity: 0.5;
+    width: 2em;
+    height: 2em;
+    width: var(--width-sidebuttons);
+    min-width: 45px;
+    height: var(--width-sidebuttons);
+    position: fixed;
+    bottom: 1em;
+    right: 1em;
+    z-index: 99;
+    display: block;
+    /* display: none; */
+    border: 2px solid #00000030;
+    background: #eaeaea6b;
+    transition: all 0.5s;
+}
+#sidemenubtn_rightbottom:hover {
+    opacity: 1;
+    transition: all 0.5s;
+}
+/* body:has(#top_horizontal_bar_buttons.slideup) #sidemenubtn_rightbottom {
+    display: block;
+} */
+
+/* CLOSE BUTTON FOR VERSENOTE */
+.verse_note:after {
+    content: "";
+    background: url(images/cancel-svgrepo-com.svg) center no-repeat;
+    display: block;
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    right: 0;
+    border: 1px solid grey;
+    border-radius: 0.2em;
 }

@@ -554,6 +554,8 @@ function modifyQuotationMarks(txt){
     // Remove <br> that comes before block element closing tag
     txt = txt.replace(/<br>(<\/(p|h\d)>)/ig, '$1');
     txt = txt.replace(/(?<!<[^>]*)(\s+([.,]))/ig, '$2');
+    txt = txt.replace(/<span[\s=\":#\w\d]*\">[↵]*<\/span>/ig, '');
+    txt = txt.replace(/<(?<tagname>[\w\d]+)><\/\k<tagname>>/ig,'');// Remove empty html elements
     txt = txt.replace(/<span contenteditable="false" data-cke-magic-line="\d+" style="height: \d+px; padding: \d+px; margin: \d+px; display: block; z-index: \d+; color: rgb(\d+, \d+, \d+); font-size: \d+px; line-height: 0px; position: absolute; border-top: \d+px dashed rgb(\d+, \d+, \d+); user-select: none; left: \d+px; right: \d+px; top: \d+px;">  \s*↵\s*<\/span>/ig, '');
     return txt
 }
@@ -723,7 +725,7 @@ function replaceAllCheckBoxesWithFinnerOnes(cbx){
         relocateElmTo(cbx, checkboxreplacement);
     }
 }
+// Delay running of function till dynamic buttons have been generated
 // setTimeout(()=>{
-    // Delay running of function till dynamic buttons have been generated
     replaceAllCheckBoxesWithFinnerOnes()
 // },500)

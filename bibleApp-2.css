@@ -2,21 +2,16 @@
     /* #ref_search_versions_holder #refdiv, */
     #ref_search_versions_holder #searchdiv {
         display: inline-grid!important;/* TO Overide the display:flex */
-        position: relative;
         max-width: 300px!important;
     }
     #searchdiv input {
         width: 100%;
-        min-width: 150px!important;
-    }
-    #searchdiv {
-        display: inline-grid!important;
-        position: relative;
     }
     #searchdiv::after,
     #searchdiv input {
       grid-area: 1/2;
       padding: 0.25em;
+      min-width: 150px!important;
       -webkit-appearance: none;
          -moz-appearance: none;
               appearance: none;

@@ -701,10 +701,29 @@ function docFrag2String(dfrg){
 }
 
 /* REPLACE ALL CHECKBOXES */
-let allCheckboxes = document.querySelectorAll("input[type=checkbox]")
-allCheckboxes.forEach(cbx=>{
-    let checkboxreplacement = document.createElement('SPAN');
-    checkboxreplacement.classList.add('checkboxreplacement');
-    insertElmAbeforeElmB(checkboxreplacement, cbx);
-    relocateElmTo(cbx, checkboxreplacement);
-})
+function replaceAllCheckBoxesWithFinnerOnes(cbx){
+    if(cbx){
+        if(isNaN(cbx.length)){//If it is not an array or NodeList
+            singleCheckboxReplace(cbx)
+        } else {//If it IS An array or NodeList
+            cbx.forEach(cb=>{
+                singleCheckboxReplace(cb)
+            })
+        }
+    } else {//If no value is supplied
+        let allCheckboxes = document.querySelectorAll("button input[type=checkbox]")
+        allCheckboxes.forEach(cbx=>{
+            singleCheckboxReplace(cbx)
+        })
+    }
+    function singleCheckboxReplace(cbx){
+        let checkboxreplacement = document.createElement('SPAN');
+        checkboxreplacement.classList.add('checkboxreplacement');
+        insertElmAbeforeElmB(checkboxreplacement, cbx);
+        relocateElmTo(cbx, checkboxreplacement);
+    }
+}
+// setTimeout(()=>{
+    // Delay running of function till dynamic buttons have been generated
+    replaceAllCheckBoxesWithFinnerOnes()
+// },500)

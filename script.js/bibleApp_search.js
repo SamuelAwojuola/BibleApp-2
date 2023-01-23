@@ -435,8 +435,10 @@ function listOfBooksToSearchIn(bkGrp){
 
 /* CLEAR THE SEARCH WINDOW IF IT HAS BEEN INACTIVE AFTER 1min */
 function clearSearchWindow(){
-    searchPreviewFixed.innerHTML='';
-    hideRefNav(null, searchPreviewWindowFixed)
-    searchsettings.classList.remove('active_button')
-    totalfound.innerHTML='Search window was cleared';
+    if(!keepsearchopen.checked){
+        searchPreviewFixed.innerHTML='';
+        hideRefNav(null, searchPreviewWindowFixed)
+        searchsettings.classList.remove('active_button')
+        totalfound.innerHTML='Search window was cleared';
+    }
 }

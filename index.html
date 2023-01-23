@@ -36,7 +36,7 @@
             </div>
             <div id="searchdiv">
               <button id="titlebar_show_searchsettings" onclick="toggleClassAndActiveButton(titlebarsearchparameters, 'slideup',this)"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button><input class="footersection" id="wordsearch" title="What to search for"
-                placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection"
+                placeholder="Type Words to Search For" onInput="this.parentNode.dataset.value = this.value" size="4"><button onclick="runWordSearch()" class="footersection"
                 id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
             </div>
             <div id="bibleversions_btns">

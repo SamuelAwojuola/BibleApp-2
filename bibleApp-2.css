@@ -1,6 +1,37 @@
 @media screen and (min-device-width: 1025px) {
-    #ref_search_versions_holder #refdiv, #ref_search_versions_holder #searchdiv {
-        min-width: 500px!important;
+    /* #ref_search_versions_holder #refdiv, */
+    #ref_search_versions_holder #searchdiv {
+        display: inline-grid!important;/* TO Overide the display:flex */
+        position: relative;
+        max-width: 300px!important;
+    }
+    #searchdiv input {
+        width: 100%;
+        min-width: 150px!important;
+        color: transparent;
+    }
+    #searchdiv {
+        display: inline-grid!important;
+        position: relative;
+    }
+    #searchdiv::after,
+    #searchdiv input {
+      grid-area: 1/2;
+      padding: 0.25em;
+      -webkit-appearance: none;
+         -moz-appearance: none;
+              appearance: none;
+      border: none;
+    }
+    #searchdiv::after {
+      background: none;
+      content: attr(data-value) " ";
+      height: 0;
+      visibility: hidden;
+      white-space: pre-wrap;
+    }
+    #searchdiv #forwordsearch {
+        grid-area: 1/3;
     }
 }
 @media screen and (max-device-width: 912px) {

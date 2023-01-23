@@ -376,10 +376,11 @@ button {
     align-items: center;
     justify-content: center;
     font-size: var(--fontsize-main);
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: '  Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     cursor: pointer;
     border: var(--buttons-border);
     background-color: var(--buttons);
+    overflow: hidden;
 }
 .buttons {
     width: auto;
@@ -1080,21 +1081,25 @@ span.vmultiple.noted code #verse_notes_button {
 /* TOP-BAR TOGGLE BUTTON */
 #topbartogglebtn {
     position:absolute;
-    top:100%;
+    top:calc(100% + 2.5px);
     scale: 1.2;
     right:0;
     width: 1.35rem;
     height: 1.15rem;
     background: var(--ref-img);
     border-radius: 0 0 0.15em 0.15em;
-    box-shadow: 0 0 2.75px 0.05em darkgrey;
+    /* box-shadow: 0 0 2.75px 0.05em darkgrey; */
+    border-left: 1px solid var(--grey);
+    border-right: 1px solid var(--grey);
+    border-bottom: 1px solid var(--grey);
+    border-top: 0px;
 }
 #topbartogglebtn span {
     top: 0.5rem;
     position: absolute;
     width: 0.75rem;
     height: 0.1rem;
-    background-color: var(--black);
+    background-color: var(--grey);
     display: inline-block;
     transition: all 0.2s ease;
 }
@@ -1190,7 +1195,7 @@ span.vmultiple.noted code #verse_notes_button {
 /* SEARCH */
 #wordsearch {
     background-color: var(--buttons);
-    border: var(--buttons-border);
+    border: var(--buttons-border)!important;
 }
 #wordsearch::-webkit-input-placeholder,
 #reference::-webkit-input-placeholder,#wordsearch:-moz-placeholder,
@@ -1317,12 +1322,10 @@ button .checkboxreplacement:has(input[type="checkbox"]) input[type="checkbox"] {
     display: none;
 }
 button .checkboxreplacement:has(input[type="checkbox"]) {
-    /* display: block; */
-    /* background-color: #ccc; */
     width: 2em;
     height: 2em!important;
     margin-right: 0.1em;
-    border: solid grey;
+    /* border: solid #d9d9d9; */
     flex-basis: 100%;
     scale: 0.7;
     position: absolute;
@@ -1331,7 +1334,6 @@ button .checkboxreplacement:has(input[type="checkbox"]) {
 button .checkboxreplacement:has(input[type="checkbox"]):before {
     content: "";
     background: url(images/cancel-svgrepo-com.svg) center no-repeat;
-    background-color: #eee;
     display: flex;
     width:100%!important;
     height:100%!important;
@@ -1382,4 +1384,7 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
     right: 0;
     border: 1px solid grey;
     border-radius: 0.2em;
+}
+input:focus {
+    outline: none;
 }

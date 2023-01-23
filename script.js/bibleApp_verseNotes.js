@@ -179,15 +179,27 @@ function appendVerseNote(e) {
     //Hide verseNote if available on note button click
     else {
         siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
-        siblingVersenote.classList.add('slideup');
-        setTimeout(() => {
-            // siblingVersenote.remove();
-            siblingVersenote.style.display = 'none';
-            masterVerseHolder.classList.remove('showing_versenote');
-        }, 100);
+        closeNote(siblingVersenote,masterVerseHolder)
+        // siblingVersenote.classList.add('slideup');
+        // setTimeout(() => {
+        //     siblingVersenote.style.display = 'none';
+        //     masterVerseHolder.classList.remove('showing_versenote');
+        // }, 100);
     }
 }
 
+function closeNote(vnote,vholder,dIS){
+    if(!vnote){
+        vnote = elmAhasElmOfClassBasAncestor(dIS,'.verse_note');
+        vholderID = vnote.id.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
+        vholder = document.getElementById(vholderID);
+    }
+    vnote.classList.add('slideup');
+    setTimeout(() => {
+        vnote.style.display = 'none';
+        vholder.classList.remove('showing_versenote');
+    }, 100);
+}
 function editVerseNote(eTarget, e, saveBtn) { //Toggles editing of versnote on and off
     let eTargets_note = eTarget.parentNode.parentNode.querySelector('.text_content');
     editNotez = eTargets_note;

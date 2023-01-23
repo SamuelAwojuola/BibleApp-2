@@ -437,7 +437,7 @@ function listOfBooksToSearchIn(bkGrp){
 function clearSearchWindow(){
     if(!keepsearchopen.checked){
         searchPreviewFixed.innerHTML='';
-        hideRefNav(null, searchPreviewWindowFixed)
+        hideRefNav('hide', searchPreviewWindowFixed)
         searchsettings.classList.remove('active_button')
         totalfound.innerHTML='Search window was cleared';
     }

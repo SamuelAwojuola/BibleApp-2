@@ -98,11 +98,11 @@
         </div>
         <div id="searchPreviewWindowFixed" class="slideout displaynone">
           <div id="searchparameters" class="hidesearchparameters">
-            <div>
-              <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
+            <div id="searchparametertitlebar_holder">
+              <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
               <button id="showonlysearchinput" class="displaynone" onclick="toggleClassAndActiveButton([searchprametersbtnholder,where2display], 'displaynone', this)" class="active_button">+</button>
+              <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
             </div>
-            <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
             <div id="searchdiv_fixed">
               <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
             </div>
@@ -267,6 +267,10 @@
           bibleapp_available_notes
         </div>
         <div id="strongsdefinitionwindow" class="slideout displaynone">
+          <div id="strongsnum_inputholder">
+            <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition([strongsnum_input.value])" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
+          </div>
+          <div id="strongsdefinition_text"></div>
         </div>
       </div>
       <div id="resizerdiv">
@@ -294,7 +298,7 @@
     <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
     <div class="save_edit_btns_holder">
       <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"><!-- <img src="images\edit-svgrepo-com.svg" alt="🖉" > --></button>
-      <button class="note_closebtn" onclick="closeNote(null,null,this)"></button>
+      <button class="closebtn note_closebtn" onclick="closeNote(null,null,this)"></button>
     </div>
   </div>
   <!-- <button id="btnAdd">Add to home screen</button> -->

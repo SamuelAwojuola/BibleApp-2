@@ -178,7 +178,7 @@ function add_tooltipContextMenu(e) {
                         // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
                         menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
                     }
-                    context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}</div>${newStrongsDef}`;
+                    context_menu.innerHTML = `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button><div class="cmtitlebar">${menu_inner}</div>${newStrongsDef}`;
                 } else if (e.type == 'contextmenu') { // For strongs number in verseNote
                     context_menu.innerHTML = newStrongsDef;
                     // context_menu.querySelector('hr').remove();

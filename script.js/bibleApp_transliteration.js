@@ -58,7 +58,9 @@ let currentStrongsDef = null;
 function getsStrongsDefinition(x) {
     _text = '';
     let openOrclose='';
+    let strngsearchfor = '';
     x.forEach((wStrnum,i) => {
+        strngsearchfor = strngsearchfor + ' ' + wStrnum;
         if(i!=0){openOrclose=''}// only the first detail element will be open
         let xlit_lemma_definition=getsStrongsLemmanNxLit(wStrnum);
         let str_xlit = xlit_lemma_definition.xlit;
@@ -80,8 +82,8 @@ function getsStrongsDefinition(x) {
     });
     currentStrongsDef = _text;
     if(!document.querySelector('body').matches('#versenotepage')){
-        strongsdefinitionwindow.innerHTML = '';
-        strongsdefinitionwindow.innerHTML = _text.replace(/(<details class="strngsdefinition")/i,'$1 open');
+        strongsdefinition_text.innerHTML = _text.replace(/(<details class="strngsdefinition")/i,'$1 open');
+        strongsnum_input.value = strngsearchfor;
     }
     return _text
 }

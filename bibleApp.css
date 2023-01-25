@@ -611,6 +611,12 @@ sup {
     content: attr(data-lemma);
     font-style: italic;
 }
+#context_menu .strnum:not(:hover),
+#strongsdefinitionwindow .strnum:not(:hover){
+    font-style: italic;
+    /* border-bottom: 1px solid; */
+    box-shadow: inset 0px -1px 0px 0px;
+}
 #searchresultwindow {
     position: absolute;
     top: 12px;

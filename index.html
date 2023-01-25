@@ -268,7 +268,7 @@
         </div>
         <div id="strongsdefinitionwindow" class="slideout displaynone">
           <div id="strongsnum_inputholder">
-            <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition([strongsnum_input.value])" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
+            <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition(strongsnum_input.value.split(/[,\s]+/))" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
           </div>
           <div id="strongsdefinition_text"></div>
         </div>

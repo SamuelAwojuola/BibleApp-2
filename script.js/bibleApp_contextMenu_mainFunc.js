@@ -43,6 +43,7 @@ function add_tooltipContextMenu(e) {
     e.preventDefault();
     parentIsContextMenu = 0;
     createNewContextMenu();
+    formerContextMenu_Coordinates.transform = context_menu.style.transform;
     const interactEnabled = context_menu.matches('.slidein');
     
     // If the traget is a strong's number
@@ -326,9 +327,9 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.bottom = formerContextMenu_Coordinates.bottom;
                 context_menu.style.left = formerContextMenu_Coordinates.left;
                 context_menu.style.right = formerContextMenu_Coordinates.right;
+                context_menu.style.transform = formerContextMenu_Coordinates.transform
                 context_menu.querySelector('details').open = true;
             } else {
-                // console.log('parent is NOT ContextMenu');
                 // TOP & BOTTOM
                 if ((!parentElement.matches('.text_content')) &&
                     /* (parentElementHeight <= context_menu.offsetHeight)|| */
@@ -396,7 +397,9 @@ function getCurrentStrongsDef(e) {
 //Hide RightClickContextMenu
 function hideRightClickContextMenu() {
     if (context_menu.matches('.slidein')) {
+        context_menu.classList.add('displaynone')
         hideRefNav('hide', context_menu);
+        //for dragging eventListner to be removed
         interact('.cmtitlebar').unset();
         newStrongsDef = '';
         // context_menu.innerHTML = '';

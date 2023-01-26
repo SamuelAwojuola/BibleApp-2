@@ -106,6 +106,10 @@ body {
 }
 body * {
     box-sizing: border-box;
+    -webkit-transition: all 0.1s ease-in-out;
+    -moz-transition: all 0.1s ease-in-out;
+    -o-transition: all 0.1s ease-in-out;
+    transition: all 0.1s ease-in-out;
 }
 sup{
     font-size: 0.6em;
@@ -183,6 +187,7 @@ code{position: relative; padding-top: 5px;}
     box-shadow: 0 2px 2px 0var(--scroll-track-bg-color);
 }
 .crossrefs{
+    position: relative;
     padding: 5px 5px 0 5px;
     background: var(--whitesmoke);
     overflow: hidden;
@@ -193,6 +198,10 @@ code{position: relative; padding-top: 5px;}
     margin-bottom:5px;
     line-height: auto;
     opacity: 1;
+    z-index: 2;
+}
+.crfnnote {
+    overflow: hidden;
 }
 #verse_note{display: none; position: relative;}
 .verse_note {
@@ -521,6 +530,10 @@ button:not(:disabled):hover {
 [strnum] {
     cursor: pointer;
 }
+span.vmultiple {
+    position: relative;
+    z-index: 3;
+}
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
     transition: background 0.05s ease-in-out;
@@ -540,8 +553,11 @@ span.vmultiple:hover{
     /* box-shadow: inset 1px 2.5px 3px -2px var(--shadow-color),
     inset 3px -3px 1.5px -1px var(--shadow-color)!important; */
     box-shadow: inset 0px 0px 5px 1px var(--shadow-color)!important;
-    z-index: 99;
     transition: 250ms ease-in-out;
+    z-index: 4;
+}
+.crossrefs+.span.vmultiple{
+    z-index: -4;
 }
 span[class^=v_]:hover {
     /* background-color: var(--span-hover)!important; */
@@ -1027,10 +1043,9 @@ span.vmultiple.noted code #verse_notes_button {
 }
 
 .slideup {
-    padding: 0;
-    margin-bottom:0;
-    line-height: 0;
     opacity: 0;
+    overflow: hidden;
+    height: 0;
     margin-top: -150px!important;
     z-index: -1;
     -webkit-transition: all 0.3s ease-in-out;
@@ -1457,4 +1472,15 @@ input:focus {
 #strongsdefinitionwindow #strongsdefinition_text {
     overflow-x: hidden;
     overflow-y: auto;
+}
+.crfnnote_btns {
+    position: relative;
+    display: flex;
+    z-index: 3;
+}
+.darkmode button {
+    background-color: whitesmoke;
+}
+.darkmode #hidesearchparameters, .darkmode #showonlysearchinput, .darkmode .cmenu_closebtn, .darkmode .closebtn, .darkmode .note_closebtn {
+    background-color: transparent!important;
 }

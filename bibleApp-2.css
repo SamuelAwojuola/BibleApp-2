@@ -99,7 +99,7 @@
         right: 10px!important;
         left: 10px!important;
         width: calc(100% - 25px)!important;
-        min-width: calc(100vw - 25px)!important;
+        /* min-width: calc(100vw - 25px)!important; */
         max-width: calc(100vw - 25px)!important;
         height: auto!important;
     }

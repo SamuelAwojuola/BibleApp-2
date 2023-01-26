@@ -97,7 +97,8 @@ function appendVerseNote(e) {
         if(e.type=='click'){
             if (vnt = chapterHolder.querySelector('#' + noteID)) {
                 vnt.style.display = '';
-                vnt.classList.remove('slideup');
+                slideUpDown(vnt,'down')
+                // vnt.classList.remove('slideup');
                 masterVerseHolder.classList.add('showing_versenote');
             } else {
                 let verseNoteDiv = new DocumentFragment();
@@ -143,7 +144,8 @@ function appendVerseNote(e) {
                 // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
                 siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
                 setTimeout(() => {
-                    siblingVersenote.classList.remove('slideup');
+                    slideUpDown(siblingVersenote,'down')
+                    // siblingVersenote.classList.remove('slideup');
                 }, 1);
                 //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
@@ -194,7 +196,8 @@ function closeNote(vnote,vholder,dIS){
         vholderID = vnote.id.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
         vholder = document.getElementById(vholderID);
     }
-    vnote.classList.add('slideup');
+    slideUpDown(vnote)
+    // vnote.classList.add('slideup');
     setTimeout(() => {
         vnote.style.display = 'none';
         vholder.classList.remove('showing_versenote');

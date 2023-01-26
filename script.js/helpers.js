@@ -729,3 +729,33 @@ function replaceAllCheckBoxesWithFinnerOnes(cbx){
 // setTimeout(()=>{
     replaceAllCheckBoxesWithFinnerOnes()
 // },500)
+
+/* SLIDE UP & SLIDE DOWN */
+let slideUpDownTimer;
+function slideUpDown(elm, upOrDown){
+    if(slideUpDownTimer){clearTimeout(slideUpDownTimer)}
+    elm.style.transition = 'all 0.3s ease-in-out';
+    // If hidden show it
+    if(upOrDown=='down'||elm.classList.contains('sld_up')){
+        elm.classList.remove('sld_up')
+        elm.style.position = '';
+        elm.style.display = elm.getAttribute('display');
+        elm.style.zIndex = '';
+        elm.style.marginTop = '';
+        elm.style.opacity = 1;
+        // setTimeout(() => {
+        // }, 1);
+    }
+    // If showing, hide it
+    else {
+        elm.classList.add('sld_up')
+        const tMargin = elm.offsetHeight;
+        elm.style.marginTop = '-' + tMargin + 'px';
+        elm.style.opacity = 0;
+        elm.style.zIndex = -1;
+        elm.setAttribute('display', elm.style.display);
+        slideUpDownTimer = setTimeout(() => {
+            elm.style.setProperty('display', 'none', 'important');
+            }, 300);
+        }
+}

@@ -2,6 +2,7 @@
 bversionName = 'KJV';
 if(document.querySelector('#homepage')){
     ppp.addEventListener('click', appendCrossReferences);
+    searchPreviewWindowFixed.addEventListener('click', appendCrossReferences);
     main.addEventListener('mousedown', getCurrentBVN)
 }
 // else if(versenotepage = document.querySelector('body#versenotepage')){
@@ -34,68 +35,127 @@ function getCurrentBVN(e) {
 }
 
 function appendCrossReferences(e) {
-    if (!e.target.matches('#verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
+    if (!e.target.matches('#verse_crossref_button, .verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
         return
     }
-    let eTarget;
-    if(e.target.matches('#verse_crossref_button')){eTarget = e.target.parentNode.parentNode}
-    else if(e.target.matches('#verse_crossref_button a')){eTarget = e.target.parentNode.parentNode.parentNode}
-    let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');
-    let siblingCrossREF = masterVerseHolder.nextElementSibling;
-    if (siblingCrossREF==null || !siblingCrossREF.matches('.crossrefs') || siblingCrossREF==undefined) {
-        let refCode = null;
-        let vHolder = null;
-
-        masterVerseHolder.classList.add('showing_crossref')
-
-        let versionVerse, vmultiple_NextSibling = elmAhasElmOfClassBasAncestor(eTarget, 'vmultiple').nextElementSibling;
-        if (eTarget.matches('.vmultiple [ref]') && (vmultiple_NextSibling == null || !vmultiple_NextSibling.matches('.crossrefs'))) {
+    let eTarget;//Holds the 'ref' attribute;
+    let masterVerseHolder; //For indicating if crossrefs are being shown and for finidng nextSibling to append the crossrefs to
+    let refCode;
+    let vHolder; // Element to append after
+    
+    if(elmAhasElmOfClassBasAncestor(e.target, 'vmultiple')){
+            if(e.target.matches('#verse_crossref_button')){eTarget = e.target.parentNode.parentNode}
+            else if(e.target.matches('#verse_crossref_button a')){eTarget = e.target.parentNode.parentNode.parentNode}
+            masterVerseHolder = elmAhasElmOfClassBasAncestor(eTarget, '.vmultiple');
             refCode = eTarget.getAttribute('ref');
-            vHolder = elmAhasElmOfClassBasAncestor(eTarget, 'vmultiple');
-            versionVerse = vHolder.querySelector('.v_KJV');
-        }
-        if (refCode) {
-            refCode = refCode.replace(/(\w)\s([0-9]+)/g, '$1.$2'); //Romans 2:3==>Romans.2:3
-            refCode = refCode.replace(/:/g, '.'); //Romans.2:3==>Romans.2.3
-            let crossRef = crossReferences_fullName[refCode];
-            currentVerseCrossRefrence=crossRef;
-            if (!crossRef) {return}
-            let narr=[]
-            crossRef.forEach(cf=>{
-                let cfr=cf.split('.')
-                let cv = cfr[0] + '.' + cfr[1] + '.'
-                cf = cfr[0] + '.' + cfr[1] + '.' + cf.split(cv).join('')
-                cf = cf.replace(/(\w)\.([0-9]+)/g, '$1 $2');
-                cf = cf.replace(/\./g, ':');
-                narr.push(cf)
-            })
-            crossRef=narr;
-            parseCrossRef(crossRef, refCode);
-            
-            function parseCrossRef(crossRef, refCode) {
-                let crfFrag = new DocumentFragment();
-                crossRef.forEach(crf => {
-                    let crfSpan = document.createElement('SPAN');
-                    crfSpan.innerText = crf;
-                    crfFrag.append(crfSpan);
-                    crfFrag.append('; ');
-                });
-                let crfDiv = document.createElement('DIV');
-                crfDiv.append(crfFrag);
-                crfDiv.classList.add('crossrefs');
-                vHolder.parentNode.insertBefore(crfDiv, vHolder.nextSibling);
-                return crfDiv
+            let siblingCrossREF = masterVerseHolder.nextElementSibling;
+        
+            //Only Append Crossrefs If It Doesn't Have Already
+            if (siblingCrossREF==null || siblingCrossREF==undefined || !siblingCrossREF.matches('.crossrefs')) {
+                masterVerseHolder.classList.add('showing_crossref')
+                vHolder = masterVerseHolder;
+                if (refCode){
+                    siblingCrossREF = generateCrossRefsFromRefCode(refCode)
+                    setTimeout(() => {
+                        slideUpDown(siblingCrossREF)
+                    }, 1);
+                }
+            } else {
+                slideUpDown(siblingCrossREF)
+                setTimeout(() => {
+                    masterVerseHolder.classList.remove('showing_crossref')
+                    siblingCrossREF.remove()
+                }, 300);
+            }
+    }
+    /* FOR SEARCHRESULT WINDOW */
+    else if (crfnnoteHolder = elmAhasElmOfClassBasAncestor(e.target, '.crfnnote')){
+        verseInSearchWindow = elmAhasElmOfClassBasAncestor(e.target, '.verse')
+        refCode = verseInSearchWindow.querySelector('[ref]').getAttribute('ref');
+        vHolder = e.target.parentNode;
+        if(siblingCrossREF = crfnnoteHolder.querySelector('.crossrefs')){
+            // If hidden show it
+            if(siblingCrossREF.classList.contains('shwincrf')){
+                siblingCrossREF.classList.remove('shwincrf')
+                siblingCrossREF.classList.remove('displaynone')
+                siblingCrossREF.style.opacity = 1;
+                verseInSearchWindow.classList.add('showing_crossref')
+                setTimeout(() => {
+                    siblingCrossREF.style.marginTop = '';
+                }, 1);
+            }
+            // If showing, hide it
+            else {
+                siblingCrossREF.classList.add('shwincrf')
+                siblingCrossREF.style.marginTop = '-' + siblingCrossREF.offsetHeight + 'px';
+                siblingCrossREF.style.opacity = 0;
+                verseInSearchWindow.classList.remove('showing_crossref')
+                setTimeout(() => {
+                    siblingCrossREF.classList.add('displaynone')
+                }, 300);
             }
         }
-    } else {
-        siblingCrossREF.classList.add('slideup')
-        setTimeout(() => {
-            masterVerseHolder.classList.remove('showing_crossref')
-            siblingCrossREF.remove()
-        }, 500);
+        else {
+            verseInSearchWindow.classList.add('showing_crossref')
+            generateCrossRefsFromRefCode(refCode, 1)
+            siblingCrossREF = crfnnoteHolder.querySelector('.crossrefs')
+            setTimeout(() => {
+                siblingCrossREF.style.transition = 'all 0.3s ease-in-out';
+                siblingCrossREF.style.opacity = 1;
+                siblingCrossREF.style.marginTop = '';
+            }, 10);
+        }
+    }
+    function generateCrossRefsFromRefCode(refCode, transition){
+        refCode = refCode.replace(/(\w)\s([0-9]+)/g, '$1.$2'); //Romans 2:3==>Romans.2:3
+        refCode = refCode.replace(/:/g, '.'); //Romans.2:3==>Romans.2.3
+        let crossRef = crossReferences_fullName[refCode];
+        currentVerseCrossRefrence=crossRef;
+        if (!crossRef) {return}
+        let narr=[]
+        crossRef.forEach(cf=>{
+            let cfr=cf.split('.')
+            let cv = cfr[0] + '.' + cfr[1] + '.'
+            cf = cfr[0] + '.' + cfr[1] + '.' + cf.split(cv).join('')
+            cf = cf.replace(/(\w)\.([0-9]+)/g, '$1 $2');
+            cf = cf.replace(/\./g, ':');
+            narr.push(cf)
+        })
+        crossRef=narr;
+        return parseCrossRef(crossRef, refCode);
+        
+        function parseCrossRef(crossRef, refCode) {
+            let crfFrag = new DocumentFragment();
+            crossRef.forEach(crf => {
+                let crfSpan = document.createElement('SPAN');
+                crfSpan.innerText = crf;
+                crfFrag.append(crfSpan);
+                crfFrag.append('; ');
+            });
+            let crfDiv = document.createElement('DIV');
+            crfDiv.append(crfFrag);
+            crfDiv.classList.add('crossrefs');
+            
+            // if(transition){
+                /* So I can get its height */
+                crfDiv.style.position = 'absolute';
+                crfDiv.style.opacity = 0;
+            // }
+            
+            vHolder.parentNode.insertBefore(crfDiv, vHolder.nextSibling);
+            
+            // if(transition){
+                // crfDiv = vHolder.parentNode.querySelector('.crossrefs');
+                crfDiv.style.position = '';
+                crfDiv.style.marginTop = '-' + crfDiv.offsetHeight + 'px';
+                crfDiv.classList.add('sld_up');// for the slideUpDown(elm) function
+            // }
+            return crfDiv
+        }
     }
 }
 
+/* FOR GETTING THE ACTUAL BIBLE TEXT OF A CROSS-REFERENCE */
 function getCrossReference(x) {
     let crf2get;
     if(typeof (x)=='string'){

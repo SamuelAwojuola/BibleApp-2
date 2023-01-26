@@ -166,6 +166,7 @@ function darkLightMode() {
     #context_menu{background:rgb(19, 17, 17)!important; color:white!important;}`
     let dcol = 'transparent';
     if (document.getElementsByTagName('head')[0].querySelector('#darkmode')) {
+        document.body.classList.remove('darkmode')
         darkmode.remove();
         // darkmodebtn.innerText = 'L'
         // darkmodebtn.innerText = '☀'
@@ -181,6 +182,7 @@ function darkLightMode() {
         documentROOT.style.setProperty('--whitesmoke', 'whitesmoke');
         documentROOT.style.setProperty('--vhlt3', '#ffffc4');
     } else {
+        document.body.classList.add('darkmode')
         createNewStyleSheetandRule(dark_mode, darkmodeCSS);
         // darkmodebtn.innerText = 'D';
         darkmodebtn.innerText = '🌑';

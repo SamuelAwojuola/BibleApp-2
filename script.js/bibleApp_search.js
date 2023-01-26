@@ -162,6 +162,14 @@ function runWordSearch() {
         // console.log(vText)
 
         parseSingleVerse(bkid, Number(chNumInBk)+1, vNumInChpt, vText, appendHere,bookName,null, true)
+        
+        /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
+        let crfnnote_DIV = document.createElement('DIV');
+        crfnnote_DIV.classList.add('crfnnote');
+        crfnnote_DIV.innerHTML = '<div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button><button class="buttons verse_notes_button">Note</button></div>';
+        let allVsInFrag = appendHere.querySelectorAll('.verse')
+        let numOfVsInFrag = allVsInFrag.length;
+        allVsInFrag[numOfVsInFrag-1].append(crfnnote_DIV)
     }
 
     
@@ -442,3 +450,12 @@ function clearSearchWindow(){
         totalfound.innerHTML='Search window was cleared';
     }
 }
+
+
+/* 
+
+<div class="crfnnote"><div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button><button class="buttons verse_notes_button">Note</button></div></div>
+
+<div class="crossrefs"><span>2Pet 3:12</span></div>
+
+*/

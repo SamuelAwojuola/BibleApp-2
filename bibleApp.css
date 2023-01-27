@@ -543,47 +543,78 @@ span.verse:hover:not(.vhlt){
     background-color: var(--verse-hover);
     cursor: pointer;
 }
-span.vmultiple:hover{
-    background-color: var(--vmultiple-hover);
-    background-color: var(--verse-hover);
-    background-color: var(--span-hover);
-    background-color: var(--vhlt);
-    background-color: var(--whitesmoke);
-    transition: box-shadow 0.05s ease-in-out;
-    /* box-shadow: inset 1px 2.5px 3px -2px var(--shadow-color),
-    inset 3px -3px 1.5px -1px var(--shadow-color)!important; */
-    box-shadow: inset 0px 0px 5px 1px var(--shadow-color)!important;
-    transition: 250ms ease-in-out;
-    z-index: 4;
-}
 .crossrefs+.span.vmultiple{
     z-index: -4;
 }
 span[class^=v_]:hover {
-    /* background-color: var(--span-hover)!important; */
     background-color: var(--vhlt3)!important;
     box-shadow: 2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color),2px 2px 4px -2px var(--shadow-color),-2px -2px 4px -2px var(--shadow-color)!important; 
     z-index:1;
     transition: 250ms ease-in-out;
 }
-span.translated:hover {
-    border-bottom: 1px solid var(--span-trans-hover);
-    color: var(--brown);
+
+/* HIGHLIGHT VMULTIPLE */
+span.vmultiple:hover{
+    background-color: var(--whitesmoke);
+    transition: box-shadow 0.05s ease-in;
+    /* box-shadow: inset 1px 2.5px 3px -2px var(--shadow-color),
+    inset 3px -3px 1.5px -1px var(--shadow-color)!important; */
+    box-shadow: inset 0px 0px 5px 1px var(--shadow-color)!important;
+    transition: 250ms ease-in;
+    z-index: 4;
 }
 /* HIGHLIGHT VERSION */
-/* :has(.v_KJV:hover) span.v_KJV,
+:has(.v_KJV:hover) span.v_KJV,
 :has(.v_ESV:hover) span.v_ESV,
 :has(.v_NET:hover) span.v_NET,
 :has(.v_ABP-en:hover) span.v_ABP-en,
 :has(.v_NIV’84:hover) span.v_NIV’84,
 :has(.v_accented:hover) span.v_accented,
 :has(.v_ABP-gr:hover) span.v_ABP-gr {
-    background-color: var(--span-hover);
     background-color: var(--whitesmoke);
     box-shadow: inset 2px 0px 0px 0px var(--grey),
     inset -2px 0px 0px 0px var(--grey);
-    transition: 250ms ease-in-out;
-} */
+    transition: 250ms ease-in;
+}
+:has(.v_KJV:hover) .chptverses .vmultiple:first-child span.v_KJV,
+:has(.v_ESV:hover) .chptverses .vmultiple:first-child span.v_ESV,
+:has(.v_NET:hover) .chptverses .vmultiple:first-child span.v_NET,
+:has(.v_ABP-en:hover) .chptverses .vmultiple:first-child span.v_ABP-en,
+:has(.v_NIV’84:hover) .chptverses .vmultiple:first-child span.v_NIV’84,
+:has(.v_accented:hover) .chptverses .vmultiple:first-child span.v_accented,
+:has(.v_ABP-gr:hover) .chptverses .vmultiple:first-child span.v_ABP-gr
+{
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: inset 0px 2px 0px 0px var(--grey),
+    inset 2px 0px 0px 0px var(--grey),
+    inset -2px 0px 0px 0px var(--grey);
+    transition: 250ms ease-in;
+}
+:has(.v_KJV:hover) .chptverses .vmultiple:last-child span.v_KJV,
+:has(.v_ESV:hover) .chptverses .vmultiple:last-child span.v_ESV,
+:has(.v_NET:hover) .chptverses .vmultiple:last-child span.v_NET,
+:has(.v_ABP-en:hover) .chptverses .vmultiple:last-child span.v_ABP-en,
+:has(.v_NIV’84:hover) .chptverses .vmultiple:last-child span.v_NIV’84,
+:has(.v_accented:hover) .chptverses .vmultiple:last-child span.v_accented,
+:has(.v_ABP-gr:hover) .chptverses .vmultiple:last-child span.v_ABP-gr
+{
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    box-shadow: inset 0px -2px 0px 0px var(--grey),
+    inset 2px 0px 0px 0px var(--grey),
+    inset -2px 0px 0px 0px var(--grey);
+    transition: 250ms ease-in;
+}
+.v_dblclckd {
+    background-color: var(--vhlt-hover);
+    border-radius: 10px;
+    box-shadow: 0px 0px 0px 1px var(--grey);
+}
+span.translated:hover {
+    border-bottom: 1px solid var(--span-trans-hover);
+    color: var(--brown);
+}
 
 sup {
     font-weight: bold;
@@ -1483,4 +1514,7 @@ input:focus {
 }
 .darkmode #hidesearchparameters, .darkmode #showonlysearchinput, .darkmode .cmenu_closebtn, .darkmode .closebtn, .darkmode .note_closebtn {
     background-color: transparent!important;
+}
+.note_temp_holder {
+    overflow: hidden;
 }

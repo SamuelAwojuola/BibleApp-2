@@ -226,7 +226,7 @@ body.darkmode span[ref], body.darkmode .strnum {
 body.darkmode #context_menu {
     background: rgb(19, 24, 24);
     border: 0.5px solid grey!important;
-    box-shadow: 2px 2px 2px 5px whitesmoke!important;
+    box-shadow: 2px 2px 2px 5px var(--whitesmoke)!important;
 }
 body.darkmode .cmtitlebar,
 body.darkmode .cmtitlebar.cmtitlebar::before  {

@@ -13,6 +13,8 @@
     --ref-hlt: #dde3db;
     --searchedword-hlt: maroon;
     --ref-img: url(images/background.jpg);
+    --img-cancel: url(images/cancel-svgrepo-com.svg);
+    --img-chkbox:url(images/check-box-svgrepo-com.svg);
     --ref-paper: url(images/IyEMTp.jpg);
     --verse-higlight: #ffff92;
     --verse-higlight: #fffb001b;
@@ -70,6 +72,10 @@
 ::selection {
     background-color: var(--selection);
 }
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+    transition: background-color 600000s 0s, color 600000s 0s;
+}
 .b{font-weight: bold;}
 .i{font-style: italic;}
 .em{
@@ -84,24 +90,14 @@
 html {
     padding: 0;
     font-size: var(--fontsize-main);
-    background: var(--ref-img);
+    /* background: var(--ref-img); */
     font-family: var(--main-font);
-}
-.text_content:empty::before{
-    content: 'Take down a comment to the verse';
-    font-size: large;
-    font-style: italic;
-}
-body>svg {
-    width: 100% !important;
-}
-svg{
-    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }
 body {
     position: relative;
     margin: 0;
     overflow-y: hidden;
+    background: var(--ref-img);
     /* don't add color to the body, it will hide the svg */
 }
 body * {
@@ -110,6 +106,17 @@ body * {
     -moz-transition: all 0.1s ease-in-out;
     -o-transition: all 0.1s ease-in-out;
     transition: all 0.1s ease-in-out;
+}
+body>svg {
+    width: 100% !important;
+}
+svg{
+    filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
+}
+.text_content:empty::before{
+    content: 'Take down a comment to the verse';
+    font-size: large;
+    font-style: italic;
 }
 sup{
     font-size: 0.6em;
@@ -137,7 +144,7 @@ li li li{
     font-size: var(--fontsize-ref);
 }
 .chptheading {
-    background-color: var(--chpt);
+    background: linear-gradient(to right, var(--chpt2), var(--chpt) 60%, var(--chpt2) 100%,var(--chpt));
     border-bottom: 0.5px solid var(--grey);
     font-size:  var(--fontsize-main);
 }
@@ -287,7 +294,7 @@ code{position: relative; padding-top: 5px;}
     content: 'Save';
     font-style: italic;
     pointer-events: none;
-}
+}s
 #singleverse_compare_menu, #titlebarsearchparameters {
     display: flex;
     flex-wrap: wrap;
@@ -1016,7 +1023,7 @@ input#wordsearch_fixed {
 input#wordsearch_fixed {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    background-color: ;
+    background: var(--buttons);
 }
 #searchPreviewWindowFixed button {
     border: 1px solid rgb(198, 198, 198);
@@ -1265,8 +1272,8 @@ span.vmultiple.noted code #verse_notes_button {
 }   
 
 /* SEARCH */
-#wordsearch {
-    background-color: var(--buttons);
+#wordsearch{
+    background-color: var(--buttons)!important;
     border: var(--buttons-border)!important;
 }
 #wordsearch::-webkit-input-placeholder,
@@ -1295,6 +1302,10 @@ span.vmultiple.noted code #verse_notes_button {
     text-overflow: ellipsis;
     font-weight:bold;
     font-size: var(--fontsize-versionsbuttons);
+    border-right: 1px solid var(--grey);
+}
+#bibleversions_btns button:first-child {
+    border-left: 1px solid var(--grey);
 }
 
 /* SEARCH PARAMETERS */
@@ -1405,7 +1416,7 @@ button .checkboxreplacement:has(input[type="checkbox"]) {
 }
 button .checkboxreplacement:has(input[type="checkbox"]):before {
     content: "";
-    background: url(images/cancel-svgrepo-com.svg) center no-repeat;
+    background: var(--img-cancel) center no-repeat;
     display: flex;
     width:100%!important;
     height:100%!important;
@@ -1414,7 +1425,7 @@ button:hover .checkboxreplacement:has(input[type="checkbox"]):before {
     background-color: #ccc;
 }
 button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
-    background: url(images/check-box-svgrepo-com.svg) center no-repeat;
+    background: var(--img-chkbox) center no-repeat;
     background-color: var(--chpt);
 }
 #sidemenubtn_rightbottom {
@@ -1445,7 +1456,7 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
 /* CLOSE BUTTON FOR VERSENOTE */
 .closebtn, .note_closebtn {
     content: "";
-    background: url(images/cancel-svgrepo-com.svg) center no-repeat;
+    background: var(--img-cancel) center no-repeat;
     background-color: transparent;
     display: block;
     position: absolute;
@@ -1509,12 +1520,78 @@ input:focus {
     display: flex;
     z-index: 3;
 }
-.darkmode button {
-    background-color: whitesmoke;
+
+/* DARKMODE SECTION *//* @media (prefers-color-scheme: dark) */
+.darkmode {
+    --verse-hover: transparent;
+    --ref-img: rgb(0, 8, 2);
+    --ref-img: rgb(18, 18, 18);
+    --ref-img: rgb(0,0,0);
+    --vmultiple-hover: rgb(0, 13, 13);
+    --vhlt: rgb(0, 21, 21);
+    --vhlt2: rgb(0, 39, 39);
+    --selection: rgba(0, 255, 0, 0.6);
+    --selection: rgb(2 20 7);
+    --black: white;
+    --grey: rgb(22, 29, 24);
+    --searchedword-hlt: orange;
+    --whitish_noteContextMenu: rgb(18, 18, 18);
+    --versenote-contextmenu: rgb(18, 18, 18);
+    --verse-higlight:rgb(18, 18, 18);
+    --chpt:rgb(0, 25, 26);
+    --chpt2: rgb(0, 0, 0);
+    --vhlt3: rgb(0, 8, 2);
+    --whitesmoke: rgb(18, 18, 18);
+    --whitesmoke: rgb(0, 8, 2);
+    --buttons:rgb(0, 12, 12);
+    --img-cancel: url(images/cancel-svgrepo-com-DarkMode.svg);
+    --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
 }
-.darkmode #hidesearchparameters, .darkmode #showonlysearchinput, .darkmode .cmenu_closebtn, .darkmode .closebtn, .darkmode .note_closebtn {
+.darkmode, .darkmode * {
+    color:white!important;
+}
+.darkmode button {
+    background-color: var(--whitesmoke);
+}
+/* .darkmode #hidesearchparameters, */
+.darkmode #hidesearchparameters,
+.darkmode #showonlysearchinput,
+.darkmode .cmenu_closebtn,
+.darkmode .closebtn,
+.darkmode .note_closebtn,
+.darkmode #bibleapp_available_notes {
     background-color: transparent!important;
 }
-.note_temp_holder {
-    overflow: hidden;
+.darkmode span.vmultiple.noted code #verse_notes_button {
+    background: var(--brown);
+}
+.darkmode #searchparameters {
+    background: none;
+}
+.darkmode button+button {
+    border-left: none!important;
+}
+.darkmode #searchparameters button {
+    border-top: none!important;
+    border-bottom: none!important;
+}
+.darkmode #searchparameters * button:first-child {
+    border-left: none!important;
+}
+.darkmode #searchparameters * button:last-child {
+    border-right: none!important;
+}
+.darkmode button:hover .checkboxreplacement:has(input[type="checkbox"]):before {
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 5px;
+}
+.darkmode button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
+    background: var(--img-chkbox) center no-repeat;
+    background-color: var(--chpt);
+}
+.darkmode span[ref]:hover, .darkmode .strnum:hover {
+    box-shadow: inset 0 -1.5em 0px 0px rgba(255, 223, 117, 0.663),
+    0 5px 5px -2px var(--shadow-orange)!important;
+ 
 }

@@ -66,7 +66,7 @@ span[ref], .strnum {
     cursor: pointer;
 }
 span[ref]:hover, .strnum:hover {
-    box-shadow: 0 -1.07em 0px 0px rgba(255, 223, 117, 0.663) inset, 0 5px 5px -2px var(--shadow-orange)!important;
+    box-shadow: 0 -1.5em 0px 0px rgba(255, 223, 117, 0.663) inset, 0 5px 5px -2px var(--shadow-orange)!important;
     color: black!important;
     transition: box-shadow .1s ease-in;
 }

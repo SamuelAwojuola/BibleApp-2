@@ -280,3 +280,11 @@ function engnXlit_supscript(x) {
 console.log("HELP:: press 'alt+r' to toggle original english translation of transliterated Hebrew or Greek words as a superscript ")
 
 document.addEventListener('keydown', showEnglishTranslationOfHGtransliteration)
+pagemaster.addEventListener("dblclick",highlightverse)
+function highlightverse(e){
+    if(e.target.matches('.verse:not(.v_dblclckd)')){
+        e.target.classList.add('v_dblclckd')
+    } else if(e.target.matches('.v_dblclckd')){
+        e.target.classList.remove('v_dblclckd')
+    }
+}

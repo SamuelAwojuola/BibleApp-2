@@ -52,4 +52,4 @@ function getAllChapters(dbl_clickedElm) {
     // console.log(`Duration: ${endTime - startTime} milliseconds`)
 } */
 // ppp.addEventListener("scroll", realine) //for Scripture Text Highligher
-function realine() {} //This empty
+// function realine() {} //This empty

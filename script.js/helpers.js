@@ -734,28 +734,44 @@ function replaceAllCheckBoxesWithFinnerOnes(cbx){
 let slideUpDownTimer;
 function slideUpDown(elm, upOrDown){
     if(slideUpDownTimer){clearTimeout(slideUpDownTimer)}
-    elm.style.transition = 'all 0.3s ease-in-out';
-    // If hidden show it
-    if(upOrDown=='down'||elm.classList.contains('sld_up')){
+    // elm.style.transition = 'all 0.3s ease-in-out';
+    
+    const tMargin = elm.offsetHeight;
+    let animDuration = (tMargin * 0.8);
+
+    if(animDuration<=0){
+        if(anim_dur = elm.getAttribute('anim_dur')){
+            animDuration = anim_dur;
+        }
+    }
+    if(animDuration<300){
+            animDuration = 300;
+        }
+    elm.style.transition = 'all ' + animDuration/1000 + 's ease-in-out';
+
+    // SHOW It If It is Hidden
+    if(upOrDown=='show'|| elm.classList.contains('sld_up')){
+        elm.style.opacity = 1;
+        // elm.style.display = elm.getAttribute('display');
+        elm.style.display = '';
         elm.classList.remove('sld_up')
         elm.style.position = '';
-        elm.style.display = elm.getAttribute('display');
-        elm.style.zIndex = '';
         elm.style.marginTop = '';
-        elm.style.opacity = 1;
-        // setTimeout(() => {
-        // }, 1);
+        elm.style.zIndex = '';
+        setTimeout(() => {
+        }, 1);
     }
-    // If showing, hide it
+    // HIDE It If It Is Showing
     else {
         elm.classList.add('sld_up')
-        const tMargin = elm.offsetHeight;
         elm.style.marginTop = '-' + tMargin + 'px';
-        elm.style.opacity = 0;
         elm.style.zIndex = -1;
         elm.setAttribute('display', elm.style.display);
+        elm.setAttribute('anim_dur', animDuration);
+        elm.style.opacity = 0;
         slideUpDownTimer = setTimeout(() => {
             elm.style.setProperty('display', 'none', 'important');
-            }, 300);
-        }
+        }, animDuration);
+    }
+    return animDuration
 }

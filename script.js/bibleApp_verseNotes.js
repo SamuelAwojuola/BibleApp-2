@@ -97,7 +97,11 @@ function appendVerseNote(e) {
         if(e.type=='click'){
             if (vnt = chapterHolder.querySelector('#' + noteID)) {
                 vnt.style.display = '';
-                slideUpDown(vnt,'down')
+                slideUpDown(vnt,'show')
+                // let anim_dur = slideUpDown(vnt.querySelector('.text_content'),'show')
+                // setTimeout(() => {
+                //     slideUpDown(vnt,'show')
+                // }, anim_dur);
                 // vnt.classList.remove('slideup');
                 masterVerseHolder.classList.add('showing_versenote');
             } else {
@@ -143,10 +147,12 @@ function appendVerseNote(e) {
                 masterVerseHolder.classList.add('showing_versenote');
                 // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
                 siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
-                setTimeout(() => {
-                    slideUpDown(siblingVersenote,'down')
+                    slideUpDown(siblingVersenote, 'show')
+                // let anim_dur = slideUpDown(siblingVersenote.querySelector('.text_content'),'show')
+                // setTimeout(() => {
+                    //     slideUpDown(siblingVersenote, 'show')
                     // siblingVersenote.classList.remove('slideup');
-                }, 1);
+                // }, anim_dur);
                 //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
                 // clog('retrieving note')
@@ -185,23 +191,36 @@ function appendVerseNote(e) {
         // siblingVersenote.classList.add('slideup');
         // setTimeout(() => {
         //     siblingVersenote.style.display = 'none';
-        //     masterVerseHolder.classList.remove('showing_versenote');
         // }, 100);
     }
 }
-
 function closeNote(vnote,vholder,dIS){
     if(!vnote){
-        vnote = elmAhasElmOfClassBasAncestor(dIS,'.verse_note');
-        vholderID = vnote.id.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
-        vholder = document.getElementById(vholderID);
+        if(dIS){
+            vnote = elmAhasElmOfClassBasAncestor(dIS,'.verse_note');
+            vnoteID = vnote.id;
+            vholderID = vnoteID.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
+            vholder = document.getElementById(vholderID);
+        }
+    } else if (vholder) {
+        vnoteID = vholder.id.replace(/(_\d+)\.(\d+)\.(\d+)/ig, 'note$1_$2_$3');
+        vnote = document.getElementById(vnoteID);
     }
-    slideUpDown(vnote)
-    // vnote.classList.add('slideup');
+    let tempDiv;
+    if(!document.querySelector('.note_temp_holder.' + vnoteID)){
+        tempDiv = document.createElement('DIV')
+        tempDiv.classList.add('note_temp_holder');
+        tempDiv.classList.add(vnoteID);
+        insertElmAbeforeElmB(tempDiv, vnote)
+        // So that it doesn't show as it is sliding up
+        // the tempDiv has overflow:hidden
+        relocateElmTo(vnote, tempDiv)
+    }
+    vnote = document.getElementById(vnoteID);
+    const anim_dur = slideUpDown(vnote, 'hide')
     setTimeout(() => {
-        vnote.style.display = 'none';
         vholder.classList.remove('showing_versenote');
-    }, 100);
+    }, anim_dur);
 }
 function editVerseNote(eTarget, e, saveBtn) { //Toggles editing of versnote on and off
     let eTargets_note = eTarget.parentNode.parentNode.querySelector('.text_content');

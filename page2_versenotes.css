@@ -106,7 +106,7 @@ summary:has(.openCloseIconHolder) {
     flex-direction: column;
     top: 5px;
     right: 5px;
-    scale: 0.9;
+    transform: scale(0.9);
     z-index: 99;
 }
 .button-group {
@@ -151,7 +151,7 @@ blockquote:first-child{
     background-color: rgba(253, 255, 127, 0.145)!important;
     transition: all 0.2s ease;
     z-index: 99;
-    scale: 1;
+    transform: scale(1);
 }
 /* #sidebar_togglebtn {
     position:absolute;
@@ -165,7 +165,7 @@ blockquote:first-child{
     opacity: 0.3;
     transition: all 0.2s ease;
     z-index: 99;
-    scale: 0.75;
+    transform: scale(0.75);
 } */
 
 #sidebar_togglebtn:hover {

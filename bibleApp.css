@@ -144,9 +144,9 @@ li li li{
     font-size: var(--fontsize-ref);
 }
 .chptheading {
-    background: linear-gradient(to right, var(--chpt2), var(--chpt) 60%, var(--chpt2) 100%,var(--chpt));
+    background: var(--chpt) !important;
     border-bottom: 0.5px solid var(--grey);
-    font-size:  var(--fontsize-main);
+    font-size:  calc(var(--fontsize-main) * 1.5);
 }
 #ppp .verse:not(code) {
     font-size: var(--fontsize-scripture);
@@ -448,8 +448,16 @@ button {
 #context_menu h2, #context_menu i  {font-size:inherit;}
 #context_menu .strngsdefinition div {display: block;}
 .vmultiple code:hover, #searchPreviewFixed .verse code:hover, .crossrefs>span:hover, #context_menu code:not(.cmtitlebar code):hover {text-decoration: underline;color: var(--blue);cursor: pointer;}
-#context_menu .cmtitlebar code {display: inline-flex;}
-#context_menu .cmtitlebar code{font-size:inherit}
+#context_menu .cmtitlebar code {
+    display: inline-flex;
+    align-items: center;
+    font-size:inherit;
+}
+#context_menu code button {
+    font-size: inherit;
+    background: none;
+    border: none;
+}
 #context_menu div{z-index: 2;}
 #context_menu hr:not(:last-child){margin-top:0}
 #context_menu hr:last-child{margin-bottom:0}
@@ -816,12 +824,6 @@ sup {
     height: 2em;
     margin: 10px;
 }
-.darkmode #strongsdefinitionwindow summary>div:first-of-type, .darkmode summary>div:first-of-type {
-    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
-    min-width: 1em;
-    height: 2em;
-    margin: 10px;
-}
 
 /* #strongsdefinitionwindow details[open],
 details[open] {
@@ -846,13 +848,6 @@ details[open] summary {
 #strongsdefinitionwindow details[open] > summary > div:first-of-type,
 details[open] > summary > div:first-of-type {
     background: url(images/arrow-down-svgrepo-com.svg) center no-repeat;
-    /* min-width: 1em; */
-    /* height: 2em; */
-    /* margin: 10px; */
-}
-.darkmode #strongsdefinitionwindow details[open] > summary > div:first-of-type,
-.darkmode details[open] > summary > div:first-of-type {
-    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
     /* min-width: 1em; */
     /* height: 2em; */
     /* margin: 10px; */
@@ -1523,6 +1518,9 @@ input:focus {
     display: flex;
     z-index: 3;
 }
+#singleverse_compare_menu {
+    display: flex;
+}
 
 /* DARKMODE SECTION *//* @media (prefers-color-scheme: dark) */
 .darkmode {
@@ -1550,14 +1548,29 @@ input:focus {
     --whitesmoke: rgb(10, 9, 12);
     --whitesmoke: rgb(8,4,0);
     --buttons:rgb(0, 12, 12);
+    --buttons-txtcolor:rgb(245, 255, 251);
+    --darkmode-border:rgb(0, 78, 78);
+    --darkmode-border-2:rgba(0, 132, 132, 0.779);
     --img-cancel: url(images/cancel-svgrepo-com-DarkMode.svg);
     --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
 }
-.darkmode, .darkmode * {
-    color:white!important;
+.darkmode button, .darkmode input {
+    background-color: var(--vhlt);
+    color: var(--buttons-txtcolor)!important;
+    /* border-radius: 10px; */
 }
-.darkmode button {
-    background-color: var(--whitesmoke);
+.darkmode #strongsdefinitionwindow summary>div:first-of-type, .darkmode summary>div:first-of-type {
+    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
+    min-width: 1em;
+    height: 2em;
+    margin: 10px;
+}
+.darkmode #strongsdefinitionwindow details[open] > summary > div:first-of-type,
+.darkmode details[open] > summary > div:first-of-type {
+    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
+    /* min-width: 1em; */
+    /* height: 2em; */
+    /* margin: 10px; */
 }
 /* .darkmode #hidesearchparameters, */
 .darkmode #hidesearchparameters,
@@ -1609,4 +1622,21 @@ input:focus {
 }
 .darkmode ::selection {
     background-color: purple;
+}
+.darkmode * {
+    color:white!important;
+    border-color: var(--darkmode-border)!important;
+}
+.darkmode #topbartogglebtn,
+.darkmode #sidemenubtn_rightbottom {
+    transition: all 0.5s ease 0s;
+}
+.darkmode #sidemenubtn_rightbottom {
+    background-color: var(--darkmode-border-2);
+}   
+.darkmode #topbartogglebtn span {
+    background-color: grey;
+}
+.darkmode #topbartogglebtn:hover span {
+    background-color: whitesmoke;
 }

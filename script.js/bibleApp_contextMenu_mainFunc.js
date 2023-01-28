@@ -162,16 +162,13 @@ function add_tooltipContextMenu(e) {
                     let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
                     let xlitNlemma = '',
                         br = '';
-                    arrOfStrnums.forEach((sn, i) => {
-                        br = '</code>', st = '';
-                        if (arrOfStrnums.length > i + 1) {
-                            br = `</code><br><code><div>&#9726;</div> `
-                        } // if it is not the last (or only) strnums
-                        if (i == 0) {
-                            st = `<code><div>&#9726;</div> `
-                        }
-                        xlitNlemma = `${st}${xlitNlemma}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}${br}`
-                    });
+        for (let i = 0; i < arrOfStrnums.length; i++) {
+            br = '', st = '';
+            if(i==arrOfStrnums.length-1){br = '<br>'}
+            let sn = arrOfStrnums[i];
+            let srchBtn = `<button onclick="wordsearch.value='${sn}'; runWordSearch()">&#128270;</button>`;
+            xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
+        }
                     if (addquotes) {
                         // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
                         menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;

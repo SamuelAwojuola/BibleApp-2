@@ -12,7 +12,6 @@ strongsJSON.onload = function () {
 
 // Create and Append Transliteration Data Attribute
 function createTransliterationAttr(x, l) {
-    // console.log(l)
     let translatedWordsInVerse = x.querySelectorAll('[strnum]');
     translatedWordsInVerse.forEach(strNumElm => {
         wStrnum_array = strNumElm.getAttribute('strnum').split(' ');
@@ -65,8 +64,9 @@ function getsStrongsDefinition(x) {
         let xlit_lemma_definition=getsStrongsLemmanNxLit(wStrnum);
         let str_xlit = xlit_lemma_definition.xlit;
         let str_lemma = xlit_lemma_definition.lemma;
+        // let str_definition = xlit_lemma_definition.definition;
         let str_definition = xlit_lemma_definition.definition;
-        str_definition = str_definition.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');
+        str_derivation = str_definition.derivation.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');
         _text = `${_text}
         <details class="strngsdefinition" ${openOrclose}>
         <summary>
@@ -77,9 +77,19 @@ function getsStrongsDefinition(x) {
                 <i title='transliteration'>Translit</i>: <h2>${str_xlit}</h2>
             </div>
         </summary>
-            <p>${str_definition}</p>
+            <div><h5>Derivation</h5>
+            <p>${str_derivation}</p></div>
+            <div><h5>KJV Definition</h5>
+            <p>${str_definition.kjv_def}</p></div>
+            <div><h5>Strong's Definition</h5>
+            <p>${str_definition.strongs_def}</p></div>
         </details>`;
     });
+    /* 
+        <p><em><b>From: </b></em>${str_derivation}</p>
+        <p><em><b>KJV: </b></em>${str_definition.kjv_def}</p>
+        <p><em><b>Strong's: </b></em>${str_definition.strongs_def}</p>
+    */
     currentStrongsDef = _text;
     if(!document.querySelector('body').matches('#versenotepage')){
         strongsdefinition_text.innerHTML = _text.replace(/(<details class="strngsdefinition")/i,'$1 open');
@@ -280,6 +290,13 @@ function transliterateWordsOnDoubleClick(e) {
 //HIGHLIGHTING CLICKED WORD
 const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);
 main.addEventListener("click", strongs_dblclick_prevent)
+document.addEventListener("click", togglePinDetails)
+function togglePinDetails(e){
+    if(e.target.matches('.strngsdefinition h5, .strngsdefinition h6, #strongsdefinition_text h5,#strongsdefinition_text h6')){
+        slideUpDown(e.target.nextElementSibling)
+    }
+}
+
 if(!document.querySelector('body').matches('#versenotepage')){
     searchPreviewFixed.addEventListener("click", strongs_dblclick_prevent)
     main.addEventListener("click", hideBibleNav)
@@ -335,11 +352,12 @@ main.addEventListener('mouseover', function (e) {
         newStyleInHead.id = 'highlightall';
         // newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
         if(highlightColor=='none'){highlightColor='var(--strongword-hover)'}
+        // box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,0 5px 5px -2px var(--shadow-orange)!important;
         newStyleInHead.innerHTML = `${transStyleSelector}{
-            box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,
-            0 5px 5px -2px var(--shadow-orange)!important;
+            box-shadow:-5px 0 0 -10px var(--shadow-orange),5px 0 0 -10px var(--shadow-orange), 0 -1.1em 0 0 var(--shadow-orange) inset !important;
             border-radius:5px;
             border-bottom:3px solid maroon !important;
+            color:black!important;
             color:black!important;
             transition: box-shadow .1s ease-in;
             `;

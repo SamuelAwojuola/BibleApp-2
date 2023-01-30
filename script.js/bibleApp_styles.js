@@ -136,7 +136,21 @@ function styleLocalstorageSet() {
         ["--fontsize-versionsbuttons", rootStyles.getPropertyValue('--fontsize-versionsbuttons')],
         ["--width-sidebuttons", rootStyles.getPropertyValue('--width-sidebuttons')]
     ]
-    setItemInLocalStorage('styles_variables', variableArray);
+    setItemInLocalStorage(fontsizes.value, variableArray);
+    setItemInLocalStorage('currentFontSizeSet', fontsizes.value);
+    // setItemInLocalStorage('styles_variables', variableArray);
+}
+function loadfontsizes(){
+    if (localStorage.getItem(fontsizes.value)) {
+        let stylesVariablesArray = localStorage.getItem(fontsizes.value).split(',');
+        stylesVariablesArray.forEach((sVar, i) => {
+            j = i + 2;
+            if (j % 2 == 0) {
+                document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1]);
+            }
+        });
+    }
+    styleLocalstorageSet()
 }
 
 function darkLightMode() {

@@ -161,14 +161,18 @@ function add_tooltipContextMenu(e) {
                 if (originalWord) {
                     let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
                     let xlitNlemma = '',
-                        br = '';
-        for (let i = 0; i < arrOfStrnums.length; i++) {
-            br = '', st = '';
-            if(i==arrOfStrnums.length-1){br = '<br>'}
-            let sn = arrOfStrnums[i];
-            let srchBtn = `<button onclick="wordsearch.value='${sn}'; runWordSearch()">&#128270;</button>`;
-            xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
-        }
+                    br = '';
+                    let searchicon = 'search-svgrepo-com (2).svg';
+                    if(document.body.matches('.darkmode')){
+                        searchicon = 'search-svgrepo-com (2)-DarkMode.svg';
+                    }
+                    for (let i = 0; i < arrOfStrnums.length; i++) {
+                        br = '', st = '';
+                        if(i==arrOfStrnums.length-1){br = '<br>'}
+                        let sn = arrOfStrnums[i];
+                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                        xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
+                    }
                     if (addquotes) {
                         // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
                         menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;
@@ -334,10 +338,10 @@ function add_tooltipContextMenu(e) {
                     (spaceAbove > spaceBelow)) {
                     // If there is not enough space below the child element, show the menu above it
                     // If it is in a versnote div, it will always be appended to the bottom of the eTarget
-                    // clog('appendAbove')
+                    clog('appendAbove')
                     appendAbove()
                 } else {
-                    // clog('appendBelow')
+                    clog('appendBelow')
                     appendBelow()
                 }
                 // LEFT & RIGHT

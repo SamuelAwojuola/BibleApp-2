@@ -54,15 +54,25 @@ function cacheFunctions() {
         }
     }
 
-    if (localStorage.getItem('styles_variables')) {
-        let stylesVariablesArray = localStorage.getItem('styles_variables').split(',');
+    if (localStorage.getItem('currentFontSizeSet')&&localStorage.getItem(localStorage.getItem('currentFontSizeSet'))) {
+        const stylesVariablesArray = localStorage.getItem(localStorage.getItem('currentFontSizeSet')).split(',');
         stylesVariablesArray.forEach((sVar, i) => {
             j = i + 2;
             if (j % 2 == 0) {
                 document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1]);
             }
         });
+        fontsizes.value = localStorage.getItem('currentFontSizeSet');
     }
+    // if (localStorage.getItem('styles_variables')) {
+    //     let stylesVariablesArray = localStorage.getItem('styles_variables').split(',');
+    //     stylesVariablesArray.forEach((sVar, i) => {
+    //         j = i + 2;
+    //         if (j % 2 == 0) {
+    //             document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1]);
+    //         }
+    //     });
+    // }
     if (localStorage.getItem('versionHighlightingOnHover')) {
         // console.log(localStorage.getItem('versionHighlightingOnHover')) 
         versionHighlighting_ON_OFF(localStorage.getItem('versionHighlightingOnHover'))

@@ -34,7 +34,7 @@
     --shadow-color2:rgba(67, 67, 67, 0.87);
     --shadow-color3:rgba(172, 160, 160, 0.87);
     --shadow-ctxtmenu-hover:rgba(20, 2, 67, 0.87);
-    --shadow-orange:rgb(188, 133, 13);
+    --shadow-orange:rgb(255, 224, 156);
     --span-trans-hover:rgb(151, 116, 0);
     --span-hover:#f6efe3;
     --chpt: rgb(238, 227, 202);
@@ -453,10 +453,16 @@ button {
     align-items: center;
     font-size:inherit;
 }
-#context_menu code button {
-    font-size: inherit;
-    background: none;
-    border: none;
+#context_menu code button.cmenusrchbtn {
+    width: 1em;
+    height: 1em;
+    display: block;
+    padding: 0;
+    border-radius: 5px;
+    margin-right: 3px;
+}
+#context_menu code button.cmenusrchbtn img {
+    pointer-events: none;
 }
 #context_menu div{z-index: 2;}
 #context_menu hr:not(:last-child){margin-top:0}
@@ -548,10 +554,10 @@ button:not(:disabled):hover {
 [strnum] {
     cursor: pointer;
 }
-span.vmultiple {
+/* span.vmultiple {
     position: relative;
     z-index: 3;
-}
+} */
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
     transition: background 0.05s ease-in-out;
@@ -654,7 +660,7 @@ sup {
     display: inline;
     font-weight: bold;
 }
-#fontchange {
+#fontchange, #fontsizes {
     width: 100%;
 }
 #eng2grk_sup_table{
@@ -794,7 +800,7 @@ sup {
 #strongsdefinitionwindow details, details {
     border-bottom: 1px solid #aaa;
     border-radius: 4px;
-    padding: .5em .5em 0;
+    padding: .5em 0;
     z-index: -10;
 }
 
@@ -935,9 +941,42 @@ details[open] > summary > div:first-of-type {
     padding-bottom: 0;
     margin-bottom: 0;
 }
+/* .strngsdefinition .strnum {
+    transition: none!important;
+} */
+.strngsdefinition h5,h6 {
+    margin: 0px 5px 0px 0px;
+    padding-left: 7.5px;
+    border-bottom: 1px solid var(--grey);
+    font-style: italic;
+    background-color: rgb(105, 105, 105);
+    color: var(--white)!important;
+    z-index: 5;
+}
+/* detail {
+    background-color: inherit;
+}
+summary {
+    background-color: inherit;
+} */
+#strongsdefinition_text h5,h6 {
+    position: relative;
+    margin: 0px;
+    padding-left: 10px;
+    box-shadow: 0px 2px 0px 0px var(--grey);
+    font-style: italic;
+    background-color: rgb(105, 105, 105);
+    color: var(--white)!important;
+    z-index: 5;
+}
 .strngsdefinition p {
-    margin-left: 10px;
-    margin-right: 10px;
+    position: relative;
+    margin: 5px 10px;
+    font-size: 0.9em;
+    background-color:inherit;
+}
+.strngsdefinition div {
+    overflow: hidden;
 }
 #searchPreviewWindowFixed.slidein{
     display: flex!important;
@@ -1156,29 +1195,36 @@ span.vmultiple.noted code #verse_notes_button {
     display: none;
 }
 /* TOP-BAR TOGGLE BUTTON */
+#topbartogglebtn:hover {
+    background: var(--ref-img);
+    border: 1px solid var(--grey);
+}
 #topbartogglebtn {
     position:absolute;
-    top:calc(100% + 2.5px);
-    transform: scale(2);
-    right: 1em;
-    width: 1.35rem;
-    height: 1.15rem;
+    top:calc(100% + 0.2em);
+    /* transform: scale(2); */
+    right: 0.5em;
+    width: 2.95rem;
+    height: 2.15rem;
     background: var(--ref-img);
+    background: transparent;
     border-radius: 0 0 0.15em 0.15em;
-    /* box-shadow: 0 0 2.75px 0.05em darkgrey; */
-    border-left: 1px solid var(--grey);
-    border-right: 1px solid var(--grey);
-    border-bottom: 1px solid var(--grey);
-    border-top: 0px;
+    box-shadow: 2.75px 2.75px 0 0.05em darkgrey;
+    width: calc(var(--fontsize-refnsearch) * 2.5);
+    height: calc(var(--fontsize-refnsearch) * 2);
+    border-radius: 1px;
 }
 #topbartogglebtn span {
-    top: 0.5rem;
-    position: absolute;
-    width: 0.75rem;
-    height: 0.1rem;
+    /* top: 0.5rem; */
+    /* position: absolute; */
+    margin-top: 0px;
+    width: 0.65rem;
+    height: 1.6rem;
     background-color: var(--grey);
     display: inline-block;
     transition: all 0.2s ease;
+    width: calc(var(--fontsize-refnsearch) * 2.5);
+    height: calc(var(--fontsize-refnsearch) * 2);
 }
 #topbartogglebtn.active_button span:first-of-type {
     transform: rotate(-45deg);
@@ -1427,7 +1473,6 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
     background-color: var(--chpt);
 }
 #sidemenubtn_rightbottom {
-    opacity: 0.5;
     width: 2em;
     height: 2em;
     width: var(--width-sidebuttons);
@@ -1525,10 +1570,9 @@ input:focus {
 /* DARKMODE SECTION *//* @media (prefers-color-scheme: dark) */
 .darkmode {
     --verse-hover: transparent;
-    --ref-img: rgb(10, 9, 12);
-    --ref-img: rgb(8,4,0);
     --ref-img: rgb(18, 18, 18);
-    --ref-img: rgb(0,0,0);
+    --ref-img: rgb(10, 9, 12);
+    --ref-img: #0a0c10;
     --vmultiple-hover: rgb(0, 13, 13);
     --vhlt: rgb(0, 21, 21);
     --vhlt2: rgb(0, 39, 39);
@@ -1550,6 +1594,7 @@ input:focus {
     --buttons:rgb(0, 12, 12);
     --buttons-txtcolor:rgb(245, 255, 251);
     --darkmode-border:rgb(0, 78, 78);
+    --darkmode-border:rgba(214, 212, 170, 0.501);
     --darkmode-border-2:rgba(0, 132, 132, 0.779);
     --img-cancel: url(images/cancel-svgrepo-com-DarkMode.svg);
     --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
@@ -1639,4 +1684,11 @@ input:focus {
 }
 .darkmode #topbartogglebtn:hover span {
     background-color: whitesmoke;
+}
+/* .darkmode .active_button, .darkmode #searchsettings.active_button {
+    background-color: burlywood!important;
+    color: #000!important;
+} */
+.darkmode .active_button, .darkmode #searchsettings.active_button {
+    background-color: grey !important;
 }

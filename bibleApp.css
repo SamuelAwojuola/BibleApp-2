@@ -1658,7 +1658,7 @@ input:focus {
     box-shadow: inset 0 -1.5em 0px 0px rgba(255, 223, 117, 0.663),
     0 5px 5px -2px var(--shadow-orange)!important;
 }
-.darkmode #fontchange {
+.darkmode #fontchange, .darkmode #biblebooksgroup, .darkmode #fontsizes {
     background-color: #000000;
 }
 .darkmode #refnav .bible_nav *:hover, .darkmode #refnav .tmp_hlt {
@@ -1691,4 +1691,6 @@ input:focus {
 } */
 .darkmode .active_button, .darkmode #searchsettings.active_button {
     background-color: grey !important;
+    background-color: #3f5560 !important;
+    background-color: #3f6056 !important;
 }

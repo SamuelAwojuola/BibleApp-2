@@ -28,7 +28,7 @@ bible.Data.books = [
 ["LAMENTATIONS","LAM","LAMENTATION","LA"],
 ["EZEKIEL","EZE","EZEK","EZK","EZ"],
 ["DANIEL","DAN","DA","DN"],
-["HOSHEA","HOS","HO"],
+["HOSHEA","HOSEA","HOS","HO"],
 ["JOEL","JOE","JL"],
 ["AMOS","AMO","AM"],
 ["OBADIAH","OBA","OBAD","OB"],

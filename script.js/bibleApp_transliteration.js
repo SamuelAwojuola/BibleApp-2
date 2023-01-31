@@ -66,7 +66,9 @@ function getsStrongsDefinition(x) {
         let str_lemma = xlit_lemma_definition.lemma;
         // let str_definition = xlit_lemma_definition.definition;
         let str_definition = xlit_lemma_definition.definition;
-        str_derivation = str_definition.derivation.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');
+        // Some strong's number entries don't have derivations
+        if(str_definition.derivation){str_derivation = str_definition.derivation.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');}
+        else{str_derivation='…'}
         _text = `${_text}
         <details class="strngsdefinition" ${openOrclose}>
         <summary>

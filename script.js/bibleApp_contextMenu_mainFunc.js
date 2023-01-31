@@ -338,10 +338,10 @@ function add_tooltipContextMenu(e) {
                     (spaceAbove > spaceBelow)) {
                     // If there is not enough space below the child element, show the menu above it
                     // If it is in a versnote div, it will always be appended to the bottom of the eTarget
-                    clog('appendAbove')
+                    // clog('appendAbove')
                     appendAbove()
                 } else {
-                    clog('appendBelow')
+                    // clog('appendBelow')
                     appendBelow()
                 }
                 // LEFT & RIGHT

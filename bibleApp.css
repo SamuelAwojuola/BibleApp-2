@@ -68,6 +68,7 @@
     --blue:blue;
     --brown:brown;
     --whitish_noteContextMenu: rgb(252, 252, 252);
+    --col2-border:0.05em;
 }
 ::selection {
     background-color: var(--selection);
@@ -798,10 +799,14 @@ sup {
 }
 
 #strongsdefinitionwindow details, details {
-    border-bottom: 1px solid #aaa;
-    border-radius: 4px;
-    padding: .5em 0;
+    border-bottom: 2px solid #aaa;
+    /* border-radius: 4px; */
+    padding: .25em 0;
     z-index: -10;
+}
+#bibleapp_available_notes details {
+    padding: 0;
+    margin-bottom: 8px;
 }
 
 #strongsdefinitionwindow summary, summary {
@@ -1161,6 +1166,9 @@ span.vmultiple.noted code #verse_notes_button {
 .displaynone {
     display: none !important;
 }
+#refnav_col2, #togglenavbtn {
+border-right: var(--col2-border) solid auto!important;
+}
 #refnav_col2 > .slidein.displaynone{
     display: null!important;
 }
@@ -1223,22 +1231,22 @@ span.vmultiple.noted code #verse_notes_button {
     background-color: var(--grey);
     display: inline-block;
     transition: all 0.2s ease;
-    width: calc(var(--fontsize-refnsearch) * 2.5);
-    height: calc(var(--fontsize-refnsearch) * 2);
+    width: calc(var(--fontsize-refnsearch) * 0.65);
+    height: calc(var(--fontsize-refnsearch) * 2.5);
 }
 #topbartogglebtn.active_button span:first-of-type {
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) scale(0.5);
 }
 #topbartogglebtn span:first-of-type {
     left: 0;
-    transform: rotate(45deg);
+    transform: rotate(45deg) scale(0.5);
 }
 #topbartogglebtn.active_button span:last-of-type {
-    transform: rotate(45deg);
+    transform: rotate(45deg) scale(0.5);
 }
 #topbartogglebtn span:last-of-type {
     right: 0;
-    transform: rotate(-45deg);
+    transform: rotate(-45deg) scale(0.5);
 }
 /* TOP-HORIZONTAL BAR */
 #top_horizontal_bar{
@@ -1366,6 +1374,7 @@ span.vmultiple.noted code #verse_notes_button {
 #bibleapp_available_notes{
     max-width: 250px;
     overflow-y: auto;
+    overflow-x: hidden;
     cursor: pointer;
     background: white;
     height: 100%;
@@ -1421,7 +1430,7 @@ span.vmultiple.noted code #verse_notes_button {
     font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
     font-weight: 400;
     width: var(--width-sidebuttons)!important;
-    min-width: 45px!important;
+    min-width: calc(45px + var(--col2-border))!important;
 }
 #togglenavbtn img {
     width: calc(var(--fontsize-refnsearch) * 2)!important;
@@ -1693,4 +1702,7 @@ input:focus {
     background-color: grey !important;
     background-color: #3f5560 !important;
     background-color: #3f6056 !important;
+}
+.darkmode #refnav_col2, .darkmode #togglenavbtn {
+    border-right: var(--col2-border) solid var(--darkmode-border)!important;
 }

@@ -56,16 +56,16 @@ function appendCrossReferences(e) {
                 vHolder = masterVerseHolder;
                 if (refCode){
                     siblingCrossREF = generateCrossRefsFromRefCode(refCode)
-                    setTimeout(() => {
-                        slideUpDown(siblingCrossREF)
-                    }, 1);
+                    setTimeout(() => {slideUpDown(siblingCrossREF)}, 1);
+                    setTimeout(()=>{siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"})},300)
                 }
             } else {
-                slideUpDown(siblingCrossREF)
+                slideUpDown(siblingCrossREF);
                 setTimeout(() => {
-                    masterVerseHolder.classList.remove('showing_crossref')
+                    masterVerseHolder.classList.remove('showing_crossref');
                     siblingCrossREF.remove()
                 }, 300);
+                
             }
     }
     /* FOR SEARCHRESULT WINDOW */
@@ -77,22 +77,22 @@ function appendCrossReferences(e) {
             // If hidden show it
             if(siblingCrossREF.classList.contains('shwincrf')){
                 siblingCrossREF.classList.remove('shwincrf')
-                siblingCrossREF.classList.remove('displaynone')
                 siblingCrossREF.style.opacity = 1;
                 verseInSearchWindow.classList.add('showing_crossref')
-                setTimeout(() => {
-                    siblingCrossREF.style.marginTop = '';
-                }, 1);
+                siblingCrossREF.style.marginTop = '';
+                setTimeout(()=>{
+                    siblingCrossREF.style.zIndex = '';
+                    siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"});
+                }, 300);
             }
             // If showing, hide it
             else {
                 siblingCrossREF.classList.add('shwincrf')
-                siblingCrossREF.style.marginTop = '-' + siblingCrossREF.offsetHeight + 'px';
-                siblingCrossREF.style.opacity = 0;
-                verseInSearchWindow.classList.remove('showing_crossref')
-                setTimeout(() => {
-                    siblingCrossREF.classList.add('displaynone')
-                }, 300);
+                siblingCrossREF.style.marginTop = '-' + siblingCrossREF.getBoundingClientRect().height + 'px';
+                setTimeout(()=>{
+                    verseInSearchWindow.classList.remove('showing_crossref')
+                    siblingCrossREF.style.opacity = 0;
+                }, 100);
             }
         }
         else {

@@ -399,55 +399,6 @@ function refDetails4rmCodeElm(codeElm){
 //     });
 // }
 
-/* DIV RESIZER - DRAGGING TO RESIZE */
-const BORDER_SIZE = 10;
-const panel = document.getElementById("strongsdefinitionwindow");
-const resizerdiv = document.getElementById("resizerdiv");
-
-let m_pos;
-let old_width;
-let hasBeenClicked = false;
-
-// resizerdiv.addEventListener("mousedown", resizeStrongsDefinitionWindow, false);
-
-function resizeDiv(e) {
-    const dx = e.x - m_pos;
-        //   const dx = m_pos - e.x;
-        if (dx > 0) {
-            let increased_width = old_width + dx;
-            panel.style.maxWidth = increased_width + "px";
-            panel.style.minWidth = increased_width + "px";
-        } else if (dx < 0) {
-            let decreased_width = old_width + dx;
-            panel.style.maxWidth = decreased_width + "px";
-            panel.style.minWidth = decreased_width + "px";
-        }
-        if(parseInt(getComputedStyle(panel, '').width)<200){
-            panel.style.maxWidth = "200px";
-            panel.style.minWidth = "200px";
-    }
-}
-function handleSelectAttempt(event) {if (window.event) {
-        event.returnValue = false;
-        }
-}
-function resizeStrongsDefinitionWindow(e) {
-    if (e.target.matches('#resizerdiv') && hasBeenClicked == false && e.offsetX < BORDER_SIZE) {
-        m_pos = e.x;
-        old_width = parseInt(getComputedStyle(panel, '').width);
-        hasBeenClicked = true;
-        document.addEventListener("mousemove", resizeDiv, false);
-        document.addEventListener('selectstart', handleSelectAttempt, false)
-        document.addEventListener("mouseup", remove_resizer_funcs, false);
-    }
-}
-function remove_resizer_funcs() {
-    console.log('JESJSUS')
-    document.removeEventListener("mousemove", resizeDiv, false);
-    document.removeEventListener('selectstart', handleSelectAttempt);
-    hasBeenClicked = false;
-}
-
 /* SORT OBJECTS */
 // function sortObj(obj) {
 //     return Object.keys(obj).sort().reduce(function (result, key) {
@@ -626,6 +577,25 @@ function isScrolledIntoView(el) {
     //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
     return isVisible;
 }
+
+// https://stackoverflow.com/a/37285344
+function ensureInView(container, element) {
+    //Determine container top and bottom
+    let cTop = container.scrollTop;
+    let cBottom = cTop + container.clientHeight;
+
+    //Determine element top and bottom
+    let eTop = element.offsetTop;
+    let eBottom = eTop + element.clientHeight;
+
+    //Check if out of view
+    if (eTop < cTop) {
+      container.scrollTop -= (cTop - eTop);
+    }
+    else if (eBottom > cBottom) {
+      container.scrollTop += (eBottom - cBottom);
+    }
+}
 /* ***************************************************** */
 /* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
 function saveToLocalDrive(file_text_content, fileName, format='json') {
@@ -752,8 +722,8 @@ function replaceAllCheckBoxesWithFinnerOnes(cbx){
 /* SLIDE UP & SLIDE DOWN */
 let slideUpDownTimer;
 function slideUpDown(elm, upOrDown){
+    elm.style.transition = 'all 0.3s ease-in-out';
     if(slideUpDownTimer){clearTimeout(slideUpDownTimer)}
-    // elm.style.transition = 'all 0.3s ease-in-out';
     
     const tMargin = elm.offsetHeight;
     let animDuration = (tMargin * 0.8);
@@ -770,14 +740,14 @@ function slideUpDown(elm, upOrDown){
 
     // SHOW It If It is Hidden
     if(upOrDown=='show'|| elm.classList.contains('sld_up')){
-        elm.style.opacity = 1;
-        // elm.style.display = elm.getAttribute('display');
         elm.style.display = '';
-        elm.classList.remove('sld_up')
-        elm.style.position = '';
-        elm.style.marginTop = '';
-        elm.style.zIndex = '';
+        // elm.style.display = elm.getAttribute('display');
         setTimeout(() => {
+            elm.style.opacity = 1;
+            elm.classList.remove('sld_up')
+            elm.style.position = '';
+            elm.style.marginTop = '0';
+            elm.style.zIndex = '';
         }, 1);
     }
     // HIDE It If It Is Showing

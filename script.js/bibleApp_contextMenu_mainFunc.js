@@ -350,8 +350,8 @@ function add_tooltipContextMenu(e) {
                 }
             }
             // Make Context Menu Draggable
-            if(parentElement.matches('#searchPreviewFixed')){
-                context_menu.scrollIntoView({behavior:"smooth"})
+            if(parentElement.matches('#searchPreviewFixed') && !isScrolledIntoView(context_menu)){
+                setTimeout(()=>{context_menu.scrollIntoView({behavior:"smooth",block:"nearest"})},10)
             }
         }
         context_menu.scrollTop = 0; //scroll contextMenu back to top incase it has been srolled

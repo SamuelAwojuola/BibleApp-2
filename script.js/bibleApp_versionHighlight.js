@@ -2,7 +2,6 @@
 function versionHighlighting_ON_OFF(x) {
     //Turn off versions_highlighting
     if (x == false||x == 'false') {
-        // console.log(localStorage.getItem(x))
         hoveredVersionHiglighting(false)
     }
     else if (hl_hversion_check.checked==true) {
@@ -30,12 +29,12 @@ document.addEventListener('keydown', evt => {
 
 function hoveredVersionHiglighting(oo_off) {
     if (oo_off == true) {
-        setItemInLocalStorage('versionHighlightingOnHover', true)
+        // setItemInLocalStorage('versionHighlightingOnHover', true)
         hl_hversion_check.checked = true;
         hl_hoveredversion.classList.add("active_button");
         main.addEventListener('mouseover', versionHiglightingOnHover, false)
     } else if (oo_off == false) {
-        setItemInLocalStorage('versionHighlightingOnHover', false)
+        // setItemInLocalStorage('versionHighlightingOnHover', false)
         hl_hversion_check.checked = false;
         hl_hoveredversion.classList.remove("active_button");
         main.removeEventListener('mouseover', versionHiglightingOnHover, false)

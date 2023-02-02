@@ -147,10 +147,10 @@ function checkUncheck(x){
     if(Array.isArray(x)==false){arrOfCheckBoxes=[x]}
     else{arrOfCheckBoxes=x}
 
-    arrOfCheckBoxes.forEach(rcbx => {
+    arrOfCheckBoxes.forEach(rcbx => {/* 
         if(rcbx.type=='input'){rcbx.click();}
-        else{if(rcbx.checked==true){rcbx.checked=false}
-        else{rcbx.checked=true}}
+        else{ */if(rcbx.checked==true){rcbx.checked=false}
+        else{rcbx.checked=true}/* } */
     });
 }
 
@@ -162,7 +162,26 @@ function relocateElmTo(elm, moveHere) {
     elm.remove();
     moveHere.append(elmCopy)
 }
-
+function changeElmTextNodeTo(elm,txt){
+    let tnodeValString;
+    if(elmLabel = elm.querySelector('label')){
+        if(txt){elmLabel.innerText = txt}
+        tnodeValString = elmLabel.innerText.textContent;
+    }
+    else {
+        let textNodeValue;
+        textNodeValue = Array.from(elm.childNodes).filter(function(x) {
+            return x.nodeType == Node.TEXT_NODE;
+        })[0];textNodeValue
+        tnodeValString = textNodeValue.textContent;
+        if(txt){
+            textNodeValue.remove();
+            elm.append(txt)
+        }
+    }
+    if(txt){checkUncheck(elm.querySelector('input'))}
+    return tnodeValString
+}
 // GET FIRST SHADOW COLOR
 function getBoxShadowColor(elm){
     // Even if element has more than one box-shadow color, it will only get the first one

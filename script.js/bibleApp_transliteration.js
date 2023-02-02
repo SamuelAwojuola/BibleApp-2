@@ -1,5 +1,5 @@
 // FOR STRONGS LEXICON
-var requestStrongsURL = 'bibles_JSON/strongs.json';
+var requestStrongsURL = 'data/strongs.json';
 var strongsJSON = new XMLHttpRequest();
 strongsJSON.open('GET', requestStrongsURL);
 strongsJSON.responseType = 'json';

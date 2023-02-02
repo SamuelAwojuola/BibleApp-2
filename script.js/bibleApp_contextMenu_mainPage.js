@@ -15,61 +15,26 @@ main.addEventListener('mouseover', function (e) {
     }
 });
 
-function add_mouseoverContextMenuEventListner() {
-    // searchPreviewFixed.addEventListener('mouseover', add_tooltipContextMenu, false);
-    searchPreviewFixed.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
+// function add_mouseoverContextMenuEventListner() {
+//     // searchPreviewFixed.addEventListener('mouseover', add_tooltipContextMenu, false);
+//     searchPreviewFixed.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
 
-    ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
+//     ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
 
-    // for strongs number breakdown on click
-    // ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
-}
+//     // for strongs number breakdown on click
+//     // ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
+// }
 
-function remove_mouseoverContextMenuEventListner() {
-    // hideRefNav('hide', context_menu); //In case it is on the screen
-    if(document.querySelector('body').matches('#versenotepage')){
-        col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
-    }else {
-        ppp.removeEventListener('mouseover', add_tooltipContextMenu, false);
-        searchPreviewFixed.removeEventListener('click', add_tooltipContextMenu, false);
-    }
-}
-add_mouseoverContextMenuEventListner()
-
-tool_tip.addEventListener('click', () => {
-    toolTipOnOff();
-    toolTipON = ttip_check.checked;
-});
-
-let toolTipON = ttip_check.checked; //Is modified by escape or alt + t
-document.addEventListener('keydown', evt => {
-    if ((evt.key === 'y'||evt.key === 'Y') && evt.altKey) {
-        toolTipOnOff();
-        toolTipON = ttip_check.checked;
-    }
-    if (evt.key === 'Escape' && document.querySelector('#context_menu')) {
-        hideRightClickContextMenu()
-        // hideRefNav('hide', context_menu);
-        // interact('.cmtitlebar').unset();
-        // console.log('interact');
-        // context_menu.innerHTML = '';
-    }
-});
-
-function toolTipOnOff(x) {
-    if (x == false || ttip_check.checked) {
-        ttip_check.checked = false;
-        tool_tip.classList.remove("active_button");
-        remove_mouseoverContextMenuEventListner();
-        // add_rClickcontextMenuEventListner();
-        // removeCMPevtListner();
-    } else {
-        ttip_check.checked = true;
-        tool_tip.classList.add("active_button");
-        add_mouseoverContextMenuEventListner();
-        // remove_rClickcontextMenuEventListner();
-    }
-}
+// function remove_mouseoverContextMenuEventListner() {
+//     // hideRefNav('hide', context_menu); //In case it is on the screen
+//     if(document.querySelector('body').matches('#versenotepage')){
+//         col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
+//     }else {
+//         ppp.removeEventListener('mouseover', add_tooltipContextMenu, false);
+//         searchPreviewFixed.removeEventListener('click', add_tooltipContextMenu, false);
+//     }
+// }
+let toolTipON = false;
 //Hide ContextMenu on clicking outside of main window
 main.addEventListener('click', function (e) {
     if (document.querySelector('.context_menu') && (/* !e.target.matches('[strnum]') && */ !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {

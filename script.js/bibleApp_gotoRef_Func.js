@@ -1,5 +1,5 @@
 /* BIBLE REFERENCE ABBREVIATIONS */
-// var requestURLBibleRefAbr = 'bibles_JSON/key_abbreviations_english.json';
+// var requestURLBibleRefAbr = 'data/key_abbreviations_english.json';
 // var ref_abreviations = new XMLHttpRequest();
 // ref_abreviations.open('GET', requestURLBibleRefAbr);
 // ref_abreviations.responseType = 'json';

@@ -152,6 +152,19 @@ function loadfontsizes(){
     }
     styleLocalstorageSet()
 }
+document.addEventListener('click',showHideTransliterationSection)
+function showHideTransliterationSection(e){
+    if(!elmAhasElmOfClassBasAncestor(e.target,'#eng2grk_sup_table')){return}
+    let eng2grkChkBoxes = eng2grk_sup_table.querySelectorAll('button input');
+    let arrOfchkState = [];
+    
+    for(i=0;i<eng2grkChkBoxes.length;i++){
+        let x = eng2grkChkBoxes[i];
+        arrOfchkState.push(x.id)
+        arrOfchkState.push(x.checked)
+    }
+    setItemInLocalStorage('eng2grk_sup_checkboxes', arrOfchkState);
+}
 
 function darkLightMode() {
     if (document.body.classList.contains('darkmode')) {
@@ -188,16 +201,6 @@ function showEnglishTranslationOfHGtransliteration(evt) {
 }
 
 function engnXlit_supscript(x) {
-    function changeElmTextNodeTo(elm,txt){
-        if(elmLabel = elm.querySelector('label')){elmLabel.innerText = txt}
-        else {
-            Array.from(elm.childNodes).filter(function(x) {
-                return x.nodeType == Node.TEXT_NODE;
-            })[0].remove();
-            elm.append(txt);
-        }
-        checkUncheck(elm.querySelector('input'))
-    }
     if (x == 'eng') {
         let eng2grk_style = `.verse:not(.v_accented) .eng2grk::after{
             content: attr(translation);

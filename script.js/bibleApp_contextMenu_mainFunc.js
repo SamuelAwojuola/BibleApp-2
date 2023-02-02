@@ -21,18 +21,6 @@ function createNewContextMenu(){
 // Check if it is index page or verseNotes page
 if (document.querySelector('body').matches('#versenotepage')) {
     append2BottomOfTarget = 1;
-    // main=document.querySelector('#col2')
-    // Load KJV bible for scripture tooltip
-    // var KJV;
-    // var request_KJV_URL = 'bibles/KJV.json';
-    // var kjvBible = new XMLHttpRequest();
-    // kjvBible.open('GET', request_KJV_URL);
-    // kjvBible.responseType = 'json';
-    // kjvBible.send();
-    // kjvBible.onload = function () {
-    //     let booksChaptersAndVerses = kjvBible.response;
-    //     KJV = booksChaptersAndVerses['books'];
-    // }
 } else {
     main = document.querySelector('#main');
 }
@@ -59,23 +47,22 @@ function add_tooltipContextMenu(e) {
         clearTimeout(timer2);
         let currentEt = e.target;
 
+        // if (e.type == 'mouseover') {
+        //     clearTimeout(timer1);
 
-        if (e.type == 'mouseover') {
-            clearTimeout(timer1);
+        //     if ((!currentEt.matches('.strnum') && context_menu.getAttribute('strnum') != currentEt.getAttribute('strnum'))) {
+        //         timer1 = setTimeout(function () {
+        //             timedFUNC();
+        //         }, 300)
+        //     } else if (!currentEt.matches('.strnum')) {
+        //         timer1 = setTimeout(function () {
+        //             timedFUNC();
+        //         }, 300)
+        //     }
 
-            if ((!currentEt.matches('.strnum') && context_menu.getAttribute('strnum') != currentEt.getAttribute('strnum'))) {
-                timer1 = setTimeout(function () {
-                    timedFUNC();
-                }, 300)
-            } else if (!currentEt.matches('.strnum')) {
-                timer1 = setTimeout(function () {
-                    timedFUNC();
-                }, 300)
-            }
-
-        } else {
+        // } else {
             timedFUNC()
-        }
+        // }
 
         function timedFUNC() {
             let originalWord, extraLeft = 0,
@@ -180,7 +167,7 @@ function add_tooltipContextMenu(e) {
                         // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
                         menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
                     }
-                    context_menu.innerHTML = `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button><div class="cmtitlebar">${menu_inner}</div>${newStrongsDef}`;
+                    context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}`;
                 } else if (e.type == 'contextmenu') { // For strongs number in verseNote
                     context_menu.innerHTML = newStrongsDef;
                     // context_menu.querySelector('hr').remove();
@@ -211,7 +198,7 @@ function add_tooltipContextMenu(e) {
                     }
                     cmtitletext = cmtitletext + ' [' + bversionName + ']';
                     // cmtitlebar.innerText=e.target.innerText;
-                    cmtitlebar.innerText = cmtitletext;
+                    cmtitlebar.innerHTML = cmtitletext + `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button>`;
                     context_menu.append(cmtitlebar);
                 }
                 context_menu.append(getCrossReference(e.target));
@@ -332,7 +319,10 @@ function add_tooltipContextMenu(e) {
                 context_menu.querySelector('details').open = true;
             } else {
                 // TOP & BOTTOM
-                if ((!parentElement.matches('.text_content')) &&
+                if((!parentElement.matches('.text_content')) && parentElement.matches('#searchPreviewFixed')){
+                    appendBelow();
+                }
+                else if ((!parentElement.matches('.text_content')) &&
                     /* (parentElementHeight <= context_menu.offsetHeight)|| */
                     (eTargetBottom - parentElementTop + context_menu.offsetHeight > parentElementHeight) &&
                     (spaceAbove > spaceBelow)) {
@@ -359,9 +349,12 @@ function add_tooltipContextMenu(e) {
                     context_menu.style.width = '100%';
                 }
             }
+            // Make Context Menu Draggable
+            if(parentElement.matches('#searchPreviewFixed')){
+                context_menu.scrollIntoView({behavior:"smooth"})
+            }
         }
         context_menu.scrollTop = 0; //scroll contextMenu back to top incase it has been srolled
-        // Make Context Menu Draggable
         if (interactEnabled == false) {
             enableInteractJSonEl('.cmtitlebar', context_menu)
         }
@@ -387,9 +380,9 @@ function getCurrentStrongsDef(e) {
             context_menu.setAttribute('strnum', strnum);
         }
         newStrongsDef = currentStrongsDef;
-        if (!document.querySelector('body').matches('#versenotepage')) {
-            toolTipOnOff(false);
-        }
+        // if (!document.querySelector('body').matches('#versenotepage')) {
+        //     toolTipOnOff(false);
+        // }
     } else if (e.type != 'contextmenu') {
         newStrongsDef = '';
     }

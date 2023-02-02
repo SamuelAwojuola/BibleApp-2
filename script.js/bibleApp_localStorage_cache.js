@@ -64,25 +64,35 @@ function cacheFunctions() {
         });
         fontsizes.value = localStorage.getItem('currentFontSizeSet');
     }
-    // if (localStorage.getItem('styles_variables')) {
-    //     let stylesVariablesArray = localStorage.getItem('styles_variables').split(',');
-    //     stylesVariablesArray.forEach((sVar, i) => {
-    //         j = i + 2;
-    //         if (j % 2 == 0) {
-    //             document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1]);
-    //         }
-    //     });
-    // }
-    if (localStorage.getItem('versionHighlightingOnHover')) {
-        // console.log(localStorage.getItem('versionHighlightingOnHover')) 
-        versionHighlighting_ON_OFF(localStorage.getItem('versionHighlightingOnHover'))
-    } else {
-        //for the first time the app is run on a browser (it will turn it on)
-        versionHighlighting_ON_OFF(true)
+    if (localStorage.getItem('eng2grk_sup_checkboxes')) {
+        const eng2grk_sup_checkboxes = localStorage.getItem('eng2grk_sup_checkboxes').split(',');
+        eng2grk_sup_checkboxes.forEach((x,i)=>{
+            if((i==0)||(i%2==0)){
+                let currentChkbx = document.querySelector('#'+x);
+                if((eng2grk_sup_checkboxes[i+1]=='true')&&(currentChkbx.checked==false)){
+                    parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
+                    // parentBtn.classList.add('active_button');
+                    parentBtn.click()
+                }
+                
+                // if(eng2grk_sup_checkboxes[i+1]=='true'){
+                //     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
+                //     if(changeElmTextNodeTo(parentBtn).trim().toUpperCase()=='OFF'){
+                //         changeElmTextNodeTo(parentBtn,'ON')
+                //     }
+                //     parentBtn.classList.add('active_button');
+                //     currentChkbx.checked=true;
+                // } else {
+                //     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
+                //     if(changeElmTextNodeTo(parentBtn).trim().toUpperCase()=='ON'){
+                //         changeElmTextNodeTo(parentBtn,'OFF')
+                //     }
+                //     parentBtn.classList.remove('active_button');
+                //     currentChkbx.checked=false;
+                // }
+            }
+        })    
     }
-    //For showing original english translation beside Hebrew/Greek transliteration
-    // This really has nothing to do with the cache
-    engnXlit_supscript('eng')
 }
 
 function cacheFunctions2() {

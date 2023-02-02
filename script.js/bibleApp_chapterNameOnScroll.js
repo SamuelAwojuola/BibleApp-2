@@ -139,18 +139,22 @@ function loadNewChapterOnScroll() {
 }
 
 /* Scroll To Target Verse */
+scrollToVerseBtn.addEventListener('click', () => {
+    checkUncheck(scrollToVerseBtn_check)
+});
 function scrollToVerse(targetVerse) {
     if (targetVerse.parentElement.classList.contains('vmultiple')) {
         targetVerse = targetVerse.parentElement
     } //When verse is put in a verse holder for multiple verses
     if (targetVerse) {
-        if (!targetVerse.previousElementSibling) { //(if no previous-sibling, then it must be the first verse so) scroll to parents sibling (which should be the heading)
-            targetVerse.parentElement.previousElementSibling.scrollIntoView()
+        if (!targetVerse.previousElementSibling) {
+            //(if no previous-sibling, then it must be the first verse so) scroll to parents sibling (which should be the heading)
+            targetVerse.parentElement.previousElementSibling.scrollIntoView({behavior: "smooth"})
         } else {
+            let scrollYesNo = {behavior: "smooth"};
+            if(scrollToVerse_check.checked==false){scrollYesNo=''}
             // targetVerse.previousElementSibling.scrollIntoView({
-            targetVerse.scrollIntoView({
-                // behavior: "smooth"//sometimes does not land on the element properly
-            });
+            targetVerse.scrollIntoView(scrollYesNo);
         }
     }
 }

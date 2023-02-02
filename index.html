@@ -68,7 +68,7 @@
           <!-- <select></select> -->
         </select>
       </div>
-      <button id="topbartogglebtn" onclick="titlebarsearchparameters.classList.add('slideup'), toggleClassAndActiveButton(top_horizontal_bar_buttons, 'slideup',this)"><span></span><span></span></button>
+      <button id="topbartogglebtn" onclick="titlebarsearchparameters.classList.add('slideup'), slideUpDown(top_horizontal_bar_buttons, 'slideup'), this.classList.toggle('active_button')"><span></span><span></span></button>
     </div>
 
     <!-- BIBLE REFERENCE SIDE BAR -->
@@ -284,8 +284,6 @@
           </div>
           <div id="strongsdefinition_text"></div>
         </div>
-      </div>
-      <div id="resizerdiv">
       </div>
     </nav>
     

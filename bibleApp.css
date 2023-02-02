@@ -206,7 +206,7 @@ code{position: relative; padding-top: 5px;}
     margin-bottom:5px;
     line-height: auto;
     opacity: 1;
-    z-index: 2;
+    /* z-index: 2; */
 }
 .crfnnote {
     overflow: hidden;
@@ -455,12 +455,12 @@ button {
     font-size:inherit;
 }
 #context_menu code button.cmenusrchbtn {
-    width: 1em;
-    height: 1em;
+    width: 1.3em;
+    height: 1.3em;
     display: block;
     padding: 0;
     border-radius: 5px;
-    margin-right: 3px;
+    margin-right: 10px;
 }
 #context_menu code button.cmenusrchbtn img {
     pointer-events: none;
@@ -669,9 +669,13 @@ sup {
     border-collapse:collapse;
     border-spacing: 0;
 }
+#eng2grk_sup_table td {
+    padding:0;
+}
 #eng2grk_sup_table button {
     width:100%;
     min-height:30px;
+    min-height: 2.5em!important;
     font-weight:bold;
 }
 #bibleapp_cache td:first-child {
@@ -915,12 +919,7 @@ details[open] > summary > div:first-of-type {
     max-width: 400px;
 } */
 #resizerdiv {
-    background-color: var(--grey);
-    /* background-color: #70707072; */
-    float: right;
-    width: 1px!important;
-    height: 100%;
-    cursor: ew-resize;
+    display: none;
 }
 #resizerdiv:hover,#resizerdiv:active {
     background-color: var(--greenyellow);
@@ -995,6 +994,11 @@ summary {
     margin-bottom: 7px;
     height: 100%;
     width: 400px;
+}
+#searchPreviewWindowFixed #context_menu {
+    left: 0.5em!important;
+    right: 0.5em!important;
+    width: calc(100% - 1em);
 }
 #searchparameters div:last-child {
     display: block;
@@ -1212,41 +1216,44 @@ border-right: var(--col2-border) solid auto!important;
     top:calc(100% + 0.2em);
     /* transform: scale(2); */
     right: 0.5em;
+    right: 0.75em;
     width: 2.95rem;
     height: 2.15rem;
     background: var(--ref-img);
     background: transparent;
     border-radius: 0 0 0.15em 0.15em;
     box-shadow: 2.75px 2.75px 0 0.05em darkgrey;
-    width: calc(var(--fontsize-refnsearch) * 2.5);
-    height: calc(var(--fontsize-refnsearch) * 2);
+    /* width: calc(var(--fontsize-refnsearch) * 2.5);
+    height: calc(var(--fontsize-refnsearch) * 2); */
+    width: calc(var(--width-sidebuttons) * 1);
+    height: calc(var(--width-sidebuttons) * 0.8);
     border-radius: 1px;
 }
 #topbartogglebtn span {
-    /* top: 0.5rem; */
-    /* position: absolute; */
     margin-top: 0px;
     width: 0.65rem;
     height: 1.6rem;
     background-color: var(--grey);
     display: inline-block;
     transition: all 0.2s ease;
-    width: calc(var(--fontsize-refnsearch) * 0.65);
-    height: calc(var(--fontsize-refnsearch) * 2.5);
+    /* width: calc(var(--fontsize-refnsearch) * 0.65);
+    height: calc(var(--fontsize-refnsearch) * 2.5); */
+    width: calc(var(--width-sidebuttons));
+    height: calc(var(--width-sidebuttons) * 0.7);
 }
 #topbartogglebtn.active_button span:first-of-type {
-    transform: rotate(-45deg) scale(0.5);
+    transform: rotate(-45deg);
 }
 #topbartogglebtn span:first-of-type {
     left: 0;
-    transform: rotate(45deg) scale(0.5);
+    transform: rotate(45deg);
 }
 #topbartogglebtn.active_button span:last-of-type {
-    transform: rotate(45deg) scale(0.5);
+    transform: rotate(45deg);
 }
 #topbartogglebtn span:last-of-type {
     right: 0;
-    transform: rotate(-45deg) scale(0.5);
+    transform: rotate(-45deg);
 }
 /* TOP-HORIZONTAL BAR */
 #top_horizontal_bar{
@@ -1291,8 +1298,7 @@ border-right: var(--col2-border) solid auto!important;
     /* flex: 1 0 50%; */
     /* display: inline-flex; */
 }
-#refdiv input,
-#searchdiv input{
+#refdiv input {
     width: 100%;
     font-size: var(--fontsize-refnsearch);
     flex-grow: 1;
@@ -1300,7 +1306,7 @@ border-right: var(--col2-border) solid auto!important;
 #refdiv input{
     font-size: calc(var(--fontsize-refnsearch)*1.5);
 }
-#refdiv button, #searchdiv button, #togglenavbtn, #forwordsearch_fixed {
+#refdiv button, #searchdiv button, #forwordsearch_fixed {
     display: flex;
     align-items: center;
     padding: 2px;
@@ -1429,8 +1435,9 @@ border-right: var(--col2-border) solid auto!important;
 #togglenavbtn {
     font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
     font-weight: 400;
+    /* min-width: calc(45px + var(--col2-border))!important; */
+    min-width: 45px;
     width: var(--width-sidebuttons)!important;
-    min-width: calc(45px + var(--col2-border))!important;
 }
 #togglenavbtn img {
     width: calc(var(--fontsize-refnsearch) * 2)!important;
@@ -1492,7 +1499,7 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
     height: var(--width-sidebuttons);
     position: fixed;
     bottom: 1em;
-    right: 1em;
+    right: 0.75em;
     z-index: 99;
     display: block;
     /* display: none; */
@@ -1611,6 +1618,8 @@ input:focus {
     --darkmode-border-2:rgba(0, 132, 132, 0.779);
     --img-cancel: url(images/cancel-svgrepo-com-DarkMode.svg);
     --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
+    --darkslategray:darkslategray;
+    --darkslategray:rgb(107, 84, 0);
 }
 .darkmode button, .darkmode input {
     background-color: var(--vhlt);
@@ -1709,4 +1718,23 @@ input:focus {
 }
 .darkmode #refnav_col2, .darkmode #togglenavbtn {
     border-right: var(--col2-border) solid var(--darkmode-border)!important;
+}
+.darkmode #context_menu .cmtitlebar::before {
+    background: var(--darkslategray);
+    border: 2px solid var(--darkslategray)!important;
+}
+.darkmode #context_menu {
+    border: 2px solid var(--darkslategray)!important;
+    box-shadow: inset 0px 23px 0px 0px var(--darkslategray);
+}
+.darkmode .strngsdefinition h5,
+.darkmode .strngsdefinition h6 {
+    background-color: var(--darkslategray);
+    border-bottom: 5px solid var(--darkslategray);
+}
+.darkmode #context_menu code button.cmenusrchbtn {
+    border: 1px solid white!important;
+}
+.darkmode #context_menu code button.cmenusrchbtn img {
+    width: 1.4em;
 }

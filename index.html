@@ -140,16 +140,22 @@
                   <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
                 </td>
               </tr>
-              <tr>
+              <!-- <tr>
                 <td>Tooltip on Hover</td>
                 <td>
-                  <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check" checked>Tt</button>
+                  <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check"checked>Tt</button>
                 </td>
-              </tr>
+              </tr> -->
               <tr>
                 <td>Hovered Version</td>
                 <td>
-                  <button id="hl_hoveredversion" title="highlight hovered version" class="active_button"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
+                  <button id="hl_hoveredversion" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Scroll TO Verse</td>
+                <td>
+                  <button id="scrollToVerseBtn" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
                 </td>
               </tr>
             </table>
@@ -310,12 +316,8 @@
   <!-- <button id="btnAdd">Add to home screen</button> -->
 </body>
 
-<!-- <script src="data/KJV.js"></script> -->
-<!-- <script src="pell-texteditor/pell.js"></script> -->
-<!-- <script src="data/crossReferences.js" charset="utf-8"></script> -->
 <script src="script.js/bibleApp.js" charset="utf-8"></script>
 <script src="data/bible.js" charset="utf-8"></script>
-<!-- <script src="script.js/TSK.js" charset="utf-8"></script> -->
 <script src="data/crossReferences.js" charset="utf-8"></script>
 <script src="script.js/helpers.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_newWindow.js" charset="utf-8"></script>
@@ -339,9 +341,5 @@
 <script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <!-- <script src="/install-prompt.js"></script> -->
-<script>
-    tool_tip.click();
-  // window.onload = function() {show_eng_superscript.click()}
-</script>
 
 </html>

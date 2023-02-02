@@ -589,7 +589,7 @@ span.vmultiple:hover{
     z-index: 4;
 }
 /* HIGHLIGHT VERSION */
-:has(.v_KJV:hover) span.v_KJV,
+/* :has(.v_KJV:hover) span.v_KJV,
 :has(.v_ESV:hover) span.v_ESV,
 :has(.v_NET:hover) span.v_NET,
 :has(.v_ABP-en:hover) span.v_ABP-en,
@@ -630,7 +630,7 @@ span.vmultiple:hover{
     inset 2px 0px 0px 0px var(--grey),
     inset -2px 0px 0px 0px var(--grey);
     transition: 250ms ease-in;
-}
+} */
 .v_dblclckd {
     background-color: var(--vhlt-hover);
     border-radius: 10px;
@@ -671,7 +671,7 @@ sup {
 }
 #eng2grk_sup_table button {
     width:100%;
-    min-height:55px;
+    min-height:30px;
     font-weight:bold;
 }
 #bibleapp_cache td:first-child {
@@ -1455,7 +1455,10 @@ button:has(.checkboxreplacement){
     padding-left: 2em;
 }
 button .checkboxreplacement:has(input[type="checkbox"]) input[type="checkbox"] {
-    display: none;
+    display: block;
+    position: absolute;
+    left: -100vw;
+    visibility:none;
 }
 button .checkboxreplacement:has(input[type="checkbox"]) {
     width: 2em;
@@ -1574,6 +1577,7 @@ input:focus {
 }
 #singleverse_compare_menu {
     display: flex;
+    flex-wrap: wrap;
 }
 
 /* DARKMODE SECTION *//* @media (prefers-color-scheme: dark) */

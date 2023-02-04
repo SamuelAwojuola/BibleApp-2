@@ -1774,9 +1774,14 @@ input:focus {
 #clipart {
     clip-path: polygon(26% 0, 50% 50%, 76% 0, 100% 0, 50% 100%, 0 0);
     background: var(--grey) !important;
-    width: 2em;
-    height: 1.5em;
+    width: 4em;
+    height: 2.2em;
+    margin: -0.5em;
 }
 #topbartogglebtn.active_button #clipart {
     clip-path: polygon(0% 100%, 50% 0%, 100% 100%, 75% 100%, 50% 50%, 25% 100%);
+}
+#topbartogglebtn:active {
+    border-radius: 1.5em;
+    transition: all 500ms ;
 }

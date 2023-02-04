@@ -74,22 +74,6 @@ function cacheFunctions() {
                     // parentBtn.classList.add('active_button');
                     parentBtn.click()
                 }
-                
-                // if(eng2grk_sup_checkboxes[i+1]=='true'){
-                //     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
-                //     if(changeElmTextNodeTo(parentBtn).trim().toUpperCase()=='OFF'){
-                //         changeElmTextNodeTo(parentBtn,'ON')
-                //     }
-                //     parentBtn.classList.add('active_button');
-                //     currentChkbx.checked=true;
-                // } else {
-                //     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
-                //     if(changeElmTextNodeTo(parentBtn).trim().toUpperCase()=='ON'){
-                //         changeElmTextNodeTo(parentBtn,'OFF')
-                //     }
-                //     parentBtn.classList.remove('active_button');
-                //     currentChkbx.checked=false;
-                // }
             }
         })    
     }

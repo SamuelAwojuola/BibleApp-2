@@ -157,7 +157,8 @@ function add_tooltipContextMenu(e) {
                         br = '', st = '';
                         if(i==arrOfStrnums.length-1){br = '<br>'}
                         let sn = arrOfStrnums[i];
-                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                        // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifying_glass"></div></button>`;
                         xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
                     }
                     if (addquotes) {

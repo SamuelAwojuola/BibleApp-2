@@ -168,11 +168,12 @@ li li li{
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-/* #refnav>div {
-    -webkit-transition: all 0.3s ease-in-out;
-    -moz-transition: all 0.3s ease-in-out;
-    -o-transition: all 0.3s ease-in-out;
-    transition: all 0.3s ease-in-out;
+#refnav button:not(:last-child) {
+    border-bottom: none;
+}
+/* #refnav button:last-child {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
 } */
 button#darkmodebtn {
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
@@ -1283,7 +1284,13 @@ border-right: var(--col2-border) solid auto!important;
 #top_horizontal_bar_buttons>button {
     font-size:var(--width-mainbutton);
     padding: 0;
-}    
+}
+#top_horizontal_bar button, #top_horizontal_bar input, #top_horizontal_bar #titlebarsearchparameters > *{
+    border-bottom: none!important;
+}
+#top_horizontal_bar #titlebarsearchparameters {
+    border-top: none!important;
+}
 
 /* REF & SEARCH */
 #ref_search_versions_holder {
@@ -1593,6 +1600,7 @@ input:focus {
     --ref-img: rgb(18, 18, 18);
     --ref-img: rgb(10, 9, 12);
     --ref-img: #0a0c10;
+    --ref-img: #181a1b;
     --vmultiple-hover: rgb(0, 13, 13);
     --vhlt: rgb(0, 21, 21);
     --vhlt2: rgb(0, 39, 39);
@@ -1613,9 +1621,11 @@ input:focus {
     --whitesmoke: rgb(8,4,0);
     --buttons:rgb(0, 12, 12);
     --buttons-txtcolor:rgb(245, 255, 251);
+    --buttons-txtcolor:#e8e6e3;
     --darkmode-border:rgb(0, 78, 78);
     --darkmode-border:rgba(214, 212, 170, 0.501);
     --darkmode-border-2:rgba(0, 132, 132, 0.779);
+    --darkmode-border-2:#62776d;
     --img-cancel: url(images/cancel-svgrepo-com-DarkMode.svg);
     --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
     --darkslategray:darkslategray;
@@ -1624,7 +1634,6 @@ input:focus {
 .darkmode button, .darkmode input {
     background-color: var(--vhlt);
     color: var(--buttons-txtcolor)!important;
-    /* border-radius: 10px; */
 }
 .darkmode #strongsdefinitionwindow summary>div:first-of-type, .darkmode summary>div:first-of-type {
     background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
@@ -1635,11 +1644,7 @@ input:focus {
 .darkmode #strongsdefinitionwindow details[open] > summary > div:first-of-type,
 .darkmode details[open] > summary > div:first-of-type {
     background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
-    /* min-width: 1em; */
-    /* height: 2em; */
-    /* margin: 10px; */
 }
-/* .darkmode #hidesearchparameters, */
 .darkmode #hidesearchparameters,
 .darkmode #showonlysearchinput,
 .darkmode .cmenu_closebtn,
@@ -1691,7 +1696,7 @@ input:focus {
     background-color: purple;
 }
 .darkmode * {
-    color:white!important;
+    color:var(--buttons-txtcolor)!important;
     border-color: var(--darkmode-border)!important;
 }
 .darkmode #topbartogglebtn,
@@ -1766,20 +1771,6 @@ input:focus {
 }
 .darkmode .magnifying_glass:before {
     background: white;
-}
-#clipart {
-    clip-path: polygon(26% 0, 50% 50%, 76% 0, 100% 0, 50% 100%, 0 0);
-    background: var(--grey) !important;
-    width: 4em;
-    height: 2.2em;
-    margin: -0.5em;
-}
-#topbartogglebtn.active_button #clipart {
-    clip-path: polygon(0% 100%, 50% 0%, 100% 100%, 75% 100%, 50% 50%, 25% 100%);
-}
-#topbartogglebtn:active {
-    border-radius: 1.5em;
-    transition: all 500ms ;
 }
 .verse_note td,
 .verse_note th {

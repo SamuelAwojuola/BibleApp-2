@@ -455,8 +455,9 @@ button {
     font-size:inherit;
 }
 #context_menu code button.cmenusrchbtn {
-    width: 1.3em;
-    height: 1.3em;
+    width: 1.75em;
+    height: 1.75em;
+    
     display: block;
     padding: 0;
     border-radius: 5px;
@@ -1212,26 +1213,23 @@ border-right: var(--col2-border) solid auto!important;
     border: 1px solid var(--grey);
 }
 #topbartogglebtn {
-    position:absolute;
-    top:calc(100% + 0.2em);
-    /* transform: scale(2); */
+    position: absolute;
+    top: calc(100% + 0.2em);
     right: 0.5em;
-    right: 0.75em;
+    right: 0.85em;
     width: 2.95rem;
     height: 2.15rem;
     background: var(--ref-img);
     background: transparent;
     border-radius: 0 0 0.15em 0.15em;
     box-shadow: 2.75px 2.75px 0 0.05em darkgrey;
-    /* width: calc(var(--fontsize-refnsearch) * 2.5);
-    height: calc(var(--fontsize-refnsearch) * 2); */
-    width: calc(var(--width-sidebuttons) * 1);
+    width: calc(var(--width-sidebuttons) * 1.15);
     height: calc(var(--width-sidebuttons) * 0.8);
     border-radius: 1px;
-    padding: 0
+    padding: 0;
 }
 #topbartogglebtn span {
-    margin-top: 0px;
+    position: relative;
     width: 0.65rem;
     height: 1.6rem;
     background-color: var(--grey);
@@ -1239,21 +1237,22 @@ border-right: var(--col2-border) solid auto!important;
     transition: all 0.2s ease;
     /* width: calc(var(--fontsize-refnsearch) * 0.65);
     height: calc(var(--fontsize-refnsearch) * 2.5); */
-    width: calc(var(--width-sidebuttons));
-    height: calc(var(--width-sidebuttons) * 0.7);
+    width: calc(var(--width-sidebuttons) * 0.15);
+    height: calc(var(--width-sidebuttons) * 0.65);
+    border: none;
 }
 #topbartogglebtn.active_button span:first-of-type {
     transform: rotate(-45deg);
 }
 #topbartogglebtn span:first-of-type {
-    left: 0;
+    left: -0.27em;
     transform: rotate(45deg);
 }
 #topbartogglebtn.active_button span:last-of-type {
     transform: rotate(45deg);
 }
 #topbartogglebtn span:last-of-type {
-    right: 0;
+    right: -0.27em;
     transform: rotate(-45deg);
 }
 /* TOP-HORIZONTAL BAR */
@@ -1721,8 +1720,7 @@ input:focus {
     border-right: var(--col2-border) solid var(--darkmode-border)!important;
 }
 .darkmode #context_menu .cmtitlebar::before {
-    background: var(--darkslategray);
-    border: 2px solid var(--darkslategray)!important;
+    box-shadow: inset 0px -0.15em 0px 0px var(--darkslategray);
 }
 .darkmode #context_menu {
     border: 2px solid var(--darkslategray)!important;
@@ -1734,10 +1732,8 @@ input:focus {
     border-bottom: 5px solid var(--darkslategray);
 }
 .darkmode #context_menu code button.cmenusrchbtn {
-    border: 1px solid white!important;
-}
-.darkmode #context_menu code button.cmenusrchbtn img {
-    width: 1.4em;
+    border: rgb(166, 166, 166)!important;
+    background-color: transparent;
 }
 /* SEARCH ICON WITH CSS DIV */
 .magnifying_glass {
@@ -1784,4 +1780,10 @@ input:focus {
 #topbartogglebtn:active {
     border-radius: 1.5em;
     transition: all 500ms ;
+}
+.verse_note td,
+.verse_note th {
+    vertical-align:top;
+    border: 1px solid grey;
+    padding-left: 0.5em;
 }

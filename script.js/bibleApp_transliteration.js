@@ -248,7 +248,7 @@ function strongsHighlighting(e) {
         }
     }
     //IF IT IS THE STRONGS WORD ITSELF
-    else if (!e.target.matches('#singleverse_compare_menu')&&e.target.parentElement.classList.contains('translated')) {
+    else if (!e.target.matches('#singleverse_compare_menu')&&e.target.parentElement&&e.target.parentElement.classList.contains('translated')) {
         clickedElm = e.target.parentElement;
         let stn = clickedElm.getAttribute('strnum');
         if (!clickeElmArray.includes(stn)) {

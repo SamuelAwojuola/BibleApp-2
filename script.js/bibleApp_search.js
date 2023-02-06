@@ -433,7 +433,7 @@ function listOfBooksToSearchIn(bkGrp){
         'pauline' : findBooksFromA2B('Romans','Hebrews'),
         'generalEpistles' : findBooksFromA2B('James','Jude'),
         'revelation' : findBooksFromA2B('Revelation'),
-        'currentbk' : findBooksFromA2B(`${bookName}`)
+        'currentbk' : findBooksFromA2B(`${currentBookName}`)
     }
     if (typeof bkGrp === 'string' || bkGrp instanceof String){
         booksToSearchIn = generalBibleBooksGroups[bkGrp];

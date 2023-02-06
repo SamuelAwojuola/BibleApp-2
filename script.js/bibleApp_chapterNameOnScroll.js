@@ -152,7 +152,7 @@ function scrollToVerse(targetVerse) {
             targetVerse.parentElement.previousElementSibling.scrollIntoView({behavior: "smooth"})
         } else {
             let scrollYesNo = {behavior: "smooth"};
-            if(scrollToVerse_check.checked==false){scrollYesNo=''}
+            if(scrollToVerseBtn_check.checked==false){scrollYesNo=''}
             // targetVerse.previousElementSibling.scrollIntoView({
             targetVerse.scrollIntoView(scrollYesNo);
         }

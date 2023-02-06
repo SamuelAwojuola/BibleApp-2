@@ -77,8 +77,8 @@ function add_tooltipContextMenu(e) {
                 eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
                 if (!eParent.querySelector('#context_menu')) {
                     //move the #context_menu from #main to #searchPreviewFixed
-                    let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                    main.querySelector('#context_menu').remove()
+                    let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
+                    document.querySelector('#context_menu').remove()
                     eParent.append(clonedContextMenu)
                     clonedContextMenu.addEventListener("click", codeELmRefClick)
                 }
@@ -149,16 +149,16 @@ function add_tooltipContextMenu(e) {
                     let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
                     let xlitNlemma = '',
                     br = '';
-                    let searchicon = 'search-svgrepo-com (2).svg';
+                    let searchicon = 'search-svgrepo-com(2).svg';
                     if(document.body.matches('.darkmode')){
-                        searchicon = 'search-svgrepo-com (2)-DarkMode.svg';
+                        searchicon = 'search-svgrepo-com(2).svg-DarkMode.svg';
                     }
                     for (let i = 0; i < arrOfStrnums.length; i++) {
                         br = '', st = '';
                         if(i==arrOfStrnums.length-1){br = '<br>'}
                         let sn = arrOfStrnums[i];
-                        // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
-                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifying_glass"></div></button>`;
+                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                        // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifyingglass"></div></button>`;
                         xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
                     }
                     if (addquotes) {

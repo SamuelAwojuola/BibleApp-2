@@ -55,12 +55,7 @@ function showVerseNote(e, x) {
            }
         }
         // stop editing by pressing 'Escape' key 
-        else if (e.key === 'Escape' && document.activeElement.matches('#noteEditingTarget')) {
-            let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
-            let editBtn = verseNoteDiv.querySelector('.note_edit_button');
-            let saveBtn = verseNoteDiv.querySelector('.note_save_button');
-            editVerseNote(editBtn, e, saveBtn);
-        }
+        // moved to general_EscapeEventListener()
     }
     else {
         editVerseNote(x);

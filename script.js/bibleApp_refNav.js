@@ -154,15 +154,30 @@ function indicateBooknChapterInNav(bk, chpt) {
     // }
 }
 
-//Hide refnav when escape is pressed
-document.addEventListener('keydown', function (e) {
-    if (e.key === "Escape") {
-        if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
-            hideRefNav('hide',openRefnavWin);}
-        else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
-        if(context_menu && context_menu.matches('.slidein')){hideRightClickContextMenu();}
-    }
-});
+function general_EscapeEventListener(){
+    document.addEventListener('keydown', function (e) {
+        if (e.key === "Escape") {
+            // Remove ContextMenu if present
+            if(document.querySelector('#context_menu') && context_menu.matches('.slidein')){
+                hideRightClickContextMenu();
+            }
+            // Stop editing verseNote
+            else if (document.activeElement.matches('#noteEditingTarget')) {
+                let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
+                let editBtn = verseNoteDiv.querySelector('.note_edit_button');
+                let saveBtn = verseNoteDiv.querySelector('.note_save_button');
+                editVerseNote(editBtn, e, saveBtn);
+            }
+            // Hide refnav any child window, e.g., searchWindow, that is open
+            else if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
+                hideRefNav('hide',openRefnavWin);
+            }
+            // Hide refnav
+            else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
+        }
+    });
+}
+general_EscapeEventListener()
 
 function toggleNav() {
     hideRefNav()

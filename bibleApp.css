@@ -299,7 +299,40 @@ code{position: relative; padding-top: 5px;}
     content: 'Save';
     font-style: italic;
     pointer-events: none;
-}s
+}
+/* CLOSE BUTTON FOR VERSENOTE */
+.note_closebtn:not(.note_closebtn_x)::before {
+    content: 'Close';
+}
+.closebtn, .note_closebtn {
+    content: 'Close';
+    font-style: italic;
+    display: block;
+    z-index: 10;
+    transition: all 0.3s ease-in-out;
+}
+.cmenu_closebtn,
+.note_closebtn_x {
+    background-color: whitesmoke!important;
+    background: var(--img-cancel) center no-repeat;
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    top: 0;
+    right: 0;
+}
+.closebtn.cmenu_closebtn:hover {
+    background: url(images/cancel-svgrepo-com-BLACK.svg) center no-repeat;
+    background-color: transparent!important;
+    box-shadow: 0px 0px 0px 1px rgba(155, 0, 0, 0.281)!important;
+    border-radius: 0.2em;
+    transition: all 0.3s ease-in-out;
+}
+.closebtn.cmenu_closebtn:active {
+    box-shadow: 0px 0px 0px 1px rgba(155, 0, 0, 0.589)!important;
+    border-radius: 0.2em;
+    transition: all 0.3s ease-in-out;
+}
 #singleverse_compare_menu, #titlebarsearchparameters {
     display: flex;
     flex-wrap: wrap;
@@ -540,6 +573,7 @@ button:not(:disabled):hover {
     overflow-y: scroll;
     display: flex;
     position: relative;
+    box-shadow: inset 1px 0px 2px 0px var(--shadow-color);
 }
 #main>*>* {
     padding-left: 5px;
@@ -998,9 +1032,9 @@ summary {
     width: 400px;
 }
 #searchPreviewWindowFixed #context_menu {
-    left: 0.5em!important;
-    right: 0.5em!important;
-    width: calc(100% - 1em);
+    left: 0em!important;
+    right: 0em!important;
+    width: calc(100% - 0.5em);
 }
 #searchparameters div:last-child {
     display: block;
@@ -1285,7 +1319,7 @@ border-right: var(--col2-border) solid auto!important;
     font-size:var(--width-mainbutton);
     padding: 0;
 }
-#top_horizontal_bar button, #top_horizontal_bar input, #top_horizontal_bar #titlebarsearchparameters > *{
+#top_horizontal_bar #ref_search_versions_holder, #top_horizontal_bar #titlebarsearchparameters > *{
     border-bottom: none!important;
 }
 #top_horizontal_bar #titlebarsearchparameters {
@@ -1298,12 +1332,14 @@ border-right: var(--col2-border) solid auto!important;
     flex-wrap: wrap;
 }
 /* #refdiv {background-color: yellow;}
-#searchdiv {background-color: orange;}
 #bibleversions_btns {background-color: greenyellow;} */
+#searchdiv {border: var(--buttons-border);}
+#searchdiv * {
+    border-top: none;
+    border-bottom: none;
+}
 #refdiv,#searchdiv,#bibleversions_btns {
     display: flex;
-    /* flex: 1 0 50%; */
-    /* display: inline-flex; */
 }
 #refdiv input {
     width: 100%;
@@ -1320,8 +1356,6 @@ border-right: var(--col2-border) solid auto!important;
     min-width: calc(var(--fontsize-refnsearch) * 2.5);
     min-height: calc(var(--fontsize-refnsearch) * 2);
     font-size: calc(var(--fontsize-refnsearch) * 2);
-    /* width:3em; */
-    /* height:3em; */
 }
 
 /* REFERENCE */
@@ -1429,6 +1463,8 @@ border-right: var(--col2-border) solid auto!important;
     font-weight: bold;
     display:list-item;
     list-style: inside disclosure-closed;
+    margin-right: 0;
+    margin-left: 0;
 }
 #bibleapp_available_notes details[open] > summary {
     list-style: inside disclosure-open;
@@ -1521,35 +1557,6 @@ button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
 /* body:has(#top_horizontal_bar_buttons.slideup) #sidemenubtn_rightbottom {
     display: block;
 } */
-
-/* CLOSE BUTTON FOR VERSENOTE */
-.closebtn, .note_closebtn {
-    content: "";
-    background: var(--img-cancel) center no-repeat;
-    background-color: transparent;
-    display: block;
-    position: absolute;
-    width: 1em;
-    height: 1em;
-    top: 0;
-    right: 0;
-    border: none;
-    /* border-radius: 0.2em; */
-    z-index: 10;
-    transition: all 0.3s ease-in-out;
-}
-.closebtn.cmenu_closebtn:hover {
-    background: url(images/cancel-svgrepo-com-BLACK.svg) center no-repeat;
-    background-color: transparent!important;
-    box-shadow: 0px 0px 0px 1px rgba(155, 0, 0, 0.281)!important;
-    border-radius: 0.2em;
-    transition: all 0.3s ease-in-out;
-}
-.closebtn.cmenu_closebtn:active {
-    box-shadow: 0px 0px 0px 1px rgba(155, 0, 0, 0.589)!important;
-    border-radius: 0.2em;
-    transition: all 0.3s ease-in-out;
-}
 input:focus {
     outline: none;
 }

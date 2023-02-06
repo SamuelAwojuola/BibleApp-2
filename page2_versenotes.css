@@ -52,6 +52,13 @@ body * {
 details {
     width: 100%;
 }
+#col2 details {
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+}
+#col2 details summary {
+    border-bottom: 1px solid var(--grey)!important;
+}
 details summary {
     margin-bottom: 0!important;
 }

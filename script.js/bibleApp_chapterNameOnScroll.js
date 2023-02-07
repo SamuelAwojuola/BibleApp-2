@@ -151,10 +151,9 @@ function scrollToVerse(targetVerse) {
             //(if no previous-sibling, then it must be the first verse so) scroll to parents sibling (which should be the heading)
             targetVerse.parentElement.previousElementSibling.scrollIntoView({behavior: "smooth"})
         } else {
-            let scrollYesNo = {behavior: "smooth"};
-            if(scrollToVerseBtn_check.checked==false){scrollYesNo=''}
+            if(scrollToVerseBtn_check.checked==false){targetVerse.scrollIntoView();}
+            else {targetVerse.scrollIntoView({behavior: "smooth"});}
             // targetVerse.previousElementSibling.scrollIntoView({
-            targetVerse.scrollIntoView(scrollYesNo);
         }
     }
 }

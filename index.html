@@ -44,7 +44,7 @@
           </div>
         </div>
       <div id="titlebarsearchparameters" class="slideup">
-        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words-Not Phrase</button>
+        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words-Not Phrase</button><button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="t_search_anyWord" name="t_phraseornot" value="t_search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
 
         <select id="biblebooksgroup">
           <option value="allbks" selected>ALL BOOKS</option>
@@ -102,7 +102,7 @@
         <div id="searchPreviewWindowFixed" class="slideout displaynone">
           <div id="searchparameters" class="hidesearchparameters">
             <div id="searchparametertitlebar_holder">
-              <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
+              <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word,search_anyWord]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
               <button id="showonlysearchinput" class="displaynone" onclick="toggleClassAndActiveButton([searchprametersbtnholder,where2display], 'displaynone', this)" class="active_button">+</button>
               <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
             </div>
@@ -114,6 +114,7 @@
               <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
               <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>
               <button class="search_param_btns" onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked>All Words-Not Phrase</button>
+              <button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="search_anyWord" name="phraseornot" value="search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
             </div>
   
             <span id="where2display">

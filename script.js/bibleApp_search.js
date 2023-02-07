@@ -117,6 +117,7 @@ Search may include Strongs Number
 let runWordSearchCount = 0;
 function runWordSearch() {
     let wholeWordChecked=whole_word.checked;
+    let anyWordChecked=search_anyWord.checked;
     verseCount=0;
     if (wordsearch.value.trim() == '' || wordsearch.value.trim().length < 2) {
         return
@@ -207,7 +208,34 @@ function runWordSearch() {
                     let chapterVersesLength = currentChapter.length;
                    
                     //If there is a strongs num to be searched for, then you cannot search for a phrase. Rather search to see if verse contains all words
-                    if (searchForStrongs == true) {
+                    if (anyWordChecked == true) {
+                        let wordsArray = returnedOBJofArrayOfWordsToSearchFor.wordsArray;
+                        for (z = 0; z < chapterVersesLength; z++) {
+                            let originalText = allVersesInCurrentChapter[z].toString().toLowerCase();
+                            for (let j = 0; j < wordsArray.length; j++) {
+                                //IT ONLY NEEDS TO INCLUDE ONE OF THE WORDS
+                                let nreg;
+                                // If wholeWord is checked or current word is a strong's number search for whole word (will not search for a partially matching strong's num)
+                                if(wholeWordChecked||(/[GHgh]\d+/.test(wordsArray[j]))){
+                                    nreg = new RegExp("\\b" + wordsArray[j].toLowerCase() + "\\b");
+                                } else {nreg = new RegExp(wordsArray[j].toLowerCase());}
+                                if (nreg.test(originalText)) {
+                                    if ((prevBook != currentBK) || (prevBook == null)) {
+                                        prevBook = currentBK;
+                                    }
+                                    currentBK = bookName;
+                                    appendVerseToSearchResultWindow(currentBK, prevBook, x, y, z+1, allVersesInCurrentChapter[z], searchFragment,bookName)
+                                    findAnything = true;
+                                    break
+                                }
+                                //IT WILL ONLY CHECK AT THE END OF THE FOR LOOP WHICH IT WILL NOT GET TO IF ALL WORDS ARE NOT INCLUDED IN THE VERSE.TXT
+                                // if (j == wordsArray.length - 1) {
+                                // }
+                            }
+                        }
+                    }
+                    //If there is a strongs num to be searched for, then you cannot search for a phrase. Rather search to see if verse contains all words
+                    else if (searchForStrongs == true) {
                         let wordsArray = returnedOBJofArrayOfWordsToSearchFor.wordsArray;
                         for (z = 0; z < chapterVersesLength; z++) {
                             let containsAll = true;
@@ -231,7 +259,6 @@ function runWordSearch() {
                                         prevBook = currentBK;
                                     }
                                     currentBK = bookName;
-                                    // console.log('currentBK')
                                     appendVerseToSearchResultWindow(currentBK, prevBook, x, y, z+1, allVersesInCurrentChapter[z], searchFragment,bookName)
                                     findAnything = true;
                                 }
@@ -244,9 +271,7 @@ function runWordSearch() {
                         for (z = 0; z < chapterVersesLength; z++) {
                             let originalText = allVersesInCurrentChapter[z].toString();
                             let originalText_notString = allVersesInCurrentChapter[z];
-                            // let vText=originalText;
                             let madePlain = returnStrippedTextOfVerse(originalText_notString).withOutStrongs
-                            // console.log(madePlain)
                             if (!case_sensitive.checked) {
                                 madePlain = madePlain.toLowerCase()
                             }
@@ -254,9 +279,6 @@ function runWordSearch() {
                             /* PHRASE SEARCH && WHOLE WORD */
                             let arrayOfWordsInVerse = madePlain.split(' ');
                             if (search_phrase.checked){
-                                // console.log(madePlain)
-                                // console.log(madePlain.split(' '))
-                                // console.log(arrayOfSearchWords)
                                 if(((whole_word.checked) && (isAsubArrayofB(arrayOfSearchWords, arrayOfWordsInVerse))) || 
                                  ((!whole_word.checked) && (isAsubArrayofB(arrayOfSearchWords, madePlain.split(' '))))) {
                                 if ((prevBook != currentBK) || (prevBook == null)) {
@@ -264,7 +286,6 @@ function runWordSearch() {
                                 }
                                 currentBK = bookName;
                                 appendVerseToSearchResultWindow(currentBK, prevBook, x, y, z+1, allVersesInCurrentChapter[z], searchFragment,bookName)
-                                // console.log(madePlain)
                                 findAnything = true;
                             
                                 }

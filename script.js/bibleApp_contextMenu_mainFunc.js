@@ -151,7 +151,7 @@ function add_tooltipContextMenu(e) {
                     br = '';
                     let searchicon = 'search-svgrepo-com(2).svg';
                     if(document.body.matches('.darkmode')){
-                        searchicon = 'search-svgrepo-com(2).svg-DarkMode.svg';
+                        searchicon = 'search-svgrepo-com(2)-DarkMode.svg';
                     }
                     for (let i = 0; i < arrOfStrnums.length; i++) {
                         br = '', st = '';

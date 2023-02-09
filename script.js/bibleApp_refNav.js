@@ -168,12 +168,32 @@ function general_EscapeEventListener(){
                 let saveBtn = verseNoteDiv.querySelector('.note_save_button');
                 editVerseNote(editBtn, e, saveBtn);
             }
-            // Hide refnav any child window, e.g., searchWindow, that is open
-            else if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
-                hideRefNav('hide',openRefnavWin);
+            else if(refnav && top_horizontal_bar_buttons){
+                // Hide refnav any child window, e.g., searchWindow, that is open
+                if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
+                    hideRefNav('hide',openRefnavWin);
+                }
+                // Hide refnav
+                else if (!top_horizontal_bar_buttons.matches('.sld_up')){
+                    if(refnav.matches('.slidein')){hideRefNav('hide',refnav);}
+                    // Hide top_horizontal_bar_buttons
+                    else {
+                        titlebarsearchparameters.classList.add('slideup'),
+                        slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+                        topbartogglebtn.classList.toggle('active_button')
+                    }
+                } else {
+                    // Show top_horizontal_bar_buttons if it is hidden
+                    // if(top_horizontal_bar_buttons.matches('.sld_up')){
+                        slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+                        topbartogglebtn.classList.toggle('active_button')
+                    // }
+                    // Show refnav if it is hidden
+                    // else if(refnav.matches('.slideout')){
+                        hideRefNav('show',refnav);
+                    // }
+                }
             }
-            // Hide refnav
-            else if(refnav && refnav.matches('.slidein')){hideRefNav('hide',refnav);}
         }
     });
 }

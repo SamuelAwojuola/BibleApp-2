@@ -1277,7 +1277,7 @@ border-right: var(--col2-border) solid auto!important;
     border: none;
 }
 #topbartogglebtn.active_button span:first-of-type {
-    transform: rotate(-45deg);
+    transform: rotate(135deg);
 }
 #topbartogglebtn span:first-of-type {
     left: -0.27em;
@@ -1288,7 +1288,7 @@ border-right: var(--col2-border) solid auto!important;
 }
 #topbartogglebtn span:last-of-type {
     right: -0.27em;
-    transform: rotate(-45deg);
+    transform: rotate(135deg);
 }
 /* TOP-HORIZONTAL BAR */
 #top_horizontal_bar{
@@ -1704,6 +1704,8 @@ input:focus {
 }
 .darkmode * {
     color:var(--buttons-txtcolor)!important;
+    color:white!important;
+    color:rgb(255, 255, 243)!important;
     border-color: var(--darkmode-border)!important;
 }
 .darkmode #topbartogglebtn,
@@ -1778,6 +1780,11 @@ input:focus {
 }
 .darkmode .magnifying_glass:before {
     background: white;
+}
+.darkmode span[class^=v_]:hover,
+.darkmode span.vmultiple:hover {
+    background-color: var(--vmultiple-hover)!important;
+    background-color: transparent!important;
 }
 .verse_note td,
 .verse_note th {

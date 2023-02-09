@@ -267,3 +267,6 @@ body.darkmode #sidebar_togglebtn span {
         border-bottom: 1px solid grey;
     }
 }
+td, tr {
+    border:2px solid grey;
+}

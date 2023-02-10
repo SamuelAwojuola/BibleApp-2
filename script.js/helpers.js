@@ -351,7 +351,7 @@ function windowsSelection(){
 /* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
 /* ********************************************* */
 function codeELmRefClick(e) {
-    if (e.target.tagName == "CODE") {
+    if (e.target.tagName == "CODE" && !e.target.matches('.cmtitlebar>code')) {
         let codeElm = e.target;
         
         // If it is the verseNotePage and not the index.html.

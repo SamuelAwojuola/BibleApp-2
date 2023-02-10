@@ -145,14 +145,14 @@ function add_tooltipContextMenu(e) {
                     originalWord = e.target.parentElement.getAttribute("translation")
                 }
                 let menu_inner;
+                let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
+                let searchicon = 'search-svgrepo-com(2).svg';
+                if(document.body.matches('.darkmode')){
+                    searchicon = 'search-svgrepo-com(2)-DarkMode.svg';
+                }
                 if (originalWord) {
-                    let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
                     let xlitNlemma = '',
                     br = '';
-                    let searchicon = 'search-svgrepo-com(2).svg';
-                    if(document.body.matches('.darkmode')){
-                        searchicon = 'search-svgrepo-com(2)-DarkMode.svg';
-                    }
                     for (let i = 0; i < arrOfStrnums.length; i++) {
                         br = '', st = '';
                         if(i==arrOfStrnums.length-1){br = '<br>'}
@@ -170,12 +170,14 @@ function add_tooltipContextMenu(e) {
                     }
                     context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}`;
                 } else if (e.type == 'contextmenu') { // For strongs number in verseNote
-                    context_menu.innerHTML = newStrongsDef;
+                    let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
+                    context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}</div>`;
+                    // context_menu.innerHTML = newStrongsDef;
                     // context_menu.querySelector('hr').remove();
-                    let h2relocate = context_menu.querySelector('h2');
-                    let h2clone = h2relocate.cloneNode(true);
-                    h2relocate.remove();
-                    context_menu.querySelector('.strngsdefinition').prepend(h2clone)
+                    // let h2relocate = context_menu.querySelector('h2');
+                    // let h2clone = h2relocate.cloneNode(true);
+                    // h2relocate.remove();
+                    // context_menu.querySelector('.strngsdefinition').prepend(h2clone)
                 }
                 if (strnum = e.target.getAttribute('strnum')) {
                     context_menu.setAttribute('strnum', strnum)

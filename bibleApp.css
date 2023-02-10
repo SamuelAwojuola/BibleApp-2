@@ -1157,7 +1157,7 @@ span.vmultiple.noted code {
     box-sizing:border-box;
     font-weight:bolder;
     font-style:italic;
-    border-bottom: 3px solid var(--orangered);
+    border-bottom: 3px solid var(--brown)!important;
     text-decoration:none!important;
 }
 span.vmultiple.noted code #verse_notes_button {

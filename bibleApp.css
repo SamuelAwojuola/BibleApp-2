@@ -187,8 +187,8 @@ code{position: relative; padding-top: 5px;}
 #show_crossref_comments button:not(:first-child){
     margin-left: 2px;
 }
-.showing_crossref #verse_crossref_button,
-.showing_versenote #verse_notes_button{
+.showing_crossref .verse_crossref_button,
+.showing_versenote .verse_notes_button{
     background: var(--greenish);
     font-style: italic;
 }
@@ -198,19 +198,27 @@ code{position: relative; padding-top: 5px;}
 .crossrefs{
     position: relative;
     padding: 5px 5px 0 5px;
-    background: var(--whitesmoke);
+    /* background: var(--whitesmoke); */
+    /* box-shadow: inset 0 1px 1px var(--black); */
     overflow: hidden;
     font-size: var(--fontsize-main);
     transition: max-height .2s ease-in-out;
     min-height: 10px;
     max-height: 500px;
-    margin-bottom:5px;
+    /* margin-bottom:5px; */
     line-height: auto;
     opacity: 1;
     /* z-index: 2; */
 }
 .crfnnote {
+    margin-bottom: 5px;
+    box-shadow: 0 2px 2px var(--black),0 0 1px var(--black);
+    position: relative;
     overflow: hidden;
+    z-index: 1;
+}
+.showing_crossref .crfnnote {
+    box-shadow: 0 1px 1px var(--grey);
 }
 #verse_note{display: none; position: relative;}
 .verse_note {
@@ -603,9 +611,16 @@ span.vmultiple:hover {
     transition: background 0.05s ease-in-out;
     border-radius: 0.25em;
 }
-span.verse:hover:not(.vhlt){
-    background-color: var(--verse-hover);
+#searchPreviewFixed span.verse {
+    box-shadow: 0px 2px 0px 0px var(--grey);
+    padding-bottom: 5px;
+    margin-right: 0px;
+}
+#searchPreviewFixed span.verse:hover:not(.vhlt){
     cursor: pointer;
+    box-shadow: inset 2px 0px 2px 0px var(--grey),inset -2px 0px 2px 0px var(--grey);
+    box-shadow:0px 1px 0px 0px var(--grey);
+    border-radius: 0;
 }
 .crossrefs+.span.vmultiple{
     z-index: -4;
@@ -1035,9 +1050,9 @@ summary {
     width: 400px;
 }
 #searchPreviewWindowFixed #context_menu {
-    left: 0em!important;
-    right: 0em!important;
-    width: calc(100% - 0.5em);
+    left: 5px!important;
+    right: 5px!important;
+    width: calc(100% - 10px)!important;
 }
 #searchparameters div:last-child {
     display: block;
@@ -1089,9 +1104,9 @@ summary {
     font-weight: bolder;
     margin: 0;
 }
-#searchPreviewFixed .chptheading+.verse {
+/* #searchPreviewFixed .chptheading+.verse {
     margin-top: 5px;
-}
+} */
 #searchdiv_fixed {
     display: flex;
     width: 100%;
@@ -1211,6 +1226,9 @@ span.vmultiple.noted code #verse_notes_button {
 }
 #refnav_col2, #togglenavbtn {
 border-right: var(--col2-border) solid auto!important;
+}
+#refnav_col2 {
+    box-shadow: inset -2px 0 0 0 var(--black);
 }
 #refnav_col2 > .slidein.displaynone{
     display: null!important;
@@ -1597,7 +1615,20 @@ input:focus {
 .crfnnote_btns {
     position: relative;
     display: flex;
+    background: var(--ref-img);
+    box-shadow: 0 2px 4px var(--black);
     z-index: 3;
+    position: relative;
+}
+
+.crfnnote_btns::before{
+    display: block;
+    content: '';
+    background-color: var(--verse-higlight);
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    z-index: -1;
 }
 #singleverse_compare_menu {
     display: flex;

@@ -293,9 +293,19 @@ function transliterateWordsOnDoubleClick(e) {
 const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);
 main.addEventListener("click", strongs_dblclick_prevent)
 document.addEventListener("click", togglePinDetails)
+document.addEventListener("contextmenu", togglePinDetails)
 function togglePinDetails(e){
-    if(e.target.matches('.strngsdefinition h5, .strngsdefinition h6, #strongsdefinition_text h5,#strongsdefinition_text h6')){
-        slideUpDown(e.target.nextElementSibling)
+    let h5s = '.strngsdefinition h5, .strngsdefinition h6, #strongsdefinition_text h5,#strongsdefinition_text h6';
+    if(e.target.matches(h5s)){
+        if(e.type=='click'){
+            slideUpDown(e.target.nextElementSibling)
+        }
+        else if(e.type=='contextmenu'){
+            let strDefh5h6 = elmAhasElmOfClassBasAncestor(e.target, '.strngsdefinition').querySelectorAll(h5s)
+            strDefh5h6.forEach(h56=>{
+                slideUpDown(h56.nextElementSibling)
+            })
+        }
     }
 }
 

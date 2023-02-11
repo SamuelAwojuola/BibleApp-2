@@ -477,9 +477,9 @@ function enableInteractJSonEl(dragTarget, elmAffected) {
         var target = event.target
         // keep the dragged position in the data-x/data-y attributes
         var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy
-        // var context_menu = document.querySelector('#context_menu');
-
+        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy        
+        // Always Make ContextMenu translateX Equal ZERO While in #searchPreviewFixed 
+        if(elmAhasElmOfClassBasAncestor(elmAffected,'#searchPreviewFixed')){x=0}
         // translate the element
         elmAffected.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
 

@@ -740,24 +740,30 @@ function slideUpDown(elm, upOrDown){
 
     // SHOW It If It is Hidden
     if(upOrDown=='show'|| elm.classList.contains('sld_up')){
+        if(elm.style.zIndex == ''||elm.style.zIndex > '-1'){
+            elm.style.zIndex = '-1'
+        }
         elm.style.display = '';
         // elm.style.display = elm.getAttribute('display');
+        elm.style.opacity = 1;
         setTimeout(() => {
-            elm.style.opacity = 1;
             elm.classList.remove('sld_up')
             elm.style.position = '';
             elm.style.marginTop = '0';
-            elm.style.zIndex = '';
         }, 1);
+        setTimeout(() => {
+            elm.style.zIndex = '';
+        }, animDuration);
+
     }
     // HIDE It If It Is Showing
     else {
         elm.classList.add('sld_up')
         elm.style.marginTop = '-' + tMargin + 'px';
+        elm.style.opacity = 0;
         elm.style.zIndex = -1;
         elm.setAttribute('display', elm.style.display);
         elm.setAttribute('anim_dur', animDuration);
-        elm.style.opacity = 0;
         slideUpDownTimer = setTimeout(() => {
             elm.style.setProperty('display', 'none', 'important');
         }, animDuration);

@@ -55,7 +55,8 @@ function appendCrossReferences(e) {
                 masterVerseHolder.classList.add('showing_crossref')
                 vHolder = masterVerseHolder;
                 if (refCode){
-                    siblingCrossREF = generateCrossRefsFromRefCode(refCode)
+                    siblingCrossREF = generateCrossRefsFromRefCode(refCode);
+                    siblingCrossREF.style.zIndex = -1;
                     setTimeout(() => {slideUpDown(siblingCrossREF)}, 1);
                     setTimeout(()=>{siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"})},300)
                 }
@@ -75,35 +76,22 @@ function appendCrossReferences(e) {
         vHolder = e.target.parentNode;
         if(siblingCrossREF = crfnnoteHolder.querySelector('.crossrefs')){
             // If hidden show it
-            if(siblingCrossREF.classList.contains('shwincrf')){
-                siblingCrossREF.classList.remove('shwincrf')
-                siblingCrossREF.style.opacity = 1;
+            if(siblingCrossREF.classList.contains('sld_up')){
+                slideUpDown(siblingCrossREF, 'show')
                 verseInSearchWindow.classList.add('showing_crossref')
-                siblingCrossREF.style.marginTop = '';
-                setTimeout(()=>{
-                    siblingCrossREF.style.zIndex = '';
-                    siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"});
-                }, 300);
+                siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"});
             }
-            // If showing, hide it
+            // // If showing, hide it
             else {
-                siblingCrossREF.classList.add('shwincrf')
-                siblingCrossREF.style.marginTop = '-' + siblingCrossREF.getBoundingClientRect().height + 'px';
-                setTimeout(()=>{
-                    verseInSearchWindow.classList.remove('showing_crossref')
-                    siblingCrossREF.style.opacity = 0;
-                }, 100);
+                slideUpDown(siblingCrossREF)
+                verseInSearchWindow.classList.remove('showing_crossref')
             }
         }
         else {
             verseInSearchWindow.classList.add('showing_crossref')
             generateCrossRefsFromRefCode(refCode, 1)
             siblingCrossREF = crfnnoteHolder.querySelector('.crossrefs')
-            setTimeout(() => {
-                siblingCrossREF.style.transition = 'all 0.3s ease-in-out';
-                siblingCrossREF.style.opacity = 1;
-                siblingCrossREF.style.marginTop = '';
-            }, 10);
+            setTimeout(()=>{slideUpDown(siblingCrossREF)},1);
         }
     }
     function generateCrossRefsFromRefCode(refCode, transition){

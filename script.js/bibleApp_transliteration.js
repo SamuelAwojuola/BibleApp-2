@@ -209,7 +209,11 @@ function highlightAllStrongs(x) {
     function highlightArrOfStrNum(xxx){
         xxx.forEach(stnum => {
             let ruleSelector= `span[strnum].${stnum}`;
-            cs = `span[strnum].${stnum}{background-color:transparent;box-shadow:0 -1.05em 0px 0px ${rc} inset;border-radius:2px;color:black!important;transition: box-shadow .1s ease-in;`;
+            cs = `span[strnum].${stnum}{
+                    background-color:${rc};
+                    border:1px solid grey;
+                    color:black!important;
+                    transition: background-color .3s ease-in;`;
 
             //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
             if (document.querySelector('style#highlightstrongs')) {//IF HIGHLIGHTSTRONGS STYLESHEET ALREADY EXISTS
@@ -364,14 +368,12 @@ main.addEventListener('mouseover', function (e) {
         newStyleInHead.id = 'highlightall';
         // newStyleInHead.innerHTML = `${transStyleSelector}{background-color:var(--chpt);border-radius:2px;border-bottom: 1px solid rgb(151, 116, 0);color:black!important;`;
         if(highlightColor=='none'){highlightColor='var(--strongword-hover)'}
-        // box-shadow:0 -1.07em 0px 0px ${highlightColor} inset,0 5px 5px -2px var(--shadow-orange)!important;
         newStyleInHead.innerHTML = `${transStyleSelector}{
-            box-shadow:-5px 0 0 -10px var(--shadow-orange),5px 0 0 -10px var(--shadow-orange), 0 -1.1em 0 0 var(--shadow-orange) inset !important;
-            border-radius:5px;
-            border-bottom:3px solid maroon !important;
+            background-color:var(--shadow-orange)!important;
+            border-bottom:2px solid maroon!important;
+            border:1px solid grey;
             color:black!important;
-            color:black!important;
-            transition: box-shadow .1s ease-in;
+            transition: background-color 0.3s ease-in;
             `;
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);

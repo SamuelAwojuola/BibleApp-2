@@ -213,6 +213,7 @@ code{position: relative; padding-top: 5px;}
 .crfnnote {
     margin-bottom: 5px;
     box-shadow: 0 2px 2px var(--black),0 0 1px var(--black);
+    box-shadow: 0 2px 1px var(--black);
     position: relative;
     overflow: hidden;
     z-index: 1;

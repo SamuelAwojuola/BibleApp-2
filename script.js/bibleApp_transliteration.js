@@ -211,9 +211,9 @@ function highlightAllStrongs(x) {
             let ruleSelector= `span[strnum].${stnum}`;
             cs = `span[strnum].${stnum}{
                     background-color:${rc};
-                    border:1px solid grey;
+                    box-shadow: 0px 0px 0px 1px grey;
                     color:black!important;
-                    transition: background-color .3s ease-in;`;
+                    transition: all 0.3s ease-in;`;
 
             //CREATE THE INNER-STYLE WITH ID #highlightstrongs IN THE HEAD IF IT DOESN'T EXIST
             if (document.querySelector('style#highlightstrongs')) {//IF HIGHLIGHTSTRONGS STYLESHEET ALREADY EXISTS
@@ -371,9 +371,9 @@ main.addEventListener('mouseover', function (e) {
         newStyleInHead.innerHTML = `${transStyleSelector}{
             background-color:var(--shadow-orange)!important;
             border-bottom:2px solid maroon!important;
-            border:1px solid grey;
+            box-shadow: 0px 0px 0px 1px grey;
             color:black!important;
-            transition: background-color 0.3s ease-in;
+            transition: all 0.3s ease-in;
             `;
         let headPart = document.getElementsByTagName('head')[0];
         headPart.append(newStyleInHead);

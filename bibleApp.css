@@ -600,8 +600,16 @@ button:not(:disabled):hover {
 #ppp>span.verse:last-child {
     padding-bottom: 20px;
 }
-[strnum] {
+span[strnum] {
     cursor: pointer;
+    position: relative;
+    border-radius: 3px!important;
+}
+span[strnum]:hover {
+    z-index: 1;
+}
+span[strnum] > span[strnum] {
+    border: none;
 }
 /* span.vmultiple {
     position: relative;
@@ -610,7 +618,7 @@ button:not(:disabled):hover {
 span.verse:hover:not(.vhlt),
 span.vmultiple:hover {
     transition: background 0.05s ease-in-out;
-    border-radius: 0.25em;
+    border-radius: 0.1em;
 }
 #searchPreviewFixed span.verse {
     box-shadow: 0px 2px 0px 0px var(--grey);

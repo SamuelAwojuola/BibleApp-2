@@ -204,7 +204,17 @@ function add_tooltipContextMenu(e) {
                     cmtitlebar.innerHTML = cmtitletext + `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button>`;
                     context_menu.append(cmtitlebar);
                 }
-                context_menu.append(getCrossReference(e.target));
+                let vHolder = getCrossReference(e.target);
+                /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
+                // let crfnnote_DIV = document.createElement('DIV');
+                // crfnnote_DIV.classList.add('crfnnote');
+                // crfnnote_DIV.innerHTML = '<div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button><button class="buttons verse_notes_button">Note</button></div>';
+                // vHolder.querySelector('span').classList.add('verse');
+                // vHolder.querySelector('span').append(crfnnote_DIV);
+
+                context_menu.append(vHolder);
+                // context_menu.append(getCrossReference(e.target));
+                
                 if (strnum = e.target.getAttribute('strnum')) {
                     context_menu.setAttribute('strnum', strnum)
                 } else {

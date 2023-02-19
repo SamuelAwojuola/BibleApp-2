@@ -161,6 +161,10 @@ function general_EscapeEventListener(){
             if(document.querySelector('#context_menu') && context_menu.matches('.slidein')){
                 hideRightClickContextMenu();
             }
+            // Hide 
+            else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
+                prev_vmrkoptm.remove()
+            }
             // Stop editing verseNote
             else if (document.activeElement.matches('#noteEditingTarget')) {
                 let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');

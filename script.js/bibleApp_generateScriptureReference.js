@@ -45,6 +45,7 @@ function getTextOfChapterOnScroll(xxx, prependORnot, adjustScrolling) {
     var old_scrollheight = main.scrollHeight; //store document height before modifications
     let wholeChapterFragment = new DocumentFragment();
     wholeChapterFragment.prepend(generateChapter(xxx));
+    wholeChapterFragment.querySelectorAll('.vmultiple');
     prependORappendChapters(prependORnot, wholeChapterFragment);
     // getBksChptsNum(clickCurrentBook(xxx).book);
     if (adjustScrolling) {
@@ -90,6 +91,14 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     }
     indicateThatVerseHasNoteInJSONnotes_file()//This indicates verses with notes in the database
     // indicateThatVerseHasNoteInIndxDB();
+    generateAllMarkers()
+}
+async function generateAllMarkers(){
+    let allVmultiple = main.querySelectorAll('.vmultiple')
+    for (let i = allVmultiple.length-1; i > 0; i--) {
+        const vmultiple = allVmultiple[i];
+        await appendAllAvialableMarkersToVMultiple(vmultiple, true)
+    }
 }
 
 function prependORappendChapters(prependORnot, what_to_append) {
@@ -268,7 +277,7 @@ function parseVerseText(vT, verseSpan) {
             if (wString.length == 1) {
                 let spacebtwwords = ' ';
                 // Check if last string of string is a punctuation that should be followed by a space
-                if (([".", ",", ":", ";", "?", "]"].includes(wString[0][0]) == true)) {
+                if (([".", ",", ":", ";", "?", "]", ")"].includes(wString[0][0]) == true)) {
                     spacebtwwords = '';
                 }
 
@@ -324,7 +333,7 @@ function parseVerseText(vT, verseSpan) {
             // if(/<\/i>/i.test(wStringREGEXED)){
             //     console.log('emE')
             // }
-            verseSpan.innerHTML = verseSpan.innerHTML.replace(/<\/sup> /g, '</sup>');
+            verseSpan.innerHTML = verseSpan.innerHTML.replace(/<\/sup> /g, '</sup>').replace(/(([\(\[])\s*)/g, '$2').replace(/NaN/g, '');
             // if (i == vT.lenth - 1) {
             //     console.log(wString)
             // }
@@ -406,7 +415,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
         verseSpan = parseVerseText(vText, verseSpan);
         if (bibleVersionName) {
             verseSpan.classList.add(`v_${bibleVersionName}`);
-            verseSpan.classList.add(`hello_there`);
+            // verseSpan.classList.add(`hello_there`);
             if (bible.isRtlVersion(bibleVersionName, bookName) == true) {
                 verseSpan.classList.add('rtl');
                 verseNum.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bibleVersionName}`));

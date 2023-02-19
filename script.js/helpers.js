@@ -3,9 +3,6 @@ let refnav = document.querySelector('#refnav');
 
 function clog(x){console.log(x);console.trace(x)}
 /* GENERAL HELPER FUNCTIONS */
-function isObject(objValue) {
-    return objValue && typeof objValue === 'object' && objValue.constructor === Object;
-}
 
 /* Ensure doublick does not run click eventListner */
 function debounce(func, timeout = 300) {
@@ -28,17 +25,6 @@ function debounce(func, timeout = 300) {
     }
 }
 
-function removeItemFromArray(n, array) {
-    const index = array.indexOf(n);
-
-    // if the element is in the array, remove it
-    if (index > -1) {
-
-        // remove item
-        array.splice(index, 1);
-    }
-    return array;
-}
 
 /* Remove single string or array of strings from a string */
 function removeCharacterFromString(xh, str) {
@@ -399,14 +385,6 @@ function refDetails4rmCodeElm(codeElm){
 //     });
 // }
 
-/* SORT OBJECTS */
-// function sortObj(obj) {
-//     return Object.keys(obj).sort().reduce(function (result, key) {
-//         result[key] = obj[key];
-//         return result;
-//     }, {});
-// }
-
 //Random Color Generator
 function randomColor(brightness) {
     function randomChannel(brightness) {
@@ -416,32 +394,6 @@ function randomColor(brightness) {
     return (s.length == 1) ? '0' + s : s;
     }
     return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
-}
-
-function isAsubArrayofB(a, b) {
-    let aL = a.length;
-    let bL = b.length;
-    //b cannot contain a if a is longer
-    if (bL >= aL) {
-        // start comparison where at the last possible starting point of a in b.
-        // E.g., if aL is 3 and bL is 5, then the last possible starting point of a in b is 2
-        let lastPossibleStartIndex = bL - aL;
-        let lind = lastPossibleStartIndex;
-        while (lind >= 0) {
-            let i = 0,
-            j = lind;
-            while (a[i] == b[j]) {
-                if (i == aL - 1) {
-                    return true
-                }
-                i++;
-                j++;
-            }
-            lind--; //move backwards in b array from last possible index to the start of b
-        }
-        return false
-    }
-    return false
 }
 
 function areAllitemsOfAinB(a, b) {
@@ -598,7 +550,9 @@ function ensureInView(container, element) {
 }
 /* ***************************************************** */
 /* USING THE FILE SYSTEM ACCESS API --(WORKS ONLY IN CHROMIUM BASED BROWSERS, E.G., EDGE, CHROME)*/
-function saveToLocalDrive(file_text_content, fileName, format='json') {
+let prevBknAndFilehandle={"bkn":null,"filehandle":null}
+async function saveToLocalDrive(file_text_content, fileName, format='json') {
+    lifeIsGood = false;
     if (!file_text_content.replace(/\s\n\r/g, '').length){
         // I am trying to prevent it from saving an empty file
         // It will only work if the "file_text_content" being empty is what makes it to sometimes save empty files 
@@ -609,7 +563,7 @@ function saveToLocalDrive(file_text_content, fileName, format='json') {
     let fileHandle;
     if(!fileName){
       // It works by default for saving verseNotes 
-      fileName = `notes_${bookName}.json`; //File name should be bookName with .json extension, e.g., Romans.json
+      fileName = `notes_${currentBookName}.json`; //File name should be bookName with .json extension, e.g., Romans.json
     }
     const pickerOpts = {
       suggestedName: fileName, // `note_Romans.json`
@@ -630,34 +584,50 @@ function saveToLocalDrive(file_text_content, fileName, format='json') {
       let fileData = await fileHandle.getFile();
       let fileText = await file_text_content;
     }
+
     // Save to file
     async function saveFile() {
-        if (!fileHandle) {
-          saveFileAs();
-        } else {
-          let stream = await fileHandle.createWritable(pickerOpts);
-          // ensure it is not empty
-          let jvnd = file_text_content;
-          // clog(jvnd.length);
-          if ((jvnd == false) || (jvnd == undefined) || (jvnd == null)) {
-            alert('FILE IS EMPTY!! err1');
-            return
-          } else if ((jvnd == "") || jvnd.trim().length == 0) {
-            alert('FILE IS EMPTY!! err2');
-            return
-          } else {
-            // clog("File is fine")
-          }
-          await stream.write(file_text_content)
-          await stream.close()
-      }
+        if ((prevBknAndFilehandle.bkn != currentBookName)||(prevBknAndFilehandle.filehandle==null)) {
+            let successStatus = await saveFileAs();
+            console.log(successStatus)
+            if(successStatus==false){
+                return false
+            }
+        } else {actualSaveFile()}
+        
+        async function actualSaveFile(){
+            fileHandle=prevBknAndFilehandle.filehandle;
+            let stream = await fileHandle.createWritable(pickerOpts);
+            await stream.write(file_text_content);
+            await stream.close();
+            console.log('SaveFile Complete')
+            return true
+        }
+
+        async function saveFileAs() {
+            try {
+                fileHandle = await window.showSaveFilePicker(pickerOpts);
+                // Save the filehandle against its bookName
+                prevBknAndFilehandle.bkn=currentBookName;
+                prevBknAndFilehandle.filehandle=fileHandle;
+                console.log(fileHandle);
+                if(await fileHandle){actualSaveFile()}
+                // saveFile()
+                return true
+            } catch (ex) {
+                if (ex.name === 'AbortError') {
+                    console.log('🔔 Save Operation Aborted!');
+                    // alert('🔔 Save Operation Aborted!');
+                    return false
+                }
+                const msg = 'An error occured trying to open the file.';
+                console.error(msg, ex);
+                alert(msg);
+            }
+        }
     }
-    
-    async function saveFileAs() {
-        fileHandle = await window.showSaveFilePicker(pickerOpts);
-        saveFile()
-    }
-    return saveFile()
+        
+    return await saveFile()
 }
 /* DOWNLOAD MODIFIED JSON FILE */
 /* function downloadFile(text_data, name = "myData", format = "json") {
@@ -739,7 +709,7 @@ function slideUpDown(elm, upOrDown){
     elm.style.transition = 'all ' + animDuration/1000 + 's ease-in-out';
 
     // SHOW It If It is Hidden
-    if(upOrDown=='show'|| elm.classList.contains('sld_up')){
+    if(upOrDown=='show'|| upOrDown=='down'||elm.classList.contains('sld_up')){
         if(elm.style.zIndex == ''||elm.style.zIndex > '-1'){
             elm.style.zIndex = '-1'
         }
@@ -769,4 +739,174 @@ function slideUpDown(elm, upOrDown){
         }, animDuration);
     }
     return animDuration
+}
+
+/* CREATE ELEMENT */
+function createNewElement(elmTagName,classIdAttr){
+    /*
+    This function can take any number of parameters (arguments)
+    However, the first one must be the name of the element
+    The others will be class name, id, and/or attribute
+        * classes must start with a dot ('.')
+        * ids must start with a dot ('#')
+        * attributes must be enclosed in square brackets ('[]')--[attribute="value"]
+    */
+    let newElm=document.createElement(elmTagName);
+
+    for (var i = 1; i < arguments.length; i++) {
+        let currentParam = arguments[i].trim();
+        // Replace Spaces With Underscore
+        currentParam = currentParam.replace(/\s+/g,'_');
+		// For classes
+        if(/^\./.test(currentParam)){
+            let className = currentParam.replace(/^\./,'');
+            newElm.classList.add(className)
+        }
+		// For ids
+        else if(/^#/.test(currentParam)){
+            let iD = currentParam.replace(/^#/,'');
+            newElm.id = iD;
+        }
+		// For ids
+        else if(/^\[.+\]/.test(currentParam)){
+            let attrNvalue = currentParam.replace(/^\[(.+)\]/,'$1').replace(/["']/g,'');
+            let attr = attrNvalue.split('=')[0];
+            let val = attrNvalue.split('=')[1];
+            newElm.setAttribute(attr,val);
+        }
+        else{
+            let className = currentParam;
+            newElm.classList.add(className)
+        }
+	}
+    return newElm
+}
+
+/* Markers Input Autocomplete from available markers */
+function autocomplete(e) {
+    // function autocomplete(input, arr) {
+    //Close the existing list if it is open
+    closeList();
+    let inputElm=e.target;
+    let arr = arrOfAllVerseMarkersInBook;
+    let currentFocus;
+
+    //If the input is empty, exit the function
+    if (!inputElm.value)return;
+    currentFocus = -1;
+
+    //Create a autocomplete_items <div> and add it to the element containing the input field
+    let autocomplete_items = document.createElement('div');
+    autocomplete_items.setAttribute('id', 'autocomplete_items');
+    inputElm.parentNode.appendChild(autocomplete_items);
+
+    //Iterate through all entries in the list and find matches
+    for (let i=0; i<arr.length; i++) {
+        if (arr[i].toUpperCase().includes(inputElm.value.toUpperCase())) {
+            //If a match is found, create a suggestion <div> and add it to the autocomplete_items <div>
+            suggestion = document.createElement('div');
+            suggestion.innerText = arr[i];            
+            suggestion.addEventListener('click', function () {
+                inputElm.value = this.innerText;
+                inputElm.focus();
+                closeList();
+            });
+            autocomplete_items.appendChild(suggestion);
+        }
+    }
+
+
+    /*execute a function presses a key on the keyboard:*/
+    inputElm.addEventListener("keydown", function(e) {
+        let x;
+        if (autocomplete_items){x = autocomplete_items.getElementsByTagName("div");}
+        // arrow DOWN key
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+        }
+        // arrow UP key
+        else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+        }
+        // ENTER key
+        else if (e.keyCode == 13) {
+            if (currentFocus > -1) {
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /* classify an item as "active":*/
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        x[currentFocus].classList.add("autocomplete_active");
+    }
+    function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete_active");
+        }
+    }
+
+    
+    function closeList() {
+        let autocomplete_items = document.getElementById('autocomplete_items');
+        if (autocomplete_items)
+            autocomplete_items.parentNode.removeChild(autocomplete_items);
+    }
+}
+
+/* ARRAYS */
+function removeItemFromArray(n, array) {
+    const index = array.indexOf(n);
+    // if the element is in the array, remove it
+    if (index > -1) {
+        // remove item
+        array.splice(index, 1);
+    }
+    return array;
+}
+function isAsubArrayofB(a, b) {
+    let aL = a.length;
+    let bL = b.length;
+    //b cannot contain a if a is longer
+    if (bL >= aL) {
+        // start comparison where at the last possible starting point of a in b.
+        // E.g., if aL is 3 and bL is 5, then the last possible starting point of a in b is 2
+        let lastPossibleStartIndex = bL - aL;
+        let lind = lastPossibleStartIndex;
+        while (lind >= 0) {
+            let i = 0,
+            j = lind;
+            while (a[i] == b[j]) {
+                if (i == aL - 1) {
+                    return true
+                }
+                i++;
+                j++;
+            }
+            lind--; //move backwards in b array from last possible index to the start of b
+        }
+        return false
+    }
+    return false
+}
+
+/* OBJECTS  */
+function isObject(objValue) {
+    return objValue && typeof objValue === 'object' && objValue.constructor === Object;
+}
+// DEEP COPY OBJECTS
+function deepCopyObj(obj){
+    return JSON.parse(JSON.stringify(obj));
+}
+// SORT OBJECTS
+function sortObj(obj) {
+    return Object.keys(obj).sort().reduce(function (result, key) {
+        result[key] = obj[key];
+        return result;
+    }, {});
 }

@@ -265,7 +265,7 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
     if(bible_book.markers){
       for (key in bible_book.markers) {
         let bookMarkerObj = bible_book.markers[key];
-        if (Object.keys(bookMarkerObj).length > 0) {
+        if (document.body.matches('homepage') && Object.keys(bookMarkerObj).length > 0) {
           for (ky in bookMarkerObj) {
             addKeyToArrayOfAllVerseMarkers(key)
           }

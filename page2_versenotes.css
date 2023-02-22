@@ -83,6 +83,13 @@ span[ref]:hover, .strnum:hover {
 #context_menu {
     font-size: 1em;
 }
+#context_menu .verse {
+    display: block;
+}
+#context_menu .verse_crossref_button {
+    font-size: 0.7em;
+    padding-top: 0;
+}
 summary, #context_menu summary {
     background: rgb(250, 255, 200);
     background: #f6f6e3;

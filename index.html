@@ -85,7 +85,7 @@
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search"></button>
         </button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
-        <button id="available_notes" onclick="appendAllRefsWithNote(), hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
@@ -122,7 +122,7 @@
                 checked><label for="searchresultdisplay">Show search results in this window only</label><br>
               <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"
                 checked><label for="showreturnedverses">Show all verses</label><br>
-              <input type="checkbox" id="keepsearchopen" name="keepsearchopen" value="keep search open"><label for="keepsearchopen">Cancel Search Autohide</label>
+              <input type="checkbox" id="keepsearchopen" name="keepsearchopen" value="keep search open" onchange="if(!this.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}"><label for="keepsearchopen">Cancel Search Autohide</label>
             </span>
             <div id="totalfound"></div>
           </div>
@@ -135,31 +135,37 @@
               <tr>
                 <td>English</td>
                 <td>
-                  <button id="show_eng_superscript" onclick="engnXlit_supscript('eng')"><input type="checkbox" id="showEnSup_check" name="showEnSup_check" value="showEnSup_check">OFF</button>
+                  <button class="eng2grk_sup_btns" id="show_eng_superscript" onclick="engnXlit_supscript('eng')"><input type="checkbox" id="showEnSup_check" name="showEnSup_check" value="showEnSup_check">OFF</button>
                 </td>
               </tr>
               <tr>
                 <td>Heb/Grk</td>
                 <td>
-                  <button id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
+                  <button class="eng2grk_sup_btns" id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
                 </td>
               </tr>
               <!-- <tr>
                 <td>Tooltip on Hover</td>
                 <td>
-                  <button id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check"checked>Tt</button>
+                  <button class="eng2grk_sup_btns" id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check"checked>Tt</button>
                 </td>
               </tr> -->
               <tr>
                 <td>Hovered Version</td>
                 <td>
-                  <button id="hl_hoveredversion" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
+                  <button class="eng2grk_sup_btns" id="hl_hoveredversion" onclick="versionHighlighting_ON_OFF()" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
                 </td>
               </tr>
               <tr>
                 <td>Scroll TO Verse</td>
                 <td>
-                  <button id="scrollToVerseBtn" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
+                  <button class="eng2grk_sup_btns" id="scrollToVerseBtn" onclick="checkUncheck(scrollToVerseBtn_check)" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
+                </td>
+              </tr>
+              <tr>
+                <td>CrossRefs In Tooltip</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">CRef</button>
                 </td>
               </tr>
             </table>
@@ -296,12 +302,20 @@
       <div id="show_crossref_comments" class="displaynone">
         <button class="buttons" id="verse_crossref_button">TSK</button>
         <button class="buttons" id="verse_notes_button">Note</button>
+        <button class="buttons" id="verse_marker_button" onclick="show_v_grp(this)">Markers</button>
       </div>
       <div id="ppp"></div>
         <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->
     </main>
   </div>
   <div id="singleverse_compare_menu" class="displaynone"></div>
+  <!-- <div id="vmarker_options_menu" class="displaynone">
+    <h4>Generate Report</h4>
+    <button id="vmarker_single_report" onclick="generateVmarkerReport(single)" placeholder="generate report for this marker">Single Marker</button>
+    <button id="vmarker_all_report" onclick="generateVmarkerReport(all)" placeholder="generate report for all markers in this book">All Markers</button>
+    <h4>Modify</h4>
+    <button id="vmarker_delete" onclick="deleteVmarkerReport()">Delete</button>
+  </div> -->
 
   <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
   <div name="verse_note" id="verse_note" class="verse_note">
@@ -341,6 +355,7 @@
 <script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseMarkers.js" charset="utf-8"></script>
 <!-- <script src="/install-prompt.js"></script> -->
 
 </html>

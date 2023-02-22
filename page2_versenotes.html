@@ -26,9 +26,10 @@
             <span></span>
             <span></span>
         </button>
+        <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">CRef</button>
     </div>
       <div id="col1">
-        <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button>
+        <!-- <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button> -->
         <div id="bibleapp_available_notes" class=""></div>
     </div>
     <div id="col2">
@@ -46,6 +47,7 @@
 <script src="script.js/helpers.js"></script>
 <script src="script.js/bibleApp_page2.js" charset="utf-8"></script>
 <script src="data/bible.js"></script>
+<script src="data/bibleApp_reKeyedCrossReference.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_contextMenu_mainFunc.js"></script>
 <script src="script.js/bibleApp_contextMenu_notesPage.js"></script>
 <script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
@@ -61,7 +63,7 @@
 <script>
     function toggleCol2(){
         bibleapp_available_notes.classList.toggle('slideout');
-        available_notes.classList.toggle('slideout');
+        // available_notes.classList.toggle('slideout');
         sidebar_togglebtn.classList.toggle('active_button')
     }
     
@@ -77,7 +79,12 @@
     // });
     
     function toggleDarkLightMode(cls){
-        document.querySelector('body').classList.toggle(cls)
+        document.querySelector('body').classList.toggle(cls);
+        if(document.body.matches('.darkmode')){localStorage.setItem('darkmode','true')}
+        else {localStorage.removeItem('darkmode')}
+    }
+    if (localStorage.getItem('darkmode')) {
+        document.body.classList.add('darkmode')
     }
 </script>
 </html>

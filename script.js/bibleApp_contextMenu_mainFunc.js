@@ -15,7 +15,7 @@ function createNewContextMenu(){
         context_menu_replacement.classList.add('context_menu');
         context_menu_replacement.classList.add('slideout');
         main.prepend(context_menu_replacement);
-        context_menu.addEventListener("click", codeELmRefClick);
+        context_menu.addEventListener("click", codeElmRefClick);
     }
 }
 // Check if it is index page or verseNotes page
@@ -80,7 +80,7 @@ function add_tooltipContextMenu(e) {
                     let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
                     document.querySelector('#context_menu').remove()
                     eParent.append(clonedContextMenu)
-                    clonedContextMenu.addEventListener("click", codeELmRefClick)
+                    clonedContextMenu.addEventListener("click", codeElmRefClick)
                 }
             }
             /* Append to verse */
@@ -115,7 +115,7 @@ function add_tooltipContextMenu(e) {
                     let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
                     main.querySelector('#context_menu').remove()
                     eParent.append(clonedContextMenu)
-                    clonedContextMenu.addEventListener("click", codeELmRefClick)
+                    clonedContextMenu.addEventListener("click", codeElmRefClick)
                 }
             }
 
@@ -206,11 +206,9 @@ function add_tooltipContextMenu(e) {
                 }
                 let vHolder = getCrossReference(e.target);
                 /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
-                // let crfnnote_DIV = document.createElement('DIV');
-                // crfnnote_DIV.classList.add('crfnnote');
-                // crfnnote_DIV.innerHTML = '<div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button><button class="buttons verse_notes_button">Note</button></div>';
-                // vHolder.querySelector('span').classList.add('verse');
-                // vHolder.querySelector('span').append(crfnnote_DIV);
+                if(crossRefinScriptureTooltip_check.checked){
+                    vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{spanVerse.append(crfnnote_DIV(spanVerse))});
+                }
 
                 context_menu.append(vHolder);
                 // context_menu.append(getCrossReference(e.target));

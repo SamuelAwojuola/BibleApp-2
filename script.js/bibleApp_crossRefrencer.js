@@ -1,15 +1,13 @@
 /* FOR GENERATING GETTING AND APPENDING CROSSREFERNCES (TSK) OF VERSES THAT HAVE THEM */
 bversionName = 'KJV';
 if(document.querySelector('#homepage')){
-    ppp.addEventListener('click', appendCrossReferences);
+    main.addEventListener('click', appendCrossReferences);
     searchPreviewWindowFixed.addEventListener('click', appendCrossReferences);
     main.addEventListener('mousedown', getCurrentBVN)
 }
-// else if(versenotepage = document.querySelector('body#versenotepage')){
-//     versenotepage.addEventListener('contextmenu', appendCrossReferences);
-//     clog({33:e.target})
-//     clog({eTarget:e.target})
-// }
+else if(versenotepage = document.querySelector('body#versenotepage')){
+    versenotepage.addEventListener('click', appendCrossReferences);
+}
 
 function getCurrentBVN(e) {
     let eTarget = e.target;
@@ -81,7 +79,7 @@ function appendCrossReferences(e) {
                 verseInSearchWindow.classList.add('showing_crossref')
                 siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"});
             }
-            // // If showing, hide it
+            // If showing, hide it
             else {
                 slideUpDown(siblingCrossREF)
                 verseInSearchWindow.classList.remove('showing_crossref')
@@ -110,9 +108,9 @@ function appendCrossReferences(e) {
             narr.push(cf)
         })
         crossRef=narr;
-        return parseCrossRef(crossRef, refCode);
+        return parseCrossRef(crossRef);
         
-        function parseCrossRef(crossRef, refCode) {
+        function parseCrossRef(crossRef) {
             let crfFrag = new DocumentFragment();
             crossRef.forEach(crf => {
                 let crfSpan = document.createElement('SPAN');
@@ -144,7 +142,7 @@ function appendCrossReferences(e) {
 }
 
 /* FOR GETTING THE ACTUAL BIBLE TEXT OF A CROSS-REFERENCE */
-function getCrossReference(x) {
+function getCrossReference(x,bkn) {
     let crf2get;
     if(typeof (x)=='string'){
         crf2get = x.replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
@@ -160,7 +158,6 @@ function getCrossReference(x) {
             let bkNchv=bkname.split(/(?<=[a-zA-Z])\s+(?=\d)/ig);// 1 Cor 2:14-16 => ['1 Cor','2:14-16']
             let bk=bkNchv[0].replace(/i\s/i, '1').replace(/ii\s/, '2').replace(/\s+/, '');
             crf2get=bk+bkNchv[1];
-            console.log(crf2get)
         }
         else {
             crf2get = x.innerText;
@@ -177,7 +174,6 @@ function getCrossReference(x) {
     bible.Data.books.forEach((ref_, ref_indx) => {
         if (ref_.includes(bk.toUpperCase())) {
             fullBkn = bible.Data.bookNamesByLanguage.en[ref_indx];
-            return
         }
     });
     let vHolder = new DocumentFragment();
@@ -226,25 +222,27 @@ function getCrossReference(x) {
         return [vrs1,vrs2]
     }
     function getVersesInVerseRange(vRange){
-        let vrs1 = vRange[0]
-        let vrs2 = vRange[1]
+        let vrs1 = vRange[0];
+        let vrs2 = vRange[1];
         for (i = vrs1; i < vrs2 + 1; i++) {
             let verseSpan = document.createElement('span');
             function vNum() {
                 let verseNum = document.createElement('code');
-                verseNum.setAttribute('ref', bk + ' ' + (chp1) + ':' + i);
+                verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
                 verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
                 verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}]`));
+                if(bkn){bookName=bkn}
                 verseNum.title = bversionName + ' ' + bookName;
-                verseSpan.prepend(verseNum);
+                verseSpan.classList.add('verse');
                 // if(br){
                 verseSpan.innerHTML = br + verseSpan.innerHTML;
                 // }
                 // else{verseSpan.innerHTML='<div></div>'+verseSpan.innerHTML;}
                 let vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
-                // console.log(parseVerseText(vText, verseSpan));
                 vHolder.append(parseVerseText(vText, verseSpan));
-                br = '<br>';
+                verseSpan.prepend(' ');
+                verseSpan.prepend(verseNum);
+                // br = '<br>';
             }
             vNum();
         }

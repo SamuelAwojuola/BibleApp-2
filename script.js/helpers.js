@@ -25,7 +25,6 @@ function debounce(func, timeout = 300) {
     }
 }
 
-
 /* Remove single string or array of strings from a string */
 function removeCharacterFromString(xh, str) {
     if (typeof xh === 'string' || xh instanceof String) {return str.split(xh).join('')}
@@ -41,6 +40,45 @@ function removeCharacterFromString(xh, str) {
 /*       DOM MANIPULATIONS       */
 /* ***************************** */
 
+function createNewElement(elmTagName,classIdAttr){
+    /*
+    This function can take any number of parameters (arguments)
+    However, the first one must be the name of the element
+    The others will be class name, id, and/or attribute
+        * classes must start with a dot ('.')
+        * ids must start with a dot ('#')
+        * attributes must be enclosed in square brackets ('[]')--[attribute="value"]
+    */
+    let newElm=document.createElement(elmTagName);
+
+    for (var i = 1; i < arguments.length; i++) {
+        let currentParam = arguments[i].trim();
+        // Replace Spaces With Underscore
+        currentParam = currentParam.replace(/\s+/g,'_');
+		// For classes
+        if(/^\./.test(currentParam)){
+            let className = currentParam.replace(/^\./,'');
+            newElm.classList.add(className)
+        }
+		// For ids
+        else if(/^#/.test(currentParam)){
+            let iD = currentParam.replace(/^#/,'');
+            newElm.id = iD;
+        }
+		// For Attributes - [attrName=]
+        else if(/^\[.+\]/.test(currentParam)){
+            let attrNvalue = currentParam.replace(/^\[(.+)\]/,'$1').replace(/(=)\s*["']/g,'$1').replace(/["']\s*(\])/g,'$1');
+            let attr = attrNvalue.split('=')[0];
+            let val = attrNvalue.split('=')[1];
+            newElm.setAttribute(attr,val);
+        }
+        else{
+            let className = currentParam;
+            newElm.classList.add(className)
+        }
+	}
+    return newElm
+}
 function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
     while (a.parentElement && a.parentElement.tagName.toUpperCase() != limit) {
         if (a.parentElement.classList.contains(ancestorsClass) || a.parentElement.matches(ancestorsClass)) {
@@ -55,7 +93,6 @@ function elmAhasElmOfClassBasAncestor(a, ancestorsClass, limit = 'BODY') {
     // Second: It is not yet supported in Mozilla FireFox
     // E.g: if(querySelector('.ancestorsClass:has(div>.a)'){return true})
 }
-
 function hideORshowID(hideOrShow, id) {
     if (hideOrShow.toUpperCase() == 'HIDE') {
         var id2hide = document.querySelectorAll('#' + id);
@@ -91,15 +128,13 @@ function hideORshowClass(hideOrShow, cls) {
         });
     }
 }
-
 function hideElement(el) {
     el.classList.add("displaynone")
 }
 function showElement(el) {
     el.classList.remove("displaynone")
 }
-
-function toggleClassAndActiveButton(elm, cls,originElm){
+function toggleClassAndActiveButton(elm,cls,originElm){
     if(Array.isArray(elm)){
         elm.forEach(x=>{
             x.classList.toggle(cls)
@@ -139,7 +174,6 @@ function checkUncheck(x){
         else{rcbx.checked=true}/* } */
     });
 }
-
 function insertElmAbeforeElmB(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode);
 }
@@ -147,6 +181,28 @@ function relocateElmTo(elm, moveHere) {
     let elmCopy = elm.cloneNode(true);
     elm.remove();
     moveHere.append(elmCopy)
+}
+function areAllitemsOfAinB(a, b) {
+    if (a.every(elem => b.indexOf(elem) > -1)) {
+        return true
+    } else {
+        return false
+    }
+}
+
+
+/* ************************************ */
+/*   DOM ANIMATIONS & BEAUTIFICATIONS   */
+/* ************************************ */
+
+function randomColor(brightness) {
+    function randomChannel(brightness) {
+        var r = 255 - brightness;
+        var n = 0 | ((Math.random() * r) + brightness);
+        var s = n.toString(16);
+    return (s.length == 1) ? '0' + s : s;
+    }
+    return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
 }
 function changeElmTextNodeTo(elm,txt){
     let tnodeValString;
@@ -168,17 +224,149 @@ function changeElmTextNodeTo(elm,txt){
     if(txt){checkUncheck(elm.querySelector('input'))}
     return tnodeValString
 }
-// GET FIRST SHADOW COLOR
-function getBoxShadowColor(elm){
-    // Even if element has more than one box-shadow color, it will only get the first one
-    let boxShadowOfElem = window.getComputedStyle(elm, null).getPropertyValue("box-shadow");
-    return boxShadowOfElem.split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1')
+function windowsSelection(){
+    const selObj = window.getSelection();
+    // return selObj
+    const selRange = selObj.getRangeAt(0);
+    return selRange
+}
+/* SLIDE UP & SLIDE DOWN */
+let slideUpDownTimer;
+function slideUpDown(elm, upOrDown){
+    elm.style.transition = 'all 0.3s ease-in-out';
+    if(slideUpDownTimer){clearTimeout(slideUpDownTimer)}
+    
+    const tMargin = elm.offsetHeight;
+    let animDuration = (tMargin * 0.8);
+
+    if(animDuration<=0){
+        if(anim_dur = elm.getAttribute('anim_dur')){
+            animDuration = anim_dur;
+        }
+    }
+    if(animDuration<300){
+            animDuration = 300;
+        }
+    elm.style.transition = 'all ' + animDuration/1000 + 's ease-in-out';
+
+    // SHOW It If It is Hidden
+    if(upOrDown=='show'|| upOrDown=='down'||elm.classList.contains('sld_up')){
+        if(elm.style.zIndex == ''||elm.style.zIndex > '-1'){
+            elm.style.zIndex = '-1'
+        }
+        elm.style.display = '';
+        // elm.style.display = elm.getAttribute('display');
+        elm.style.opacity = 1;
+        setTimeout(() => {
+            elm.classList.remove('sld_up')
+            elm.style.position = '';
+            elm.style.marginTop = '0';
+        }, 1);
+        setTimeout(() => {
+            elm.style.zIndex = '';
+        }, animDuration);
+
+    }
+    // HIDE It If It Is Showing
+    else {
+        elm.classList.add('sld_up')
+        elm.style.marginTop = '-' + tMargin + 'px';
+        elm.style.opacity = 0;
+        elm.style.zIndex = -1;
+        elm.setAttribute('display', elm.style.display);
+        elm.setAttribute('anim_dur', animDuration);
+        slideUpDownTimer = setTimeout(() => {
+            elm.style.setProperty('display', 'none', 'important');
+        }, animDuration);
+    }
+    return animDuration
+}
+/* Markers Input Autocomplete from available markers */
+function autocomplete(e) {
+    // function autocomplete(input, arr) {
+    //Close the existing list if it is open
+    closeList();
+    let inputElm=e.target;
+    let arr = arrOfAllVerseMarkersInBook;
+    let currentFocus;
+    //If the input is empty, exit the function
+    if (!inputElm.value){return}
+    currentFocus = -1;
+
+    //Create a autocomplete_items <div> and add it to the element containing the input field
+    let autocomplete_items = document.createElement('div');
+    autocomplete_items.setAttribute('id', 'autocomplete_items');
+    inputElm.parentNode.appendChild(autocomplete_items);
+
+    //Iterate through all entries in the list and find matches
+    for (let i=0; i<arr.length; i++) {
+        if (arr[i].toUpperCase().includes(inputElm.value.toUpperCase())) {
+            //If a match is found, create a suggestion <div> and add it to the autocomplete_items <div>
+            suggestion = document.createElement('div');
+            suggestion.innerText = arr[i];            
+            suggestion.addEventListener('click', function () {
+                inputElm.value = this.innerText;
+                inputElm.focus();
+                closeList();
+            });
+            autocomplete_items.appendChild(suggestion);
+        }
+    }
+
+
+    /*execute a function presses a key on the keyboard:*/
+    inputElm.addEventListener("keydown", function(e) {
+        let x;
+        if (autocomplete_items){x = autocomplete_items.getElementsByTagName("div");}
+        // arrow DOWN key
+        if (e.keyCode == 40) {
+            currentFocus++;
+            addActive(x);
+        }
+        // arrow UP key
+        else if (e.keyCode == 38) {
+            currentFocus--;
+            addActive(x);
+        }
+        // ENTER key
+        else if (e.keyCode == 13) {
+            if (currentFocus > -1) {
+                if (x) x[currentFocus].click();
+            }
+        }
+    });
+    function addActive(x) {
+        /* classify an item as "active":*/
+        if (!x) return false;
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        x[currentFocus].classList.add("autocomplete_active");
+    }
+    function removeActive(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i].classList.remove("autocomplete_active");
+        }
+    }
+
+    
+    function closeList() {
+        let autocomplete_items = document.getElementById('autocomplete_items');
+        if (autocomplete_items)
+            autocomplete_items.parentNode.removeChild(autocomplete_items);
+    }
 }
 
 /* ****************************** */
 /*    DOM EXPLORATIONS/QUERIES    */
 /* ****************************** */
 
+// GET FIRST SHADOW COLOR
+function getBoxShadowColor(elm){
+    // Even if element has more than one box-shadow color, it will only get the first one
+    let boxShadowOfElem = window.getComputedStyle(elm, null).getPropertyValue("box-shadow");
+    return boxShadowOfElem.split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1')
+}
 function X_hasNoSibling_Y_b4_Z(x, y, z) {
     let a = x,
         yes_no = false,
@@ -271,7 +459,6 @@ function arrayOfNodesBetween(a, b) {
         }
     }
 }
-
 function arrayOfElementsBetween(a, b) {
     //first check if they have the same parent
     let a_b_parent = a.parentElement;
@@ -326,17 +513,10 @@ function arrayOfElementsBetween(a, b) {
         }
     }
 }
-
-function windowsSelection(){
-    const selObj = window.getSelection();
-    // return selObj
-    const selRange = selObj.getRangeAt(0);
-    return selRange
-}
 /* ********************************************* */
 /* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
 /* ********************************************* */
-function codeELmRefClick(e) {
+function codeElmRefClick(e) {
     if (e.target.tagName == "CODE" && !e.target.matches('.cmtitlebar>code')) {
         let codeElm = e.target;
         
@@ -386,23 +566,6 @@ function refDetails4rmCodeElm(codeElm){
 // }
 
 //Random Color Generator
-function randomColor(brightness) {
-    function randomChannel(brightness) {
-        var r = 255 - brightness;
-        var n = 0 | ((Math.random() * r) + brightness);
-        var s = n.toString(16);
-    return (s.length == 1) ? '0' + s : s;
-    }
-    return '#' + randomChannel(brightness) + randomChannel(brightness) + randomChannel(brightness);
-}
-
-function areAllitemsOfAinB(a, b) {
-    if (a.every(elem => b.indexOf(elem) > -1)) {
-        return true
-    } else {
-        return false
-    }
-}
 const findMatch = (array, value) => {
     return array.find(element => element === value);
 }
@@ -440,6 +603,18 @@ function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60
          
         startTimer();
     // }
+}
+
+/* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
+function crfnnote_DIV(vHolder){
+    let crfnnote_DIV = document.createElement('DIV');
+    crfnnote_DIV.classList.add('crfnnote');
+    const tskBtn = '<button class="buttons verse_crossref_button">TSK</button>';
+    // const noteBtn = '<button class="buttons verse_notes_button">Note</button>';
+    const noteBtn = '';
+    crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+    // if(vHolder){vHolder.classList.add('verse');}
+    return crfnnote_DIV
 }
 
 /* CHECK IF DEVICE IS A MOBILE DEVICE */
@@ -689,183 +864,19 @@ function replaceAllCheckBoxesWithFinnerOnes(cbx){
     replaceAllCheckBoxesWithFinnerOnes()
 // },500)
 
-/* SLIDE UP & SLIDE DOWN */
-let slideUpDownTimer;
-function slideUpDown(elm, upOrDown){
-    elm.style.transition = 'all 0.3s ease-in-out';
-    if(slideUpDownTimer){clearTimeout(slideUpDownTimer)}
-    
-    const tMargin = elm.offsetHeight;
-    let animDuration = (tMargin * 0.8);
-
-    if(animDuration<=0){
-        if(anim_dur = elm.getAttribute('anim_dur')){
-            animDuration = anim_dur;
-        }
-    }
-    if(animDuration<300){
-            animDuration = 300;
-        }
-    elm.style.transition = 'all ' + animDuration/1000 + 's ease-in-out';
-
-    // SHOW It If It is Hidden
-    if(upOrDown=='show'|| upOrDown=='down'||elm.classList.contains('sld_up')){
-        if(elm.style.zIndex == ''||elm.style.zIndex > '-1'){
-            elm.style.zIndex = '-1'
-        }
-        elm.style.display = '';
-        // elm.style.display = elm.getAttribute('display');
-        elm.style.opacity = 1;
-        setTimeout(() => {
-            elm.classList.remove('sld_up')
-            elm.style.position = '';
-            elm.style.marginTop = '0';
-        }, 1);
-        setTimeout(() => {
-            elm.style.zIndex = '';
-        }, animDuration);
-
-    }
-    // HIDE It If It Is Showing
-    else {
-        elm.classList.add('sld_up')
-        elm.style.marginTop = '-' + tMargin + 'px';
-        elm.style.opacity = 0;
-        elm.style.zIndex = -1;
-        elm.setAttribute('display', elm.style.display);
-        elm.setAttribute('anim_dur', animDuration);
-        slideUpDownTimer = setTimeout(() => {
-            elm.style.setProperty('display', 'none', 'important');
-        }, animDuration);
-    }
-    return animDuration
-}
-
-/* CREATE ELEMENT */
-function createNewElement(elmTagName,classIdAttr){
-    /*
-    This function can take any number of parameters (arguments)
-    However, the first one must be the name of the element
-    The others will be class name, id, and/or attribute
-        * classes must start with a dot ('.')
-        * ids must start with a dot ('#')
-        * attributes must be enclosed in square brackets ('[]')--[attribute="value"]
-    */
-    let newElm=document.createElement(elmTagName);
-
-    for (var i = 1; i < arguments.length; i++) {
-        let currentParam = arguments[i].trim();
-        // Replace Spaces With Underscore
-        currentParam = currentParam.replace(/\s+/g,'_');
-		// For classes
-        if(/^\./.test(currentParam)){
-            let className = currentParam.replace(/^\./,'');
-            newElm.classList.add(className)
-        }
-		// For ids
-        else if(/^#/.test(currentParam)){
-            let iD = currentParam.replace(/^#/,'');
-            newElm.id = iD;
-        }
-		// For ids
-        else if(/^\[.+\]/.test(currentParam)){
-            let attrNvalue = currentParam.replace(/^\[(.+)\]/,'$1').replace(/["']/g,'');
-            let attr = attrNvalue.split('=')[0];
-            let val = attrNvalue.split('=')[1];
-            newElm.setAttribute(attr,val);
-        }
-        else{
-            let className = currentParam;
-            newElm.classList.add(className)
-        }
-	}
-    return newElm
-}
-
-/* Markers Input Autocomplete from available markers */
-function autocomplete(e) {
-    // function autocomplete(input, arr) {
-    //Close the existing list if it is open
-    closeList();
-    let inputElm=e.target;
-    let arr = arrOfAllVerseMarkersInBook;
-    let currentFocus;
-
-    //If the input is empty, exit the function
-    if (!inputElm.value)return;
-    currentFocus = -1;
-
-    //Create a autocomplete_items <div> and add it to the element containing the input field
-    let autocomplete_items = document.createElement('div');
-    autocomplete_items.setAttribute('id', 'autocomplete_items');
-    inputElm.parentNode.appendChild(autocomplete_items);
-
-    //Iterate through all entries in the list and find matches
-    for (let i=0; i<arr.length; i++) {
-        if (arr[i].toUpperCase().includes(inputElm.value.toUpperCase())) {
-            //If a match is found, create a suggestion <div> and add it to the autocomplete_items <div>
-            suggestion = document.createElement('div');
-            suggestion.innerText = arr[i];            
-            suggestion.addEventListener('click', function () {
-                inputElm.value = this.innerText;
-                inputElm.focus();
-                closeList();
-            });
-            autocomplete_items.appendChild(suggestion);
-        }
-    }
-
-
-    /*execute a function presses a key on the keyboard:*/
-    inputElm.addEventListener("keydown", function(e) {
-        let x;
-        if (autocomplete_items){x = autocomplete_items.getElementsByTagName("div");}
-        // arrow DOWN key
-        if (e.keyCode == 40) {
-            currentFocus++;
-            addActive(x);
-        }
-        // arrow UP key
-        else if (e.keyCode == 38) {
-            currentFocus--;
-            addActive(x);
-        }
-        // ENTER key
-        else if (e.keyCode == 13) {
-            if (currentFocus > -1) {
-                if (x) x[currentFocus].click();
-            }
-        }
-    });
-    function addActive(x) {
-        /* classify an item as "active":*/
-        if (!x) return false;
-        removeActive(x);
-        if (currentFocus >= x.length) currentFocus = 0;
-        if (currentFocus < 0) currentFocus = (x.length - 1);
-        x[currentFocus].classList.add("autocomplete_active");
-    }
-    function removeActive(x) {
-        for (var i = 0; i < x.length; i++) {
-            x[i].classList.remove("autocomplete_active");
-        }
-    }
-
-    
-    function closeList() {
-        let autocomplete_items = document.getElementById('autocomplete_items');
-        if (autocomplete_items)
-            autocomplete_items.parentNode.removeChild(autocomplete_items);
-    }
-}
-
 /* ARRAYS */
 function removeItemFromArray(n, array) {
-    const index = array.indexOf(n);
-    // if the element is in the array, remove it
-    if (index > -1) {
-        // remove item
-        array.splice(index, 1);
+    if(Array.isArray(n)){
+        array.forEach((nArr,i) => {
+            if(Array.isArray(nArr) && nArr[0]==n[0]){array.splice(i, 1);}
+        });
+    } else {
+        const index = array.indexOf(n);
+        // if the element is in the array, remove it
+        if (index > -1) {
+            // remove item
+            array.splice(index, 1);
+        }
     }
     return array;
 }
@@ -905,8 +916,16 @@ function deepCopyObj(obj){
 }
 // SORT OBJECTS
 function sortObj(obj) {
-    return Object.keys(obj).sort().reduce(function (result, key) {
+    return Object.keys(obj).sort((b, a) => b.localeCompare(a)).reduce(function (result, key) {
         result[key] = obj[key];
         return result;
     }, {});
+}
+
+// Add key to 
+function addKeyToArrayOfAllVerseMarkers(key){
+    if(arrOfAllVerseMarkersInBibleNotes.indexOf(key)==-1){
+        arrOfAllVerseMarkersInBibleNotes.push(key);
+        arrOfAllVerseMarkersInBibleNotes.sort((b, a) => b.localeCompare(a))
+    }
 }

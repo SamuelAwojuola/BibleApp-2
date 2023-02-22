@@ -1,4 +1,3 @@
-
 function versionHighlighting_ON_OFF(x) {
     //Turn off versions_highlighting
     if (x == false||x == 'false') {
@@ -13,9 +12,6 @@ function versionHighlighting_ON_OFF(x) {
     }
 }
 
-hl_hoveredversion.addEventListener('click', () => {
-    versionHighlighting_ON_OFF();
-});
 //Is modified by escape or alt + h
 document.addEventListener('keydown', evt => {
     if ((evt.key === 'h'||evt.key === 'H') && evt.altKey) {
@@ -27,13 +23,13 @@ document.addEventListener('keydown', evt => {
     }
 });
 
-function hoveredVersionHiglighting(oo_off) {
-    if (oo_off == true) {
+function hoveredVersionHiglighting(on_off) {
+    if (on_off == true) {
         // setItemInLocalStorage('versionHighlightingOnHover', true)
         hl_hversion_check.checked = true;
         hl_hoveredversion.classList.add("active_button");
         main.addEventListener('mouseover', versionHiglightingOnHover, false)
-    } else if (oo_off == false) {
+    } else if (on_off == false) {
         // setItemInLocalStorage('versionHighlightingOnHover', false)
         hl_hversion_check.checked = false;
         hl_hoveredversion.classList.remove("active_button");
@@ -47,10 +43,10 @@ function hoveredVersionHiglighting(oo_off) {
 function versionHiglightingOnHover(e) {
     // e.preventDefault();
     let currentVversion = null;
-    if (e.target.matches('.verse')) {
+    if (e.target.matches('[class^=v_].verse')) {
         currentVversion = e.target;
     } else {
-        currentVversion = elmAhasElmOfClassBasAncestor(e.target, '.verse')
+        currentVversion = elmAhasElmOfClassBasAncestor(e.target, '[class^=v_].verse')
     }
     if (currentVversion) {
         v_version = currentVversion.classList.forEach(cvinv => {

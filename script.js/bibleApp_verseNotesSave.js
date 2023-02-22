@@ -6,30 +6,31 @@ let allBibleBooks = bible.Data.allBooks, objOfRefsWithNote={}, bkIdx=0;
 let notesCount = 1;
 function findAllBookChptnVersesWithNote(){
   // This generates 'arrOfrefs' which is used by 'appendAllRefsWithNote()'
-    let i = bkIdx;
-    bookName=allBibleBooks[i];
-    arrayOfRefsWithNote=[];
-    //bibleNote for bookName
-    getAllRefsInBookThatHaveNote(bookName, function (arrOfrefs) {
-
+  let i = 0;
+  let bookName=allBibleBooks[i];
+  arrayOfRefsWithNote=[];
+  //bibleNote for bookName
+    getAllRefsInBookThatHaveNote(bookName, buildArrayOfRefs)
+    function buildArrayOfRefs(arrOfrefs) {
       // If book has notes
       if(arrOfrefs.length!=0){
         arrayOfRefsWithNote.push(arrOfrefs)
         objOfRefsWithNote[bookName]=arrOfrefs;
       }
       i++;
-      bkIdx=i;
-      if(i<allBibleBooks.length){
-        findAllBookChptnVersesWithNote()
+      if(i < allBibleBooks.length){
+        bookName=allBibleBooks[i];
+        getAllRefsInBookThatHaveNote(bookName, buildArrayOfRefs)
       } else {
-        available_notes.click()// To automatically open the side menu of notes in verseNotesPage
+        appendAllRefsWithNote()
       }
-    })
-  return objOfRefsWithNote
+    }
+    return objOfRefsWithNote
 }
 findAllBookChptnVersesWithNote()
 function appendAllRefsWithNote(){
-  let detailSum='<em>Available Notes</em>';
+  // let detailSum='<em>Available Notes</em>';
+  let detailSum='';
   let openORclose='';// or ' open' if you want it open
   // objOfRefsWithNote = findAllBookChptnVersesWithNote();
     for (key in objOfRefsWithNote) {
@@ -55,12 +56,12 @@ function appendAllRefsWithNote(){
         vrsNum=ref.split(':')[1];
         codeWithRef=`${codeWithRef}${lineend}<code ref="${bookName} ${ref}" aria-hidden="true" chpt="${chptNum}" title="${bookName} ${ref}"><b>${chptNum}</b>:${vrsNum}</code>`
       }
-    });
+    })
     return codeWithRef
   }
   return detailSum
 }
-bibleapp_available_notes.addEventListener("click", codeELmRefClick)
+bibleapp_available_notes.addEventListener("click", codeElmRefClick)
 bibleapp_available_notes.addEventListener("click", appendAllNotesInChapter)// Open all notes in chapter on click of chapter number of a reference with available verseNote
 // TO CLOSE OR OPEN ALL DETAILS ON RIGHT CLICK OF SUMMARY
 bibleapp_available_notes.addEventListener("contextmenu", openCloseAllAvailableNotesDetail)
@@ -144,6 +145,17 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
   return getVerseNote()
 }
 /* **************************************************** */
+function saveJSONFileToLocalDrive(e) {
+  if (e.target.matches('.note_save_button')) {
+    bookName = e.target.getAttribute('bk');
+    let cNv = e.target.getAttribute('b_cv').split('.')
+    chapternumber = cNv[0];
+    verseNumber = cNv[1];
+    /* MODIFY THE BIBLE NOTES JSON FILE */
+    writeToVerseNotesFiles(bookName, chapternumber, verseNumber);
+  }
+}
+/* **************************************************** */
 function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
   if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
     let refObj = breakDownClickedVerseRef();
@@ -210,17 +222,6 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
   return modifyCreateVerseNote()
 }
 /* **************************************************** */
-function saveJSONFileToLocalDrive(e) {
-  if (e.target.matches('.note_save_button')) {
-    bookName = e.target.getAttribute('bk');
-    let cNv = e.target.getAttribute('b_cv').split('.')
-    chapternumber = cNv[0];
-    verseNumber = cNv[1];
-    /* MODIFY THE BIBLE NOTES JSON FILE */
-    writeToVerseNotesFiles(bookName, chapternumber, verseNumber);
-  }
-}
-/* **************************************************** */
 function indicateThatVerseHasNoteInJSONnotes_file() {
   // get the books loaded on the page and get their chapters and verses that have notes, if any
   let allLoadedBooks = main.querySelectorAll('.chptverses');
@@ -260,6 +261,17 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
         }
       }
     }
+    // if book has markers
+    if(bible_book.markers){
+      for (key in bible_book.markers) {
+        let bookMarkerObj = bible_book.markers[key];
+        if (Object.keys(bookMarkerObj).length > 0) {
+          for (ky in bookMarkerObj) {
+            addKeyToArrayOfAllVerseMarkers(key)
+          }
+        }  
+      }
+    }
     callback(items);
   }
 }
@@ -286,7 +298,7 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
       if((i+1)%2==1){
         openOrnot='';
         if(fullRef == ref_){openOrnot = 'open id="opened_detail"'}
-        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${ref_}</h1></summary><div class="win2_noteholder"><blockquote>${docFrag2String(getCrossReference(ref_)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(items[i+1])}</div></details>`;
+        appendHere.innerHTML = `${appendHere.innerHTML}<details ${openOrnot}><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${ref_}</h1></summary><div class="win2_noteholder"><blockquote>${docFrag2String(getCrossReference(ref_,bookName)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(items[i+1])}</div></details>`;
       }
     })
     document.querySelector('#opened_detail').scrollIntoView({behavior: "smooth",block: "start", inline: "nearest"})

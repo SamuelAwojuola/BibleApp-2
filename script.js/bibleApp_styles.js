@@ -174,6 +174,7 @@ function darkLightMode() {
         allBtnImgs.forEach(img=>{
             img.src = img.src.replace(/-DarkMode\.svg/, '.svg')
         })
+        localStorage.removeItem('darkmode')
     } else {
         document.body.classList.add('darkmode')
         darkmodebtn.innerText = '🌑';
@@ -181,6 +182,7 @@ function darkLightMode() {
         allBtnImgs.forEach(img=>{
             img.src = img.src.replace(/\.svg/, '-DarkMode.svg')
         })
+        setItemInLocalStorage('darkmode', 'true')
     }
 }
 

@@ -34,9 +34,9 @@ async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter
             if(currentlyMarkedBook != bcv.bkName){
                 bookMarkers = await markersForCurrentChapter(verse_refcode)
                 currentlyMarkedBook = bcv.bkName;
-                xyz(bookMarkers,tempDIV)
+                vmAppender(bookMarkers,tempDIV)
             } else if (await bookMarkers){
-                xyz(bookMarkers,tempDIV)
+                vmAppender(bookMarkers,tempDIV)
             }
         } else {
             getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vMultiple);
@@ -46,23 +46,31 @@ async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter
         tempDIV.querySelector('.add_vMarker').focus();
     }
     
-    function xyz(bookMarkers,tempDIV){
+    function vmAppender(bookMarkers,tempDIV){
+        // First, get an array of the markers for this verse, if it has
         let arrOfVerseMarkers = [];
+        let arrOfvm_withNotes = [];
         for(key in bookMarkers){
-            if(arrOfVerses = bookMarkers[key][`${bcv.currentChpt}`]){
-                if(arrOfVerses.includes(bcv.currentV)){
-                    arrOfVerseMarkers.push(key)
-                }
+            if(arrOfVerses = bookMarkers[key][bcv.currentChpt]){
+                arrOfVerses.forEach(arrOfversesInarr=>{
+                    if(arrOfversesInarr[0]==bcv.currentV){
+                        arrOfVerseMarkers.push(key);
+                        if(arrOfversesInarr[1]){arrOfvm_withNotes.push(key)}
+                    }
+                })
             }
         }
-        // getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vMultiple,arrOfVerseMarkers)
-
+        
+        // Next create the marker elements and append them to the verseHolder
         let tempMarkersFrag = document.createDocumentFragment();
         arrOfVerseMarkers.forEach((mrk,i) => {
             let cleanMarker=mrk.replace(/\s+/,'_');// replace spaces with '_'
             let newMarkerNameClass = `marker_${cleanMarker}`;
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
-            let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass)
+            let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass);
+            if(arrOfvm_withNotes.length>0 && arrOfvm_withNotes.includes(mrk)){
+                newMarkerElm.classList.add("hasnote");
+            }
             newMarkerElm.innerText=mrk;
             if(i>0){
                 let textNode = document.createTextNode(';\u00A0');
@@ -119,15 +127,16 @@ async function create_v_marker(x) {
         // Prepare to prepend it
         let v_markersHolder = elmAhasElmOfClassBasAncestor(x, '.v_markers');
         
-        //If marker not already presentnewMark -- erNameClass
+        //If marker not already present newMarkerNameClass
         if(!v_markersHolder.querySelector(dot_newMarkerNameClass)){
             let vcode = v_markersHolder.getAttribute('versecode');
+            // Add marker to JSON file
             addNewMarkerToFile(vcode,cleanMarker,v_markersHolder).then(r=>{
                 if(r!=false){
                     let v_markerinputnbtn_holder = elmAhasElmOfClassBasAncestor(x, '.v_markerinputnbtn_holder');
                     // Hide the input
                     if(!v_markerinputnbtn_holder.matches('.slidleft')){toggleSlideLeft(v_markerinputnbtn_holder)}
-                    /// Add marker class to vmultiple verses holder
+                    // Add marker class to vmultiple verses holder
                     let parent_vMultiple = elmAhasElmOfClassBasAncestor(x, '.vmultiple');
                     parent_vMultiple.classList.add(newMarkerNameClass)
                 }
@@ -136,11 +145,13 @@ async function create_v_marker(x) {
     }
 }
 async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vMultiple,arrOfvMks){
-    let arrOfVerseMarkers;
+    let arrOfVerseMarkers,arrOfvm_withNotes;
     if(arrOfvMks){
         arrOfVerseMarkers = arrOfvMks;
     } else {
-        arrOfVerseMarkers = await markersForCurrentVerse(verse_refcode);
+        objOfVerseMarkers = await markersForCurrentVerse(verse_refcode);
+        arrOfVerseMarkers = await objOfVerseMarkers.allvMarkers;
+        arrOfvm_withNotes = await objOfVerseMarkers.vMarkersWithNotes;
     }
     if(arrOfVerseMarkers){
         let tempMarkersFrag = document.createDocumentFragment();
@@ -150,6 +161,10 @@ async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vM
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
             let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass)
             newMarkerElm.innerText=mrk;
+            
+            if(arrOfvm_withNotes.includes(mrk)){
+                newMarkerElm.classList.add("hasnote");
+            }
             if(i>0){
                 let textNode = document.createTextNode(';\u00A0');
                 tempMarkersFrag.append(textNode)
@@ -170,6 +185,7 @@ async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vM
 
 /* READING & MODIFYING FILES */
 // I am adding the markers to the bibleNotes files
+arrOfAllVerseMarkersInBibleNotes=[];
 async function markersForCurrentChapter(vcode){
     let bcv = vNumCode(vcode);
     let result;
@@ -207,26 +223,29 @@ async function markersForCurrentChapter(vcode){
     }
 }
 async function markersForCurrentVerse(vcode){
-    let bcv = vNumCode(vcode);
+    let bcv=vNumCode(vcode);
     let result;
-    let arrOfVerseMarkers = [];
+    let arrOfVerseMarkers = [],arrOfvm_withNotes=[];
 
     // If you have already run this function before for any verse in this current book
     if(currentlyMarkedBook == bcv.bkName){
-        console.log('sameBOOK');
         let promise = new Promise((resolve, reject) => {
             let bookMarkers = markersObjForCurrentBook;
             for(key in bookMarkers){
                 if(arrOfAllVerseMarkersInBook.indexOf(key)<0){
                     arrOfAllVerseMarkersInBook.push(key)
                 }
-                if(arrOfVerses = bookMarkers[key][`${bcv.currentChpt}`]){
-                        if(arrOfVerses.includes(bcv.currentV)){
-                            arrOfVerseMarkers.push(key)
-                    }
+                if(arrOfVerses = bookMarkers[key][bcv.currentChpt]){
+                    arrOfVerses.forEach(arrOfversesInarr=>{
+                        if(arrOfversesInarr[0]==bcv.currentV){
+                            arrOfVerseMarkers.push(key);
+                            // For markers that have notes
+                            if(arrOfversesInarr[1]){arrOfvm_withNotes.push(key)}
+                            }
+                    })
                 }
             }
-            resolve(arrOfVerseMarkers)
+            resolve({allvMarkers:arrOfVerseMarkers,vMarkersWithNotes:arrOfvm_withNotes})
         })
         result = await promise;
     }
@@ -245,7 +264,7 @@ async function markersForCurrentVerse(vcode){
                 if(bibleBookMarkersObject?.markers == undefined){
                     bibleBookMarkersObject.markers={};
                     markersObjForCurrentBook=bibleBookMarkersObject.markers;
-                    resolve(arrOfVerseMarkers)
+                    resolve({allvMarkers:arrOfVerseMarkers,vMarkersWithNotes:arrOfvm_withNotes})
                 }
                 else {
                     markersObjForCurrentBook=bibleBookMarkersObject.markers;
@@ -254,13 +273,17 @@ async function markersForCurrentVerse(vcode){
                         if(arrOfAllVerseMarkersInBook.indexOf(key)<0){
                             arrOfAllVerseMarkersInBook.push(key)
                         }
-                        if(arrOfVerses = bookMarkers[key][`${bcv.currentChpt}`]){
-                            if(arrOfVerses.includes(bcv.currentV)){
-                                arrOfVerseMarkers.push(key)
-                            }
+                        if(arrOfVerses = bookMarkers[key][bcv.currentChpt]){
+                            arrOfVerses.forEach(arrOfversesInarr=>{
+                                if(arrOfversesInarr[0]==bcv.currentV){
+                                    arrOfVerseMarkers.push(key);
+                                    // For markers that have notes
+                                    if(arrOfversesInarr[1]){arrOfvm_withNotes.push(key)}
+                                }
+                            })
                         }
                     }
-                    resolve(arrOfVerseMarkers)
+                    resolve({allvMarkers:arrOfVerseMarkers,vMarkersWithNotes:arrOfvm_withNotes})
                 }
             })
         })
@@ -276,21 +299,21 @@ async function addNewMarkerToFile(vcode,markername,vmHolder){
     // Make a copy of the markersObjForCurrentBook and modify the copy and only copy it back into the markersObjForCurrentBook if the markers name is not rejected
     let tempMrkObj = deepCopyObj(markersObjForCurrentBook);
 
+    // If the marker does not exist
     if(!tempMrkObj[markername]){
+        addKeyToArrayOfAllVerseMarkers(markername)// all markers in all bible books and not jsut the current book
         tempMrkObj[markername]={};
         if(arrOfAllVerseMarkersInBook.indexOf(markername)<0){arrOfAllVerseMarkersInBook.push(markername)}
     }
     // If the chapter exists, add the verse to its array
-    if(tempMrkObj[markername][`${bcv.currentChpt}`]){
-        tempMrkObj[markername][`${bcv.currentChpt}`].push(bcv.currentV);
-        let tarr = tempMrkObj[markername][`${bcv.currentChpt}`];
-        tempMrkObj[markername][`${bcv.currentChpt}`] = tarr.sort(function(a, b){return a - b});
+    if(tempMrkObj[markername][bcv.currentChpt]){
+        tempMrkObj[markername][bcv.currentChpt].push([bcv.currentV]);
+        let tarr = tempMrkObj[markername][bcv.currentChpt];
+        tempMrkObj[markername][bcv.currentChpt] = tarr.sort(function(a, b){return a[0] - b[0]});
     }
     // If the chapter DOES NOT exist, create the chpt key with value of a new array with the currentVerse in it
     else {
-        tempMrkObj[markername][`${bcv.currentChpt}`]=[bcv.currentV];
-        let tarr = tempMrkObj[markername][`${bcv.currentChpt}`];
-        tempMrkObj[markername][`${bcv.currentChpt}`] = tarr.sort(function(a, b){return a - b});
+        tempMrkObj[markername][bcv.currentChpt]=[[bcv.currentV]];
     }
     
     //Get current state of file, and then modify the markers object in it
@@ -319,11 +342,11 @@ async function removeMarkerFromJSONfile(vcode, markername){
     let tempMrkObj = deepCopyObj(markersObjForCurrentBook);
 
     // Remove verse from array for the chapter
-    let arrOfVersesInChptUnderMarkername = tempMrkObj[markername][`${bcv.currentChpt}`];
-    removeItemFromArray(bcv.currentV,arrOfVersesInChptUnderMarkername);
+    let arrOfVersesInChptUnderMarkername = tempMrkObj[markername][bcv.currentChpt];
+    removeItemFromArray([bcv.currentV],arrOfVersesInChptUnderMarkername);
     // Remove Key&Value from markername object if the value/array is empty
     if(arrOfVersesInChptUnderMarkername.length==0){
-        delete tempMrkObj[markername][`${bcv.currentChpt}`]
+        delete tempMrkObj[markername][bcv.currentChpt]
         // Delete MarkerName if it has no reference assigned to it
         if(Object.keys(tempMrkObj[markername]).length==0){
             delete tempMrkObj[markername];
@@ -361,8 +384,35 @@ function remove_MarkersOptions(e){
 function markersOptions(e){
     if(e.target.matches('.vmarker')){
         eTargetMarker = e.target;
-        let vmarker_options_menu = createNewElement('div','#vmarker_options_menu', '.slidedown')
-        vmarker_options_menu.innerHTML = `<code>Generate Report</code><button class="vmarker_options" id="vmarker_single_report" onclick="generateVmarkerReport('single')" placeholder="generate report for this marker">Single Marker</button><button class="vmarker_options" id="vmarker_all_report" onclick="generateVmarkerReport('all')" placeholder="generate report for all markers in this book">All Markers</button><code>Modify</code><button class="vmarker_options" id="vmarker_delete" onclick="deleteVmarker('one', this)">Delete</button>`;
+        let markerName = getMarkerName(eTargetMarker).split(' ')[0];
+        let highlightBtnText = 'Highlight Marker';
+        let disableOrNot='disabled', shownotedisabled='';
+        let mrknotremovebtn = 'none', mrkshownotebtn='', createORedit = 'Edit', createDisplay='';
+        if(eTargetMarker.classList.contains('showingNote')){
+            mrknotremovebtn='';
+            createDisplay='none';
+            shownotedisabled='disabled'
+        }
+        if(!eTargetMarker.classList.contains('hasnote')){
+            mrkshownotebtn='none';
+            createORedit = 'Create';
+        }
+        if(document.querySelector('#vm_marker')){
+            disableOrNot = '';
+        };
+        if(document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
+            highlightBtnText = 'Unhighlight Marker';
+        }
+        let vmarker_options_menu = createNewElement('div','#vmarker_options_menu', '.slidedown',`[markerfor=${markerName}]`);
+        vmarker_options_menu.innerHTML = `<button class="vmarker_options" id="vmarker_showAllMarkers" onclick="showAllVersesMarkers()">Markers In All Verses</button>
+        <code>Highlighting</code>
+        <button class="vmarker_options" id="vmarker_highlight" onclick="highlight_allVmultipleWithMarker_Class(this)">${highlightBtnText}</button><button class="vmarker_options" id="vmarker_unhighlight_all" onclick="highlight_allVmultipleWithMarker_Class('all')" ${disableOrNot}>Unhilight All Markers</button>
+        <code>Generate Report</code>
+        <button class="vmarker_options" id="vmarker_single_report" onclick="generateVmarkerReport('single')" placeholder="generate report for this marker">Single Marker</button><button class="vmarker_options" id="vmarker_all_report" onclick="generateVmarkerReport('all')" placeholder="generate report for all markers in this book">All Markers</button>
+        <code>Marker Short Note</code>
+        <button class="vmarker_options" id="vmarker_shownote" style="display:${mrkshownotebtn}" onclick="addMarkerNote(this,'show')" ${shownotedisabled}>Show Note</button><button class="vmarker_options" id="vmarker_editnote" style="display:${createDisplay}" onclick="addMarkerNote(this,'edit')">${createORedit} Marker Note</button><button class="vmarker_options" id="vmarker_removenote" style="display:${mrknotremovebtn}" onclick="removeMarkerNote(this)">Remove Note</button>
+        <code>Delete</code>
+        <button class="vmarker_options" id="vmarker_delete" onclick="deleteVmarker('one', this)">Delete</button>`;
         if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
             prev_vmrkoptm.remove()
         }
@@ -370,40 +420,85 @@ function markersOptions(e){
         vmarker_options_menu.style.left=eTargetMarker.offsetLeft + "px";
         // vmarker_options_menu.style.right=eTargetMarker.offsetLeft + eTargetMarker.offsetWidth + "px";
         eTargetMarker.parentElement.append(vmarker_options_menu)
- 
-        // Get all references under class
-        generateVmarkerReport('single')
-
     }
 }
-function highlight_allVmultipleWithMarker_Class(e){
-    if(e.target.matches('.vmarker')){
-        let eTargetMarker = e.target;
-        let markerName = (()=>{let mkn; eTargetMarker.classList.forEach(cl=>{/\bmarker_/.test(cl) ? mkn=cl : null}); return mkn
-    })();
-    // Create styleSheet and append to head
-    let vm_marker_styleRule = `.vmultiple.${markerName} {
-        border-left: 10px solid red;
+function showAllVersesMarkers(){
+    if(sldUpVmarkers=document.querySelectorAll('.v_markers.sld_up')){
+        sldUpVmarkers.forEach(sldvm=>{
+            slideUpDown(sldvm)
+        })
     }
-    .vmultiple.${markerName} .verse {
-        background-color: var(--vhlt-hover);
+}
+function highlight_allVmultipleWithMarker_Class(eX){
+    let markerName,markerElm,hlghtMarkerBtn;
+    if(eX=='all'){
+        if(vm_marker=document.querySelector('#vm_marker')){
+            vm_marker.remove();
+            vmarker_highlight.innerText = 'Highlight Marker';
+        }
+        return
     }
-    .vmultiple.${markerName} .v_markers {
-        display:flex!important;
-        margin-top:0!important;
-        opacity:1!important;
-        z-index:1!important;
+    // OnClick of highlightMarker button
+    else if(eX.nodeType !== undefined){
+        hlghtMarkerBtn = eX;
+        markerName = elmAhasElmOfClassBasAncestor(hlghtMarkerBtn,'#vmarker_options_menu').getAttribute('markerfor')
     }
-    .vmultiple.${markerName} .verse[class^=v_]:not(:hover),
-    .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
-        color:black!important;
+    // OnClick of markername element
+    // (for when the function is called on click of marker)
+    else {
+        if(eX.target.matches('.vmarker')){
+            markerElm = eX.target;
+            markerName = getMarkerName(markerElm);
+            if(document.querySelector('#vmarker_options_menu')){vmarker_options_menu.remove()}
+        } else return
     }
-    .${markerName}.vmarker {
-        border:1px dashed brown;
-        font-weight:bold;
-        border-radius:2px;
-    }`
-    createNewStyleSheetandRule('vm_marker',vm_marker_styleRule)
+    if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
+        vm_marker.remove();
+        if(hlghtMarkerBtn){
+            hlghtMarkerBtn.innerText = 'Highlight Marker';
+            vmarker_unhighlight_all.disabled = true;//disable unHiglight all markers button
+        }
+    }
+    else {// Create styleSheet and append to head
+        let vm_marker_styleRule = `.vmultiple.${markerName} {
+            border-left: 10px solid red!important;
+        }
+        .vmultiple.${markerName} .verse {
+            background-color: var(--vhlt-hover);
+        }
+        .vmultiple.${markerName} .v_markers {
+            display:flex!important;
+            margin-top:0!important;
+            opacity:1!important;
+            z-index:1!important;
+        }
+        /* .vmultiple.${markerName} .verse[class^=v_]:not(:hover),
+        .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
+            color:black!important;
+        } */
+       .${markerName}.vmarker {
+            border:1px dashed brown;
+            background-color: #fff0f2;
+            font-weight:bold;
+            border-radius:2px;
+        }
+        .darkmode .${markerName}.vmarker {
+            border:1px dashed yellow!important;
+            color: white!important;
+        }
+        .darkmode .vmultiple.${markerName} {
+            border-color: orange!important;
+        }
+        .darkmode .vmultiple.${markerName} .verse,
+        .darkmode .${markerName}.vmarker {
+            background-color: transparent;
+        }`
+        createNewStyleSheetandRule('vm_marker',vm_marker_styleRule);
+        document.querySelector('#vm_marker').setAttribute('markerfor', markerName);
+        if(hlghtMarkerBtn){
+            hlghtMarkerBtn.innerText = 'Unhighlight Marker';
+            vmarker_unhighlight_all.disabled = false;//enable unHiglight all markers button
+        }
     }
 }
 function generateVmarkerReport(allorOne){
@@ -421,15 +516,11 @@ function generateVmarkerReport(allorOne){
             
             markerVerses.forEach(k => {
                 const markerRef = `${bcv.bkName}.${key}.${k}`;
-                arrayOfRefs.push(markerRef)
+                arrayOfRefs.push(markerRef[0])
                 
                 let vHolder = getCrossReference(markerRef);
                 /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
-                let crfnnote_DIV = document.createElement('DIV');
-                crfnnote_DIV.classList.add('crfnnote');
-                crfnnote_DIV.innerHTML = '<div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button></div>';
-                vHolder.querySelector('span').classList.add('verse');
-                vHolder.querySelector('span').append(crfnnote_DIV);
+                vHolder.querySelector('span').append(crfnnote_DIV());
                 
                 // Append to their window (using the search window for now)
                 searchPreviewFixed.append(vHolder)
@@ -439,9 +530,89 @@ function generateVmarkerReport(allorOne){
             // Empty the window where they will be appended (using the search window for now)
             hideRefNav('show');
             hideRefNav('show', searchPreviewWindowFixed);
-            
         }
-        // console.log(arrayOfRefs);
+    }
+}
+function addMarkerNote(clickedBtn,editNt){
+    if(markernote=eTargetMarker.parentElement.querySelector('#markernote')){
+        markernote.remove()
+    }
+    // Check if marker has note
+    const markername = vmarker_options_menu.getAttribute('markerfor').split('marker_')[1];
+    const vcode = eTargetMarker.parentElement.getAttribute('versecode');
+    const bcv = vNumCode(vcode);
+    let txtContent='';
+    markersObjForCurrentBook[markername][vNumCode(vcode).currentChpt].forEach((vm,i)=>{
+            if(vm[0]==bcv.currentV){
+                if(vm[1]){txtContent = vm[1]}
+            }
+        });
+    
+    // if(marker Has Note){txtContent=${marekerNoteText};}
+    // Add marker note
+    const markerNoteHolder = createNewElement('span','.markernote',`.marker_${markername}`);
+    insertElmAbeforeElmB(markerNoteHolder, eTargetMarker.nextElementSibling);
+    const closeBtn = createNewElement('button','.closebtn','.cmenu_closebtn','[onclick=this.parentElement.previousElementSibling.classList.remove("showingNote")],this.parentElement.remove()')
+    if(editNt=='edit'){
+        const markerNoteText = createNewElement('span','.markernotetext','[contenteditable=true]');
+        const markerNoteSaveBtn = createNewElement('Button','.markernotesavebtn',`[onclick=saveMarkerNote(this,'${vcode}','${markername}')]`);
+        markerNoteSaveBtn.innerText = 'Save';
+        if(txtContent==''){txtContent='<p placeholder="Add short note for marker"></p>'}
+        markerNoteText.innerHTML = txtContent;
+        markerNoteHolder.append(markerNoteText);
+        markerNoteHolder.append(markerNoteSaveBtn);
+        markerNoteHolder.append(closeBtn);
+        markerNoteText.querySelector('p').focus();
+    } else {
+        markerNoteHolder.innerHTML = txtContent;
+        markerNoteHolder.append(closeBtn);
+    }
+    eTargetMarker.classList.add('showingNote')
+    // Create button to remove marker note
+    clickedBtn.nextElementSibling.style.display='';
+    //remove vmarker_options_menu
+    vmarker_options_menu.remove();
+}
+function removeMarkerNote(x){
+    eTargetMarker.nextElementSibling.remove();//remove the note
+    eTargetMarker.classList.remove('showingNote')//remove the note
+    x.style.display='none';// hide the removenote btn
+    vmarker_shownote.disabled = false;
+}
+async function saveMarkerNote(dis,vcode,markername) {
+    const markerNoteHolder = dis.parentElement;
+    const markernoteText = markerNoteHolder.querySelector('.markernotetext').innerHTML;
+
+    let bcv = vNumCode(vcode);
+    
+    // Make a copy of the markersObjForCurrentBook and modify the copy and only copy it back into the markersObjForCurrentBook if the markers name is not rejected
+    let tempMrkObj = deepCopyObj(markersObjForCurrentBook);
+    tempMrkObj[markername][bcv.currentChpt].forEach((vm,i)=>{
+        if(vm[0]==bcv.currentV){
+            let newVal = [bcv.currentV,markernoteText];
+            // If the is no text, delete the marker note
+            if(!markerNoteHolder.querySelector('.markernotetext').innerText.trim()){
+                newVal = [bcv.currentV];
+                elmAhasElmOfClassBasAncestor(dis,'.v_markers').querySelector(`.vmarker.marker_${markername}`).classList.remove('hasnote')
+            } else {
+                elmAhasElmOfClassBasAncestor(dis,'.v_markers').querySelector(`.vmarker.marker_${markername}`).classList.add('hasnote')
+            }
+            tempMrkObj[markername][bcv.currentChpt].splice(i,1,newVal)
+        }
+    });
+    //Get current state of file, and then modify the markers object in it
+    let returnedJSONobject = await fetchBookNotes(bcv.bkName);
+    
+    returnedJSONobject.markers=tempMrkObj;
+    let newJSON_data = JSON.stringify(returnedJSONobject, null, 1);
+
+    let r = await saveToLocalDrive(newJSON_data);
+    if(r!=false){
+        markersObjForCurrentBook = deepCopyObj(tempMrkObj);
+        markerNoteHolder.innerHTML = markernoteText;
+        return true
+    } else {
+        return false
     }
 }
 async function deleteVmarker(allorOne, x){
@@ -502,10 +673,14 @@ function createMarkerOnEnterKeyPress(e) {
 }
 function vNumCode(vcode){
     vcode = vcode.slice(1).split('_');
-    
     return {
         bkName:bible.Data.allBooks[vcode[0]],
         currentChpt:Number(vcode[1])+1,
         currentV:Number(vcode[2])+1
     }
+}
+function getMarkerName(eTargetMarker){
+    let markerName;
+    eTargetMarker.classList.forEach(cl=>{/\bmarker_/.test(cl) ? markerName=cl : null});
+    return markerName
 }

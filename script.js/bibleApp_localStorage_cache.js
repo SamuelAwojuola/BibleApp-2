@@ -77,6 +77,8 @@ function cacheFunctions() {
             }
         })    
     }
+    // For Darkmode
+    if (localStorage.getItem('darkmode')) {darkLightMode()}
 }
 
 function cacheFunctions2() {

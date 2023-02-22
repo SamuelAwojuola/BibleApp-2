@@ -418,16 +418,17 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             // verseSpan.classList.add(`hello_there`);
             if (bible.isRtlVersion(bibleVersionName, bookName) == true) {
                 verseSpan.classList.add('rtl');
-                verseNum.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bibleVersionName}`));
+                verseNum.prepend(`${(chNumInBk + 1)}:${vNumInChpt} ${bibleVersionName}`);
             } else {
-                verseNum.prepend(document.createTextNode(`${bibleVersionName} ${(chNumInBk)}:${vNumInChpt} `));
+                verseNum.prepend(`${bibleVersionName} ${(chNumInBk)}:${vNumInChpt}`);
             }
         } else {
-            verseNum.prepend(document.createTextNode((chNumInBk) + ':' + vNumInChpt + ' '));
+            verseNum.prepend((chNumInBk) + ':' + vNumInChpt + ' ');
             // verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         }
         verseNum.setAttribute('ref', bookName + ' ' + (chNumInBk) + ':' + vNumInChpt);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
+        verseSpan.prepend(' ');
         verseSpan.prepend(verseNum);
 
         createTransliterationAttr(verseSpan, trans_lang);
@@ -454,15 +455,15 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
 
             verseNum2.setAttribute('ref', bookName + ' ' + (chNumInBk + 1) + ':' + vNumInChpt);
             verseNum2.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
+            verseSpan2.prepend(' ');
             verseSpan2.prepend(verseNum2);
             verseSpan2.classList.add('verse');
             if (bible.isRtlVersion(bv2d, bookName) == true) {
                 verseSpan2.classList.add('rtl');
-                verseNum2.prepend(document.createTextNode(`${(chNumInBk + 1)}:${vNumInChpt} ${bv2d}`));
+                verseNum2.prepend(`${(chNumInBk + 1)}:${vNumInChpt} ${bv2d}`);
             } else {
-                verseNum2.prepend(document.createTextNode(`${bv2d} ${(chNumInBk + 1)}:${vNumInChpt} `));
+                verseNum2.prepend(`${bv2d} ${(chNumInBk + 1)}:${vNumInChpt}`);
             }
-            // verseSpan2.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
             createTransliterationAttr(verseSpan2, trans_lang);
             verseMultipleSpan.appendChild(verseSpan2);
             verseMultipleSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));

@@ -42,7 +42,7 @@ document.addEventListener('click', function (e) {
     }
 })
 
-context_menu.addEventListener("click", codeELmRefClick);
+context_menu.addEventListener("click", codeElmRefClick);
 
 /* FOR SHOWING CROSSREFS AND VERSES NOTES */
 col2.addEventListener("mouseover", codeButtons);

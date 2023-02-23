@@ -23,6 +23,7 @@ function findAllBookChptnVersesWithNote(){
         getAllRefsInBookThatHaveNote(bookName, buildArrayOfRefs)
       } else {
         appendAllRefsWithNote()
+        appendMarkersToSideBar()
       }
     }
     return objOfRefsWithNote
@@ -261,13 +262,14 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
         }
       }
     }
-    // if book has markers
+    // if book has markers (colating all markers in the bible notes)
     if(bible_book.markers){
+      console.log(bookName)
       for (key in bible_book.markers) {
         let bookMarkerObj = bible_book.markers[key];
-        if (document.body.matches('homepage') && Object.keys(bookMarkerObj).length > 0) {
+        if (document.body.matches('#homepage') && Object.keys(bookMarkerObj).length > 0) {
           for (ky in bookMarkerObj) {
-            addKeyToArrayOfAllVerseMarkers(key)
+            allVMarkersInAllBooks = addKeyToArrayOfAllVerseMarkers(key)
           }
         }  
       }
@@ -284,7 +286,7 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
   })
 
   function notesInBookChapter() {
-    appendHere.innerHTML='<div id="context_menu" class="context_menu slideout"></div>';
+    appendHere.innerHTML='<div id="context_menu" class="context_menu slideoutofview"></div>';
     var items = [];
     let jsonChapter = bible_book.notes[Number(chptNum)-1];
     if (Object.keys(jsonChapter).length > 0) {

@@ -56,11 +56,11 @@ function getBksChptsNum(xxx) {
     xxx.classList.add('tmp_hlt')
 }
 /* ON PAGE LOAD SELECT THE FIRST BOOK AND CHAPTER */
-function openachapteronpageload() {
-    bible_books.querySelector('[bookname="Genesis"]').click();
-    currentBookName = 'Genesis';
-    bible_chapters.querySelector('[chapterindex="0"]').click();
-}
+// function openachapteronpageload() {
+//     bible_books.querySelector('[bookname="Genesis"]').click();
+//     currentBookName = 'Genesis';
+//     bible_chapters.querySelector('[chapterindex="0"]').click();
+// }
 
 var stl = 0;
 var currentBookValue = null;
@@ -158,7 +158,7 @@ function general_EscapeEventListener(){
     document.addEventListener('keydown', function (e) {
         if (e.key === "Escape") {
             // Remove ContextMenu if present
-            if(document.querySelector('#context_menu') && context_menu.matches('.slidein')){
+            if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
                 hideRightClickContextMenu();
             }
             // Hide 
@@ -174,12 +174,12 @@ function general_EscapeEventListener(){
             }
             else if(refnav && top_horizontal_bar_buttons){
                 // Hide refnav any child window, e.g., searchWindow, that is open
-                if(openRefnavWin = refnav.querySelector('.slidein:not(#app_settings)')){
+                if(openRefnavWin = refnav.querySelector('.slideintoview:not(#app_settings)')){
                     hideRefNav('hide',openRefnavWin);
                 }
                 // Hide refnav
                 else if (!top_horizontal_bar_buttons.matches('.sld_up')){
-                    if(refnav.matches('.slidein')){hideRefNav('hide',refnav);}
+                    if(refnav.matches('.slideintoview')){hideRefNav('hide',refnav);}
                     // Hide top_horizontal_bar_buttons
                     else {
                         titlebarsearchparameters.classList.add('slideup'),
@@ -193,7 +193,7 @@ function general_EscapeEventListener(){
                         topbartogglebtn.classList.toggle('active_button')
                     // }
                     // Show refnav if it is hidden
-                    // else if(refnav.matches('.slideout')){
+                    // else if(refnav.matches('.slideoutofview')){
                         hideRefNav('show',refnav);
                     // }
                 }
@@ -213,12 +213,12 @@ function toggleNav() {
 function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
     const hdtime = 100;
     function changeMarginLeft(x,l=null){
-        if(l==null) {x.style.marginLeft = "-" + x.offsetWidth + 'px'}
-        else {x.style.marginLeft = "-" + l + 'px'}
+        if(l==null) {x.style.marginLeft = `-${x.offsetWidth}px`}
+        else {x.style.marginLeft = `-${l}px`}
     }
     if ((elm2HideShow==null||elm2HideShow==undefined)){
-        if(refnav.matches('.slidein') && refnav.querySelector('.slidein')){
-            elm2HideShow = refnav.querySelector('.slidein')
+        if(refnav.matches('.slideintoview') && refnav.querySelector('.slideintoview')){
+            elm2HideShow = refnav.querySelector('.slideintoview')
         } else {elm2HideShow = refnav;}
     }
     function toShowOnlyOneAtaTime(){
@@ -233,22 +233,22 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
                     o_btns.classList.remove('active_button')
                 }
             })
-            refnav.querySelectorAll('.slidein').forEach(x=>{
-                x.classList.remove('slidein');
-                x.classList.add('slideout');
+            refnav.querySelectorAll('.slideintoview').forEach(x=>{
+                x.classList.remove('slideintoview');
+                x.classList.add('slideoutofview');
                 changeMarginLeft(x);
                 setTimeout(()=>{x.classList.add('displaynone')}, hdtime)
             })
         }
     }
-    if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideout')))) {
+    if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideoutofview')))) {
         elm2HideShow.classList.remove('displaynone');
         // To ensure that the display none is no longer applied (it cancels the animation)
         setTimeout(()=>{
             toShowOnlyOneAtaTime()
             changeMarginLeft(elm2HideShow,0);
-            elm2HideShow.classList.remove('slideout');
-            elm2HideShow.classList.add('slidein')
+            elm2HideShow.classList.remove('slideoutofview');
+            elm2HideShow.classList.add('slideintoview')
         }, 1)
         
         // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
@@ -258,9 +258,9 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
                 refHlt.scrollIntoView(false);
             });
         }            
-    } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideout'))||(elm2HideShow.classList.contains('slidein'))))) {
-        elm2HideShow.classList.remove('slidein');
-        elm2HideShow.classList.add('slideout');
+    } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideoutofview'))||(elm2HideShow.classList.contains('slideintoview'))))) {
+        elm2HideShow.classList.remove('slideintoview');
+        elm2HideShow.classList.add('slideoutofview');
         changeMarginLeft(elm2HideShow)
         
         setTimeout(()=>{elm2HideShow.classList.add('displaynone')}, hdtime);

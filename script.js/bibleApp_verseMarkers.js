@@ -1,3 +1,8 @@
+/* 
+generateAllMarkers() adds vmarkers to all verses on chapter load
+it is in bibleApp_generateScriptureReference.js
+*/
+
 let bookMarkers;
 let markersObjForCurrentBook;
 let currentlyMarkedBook;
@@ -67,7 +72,7 @@ async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter
             let cleanMarker=mrk.replace(/\s+/,'_');// replace spaces with '_'
             let newMarkerNameClass = `marker_${cleanMarker}`;
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
-            let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass);
+            let newMarkerElm = createNewElement('SPAN','.vmarker',dot_newMarkerNameClass);
             if(arrOfvm_withNotes.length>0 && arrOfvm_withNotes.includes(mrk)){
                 newMarkerElm.classList.add("hasnote");
             }
@@ -122,7 +127,7 @@ async function create_v_marker(x) {
         let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
 
         // Create the the new visual marker element
-        let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass)
+        let newMarkerElm = createNewElement('SPAN','.vmarker',dot_newMarkerNameClass)
         newMarkerElm.innerHTML=newMarkerName;
         // Prepare to prepend it
         let v_markersHolder = elmAhasElmOfClassBasAncestor(x, '.v_markers');
@@ -159,7 +164,7 @@ async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vM
             let cleanMarker=mrk.replace(/\s+/,'_');// replace spaces with '_'
             let newMarkerNameClass = `marker_${cleanMarker}`;
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
-            let newMarkerElm = createNewElement('SPAN','vmarker',dot_newMarkerNameClass)
+            let newMarkerElm = createNewElement('SPAN','.vmarker',dot_newMarkerNameClass)
             newMarkerElm.innerText=mrk;
             
             if(arrOfvm_withNotes.includes(mrk)){
@@ -185,7 +190,6 @@ async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vM
 
 /* READING & MODIFYING FILES */
 // I am adding the markers to the bibleNotes files
-arrOfAllVerseMarkersInBibleNotes=[];
 async function markersForCurrentChapter(vcode){
     let bcv = vNumCode(vcode);
     let result;
@@ -301,7 +305,7 @@ async function addNewMarkerToFile(vcode,markername,vmHolder){
 
     // If the marker does not exist
     if(!tempMrkObj[markername]){
-        addKeyToArrayOfAllVerseMarkers(markername)// all markers in all bible books and not jsut the current book
+        allVMarkersInAllBooks = addKeyToArrayOfAllVerseMarkers(markername)// all markers in all bible books and not jsut the current book
         tempMrkObj[markername]={};
         if(arrOfAllVerseMarkersInBook.indexOf(markername)<0){arrOfAllVerseMarkersInBook.push(markername)}
     }
@@ -369,6 +373,15 @@ async function removeMarkerFromJSONfile(vcode, markername){
         return false
     }
 }
+async function generateAllMarkers(){
+    let allVmultiple = main.querySelectorAll('.vmultiple')
+
+    // I append it in reverse so that it doesn't scroll away from the topmost verse
+    for (let i = allVmultiple.length-1; i > -1; i--) {
+        const vmultiple = allVmultiple[i];
+        await appendAllAvialableMarkersToVMultiple(vmultiple, true)
+    }
+}
 
 /* CONTEXT-MENU FOR MARKERS */
 document.addEventListener('contextmenu', markersOptions);
@@ -430,6 +443,8 @@ function showAllVersesMarkers(){
     }
 }
 function highlight_allVmultipleWithMarker_Class(eX){
+    /* NOTE: eX may be an element or a click event */
+
     let markerName,markerElm,hlghtMarkerBtn;
     if(eX=='all'){
         if(vm_marker=document.querySelector('#vm_marker')){
@@ -438,18 +453,26 @@ function highlight_allVmultipleWithMarker_Class(eX){
         }
         return
     }
+
+    /* IF eX IS AN ELEMENT */
     // OnClick of highlightMarker button
     else if(eX.nodeType !== undefined){
         hlghtMarkerBtn = eX;
         markerName = elmAhasElmOfClassBasAncestor(hlghtMarkerBtn,'#vmarker_options_menu').getAttribute('markerfor')
     }
+
+    /* IF eX IS AN EVENT */
     // OnClick of markername element
     // (for when the function is called on click of marker)
+
     else {
         if(eX.target.matches('.vmarker')){
             markerElm = eX.target;
             markerName = getMarkerName(markerElm);
             if(document.querySelector('#vmarker_options_menu')){vmarker_options_menu.remove()}
+        } else if (eX.target.matches('.vm')){
+            hlghtMarker_RefNav_Btn = eX.target;
+            markerName = elmAhasElmOfClassBasAncestor(hlghtMarker_RefNav_Btn,'.vm_btns').getAttribute('markerfor')
         } else return
     }
     if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
@@ -476,13 +499,16 @@ function highlight_allVmultipleWithMarker_Class(eX){
         .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
             color:black!important;
         } */
-       .${markerName}.vmarker {
+       .${markerName}.vmarker, #${markerName}.vm {
             border:1px dashed brown;
             background-color: #fff0f2;
             font-weight:bold;
             border-radius:2px;
         }
-        .darkmode .${markerName}.vmarker {
+        .darkmode #${markerName}.vm:not(:hover) div {
+            color:black!important;
+        }
+        .darkmode .${markerName}.vmarker{
             border:1px dashed yellow!important;
             color: white!important;
         }

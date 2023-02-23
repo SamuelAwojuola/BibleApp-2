@@ -93,13 +93,6 @@ function getTextOfChapter(xxx, oneChptAtaTime = 1, prependORnot, freshClick = fa
     // indicateThatVerseHasNoteInIndxDB();
     generateAllMarkers()
 }
-async function generateAllMarkers(){
-    let allVmultiple = main.querySelectorAll('.vmultiple')
-    for (let i = allVmultiple.length-1; i > 0; i--) {
-        const vmultiple = allVmultiple[i];
-        await appendAllAvialableMarkersToVMultiple(vmultiple, true)
-    }
-}
 
 function prependORappendChapters(prependORnot, what_to_append) {
     if (!prependORnot) {

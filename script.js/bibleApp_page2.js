@@ -34,7 +34,7 @@ window.onload = function () {
 pagemaster = versenotepage;
 main = col2;
 document.addEventListener('keydown', evt => {
-    if (evt.key === 'Escape' && !document.querySelector('#context_menu.slidein')) {
+    if (evt.key === 'Escape' && !document.querySelector('#context_menu.slideintoview')) {
         toggleCol2()
         transliteratedWords_Array.forEach(storedStrnum => {
             showTransliteration(storedStrnum)

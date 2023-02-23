@@ -25,21 +25,9 @@ function debounce(func, timeout = 300) {
     }
 }
 
-/* Remove single string or array of strings from a string */
-function removeCharacterFromString(xh, str) {
-    if (typeof xh === 'string' || xh instanceof String) {return str.split(xh).join('')}
-    //An array of characters to remove from the string,
-    // e.g., "['.',',','lk']"
-    else if (Array.isArray(xh)){
-        xh.forEach(xh_i=>{str.split(xh_i).join('')});
-        return str
-    }
-}
-
 /* ***************************** */
 /*       DOM MANIPULATIONS       */
 /* ***************************** */
-
 function createNewElement(elmTagName,classIdAttr){
     /*
     This function can take any number of parameters (arguments)
@@ -72,7 +60,7 @@ function createNewElement(elmTagName,classIdAttr){
             let val = attrNvalue.split('=')[1];
             newElm.setAttribute(attr,val);
         }
-        else{
+        else if(currentParam!='' && /^[\d-]/.test(currentParam)){
             let className = currentParam;
             newElm.classList.add(className)
         }
@@ -174,6 +162,13 @@ function checkUncheck(x){
         else{rcbx.checked=true}/* } */
     });
 }
+function unCheckOthers(x,z){
+    let arrOfCheckBoxes = x.querySelectorAll('input:checked');
+    
+    arrOfCheckBoxes.forEach(rcbx => {
+        if(rcbx!=z && rcbx.checked==true){rcbx.checked=false}
+    });
+}
 function insertElmAbeforeElmB(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode);
 }
@@ -191,10 +186,9 @@ function areAllitemsOfAinB(a, b) {
 }
 
 
-/* ************************************ */
-/*   DOM ANIMATIONS & BEAUTIFICATIONS   */
-/* ************************************ */
-
+/* ****************************************** */
+/*      DOM ANIMATIONS & BEAUTIFICATIONS      */
+/* ****************************************** */
 function randomColor(brightness) {
     function randomChannel(brightness) {
         var r = 255 - brightness;
@@ -281,13 +275,39 @@ function slideUpDown(elm, upOrDown){
     }
     return animDuration
 }
+/* REPLACE ALL CHECKBOXES */
+function replaceAllCheckBoxesWithFinnerOnes(cbx){
+    if(cbx){
+        if(isNaN(cbx.length)){//If it is not an array or NodeList
+            singleCheckboxReplace(cbx)
+        } else {//If it IS An array or NodeList
+            cbx.forEach(cb=>{
+                singleCheckboxReplace(cb)
+            })
+        }
+    } else {//If no value is supplied
+        let allCheckboxes = document.querySelectorAll("button input[type=checkbox]")
+        allCheckboxes.forEach(cbx=>{
+            singleCheckboxReplace(cbx)
+        })
+    }
+    function singleCheckboxReplace(cbx){
+        let checkboxreplacement = document.createElement('SPAN');
+        checkboxreplacement.classList.add('checkboxreplacement');
+        insertElmAbeforeElmB(checkboxreplacement, cbx);
+        relocateElmTo(cbx, checkboxreplacement);
+    }
+}
+replaceAllCheckBoxesWithFinnerOnes()
 /* Markers Input Autocomplete from available markers */
 function autocomplete(e) {
     // function autocomplete(input, arr) {
     //Close the existing list if it is open
     closeList();
     let inputElm=e.target;
-    let arr = arrOfAllVerseMarkersInBook;
+    let arr=arrOfAllVerseMarkersInBook;
+    // if(autocomplete_arr.checked){arr = arrOfAllVerseMarkersInBook;}
+    // else {arr = arrOfAllVerseMarkersInBibleNotes;}
     let currentFocus;
     //If the input is empty, exit the function
     if (!inputElm.value){return}
@@ -360,9 +380,8 @@ function autocomplete(e) {
 /* ****************************** */
 /*    DOM EXPLORATIONS/QUERIES    */
 /* ****************************** */
-
-// GET FIRST SHADOW COLOR
 function getBoxShadowColor(elm){
+    // GET FIRST SHADOW COLOR
     // Even if element has more than one box-shadow color, it will only get the first one
     let boxShadowOfElem = window.getComputedStyle(elm, null).getPropertyValue("box-shadow");
     return boxShadowOfElem.split('px')[0].replace(/^.*(rgba?\([^)]+\)).*/,'$1')
@@ -513,6 +532,7 @@ function arrayOfElementsBetween(a, b) {
         }
     }
 }
+
 /* ********************************************* */
 /* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
 /* ********************************************* */
@@ -522,10 +542,9 @@ function codeElmRefClick(e) {
         
         // If it is the verseNotePage and not the index.html.
         if(document.querySelector('body').matches('#versenotepage')){
-            // console.log('Page2');
             
             let col2 = document.querySelector('#col2');
-            col2.innerHTML = `<div id="context_menu" class="context_menu slideout"></div><details open><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${codeElm.getAttribute('ref')}</h1></summary><div class="win2_noteholder"><em>loading...</em></div></details>`;
+            col2.innerHTML = `<div id="context_menu" class="context_menu slideoutofview"></div><details open><summary><div class='openCloseIconHolder'></div><h1 class="win2_bcv_ref">${codeElm.getAttribute('ref')}</h1></summary><div class="win2_noteholder"><em>loading...</em></div></details>`;
             
             win2_noteholder = col2.querySelector('.win2_noteholder')
 
@@ -556,19 +575,7 @@ function refDetails4rmCodeElm(codeElm){
         chapterVerse:cV
     }
 }
-// function getFUllBookName(shortBkNm) {
-//     bible.Data.books.forEach((ref_, ref_indx) => {
-//         if (ref_.includes(shortBkNm.toUpperCase())) {
-//             let fullname = bible.Data.bookNamesByLanguage.en[ref_indx]
-//             return fullname;
-//         }
-//     });
-// }
 
-//Random Color Generator
-const findMatch = (array, value) => {
-    return array.find(element => element === value);
-}
 /* WATCH FOR INACTIVITY IN ELM AND RUN FUNCTION AFTER SET-TIME */
 // https://www.brcline.com/blog/detecting-inactivity-in-javascript
 function runFuncAfterSetTimeInactivityInElm(elm2Watch, timeoutInMiliseconds = 60000, func2run){
@@ -836,33 +843,10 @@ function docFrag2String(dfrg){
     return document_fragment_string.replace(regEx, '')
 }
 
-/* REPLACE ALL CHECKBOXES */
-function replaceAllCheckBoxesWithFinnerOnes(cbx){
-    if(cbx){
-        if(isNaN(cbx.length)){//If it is not an array or NodeList
-            singleCheckboxReplace(cbx)
-        } else {//If it IS An array or NodeList
-            cbx.forEach(cb=>{
-                singleCheckboxReplace(cb)
-            })
-        }
-    } else {//If no value is supplied
-        let allCheckboxes = document.querySelectorAll("button input[type=checkbox]")
-        allCheckboxes.forEach(cbx=>{
-            singleCheckboxReplace(cbx)
-        })
-    }
-    function singleCheckboxReplace(cbx){
-        let checkboxreplacement = document.createElement('SPAN');
-        checkboxreplacement.classList.add('checkboxreplacement');
-        insertElmAbeforeElmB(checkboxreplacement, cbx);
-        relocateElmTo(cbx, checkboxreplacement);
-    }
-}
-// Delay running of function till dynamic buttons have been generated
-// setTimeout(()=>{
-    replaceAllCheckBoxesWithFinnerOnes()
-// },500)
+
+/* **************************************** */
+/*        Objects & Arrays & Strings        */
+/* **************************************** */
 
 /* ARRAYS */
 function removeItemFromArray(n, array) {
@@ -905,27 +889,72 @@ function isAsubArrayofB(a, b) {
     }
     return false
 }
+function findMatch(array, value){
+    return array.find(element => element === value);
+}
 
-/* OBJECTS  */
+/* OBJECTS  [DEEP COPY OBJECTS | SORT OBJECTS] */
 function isObject(objValue) {
     return objValue && typeof objValue === 'object' && objValue.constructor === Object;
 }
-// DEEP COPY OBJECTS
 function deepCopyObj(obj){
     return JSON.parse(JSON.stringify(obj));
 }
-// SORT OBJECTS
 function sortObj(obj) {
     return Object.keys(obj).sort((b, a) => b.localeCompare(a)).reduce(function (result, key) {
         result[key] = obj[key];
         return result;
     }, {});
 }
+/* Remove single string or array of strings from a string */
+function removeStringFromString(xh, str) {
+    if (typeof xh === 'string' || xh instanceof String) {return str.split(xh).join('')}
+    //An array of characters to remove from the string,
+    // e.g., "['.',',','lk']"
+    else if (Array.isArray(xh)){
+        xh.forEach(xh_i=>{str.split(xh_i).join('')});
+        return str
+    }
+}
 
-// Add key to 
-function addKeyToArrayOfAllVerseMarkers(key){
-    if(arrOfAllVerseMarkersInBibleNotes.indexOf(key)==-1){
-        arrOfAllVerseMarkersInBibleNotes.push(key);
-        arrOfAllVerseMarkersInBibleNotes.sort((b, a) => b.localeCompare(a))
+/* ************************************* */
+/*             Verse Markers             */
+/* ************************************* */
+let allVMarkersInAllBooks;
+let addKeyToArrayOfAllVerseMarkers = addKeys2arroaVM();
+function addKeys2arroaVM(key){
+    let arrOfAllVerseMarkersInBibleNotes=[];
+    return function(key) {
+        if(arrOfAllVerseMarkersInBibleNotes.indexOf(key)==-1){
+            arrOfAllVerseMarkersInBibleNotes.push(key);
+            arrOfAllVerseMarkersInBibleNotes.sort((b, a) => b.localeCompare(a))
+        }
+        return arrOfAllVerseMarkersInBibleNotes
+    }
+}
+function appendMarkersToSideBar(){
+    if(allVMarkersInAllBooks){
+        allVMarkersInAllBooks.forEach(vm=>{
+            let vmHolder=createNewElement('DIV','.vm_btns',`#vm_${vm}`,`[markerfor=marker_${vm}]`);
+            let btnPrevious=createNewElement('BUTTON','.vmbtnprevious');
+            btnPrevious.innerText='<'
+            let btnNext=createNewElement('BUTTON','.vmbtnnext');
+            btnNext.innerText='>'
+            let vmMainBtn = createNewElement('button','.vm',`#marker_${vm}`,`[markerfor=marker_${vm}]`,'[onclick=unCheckOthers(combinedVersemarkers_list,this),checkUncheck(this.querySelector(\'input\'))]');
+            let tschk=createNewElement('SPAN','.checkboxreplacement');
+            tschk.innerHTML='<input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">';
+            let tsdiv=createNewElement('DIV');
+            tsdiv.innerText=vm;
+            vmMainBtn.append(tschk);
+            vmMainBtn.append(tsdiv);
+            vmHolder.append(vmMainBtn);
+            vmHolder.append(btnPrevious);
+            vmHolder.append(btnNext);
+            if(arrOfAllVerseMarkersInBook.includes(vm)){
+                currentbook_versemarkers_list.append(vmHolder)
+            } else {
+                otherbooks_versemarkers_list.append(vmHolder)
+            }
+        })
     }
 }

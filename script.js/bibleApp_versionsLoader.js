@@ -276,7 +276,7 @@ function local_versionsloader(e) {
         clkelm.append(sverse_comp)
         main.addEventListener('click', local_versionsloader)
         sverse_comp.classList.remove('displaynone')
-        // sverse_comp.classList.add('slidein')
+        // sverse_comp.classList.add('slideintoview')
     }
 }
 
@@ -286,7 +286,7 @@ main.addEventListener('contextmenu', addLocalVersionsLoaderButtons)
 function addLocalVersionsLoaderButtons(e) {
     // The local versions loader should not be loaded if there is context menu in the window.
     // IF there is 'context_menu', then the first click should remove it.
-    if (main.querySelector('#context_menu.slidein') == null) {
+    if (main.querySelector('#context_menu.slideintoview') == null) {
         // add_VersionsLoader_preventDoublick(e) // this works with click eventListener
         local_versionsloader(e) // this works with contextmenu eventListener
     }

@@ -13,7 +13,7 @@ function createNewContextMenu(){
         let context_menu_replacement = document.createElement('div');
         context_menu_replacement.id = 'context_menu';
         context_menu_replacement.classList.add('context_menu');
-        context_menu_replacement.classList.add('slideout');
+        context_menu_replacement.classList.add('slideoutofview');
         main.prepend(context_menu_replacement);
         context_menu.addEventListener("click", codeElmRefClick);
     }
@@ -32,7 +32,7 @@ function add_tooltipContextMenu(e) {
     parentIsContextMenu = 0;
     createNewContextMenu();
     formerContextMenu_Coordinates.transform = context_menu.style.transform;
-    const interactEnabled = context_menu.matches('.slidein');
+    const interactEnabled = context_menu.matches('.slideintoview');
     
     // If the traget is a strong's number
     if (e.target.getAttribute('strnum') && !e.target.matches('.context_menu')) {
@@ -369,7 +369,7 @@ function add_tooltipContextMenu(e) {
         if (interactEnabled == false) {
             enableInteractJSonEl('.cmtitlebar', context_menu)
         }
-    } else if (context_menu.matches('.slidein') && !(e.target.matches('#context_menu') || elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
+    } else if (context_menu.matches('.slideintoview') && !(e.target.matches('#context_menu') || elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
         function removeContextMenu() {
             hideRightClickContextMenu()
             context_menu.removeAttribute('strnum');
@@ -401,7 +401,7 @@ function getCurrentStrongsDef(e) {
 
 //Hide RightClickContextMenu
 function hideRightClickContextMenu() {
-    if (context_menu.matches('.slidein')) {
+    if (context_menu.matches('.slideintoview')) {
         context_menu.classList.add('displaynone')
         hideRefNav('hide', context_menu);
         //for dragging eventListner to be removed

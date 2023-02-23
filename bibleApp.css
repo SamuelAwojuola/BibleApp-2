@@ -151,6 +151,7 @@ li li li{
     background: var(--chpt) !important;
     border-bottom: 0.5px solid var(--grey);
     font-size:  calc(var(--fontsize-main) * 1.5);
+    border-left: 2px solid;
 }
 #ppp .verse:not(code) {
     font-size: var(--fontsize-scripture);
@@ -483,7 +484,7 @@ button {
     overflow-x:hidden;
     resize: both;
 }
-#context_menu.slidein, #context_menu.slideout {
+#context_menu.slideintoview, #context_menu.slideoutofview {
     transition: none;
 }
 #context_menu[strnum] {
@@ -860,13 +861,49 @@ sup {
     font-size: 13px;
     width: auto;
 }
-.bible_versions_heading{
+.bible_versions_heading, #bibleapp_versemarkers_settings{
     box-shadow: 0 0.5px 0 var(--shadow-color);
     background-color: var(--whitesmoke);
     /* background-image: var(--ref-img); */
     font-style: italic;
     font-weight: bold;
     text-align: center;
+}
+#bibleapp_versemarkers {
+    border-right: solid 2px;
+    height: 100%;    
+    overflow-x: hidden;
+}
+
+#bibleapp_versemarkers details {
+    border-bottom: 2.5px solid;
+    padding-bottom: 0;
+    /* box-shadow: 0 5px var(--shadow-color); */
+    background-color: var(--whitesmoke);
+}
+#bibleapp_versemarkers summary {
+    padding-right: 1em;
+    margin-bottom: 0;
+    height: 2em;
+}
+#bibleapp_versemarkers summary .openCloseIconHolder {
+    height: 5em!important;
+}
+#bibleapp_versemarkers #currentbook_versemarkers_list:not(:empty):before {
+    content:"Current Book Markers";
+    font-weight: bold;
+}
+#bibleapp_versemarkers #otherbooks_versemarkers_list:not(:empty):before {
+    content:"Other Book Markers";
+    font-weight: bold;
+}
+#bibleapp_versemarkers #currentbook_versemarkers_list:not(:empty) {
+    margin-top: 0.2em;
+    padding: 0.2em 0.2em 0 0.2em;
+    border-bottom: 2px solid grey;
+}
+#bibleapp_versemarkers #otherbooks_versemarkers_list:not(:empty) {
+    margin-top: 0.5em;
 }
 #bibleapp_cache *:not(.settingssectionheadings) {
     font-size: var(--fontsize-main);
@@ -1061,7 +1098,7 @@ summary {
 .strngsdefinition div {
     overflow: hidden;
 }
-#searchPreviewWindowFixed.slidein{
+#searchPreviewWindowFixed.slideintoview{
     display: flex!important;
 }
 #searchPreviewWindowFixed {
@@ -1229,7 +1266,7 @@ span.vmultiple.noted code #verse_notes_button {
 #refnav img, #top_horizontal_bar img {
     pointer-events: none;
 }
-.slidein {
+.slideintoview {
     display: block;
     margin-left: 0px;
     margin-top: 0;
@@ -1238,8 +1275,8 @@ span.vmultiple.noted code #verse_notes_button {
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
 }
-.slideout {
-    margin-left: -900px;
+.slideoutofview {
+    /* margin-left: -900px; */
     margin-top: 0;
     -webkit-transition: all 0.2s ease-in-out;
     -moz-transition: all 0.2s ease-in-out;
@@ -1255,7 +1292,7 @@ border-right: var(--col2-border) solid auto!important;
 #refnav_col2 {
     box-shadow: inset -2px 0 0 0 var(--black);
 }
-#refnav_col2 > .slidein.displaynone{
+#refnav_col2 > .slideintoview.displaynone{
     display: null!important;
 }
 .displayshow {
@@ -2055,6 +2092,26 @@ div.v_markers div#autocomplete_items {
     background-color: palegoldenrod;
     padding:0;
     border: 1px solid red;
+}
+.vm, #bibleapp_versemarkers button {
+    width: 100%;
+    height:2em;
+    text-align: left;
+    border-bottom: 1px solid!important;
+}
+.vm *, #bibleapp_versemarkers .checkboxreplacement {
+    pointer-events:none;
+}
+.vm div, #bibleapp_versemarkers button div {width: 100%;}
+.vm_btns, #autocomplete_buttons {
+    display: flex;
+    /* flex-wrap: wrap; */
+}
+.vm_btns .vmbtnprevious,
+.vm_btns .vmbtnnext {
+    /* flex: 1 1 50%; */
+    width: 25%!important;
+    font-weight: bold;
 }
 .eng2grk_sup_btns input {
     pointer-events: none;

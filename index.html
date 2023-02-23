@@ -75,7 +75,7 @@
     </div>
 
     <!-- BIBLE REFERENCE SIDE BAR -->
-    <nav id="refnav" class="slideout displaynone">
+    <nav id="refnav" class="slideoutofview displaynone">
       <div id="app_settings" class="refnav" name="settings" multiple>
         <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">
@@ -86,20 +86,21 @@
         </button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
         <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
       </div>
       <div id="refnav_col2">
-        <div id="bible_nav" class="slideout displaynone">
+        <div id="bible_nav" class="slideoutofview displaynone">
           <div class="bible_nav" name="books" id="bible_books" multiple></div>
           <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
           <!-- <div class="bible_nav" name="verses" id="bible_verses" multiple></div> -->
         </div>
-        <div id="bible_versions" class="slideout displaynone">
+        <div id="bible_versions" class="slideoutofview displaynone">
           <div class="bible_versions_heading">Available Bible Versions</div>
         </div>
-        <div id="searchPreviewWindowFixed" class="slideout displaynone">
+        <div id="searchPreviewWindowFixed" class="slideoutofview displaynone">
           <div id="searchparameters" class="hidesearchparameters">
             <div id="searchparametertitlebar_holder">
               <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word,search_anyWord]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
@@ -128,7 +129,7 @@
           </div>
           <div id="searchPreviewFixed"></div>
         </div>
-        <div id="bibleapp_cache" class="slideout displaynone">
+        <div id="bibleapp_cache" class="slideoutofview displaynone">
           <div class="" id="eng2grk_sup">
             <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
             <table id="eng2grk_sup_table">
@@ -285,10 +286,29 @@
           <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
             for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label> -->
         </div>
-        <div id="bibleapp_available_notes" class="slideout displaynone">
-          bibleapp_available_notes
+        <div id="bibleapp_available_notes" class="slideoutofview displaynone">
         </div>
-        <div id="strongsdefinitionwindow" class="slideout displaynone">
+        <div id="bibleapp_versemarkers" class="slideoutofview displaynone">
+          <details>
+            <summary id="bibleapp_versemarkers_settings"><div class="openCloseIconHolder"></div><div>Verse Markers</div></summary>
+            <div>
+              <div>Autocomplete</div>
+              <div id="autocomplete_buttons">
+                <button id="autocomplete_1" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_2 input')])"><span class="checkboxreplacement"><input type="checkbox" id="autocomplete_1check" name="autocomplete_1check" value="autocomplete_1check"></span><div>Book Only</div></button>
+                <button id="autocomplete_2" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_1 input')])"><span class="checkboxreplacement"><input type="checkbox" id="autocomplete_2check" name="autocomplete_2check" value="autocomplete_2check" checked></span><div>Whole Bible</div></button>
+              </div>
+              <div>Show All Markers</div>
+              <div id="showallmarkers_div">
+                <button id="showAllmarkersBtn" onclick="checkUncheck([this.querySelector('input')]),showAllVersesMarkers()"><span class="checkboxreplacement"><input type="checkbox" id="showAllmarkersBtn_check" name="showAllmarkersBtn_check" value="showAllmarkersBtn_check"></span><div>ShowAll Markers</div></button>
+              </div>
+            </div>
+          </details>
+          <div id="combinedVersemarkers_list">
+            <div id="currentbook_versemarkers_list"></div>
+            <div id="otherbooks_versemarkers_list"></div>
+          </div>
+        </div>
+        <div id="strongsdefinitionwindow" class="slideoutofview displaynone">
           <div id="strongsnum_inputholder">
             <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition(strongsnum_input.value.split(/[,\s]+/))" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
           </div>
@@ -298,7 +318,7 @@
     </nav>
     
     <main id="main" contenteditable="false">
-      <div id="context_menu" class="context_menu slideout displaynone"></div>
+      <div id="context_menu" class="context_menu slideoutofview displaynone"></div>
       <div id="show_crossref_comments" class="displaynone">
         <button class="buttons" id="verse_crossref_button">TSK</button>
         <button class="buttons" id="verse_notes_button">Note</button>
@@ -309,15 +329,6 @@
     </main>
   </div>
   <div id="singleverse_compare_menu" class="displaynone"></div>
-  <!-- <div id="vmarker_options_menu" class="displaynone">
-    <h4>Generate Report</h4>
-    <button id="vmarker_single_report" onclick="generateVmarkerReport(single)" placeholder="generate report for this marker">Single Marker</button>
-    <button id="vmarker_all_report" onclick="generateVmarkerReport(all)" placeholder="generate report for all markers in this book">All Markers</button>
-    <h4>Modify</h4>
-    <button id="vmarker_delete" onclick="deleteVmarkerReport()">Delete</button>
-  </div> -->
-
-  <!-- <textarea name="verse_note" id="verse_note" cols="30" rows="10"></textarea> -->
   <div name="verse_note" id="verse_note" class="verse_note">
   
     <!--element to edit-->
@@ -328,7 +339,6 @@
       <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"></button><button class="closebtn note_closebtn" onclick="closeNote(null,null,this)"></button><button class="closebtn note_closebtn note_closebtn_x" onclick="closeNote(null,null,this)"></button>
     </div>
   </div>
-  <!-- <button id="btnAdd">Add to home screen</button> -->
 </body>
 
 <script src="script.js/bibleApp.js" charset="utf-8"></script>

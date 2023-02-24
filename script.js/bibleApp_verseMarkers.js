@@ -387,6 +387,7 @@ async function generateAllMarkers(){
 document.addEventListener('contextmenu', markersOptions);
 document.addEventListener('mousedown', remove_MarkersOptions);
 document.addEventListener('click', highlight_allVmultipleWithMarker_Class);
+combinedVersemarkers_list.addEventListener('click', goToPrevNxtVerse);
 function remove_MarkersOptions(e){
     if(!e.target.matches('.vmarker')&&!e.target.matches('#vmarker_options_menu, #vmarker_options_menu *')){
         if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
@@ -454,7 +455,10 @@ function highlight_allVmultipleWithMarker_Class(eX){
         return
     }
 
-    /* IF eX IS AN ELEMENT */
+    /* *********************************** */
+    /*         GET THE MARKER NAME         */
+    /* *********************************** */
+    /* IF the supplied value for the eX parameter IS AN ELEMENT */
     // OnClick of highlightMarker button
     else if(eX.nodeType !== undefined){
         hlghtMarkerBtn = eX;
@@ -464,25 +468,37 @@ function highlight_allVmultipleWithMarker_Class(eX){
     /* IF eX IS AN EVENT */
     // OnClick of markername element
     // (for when the function is called on click of marker)
-
     else {
         if(eX.target.matches('.vmarker')){
             markerElm = eX.target;
             markerName = getMarkerName(markerElm);
             if(document.querySelector('#vmarker_options_menu')){vmarker_options_menu.remove()}
-        } else if (eX.target.matches('.vm')){
+        }
+        // Button in #currentbook_versemarkers_list
+        else if (eX.target.matches('.vm,.vmbtnprevious,.vmbtnnext')){
             hlghtMarker_RefNav_Btn = eX.target;
             markerName = elmAhasElmOfClassBasAncestor(hlghtMarker_RefNav_Btn,'.vm_btns').getAttribute('markerfor')
-        } else return
+        }
+         else return
     }
-    if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
+    /* *********************************** */
+    /*   USING THE MARKER NAME, HIGHLIGHT  */
+    /*     THE VERSES UNDER THE MARKER     */
+    /* *********************************** */
+    // Button in #currentbook_versemarkers_list
+    if (eX.target.matches('.vmbtnprevious,.vmbtnnext') && document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
+        return
+    }
+    // If stylesheet already exists fo marker in the document head
+    else if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
         vm_marker.remove();
         if(hlghtMarkerBtn){
             hlghtMarkerBtn.innerText = 'Highlight Marker';
             vmarker_unhighlight_all.disabled = true;//disable unHiglight all markers button
         }
     }
-    else {// Create styleSheet and append to head
+    // Create styleSheet and append to head
+    else {
         let vm_marker_styleRule = `.vmultiple.${markerName} {
             border-left: 10px solid red!important;
         }
@@ -499,11 +515,18 @@ function highlight_allVmultipleWithMarker_Class(eX){
         .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
             color:black!important;
         } */
-       .${markerName}.vmarker, #${markerName}.vm {
-            border:1px dashed brown;
+       .${markerName}.vmarker, #${markerName.replace(/marker/,'vm')} button {
+            border:2px solid brown!important;
             background-color: #fff0f2;
             font-weight:bold;
             border-radius:2px;
+        }
+        .darkmode #${markerName.replace(/marker/,'vm')} button {
+            background-color: #50efad;
+        }
+        .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnprevious:before,
+        .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnnext:before {
+            background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
         }
         .darkmode #${markerName}.vm:not(:hover) div {
             color:black!important;
@@ -511,11 +534,12 @@ function highlight_allVmultipleWithMarker_Class(eX){
         .darkmode .${markerName}.vmarker{
             border:1px dashed yellow!important;
             color: white!important;
+            background: transparent;
         }
         .darkmode .vmultiple.${markerName} {
             border-color: orange!important;
         }
-        .darkmode .vmultiple.${markerName} .verse,
+        .darkmode .vmultiple.${markerName}
         .darkmode .${markerName}.vmarker {
             background-color: transparent;
         }`
@@ -664,6 +688,65 @@ async function deleteVmarker(allorOne, x){
             document.querySelector('#vmarker_options_menu').remove();
         }
     })
+}
+let lastVerseJumpedTo;
+function goToPrevNxtVerse(e) {
+    if(e.target.matches('.vmbtnprevious, .vmbtnnext')){
+        const prNx = e.target;
+        const marker_ = elmAhasElmOfClassBasAncestor(prNx,'.vm_btns').id.replace(/vm_/,'marker_')
+        const marker_s = document.querySelectorAll(`.vmultiple.${marker_}`)
+        const scrollBehaviour = {behavior:"smooth",block:"nearest"};
+
+        marker_s.forEach((mks,i)=>{
+            /* FULLY SHOWING */
+            if(isFullyScrolledIntoView(mks)){
+                //Go to next verse
+                if(prNx.matches('.vmbtnnext')){
+                    lastVerseJumpedTo=marker_s[i+1];
+                    lastVerseJumpedTo.scrollIntoView(scrollBehaviour);
+                }
+                else if(prNx.matches('.vmbtnprevious')){
+                    lastVerseJumpedTo=marker_s[i-1];
+                    lastVerseJumpedTo.scrollIntoView(scrollBehaviour);
+                }
+            }
+            /* PARTIALLY SHOWING */
+            else if(isPartiallyScrolledIntoView(mks)){
+                // Scroll it inot view if it is the last verse just scrolled to 
+                if(prNx.matches('.vmbtnnext')){
+                    if(lastVerseJumpedTo!=mks){
+                        mks.scrollIntoView(scrollBehaviour)
+                        lastVerseJumpedTo=mks;
+                    }
+                }
+                else if(prNx.matches('.vmbtnprevious')){
+                    if(lastVerseJumpedTo!=mks){
+                        mks.scrollIntoView(scrollBehaviour)
+                        lastVerseJumpedTo=mks;
+                    }
+                }
+            }
+            /* NONE SHOWING */
+            else {
+                // Get the topmost visible vmultiple and determine the closest vmarker
+                const allVmultipleOnPage = document.querySelectorAll(`.vmultiple`)
+                allVmultipleOnPage.forEach((vmlt,i)=>{
+                    if(isPartiallyScrolledIntoView(vmlt)){
+                        // If go to next
+                        if(prNx.matches('.vmbtnnext')){
+                            for (let j = i; j < allVmultipleOnPage.length; j++) {
+                                const vmlt_2 = allVmultipleOnPage[j];
+                                if(vmlt_2.matches(`.${marker_}`)){
+                                    vmlt_2.scrollIntoView(scrollBehaviour);
+                                    break
+                                }
+                            }
+                        }        
+                    }
+                })
+            }
+        })
+    }
 }
 
 /* HELPER FUNCTION TO SLIDE LEFT v_markerinputnbtn_holder */

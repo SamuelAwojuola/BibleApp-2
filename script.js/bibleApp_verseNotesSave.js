@@ -115,7 +115,7 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
       bible_book = jsonObject;
       appendNote4selectedVerse();
       // Scroll the verseNote into view
-      if(appendHere && !isScrolledIntoView(appendHere.parentElement)){
+      if(appendHere && !isFullyScrolledIntoView(appendHere.parentElement)){
           appendHere.parentElement.scrollIntoView({behavior: "smooth",block: "end", inline: "nearest"})
           // transliteratedWords_Array.forEach(storedStrnum => {
           //   showTransliteration(storedStrnum)})
@@ -264,7 +264,6 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
     }
     // if book has markers (colating all markers in the bible notes)
     if(bible_book.markers){
-      console.log(bookName)
       for (key in bible_book.markers) {
         let bookMarkerObj = bible_book.markers[key];
         if (document.body.matches('#homepage') && Object.keys(bookMarkerObj).length > 0) {

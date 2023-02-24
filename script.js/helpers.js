@@ -700,7 +700,7 @@ function findMissingIncompleteChapters(translation){
 }
 
 /* Check If element is in view on page */
-function isScrolledIntoView(el) {
+function isFullyScrolledIntoView(el) {
     var rect = el.getBoundingClientRect();
     var elemTop = rect.top;
     var elemBottom = rect.bottom;
@@ -709,6 +709,14 @@ function isScrolledIntoView(el) {
     var isVisible = (elemTop >= 0) && (elemBottom <= window.innerHeight);
     // Partially visible elements return true:
     //isVisible = elemTop < window.innerHeight && elemBottom >= 0;
+    return isVisible;
+}
+function isPartiallyScrolledIntoView(el) {
+    var rect = el.getBoundingClientRect();
+    var elemTop = rect.top;
+    var elemBottom = rect.bottom;
+    // Partially visible elements return true:
+    isVisible = elemTop < window.innerHeight && elemBottom >= 0;
     return isVisible;
 }
 
@@ -937,9 +945,7 @@ function appendMarkersToSideBar(){
         allVMarkersInAllBooks.forEach(vm=>{
             let vmHolder=createNewElement('DIV','.vm_btns',`#vm_${vm}`,`[markerfor=marker_${vm}]`);
             let btnPrevious=createNewElement('BUTTON','.vmbtnprevious');
-            btnPrevious.innerText='<'
             let btnNext=createNewElement('BUTTON','.vmbtnnext');
-            btnNext.innerText='>'
             let vmMainBtn = createNewElement('button','.vm',`#marker_${vm}`,`[markerfor=marker_${vm}]`,'[onclick=unCheckOthers(combinedVersemarkers_list,this),checkUncheck(this.querySelector(\'input\'))]');
             let tschk=createNewElement('SPAN','.checkboxreplacement');
             tschk.innerHTML='<input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">';

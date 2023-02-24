@@ -361,7 +361,7 @@ function add_tooltipContextMenu(e) {
                 }
             }
             // Make Context Menu Draggable
-            if(parentElement.matches('#searchPreviewFixed') && !isScrolledIntoView(context_menu)){
+            if(parentElement.matches('#searchPreviewFixed') && !isFullyScrolledIntoView(context_menu)){
                 setTimeout(()=>{context_menu.scrollIntoView({behavior:"smooth",block:"nearest"})},10)
             }
         }

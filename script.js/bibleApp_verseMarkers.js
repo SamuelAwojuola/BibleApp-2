@@ -701,11 +701,11 @@ function goToPrevNxtVerse(e) {
             /* FULLY SHOWING */
             if(isFullyScrolledIntoView(mks)){
                 //Go to next verse
-                if(prNx.matches('.vmbtnnext')){
+                if(prNx.matches('.vmbtnnext') && marker_s[i+1]){
                     lastVerseJumpedTo=marker_s[i+1];
                     lastVerseJumpedTo.scrollIntoView(scrollBehaviour);
                 }
-                else if(prNx.matches('.vmbtnprevious')){
+                else if(prNx.matches('.vmbtnprevious') && marker_s[i-1]){
                     lastVerseJumpedTo=marker_s[i-1];
                     lastVerseJumpedTo.scrollIntoView(scrollBehaviour);
                 }

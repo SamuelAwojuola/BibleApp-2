@@ -111,9 +111,10 @@ body * {
 body>svg {
     width: 100% !important;
 }
-svg{
+/* svg{
     filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
-}
+} */
+button * {pointer-events: none;}
 .text_content:empty::before{
     content: 'Take down a comment to the verse';
     font-size: large;
@@ -2095,9 +2096,8 @@ div.v_markers div#autocomplete_items {
 }
 .vm, #bibleapp_versemarkers button {
     width: 100%;
-    height:2em;
+    height:1.5em;
     text-align: left;
-    border-bottom: 1px solid!important;
 }
 .vm *, #bibleapp_versemarkers .checkboxreplacement {
     pointer-events:none;
@@ -2105,13 +2105,57 @@ div.v_markers div#autocomplete_items {
 .vm div, #bibleapp_versemarkers button div {width: 100%;}
 .vm_btns, #autocomplete_buttons {
     display: flex;
-    /* flex-wrap: wrap; */
+}
+.vm_btns * {
+    border-radius: 0.15em!important;
+}
+.vm_btns .checkboxreplacement:has(:checked) {
+    border: 1px solid var(--black);
+}
+.darkmode .vm_btns:hover .checkboxreplacement {
+    background-color: #0b5913;
+}
+.darkmode .vm_btns:hover button,
+.darkmode .vm_btns:hover button div {
+    color: black!important;
+    font-weight: bold;
+    background-color: pink!important;
+}
+.vm_btns:hover button,
+.vm_btns:hover button div {
+    color: black!important;
+    font-weight: bold;
+    background-color: var(--chpt) !important;
+}
+.darkmode .vm_btns:hover .vmbtnprevious:before,
+.darkmode .vm_btns:hover .vmbtnnext:before {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
 }
 .vm_btns .vmbtnprevious,
 .vm_btns .vmbtnnext {
-    /* flex: 1 1 50%; */
     width: 25%!important;
     font-weight: bold;
+}
+.darkmode .vm_btns .vmbtnprevious:hover,
+.darkmode .vm_btns .vmbtnnext:hover {
+    background-color: rgb(210, 185, 126) !important;
+}
+.vm_btns .vmbtnprevious:before,
+.vm_btns .vmbtnnext:before {
+    content:"";
+    width:100%;
+    height:100%;
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
+}
+.darkmode .vm_btns .vmbtnprevious:before,
+.darkmode .vm_btns .vmbtnnext:before {
+    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat!important;
+}
+.vm_btns .vmbtnprevious:before {
+    transform: rotate(-90deg);
+}
+.vm_btns .vmbtnnext:before {
+    transform: rotate(90deg);
 }
 .eng2grk_sup_btns input {
     pointer-events: none;

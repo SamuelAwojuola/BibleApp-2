@@ -262,7 +262,7 @@ function slideUpDown(elm, upOrDown){
 
     }
     // HIDE It If It Is Showing
-    else {
+    else if((upOrDown && (upOrDown=='hide'|| upOrDown=='up'))||!elm.classList.contains('sld_up')) {
         elm.classList.add('sld_up')
         elm.style.marginTop = '-' + tMargin + 'px';
         elm.style.opacity = 0;
@@ -305,9 +305,9 @@ function autocomplete(e) {
     //Close the existing list if it is open
     closeList();
     let inputElm=e.target;
-    let arr=arrOfAllVerseMarkersInBook;
-    // if(autocomplete_arr.checked){arr = arrOfAllVerseMarkersInBook;}
-    // else {arr = arrOfAllVerseMarkersInBibleNotes;}
+    let arr=allVMarkersInAllBooks;
+    if(autocomplete_1check.checked){arr=arrOfAllVerseMarkersInBook;}
+    else if(autocomplete_2check.checked) {arr=allVMarkersInAllBooks;}
     let currentFocus;
     //If the input is empty, exit the function
     if (!inputElm.value){return}
@@ -930,7 +930,7 @@ function removeStringFromString(xh, str) {
 /* ************************************* */
 let allVMarkersInAllBooks;
 let addKeyToArrayOfAllVerseMarkers = addKeys2arroaVM();
-function addKeys2arroaVM(key){
+function addKeys2arroaVM(){
     let arrOfAllVerseMarkersInBibleNotes=[];
     return function(key) {
         if(arrOfAllVerseMarkersInBibleNotes.indexOf(key)==-1){
@@ -941,7 +941,12 @@ function addKeys2arroaVM(key){
     }
 }
 function appendMarkersToSideBar(){
+    currentbook_versemarkers_list.setAttribute('empty_txt',`No Markers in ${bookName}`);
+    otherbooks_versemarkers_list.setAttribute('empty_txt',`Same As Above`);
     if(allVMarkersInAllBooks){
+        // Empty the Marker Sections
+        currentbook_versemarkers_list.innerHTML = '';
+        otherbooks_versemarkers_list.innerHTML = '';
         allVMarkersInAllBooks.forEach(vm=>{
             let vmHolder=createNewElement('DIV','.vm_btns',`#vm_${vm}`,`[markerfor=marker_${vm}]`);
             let btnPrevious=createNewElement('BUTTON','.vmbtnprevious');
@@ -956,10 +961,12 @@ function appendMarkersToSideBar(){
             vmHolder.append(vmMainBtn);
             vmHolder.append(btnPrevious);
             vmHolder.append(btnNext);
-            if(arrOfAllVerseMarkersInBook.includes(vm)){
+            if(allBibleMarkersOBJ[bookName] && allBibleMarkersOBJ[bookName].includes(vm)){
                 currentbook_versemarkers_list.append(vmHolder)
+                currentbook_versemarkers_list.setAttribute('empty_txt',`Markers for ${bookName}`);
             } else {
                 otherbooks_versemarkers_list.append(vmHolder)
+                otherbooks_versemarkers_list.setAttribute('empty_txt',`Markers for Other Books`);
             }
         })
     }

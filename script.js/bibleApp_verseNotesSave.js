@@ -264,14 +264,17 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
     }
     // if book has markers (colating all markers in the bible notes)
     if(bible_book.markers){
+      let bookMarkers_tempArray = [];
       for (key in bible_book.markers) {
+        bookMarkers_tempArray.push(key);
         let bookMarkerObj = bible_book.markers[key];
         if (document.body.matches('#homepage') && Object.keys(bookMarkerObj).length > 0) {
           for (ky in bookMarkerObj) {
             allVMarkersInAllBooks = addKeyToArrayOfAllVerseMarkers(key)
           }
-        }  
+        }
       }
+      allBibleMarkersOBJ[bookName]=bookMarkers_tempArray;
     }
     callback(items);
   }

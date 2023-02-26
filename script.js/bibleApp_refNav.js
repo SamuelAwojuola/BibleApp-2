@@ -154,72 +154,73 @@ function indicateBooknChapterInNav(bk, chpt) {
     // }
 }
 
-function general_EscapeEventListener(){
-    document.addEventListener('keydown', function (e) {
-        if (e.key === "Escape") {
-            // Remove ContextMenu if present
-            if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
-                hideRightClickContextMenu();
+document.addEventListener('keydown', general_EscapeEventListener);
+function general_EscapeEventListener(e){
+    if (e.key === "Escape") {
+        // Remove ContextMenu if present
+        if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
+            hideRightClickContextMenu();
+        }
+        // Hide vmarker_options_menu
+        else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
+            prev_vmrkoptm.remove()
+        }
+        // Stop editing verseNote
+        else if (document.activeElement.matches('#noteEditingTarget')) {
+            let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
+            let editBtn = verseNoteDiv.querySelector('.note_edit_button');
+            let saveBtn = verseNoteDiv.querySelector('.note_save_button');
+            editVerseNote(editBtn, e, saveBtn);
+        }
+        else if(refnav && top_horizontal_bar_buttons){
+            // Hide refnav any child window, e.g., searchWindow, that is open
+            if(openRefnavChild = refnav.querySelector('.slideintoview:not(#app_settings)')){
+                hideRefNav('hide',openRefnavChild);
             }
-            // Hide 
-            else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
-                prev_vmrkoptm.remove()
-            }
-            // Stop editing verseNote
-            else if (document.activeElement.matches('#noteEditingTarget')) {
-                let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
-                let editBtn = verseNoteDiv.querySelector('.note_edit_button');
-                let saveBtn = verseNoteDiv.querySelector('.note_save_button');
-                editVerseNote(editBtn, e, saveBtn);
-            }
-            else if(refnav && top_horizontal_bar_buttons){
-                // Hide refnav any child window, e.g., searchWindow, that is open
-                if(openRefnavWin = refnav.querySelector('.slideintoview:not(#app_settings)')){
-                    hideRefNav('hide',openRefnavWin);
+            // Hide refnav
+            else if (!top_horizontal_bar_buttons.matches('.sld_up')){
+                if(app_settings.matches('.slideintoview')){hideRefNav('hide',app_settings);}
+                // Hide top_horizontal_bar_buttons
+                else {
+                    titlebarsearchparameters.classList.add('slideup'),
+                    slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+                    topbartogglebtn.classList.toggle('active_button')
                 }
-                // Hide refnav
-                else if (!top_horizontal_bar_buttons.matches('.sld_up')){
-                    if(refnav.matches('.slideintoview')){hideRefNav('hide',refnav);}
-                    // Hide top_horizontal_bar_buttons
-                    else {
-                        titlebarsearchparameters.classList.add('slideup'),
-                        slideUpDown(top_horizontal_bar_buttons, 'slideup'),
-                        topbartogglebtn.classList.toggle('active_button')
-                    }
-                } else {
-                    // Show top_horizontal_bar_buttons if it is hidden
-                    // if(top_horizontal_bar_buttons.matches('.sld_up')){
-                        slideUpDown(top_horizontal_bar_buttons, 'slideup'),
-                        topbartogglebtn.classList.toggle('active_button')
-                    // }
-                    // Show refnav if it is hidden
-                    // else if(refnav.matches('.slideoutofview')){
-                        hideRefNav('show',refnav);
-                    // }
-                }
+            } else {
+                slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+                topbartogglebtn.classList.toggle('active_button')
+                hideRefNav('show',app_settings);
             }
         }
-    });
+    }
 }
-general_EscapeEventListener()
 
-function toggleNav() {
-    hideRefNav()
+function toggleNav(showHide=null) {
+    let elm2HideShow;
+    // IF ANY SUB-WINDOW, E.G., SEARCH-WINDOW, IS OPENNED
+    if(!refnav.matches('.slideoutofview') && refnav.querySelector('.slideintoview:not(#app_settings)')){
+        elm2HideShow = refnav.querySelector('.slideintoview:not(#app_settings)')
+    }
+    // IF NO SUB-WINDOW IS OPENNED
+    else {
+        elm2HideShow = app_settings;
+    }
+    hideRefNav(showHide,elm2HideShow)
     // realine();
 }
 
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
 function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
+    if(!elm2HideShow){
+        if(!hideOrShow){hideOrShow=null}
+        toggleNav(hideOrShow)
+        return
+    }
     const hdtime = 100;
     function changeMarginLeft(x,l=null){
         if(l==null) {x.style.marginLeft = `-${x.offsetWidth}px`}
         else {x.style.marginLeft = `-${l}px`}
-    }
-    if ((elm2HideShow==null||elm2HideShow==undefined)){
-        if(refnav.matches('.slideintoview') && refnav.querySelector('.slideintoview')){
-            elm2HideShow = refnav.querySelector('.slideintoview')
-        } else {elm2HideShow = refnav;}
     }
     function toShowOnlyOneAtaTime(){
         //To show only one at a time
@@ -233,7 +234,7 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
                     o_btns.classList.remove('active_button')
                 }
             })
-            refnav.querySelectorAll('.slideintoview').forEach(x=>{
+            refnav.querySelectorAll('.slideintoview:not(#app_settings)').forEach(x=>{
                 x.classList.remove('slideintoview');
                 x.classList.add('slideoutofview');
                 changeMarginLeft(x);

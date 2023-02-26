@@ -941,6 +941,7 @@ function addKeys2arroaVM(){
     }
 }
 function appendMarkersToSideBar(){
+    if(!document.querySelector('#currentbook_versemarkers_list')){return}
     currentbook_versemarkers_list.setAttribute('empty_txt',`No Markers in ${bookName}`);
     otherbooks_versemarkers_list.setAttribute('empty_txt',`Same As Above`);
     if(allVMarkersInAllBooks){

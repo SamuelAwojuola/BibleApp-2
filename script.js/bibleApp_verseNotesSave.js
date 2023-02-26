@@ -274,7 +274,9 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
           }
         }
       }
-      allBibleMarkersOBJ[bookName]=bookMarkers_tempArray;
+      if(document.body.matches('#homepage')){
+        allBibleMarkersOBJ[bookName]=bookMarkers_tempArray;
+      }
     }
     callback(items);
   }

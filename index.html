@@ -21,9 +21,15 @@
 
 <body id="homepage">
   <div id="pagemaster">
-
-    <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
-
+    
+    <div id="bottomleft_btns">
+      <div class="flex">
+        <button id="gotochpt_prev" class="nextprevchpt" onclick="goToNextPrevChapter('-')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="gotochpt_next" class="nextprevchpt" onclick="goToNextPrevChapter('+')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
+      </div>
+    </div>
+      
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
         <div class="buttons" id="top_horizontal_bar_buttons">
@@ -75,8 +81,8 @@
     </div>
 
     <!-- BIBLE REFERENCE SIDE BAR -->
-    <nav id="refnav" class="slideoutofview displaynone">
-      <div id="app_settings" class="refnav" name="settings" multiple>
+    <nav id="refnav">
+      <div id="app_settings" class="refnav slideoutofview displaynone" style="margin-left:-50px;" name="settings">
         <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
         <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->
@@ -93,9 +99,9 @@
       </div>
       <div id="refnav_col2">
         <div id="bible_nav" class="slideoutofview displaynone">
-          <div class="bible_nav" name="books" id="bible_books" multiple></div>
-          <div class="bible_nav" name="chapters" id="bible_chapters" multiple></div>
-          <!-- <div class="bible_nav" name="verses" id="bible_verses" multiple></div> -->
+          <div class="bible_nav" name="books" id="bible_books"></div>
+          <div class="bible_nav" name="chapters" id="bible_chapters"></div>
+          <!-- <div class="bible_nav" name="verses" id="bible_verses"></div> -->
         </div>
         <div id="bible_versions" class="slideoutofview displaynone">
           <div class="bible_versions_heading">Available Bible Versions</div>
@@ -290,16 +296,20 @@
         </div>
         <div id="bibleapp_versemarkers" class="slideoutofview displaynone">
           <details>
-            <summary id="bibleapp_versemarkers_settings"><div class="openCloseIconHolder"></div><div>Verse Markers</div></summary>
+            <summary id="bibleapp_versemarkers_settings">
+              <div class="openCloseIconHolder"></div>
+              <div>Verse Markers</div>
+              <img src="images/settings-gear-svgrepo-com.svg" alt="⚙">
+              </summary>
             <div>
               <div>Autocomplete</div>
               <div id="autocomplete_buttons">
-                <button id="autocomplete_1" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_2 input')])"><span class="checkboxreplacement"><input type="checkbox" id="autocomplete_1check" name="autocomplete_1check" value="autocomplete_1check"></span><div>Book Only</div></button>
-                <button id="autocomplete_2" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_1 input')])"><span class="checkboxreplacement"><input type="checkbox" id="autocomplete_2check" name="autocomplete_2check" value="autocomplete_2check" checked></span><div>Whole Bible</div></button>
+                <button id="autocomplete_1" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_2 input')])"><input type="checkbox" id="autocomplete_1check" name="autocomplete_1check" value="autocomplete_1check"><div>Book Only</div></button>
+                <button id="autocomplete_2" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_1 input')])"><input type="checkbox" id="autocomplete_2check" name="autocomplete_2check" value="autocomplete_2check" checked><div>Whole Bible</div></button>
               </div>
               <div>Show All Markers</div>
               <div id="showallmarkers_div">
-                <button id="showAllmarkersBtn" onclick="checkUncheck([this.querySelector('input')]),showAllVersesMarkers()"><span class="checkboxreplacement"><input type="checkbox" id="showAllmarkersBtn_check" name="showAllmarkersBtn_check" value="showAllmarkersBtn_check"></span><div>ShowAll Markers</div></button>
+                <button id="showAllmarkersBtn" onclick="checkUncheck([this.querySelector('input')]),showAllVersesMarkers()"><input type="checkbox" id="showAllmarkersBtn_check" name="showAllmarkersBtn_check" value="showAllmarkersBtn_check"><div>ShowAll Markers</div></button>
               </div>
             </div>
           </details>
@@ -320,9 +330,7 @@
     <main id="main" contenteditable="false">
       <div id="context_menu" class="context_menu slideoutofview displaynone"></div>
       <div id="show_crossref_comments" class="displaynone">
-        <button class="buttons" id="verse_crossref_button">TSK</button>
-        <button class="buttons" id="verse_notes_button">Note</button>
-        <button class="buttons" id="verse_marker_button" onclick="show_v_grp(this)">Markers</button>
+        <button class="buttons" id="verse_marker_button" onclick="show_v_grp(this)">Markers</button><button class="buttons" id="verse_crossref_button">TSK</button><button class="buttons" id="verse_notes_button">Note</button>
       </div>
       <div id="ppp"></div>
         <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->

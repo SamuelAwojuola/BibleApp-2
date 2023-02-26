@@ -62,7 +62,14 @@
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script>
     function toggleCol2(){
-        bibleapp_available_notes.classList.toggle('slideoutofview');
+        let x = bibleapp_available_notes;
+        if(x.style.marginLeft == ''){
+            x.style.marginLeft = "-200px";
+        }
+        else {
+            x.style.marginLeft = "";
+        }
+        x.classList.toggle('slideoutofview');
         // available_notes.classList.toggle('slideoutofview');
         sidebar_togglebtn.classList.toggle('active_button')
     }

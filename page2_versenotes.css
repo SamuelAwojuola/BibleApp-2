@@ -277,3 +277,6 @@ body.darkmode #sidebar_togglebtn span {
 td, tr {
     border:2px solid grey;
 }
+.slideoutofview, #show_crossref_comments {
+    display: none;
+}

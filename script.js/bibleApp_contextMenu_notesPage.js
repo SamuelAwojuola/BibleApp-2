@@ -1,6 +1,6 @@
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
 
-col2.addEventListener('contextmenu', add_tooltipContextMenu, false);
+col2.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
 
 col2.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span')) {

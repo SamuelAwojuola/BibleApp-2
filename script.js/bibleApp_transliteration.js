@@ -67,8 +67,12 @@ function getsStrongsDefinition(x) {
         // let str_definition = xlit_lemma_definition.definition;
         let str_definition = xlit_lemma_definition.definition;
         // Some strong's number entries don't have derivations
-        if(str_definition.derivation){str_derivation = str_definition.derivation.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');}
-        else{str_derivation='…'}
+        if (str_definition) {
+            if(str_definition.derivation){var str_derivation = str_definition.derivation.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');}
+            else{str_derivation='…'}
+            if(str_definition.kjv_def){var str_kjv_def = str_definition.kjv_def.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');}
+            if(str_definition.strongs_def){var str_strongs_def = str_definition.strongs_def.replace(/([GH]\d+)/g, '<span class="strnum $1" strnum="$1">$1</span>');}
+        }
         _text = `${_text}
         <details class="strngsdefinition" ${openOrclose}>
         <summary>
@@ -82,9 +86,9 @@ function getsStrongsDefinition(x) {
             <div><h5>Derivation</h5>
             <p>${str_derivation}</p></div>
             <div><h5>KJV Definition</h5>
-            <p>${str_definition.kjv_def}</p></div>
+            <p>${str_kjv_def}</p></div>
             <div><h5>Strong's Definition</h5>
-            <p>${str_definition.strongs_def}</p></div>
+            <p>${str_strongs_def}</p></div>
         </details>`;
     });
     /* 
@@ -297,14 +301,14 @@ function transliterateWordsOnDoubleClick(e) {
 const strongs_dblclick_prevent = debounce(strongsHighlighting, 300);
 main.addEventListener("click", strongs_dblclick_prevent)
 document.addEventListener("click", togglePinDetails)
-document.addEventListener("contextmenu", togglePinDetails)
+document.addEventListener(contextMenu_touch, togglePinDetails)
 function togglePinDetails(e){
     let h5s = '.strngsdefinition h5, .strngsdefinition h6, #strongsdefinition_text h5,#strongsdefinition_text h6';
     if(e.target.matches(h5s)){
         if(e.type=='click'){
             slideUpDown(e.target.nextElementSibling)
         }
-        else if(e.type=='contextmenu'){
+        else if(e.type==contextMenu_touch){
             let strDefh5h6 = elmAhasElmOfClassBasAncestor(e.target, '.strngsdefinition').querySelectorAll(h5s)
             strDefh5h6.forEach(h56=>{
                 slideUpDown(h56.nextElementSibling)

@@ -55,16 +55,9 @@ function getBksChptsNum(xxx) {
     }
     xxx.classList.add('tmp_hlt')
 }
-/* ON PAGE LOAD SELECT THE FIRST BOOK AND CHAPTER */
-// function openachapteronpageload() {
-//     bible_books.querySelector('[bookname="Genesis"]').click();
-//     currentBookName = 'Genesis';
-//     bible_chapters.querySelector('[chapterindex="0"]').click();
-// }
 
 var stl = 0;
 var currentBookValue = null;
-// var strgsInVerseSpan;
 
 if(!document.querySelector('body').matches('#versenotepage')){
     refnav.addEventListener("click", function (e) {
@@ -81,22 +74,20 @@ if(!document.querySelector('body').matches('#versenotepage')){
             getBksChptsNum(clickedElm);
             goto = 0;
             currentBookValue = clickedElm.getAttribute('value');
+            reference.value=clickedElm.getAttribute("bookname")
         }
         //To Get Text of Selected Chapter
         else if (clickedElm.classList.contains('chptnum')) {
+            reference.value = `${clickedElm.getAttribute("bookname")} ${clickedElm.getAttribute("chapterindex")}`
             //For previous and next chapter
-            if (clickedElm.previousElementSibling) {
-                prevBibleChapter = clickedElm.previousElementSibling;
-            }
-            if (clickedElm.nextElementSibling) {
-                nextBibleChapter = clickedElm.nextElementSibling;
-            }
-            // clickedElm.scrollIntoView(false)
+            if(clickedElm.previousElementSibling){prevBibleChapter = clickedElm.previousElementSibling;}
+            if(clickedElm.nextElementSibling){nextBibleChapter = clickedElm.nextElementSibling;}
+            hideRefNav(null, bible_nav);
+            hideRefNav("hide");
             clearPageIfChapterNotPresent(clickedElm);
             getTextOfChapter(clickedElm, null, null, true, true);
             indicateBooknChapterInNav(null, clickedElm);
             currentChapterValue = clickedElm.getAttribute('value');
-            hideRefNav(null, bible_nav);
             bible_chapters.classList.remove('active_button')
             // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
         }
@@ -200,11 +191,10 @@ function toggleNav(showHide=null) {
     // IF ANY SUB-WINDOW, E.G., SEARCH-WINDOW, IS OPENNED
     if(!refnav.matches('.slideoutofview') && refnav.querySelector('.slideintoview:not(#app_settings)')){
         elm2HideShow = refnav.querySelector('.slideintoview:not(#app_settings)')
+        hideRefNav(showHide,elm2HideShow)
     }
     // IF NO SUB-WINDOW IS OPENNED
-    else {
-        elm2HideShow = app_settings;
-    }
+    elm2HideShow = app_settings;
     hideRefNav(showHide,elm2HideShow)
     // realine();
 }
@@ -220,6 +210,7 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
     const hdtime = 100;
     function changeMarginLeft(x,l=null){
         if(l==null) {x.style.marginLeft = `-${x.offsetWidth}px`}
+        // else if(elm2HideShow==bible_nav && isMobileDevice){x.style.marginLeft ="10px"}
         else {x.style.marginLeft = `-${l}px`}
     }
     function toShowOnlyOneAtaTime(){
@@ -235,10 +226,12 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
                 }
             })
             refnav.querySelectorAll('.slideintoview:not(#app_settings)').forEach(x=>{
-                x.classList.remove('slideintoview');
-                x.classList.add('slideoutofview');
-                changeMarginLeft(x);
-                setTimeout(()=>{x.classList.add('displaynone')}, hdtime)
+                if(x!=elm2HideShow){
+                    x.classList.remove('slideintoview');
+                    x.classList.add('slideoutofview');
+                    changeMarginLeft(x);
+                    setTimeout(()=>{x.classList.add('displaynone')}, hdtime)
+                }
             })
         }
     }
@@ -249,17 +242,27 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
             toShowOnlyOneAtaTime()
             changeMarginLeft(elm2HideShow,0);
             elm2HideShow.classList.remove('slideoutofview');
-            elm2HideShow.classList.add('slideintoview')
+            elm2HideShow.classList.add('slideintoview');
+            /* For when I set #refnav_col2 > div {position: absolute;} */
+            // if(document.body.matches('#homepage') && elm2HideShow != app_settings && elm2HideShow.matches('#refnav_col2>div')){elm2HideShow.style.height = `calc(100% - ${top_horizontal_bar.offsetHeight}px)`;}
         }, 1)
         
         // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
         if(elm2HideShow == bible_nav){
+            if(isMobileDevice){
+                topbartogglebtn.style.right='';
+                bottomleft_btns.style.right='';
+            }
             let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
             higlightedBknChpt.forEach(refHlt => {
                 refHlt.scrollIntoView(false);
             });
-        }            
+        }
     } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideoutofview'))||(elm2HideShow.classList.contains('slideintoview'))))) {
+        if(elm2HideShow==bible_nav && isMobileDevice){
+            topbartogglebtn.style.right='0.75em';
+            bottomleft_btns.style.right='0.75em';
+        }
         elm2HideShow.classList.remove('slideintoview');
         elm2HideShow.classList.add('slideoutofview');
         changeMarginLeft(elm2HideShow)
@@ -268,7 +271,17 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
     }
     runfunc
 }
-
+function modifyRefNavChildrenHeight() {
+    // /* For when I set #refnav_col2 > div {position: absolute;} */
+    // setTimeout(() => {
+    //     if(refCol2showingChild=refnav.querySelector('#refnav_col2 > div.slideintoview')){
+    //         refCol2showingChild.style.height = `calc(100% - ${top_horizontal_bar.offsetHeight}px)`;
+    //         if(refCol2showingChild.matches('#bible_nav')){
+    //             refCol2showingChild.querySelector('.bkname.ref_hlt').scrollIntoView({block:"center"});
+    //             refCol2showingChild.querySelector('.chptnum.ref_hlt').scrollIntoView({block:"center"})}
+    //     }
+    // }, 200);
+}
 function changeVerseAlignment() {
     let styleID = 'verse_alignement'
     if (verseAlignmentStyleSheet = document.querySelector('head style#' + styleID)) {
@@ -288,4 +301,8 @@ function hideSearchParameters(arr) {
     } else {
         hidesearchparameters.innerHTML = '▲'
     }
+}
+function navigationByArrowKeys(e){
+    // Array of buttons in order of navigation
+    [togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome]
 }

@@ -65,10 +65,10 @@ function appendAllRefsWithNote(){
 bibleapp_available_notes.addEventListener("click", codeElmRefClick)
 bibleapp_available_notes.addEventListener("click", appendAllNotesInChapter)// Open all notes in chapter on click of chapter number of a reference with available verseNote
 // TO CLOSE OR OPEN ALL DETAILS ON RIGHT CLICK OF SUMMARY
-bibleapp_available_notes.addEventListener("contextmenu", openCloseAllAvailableNotesDetail)
+bibleapp_available_notes.addEventListener(contextMenu_touch, openCloseAllAvailableNotesDetail)
 if(document.querySelector('#col2')){
-  document.querySelector('#col2').addEventListener("contextmenu", openCloseAllAvailableNotesDetail)
-  document.querySelector('#col1').addEventListener("contextmenu", appendAllNotesInChapter)
+  document.querySelector('#col2').addEventListener(contextMenu_touch, openCloseAllAvailableNotesDetail)
+  document.querySelector('#col1').addEventListener(contextMenu_touch, appendAllNotesInChapter)
 }
 function openCloseAllAvailableNotesDetail(e){
   let etarget=e.target;
@@ -314,7 +314,7 @@ async function getAllNotesInChapter(bookName, chptNum, fullRef, appendHere) {
 
 function appendAllNotesInChapter(e){
   let eTarget = null;
-  if(e.type == 'contextmenu' && e.target.matches('code[ref]')){eTarget=e.target}
+  if(e.type == contextMenu_touch && e.target.matches('code[ref]')){eTarget=e.target}
   else if (e.target.matches('code[ref] > b')) {
     eTarget=e.target.parentElement;
   }

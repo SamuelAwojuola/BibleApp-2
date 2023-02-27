@@ -2,7 +2,7 @@ if(!document.querySelector('body').matches('#versenotepage')){
     // For '#verse_notes_button' && '.note_edit_button'
     ppp.addEventListener("click", showVerseNote);
     // To open verse note in new window
-    ppp.addEventListener("contextmenu", showVerseNote);
+    ppp.addEventListener(contextMenu_touch, showVerseNote);
     // To make verseNote editable on doubleClick
     ppp.addEventListener("dblclick", showVerseNote);
     // To save or stop editing currently edited verseNote
@@ -25,7 +25,7 @@ function showVerseNote(e, x) {
                 let saveBtn = e.target.parentNode.querySelector('.note_save_button')
                 editVerseNote(eTarget = e.target, e, saveBtn);
             }
-        } else if (e.type=='contextmenu') {
+        } else if (e.type==contextMenu_touch) {
             // Open verse note in a new window (on rightClick of #verse_notes_button)
             if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
                 appendVerseNote(e);
@@ -92,13 +92,16 @@ function appendVerseNote(e) {
         if(e.type=='click'){
             if (vnt = chapterHolder.querySelector('#' + noteID)) {
                 vnt.style.display = '';
-                slideUpDown(vnt,'show')
+                slideUpDown(vnt,'show');
                 // let anim_dur = slideUpDown(vnt.querySelector('.text_content'),'show')
-                // setTimeout(() => {
-                //     slideUpDown(vnt,'show')
-                // }, anim_dur);
+                // setTimeout(() => {slideUpDown(vnt,'show')}, anim_dur);
                 // vnt.classList.remove('slideup');
                 masterVerseHolder.classList.add('showing_versenote');
+                console.log(vnt);
+                if(tempDiv = elmAhasElmOfClassBasAncestor(vnt,`.note_temp_holder.${noteID}`)) {
+                    console.log('praise');
+                    tempDiv.classList.remove('versenote_hidden');
+                }
             } else {
                 let verseNoteDiv = new DocumentFragment();
                 
@@ -136,28 +139,22 @@ function appendVerseNote(e) {
                 } else {
                     ifNoteAppend()
                 } */
+                
                 let appendHere = newVerseNote.querySelector('.text_content');
                 verseNoteDiv.append(newVerseNote);
                 whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
                 masterVerseHolder.classList.add('showing_versenote');
-                // eTarget.querySelector('a').setAttribute('href', '#' + noteID);
+                
                 siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
-                    slideUpDown(siblingVersenote, 'show')
-                // let anim_dur = slideUpDown(siblingVersenote.querySelector('.text_content'),'show')
-                // setTimeout(() => {
-                    //     slideUpDown(siblingVersenote, 'show')
-                    // siblingVersenote.classList.remove('slideup');
-                // }, anim_dur);
+                
                 //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
                 readFromVerseNotesFiles(bN, bC, cV,appendHere);//WORKS WITH JSON BIBLE NOTES
-                // clog('retrieving note')
-                // clog(appendHere)
-                // clog(newVerseNote)
-                // clog(noteID)
+                slideUpDown(siblingVersenote, 'show')
+
             }
         }
         // If it is rightClicked, it is to be opened in a new window
-        else if(e.type=='contextmenu'){
+        else if(e.type==contextMenu_touch){
             // Open new window and append verse note to the body
             if(!window2){ // Check if win2 has been opened at any time (check if it has been created)
                 openNewWindow()// the new window is assigned "window2"
@@ -210,11 +207,14 @@ function closeNote(vnote,vholder,dIS){
         // So that it doesn't show as it is sliding up
         // the tempDiv has overflow:hidden
         relocateElmTo(vnote, tempDiv)
+    } else {
+        tempDiv = document.querySelector('.note_temp_holder.' + vnoteID)
     }
     vnote = document.getElementById(vnoteID);
     const anim_dur = slideUpDown(vnote, 'hide')
     setTimeout(() => {
         vholder.classList.remove('showing_versenote');
+        tempDiv.classList.add('versenote_hidden');
     }, anim_dur);
 }
 function editVerseNote(eTarget, e, saveBtn) { //Toggles editing of versnote on and off

@@ -14,13 +14,15 @@ main.addEventListener('click', function (e) {
         if(hoveredRef){reference.value=hoveredRef;}
     // }
 });
+// NAVIGATION BY CTRL+UP/DOWN ARROW KEYS */
+document.addEventListener('keydown',goToNextPrevChapter)
 
 function getHighestVisibleH2() {
     function highestElmFromMainTop(){
         let distanceFromMainTop = 0;
         let highestElm = null;
         // Will only check for highest elm over a distance of 10px from the start of the main
-        while (((highestElm != null && (!highestElm.matches('.chptheading')&&(!highestElm.matches('.chptverses')||elmAhasElmOfClassBasAncestor(highestElm, 'chptverses')))) || (highestElm == null)) && distanceFromMainTop<10){
+        while (((highestElm != null && (!highestElm.matches('.chptheading')&&(!highestElm.matches('.chptverses')||elmAhasElmOfClassBasAncestor(highestElm, 'chptverses')))) || (highestElm == null)) && distanceFromMainTop<50){
                 distanceFromMainTop++;
                 highestElm = document.elementFromPoint(main.getBoundingClientRect().x + (main.getBoundingClientRect().width / 2), main.getBoundingClientRect().y + distanceFromMainTop);
         }
@@ -207,9 +209,15 @@ function checkVisible(elm) {
 
 /* GO TO PREVIOUS / NEXT CHAPTER */
 function goToNextPrevChapter(pn){
-    let hchpt_H = getHighestVisibleH2().highestChptHeading
+    if(pn.nodeType==undefined && pn.ctrlKey){
+        // "pn" may be a string (+/-) or a windows key press event
+        if(pn.keyCode==38){pn='-'}
+        else if(pn.keyCode==40){pn='+'}
+    }
+    
     // Goto previous chapter
     if(pn=='-'){
+        let hchpt_H = getHighestVisibleH2().highestChptHeading
         if(!hchpt_H.matches('.chptheading:first-of-type')){
             hchpt_H.previousElementSibling.previousElementSibling.scrollIntoView()
         } else {
@@ -220,6 +228,7 @@ function goToNextPrevChapter(pn){
     }
     // Goto next chapter
     else if(pn=='+'){
+        let hchpt_H = getHighestVisibleH2().highestChptHeading
         if(!hchpt_H.matches('.chptheading:last-of-type')){
             hchpt_H.nextElementSibling.nextElementSibling.scrollIntoView()
         } else {

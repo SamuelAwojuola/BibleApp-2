@@ -281,7 +281,7 @@ function local_versionsloader(e) {
 }
 
 // main.addEventListener('click', addLocalVersionsLoaderButtons)
-main.addEventListener('contextmenu', addLocalVersionsLoaderButtons)
+main.addEventListener(contextMenu_touch, addLocalVersionsLoaderButtons)
 
 function addLocalVersionsLoaderButtons(e) {
     // The local versions loader should not be loaded if there is context menu in the window.

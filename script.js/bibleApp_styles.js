@@ -152,18 +152,20 @@ function loadfontsizes(){
     }
     styleLocalstorageSet()
 }
-document.addEventListener('click',showHideTransliterationSection)
+eng2grk_sup_table.addEventListener('click',showHideTransliterationSection)
 function showHideTransliterationSection(e){
-    if(!elmAhasElmOfClassBasAncestor(e.target,'#eng2grk_sup_table')){return}
-    let eng2grkChkBoxes = eng2grk_sup_table.querySelectorAll('button input');
-    let arrOfchkState = [];
-    
-    for(i=0;i<eng2grkChkBoxes.length;i++){
-        let x = eng2grkChkBoxes[i];
-        arrOfchkState.push(x.id)
-        arrOfchkState.push(x.checked)
+    if(elmAhasElmOfClassBasAncestor(e.target,'#eng2grk_sup_table')){
+        let eng2grkChkBoxes = eng2grk_sup_table.querySelectorAll('button input');
+        let arrOfchkState = [];
+        
+        for(i=0;i<eng2grkChkBoxes.length;i++){
+            let x = eng2grkChkBoxes[i];
+            arrOfchkState.push(x.id)
+            arrOfchkState.push(x.checked)
+        }
+        setItemInLocalStorage('eng2grk_sup_checkboxes', arrOfchkState);
+        console.log(arrOfchkState);
     }
-    setItemInLocalStorage('eng2grk_sup_checkboxes', arrOfchkState);
 }
 
 function darkLightMode() {

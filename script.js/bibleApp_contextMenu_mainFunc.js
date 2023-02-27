@@ -1,6 +1,5 @@
 // Check if device is a mobile device
 let formerContextMenu_Coordinates = {};
-let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)
 /* RIGHT-CLICK MENU */
 let timer1, timer2;
 let rightClickedElm = null;
@@ -8,7 +7,6 @@ let newStrongsDef = '';
 let append2BottomOfTarget = 0;
 function createNewContextMenu(){
     // If there isn't a contextMenu already, create one
-    // clog('CMENU')
     if (!document.querySelector('#context_menu')) {
         let context_menu_replacement = document.createElement('div');
         context_menu_replacement.id = 'context_menu';
@@ -45,181 +43,183 @@ function add_tooltipContextMenu(e) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
-        let currentEt = e.target;
-
-        // if (e.type == 'mouseover') {
-        //     clearTimeout(timer1);
-
-        //     if ((!currentEt.matches('.strnum') && context_menu.getAttribute('strnum') != currentEt.getAttribute('strnum'))) {
-        //         timer1 = setTimeout(function () {
-        //             timedFUNC();
-        //         }, 300)
-        //     } else if (!currentEt.matches('.strnum')) {
-        //         timer1 = setTimeout(function () {
-        //             timedFUNC();
-        //         }, 300)
-        //     }
-
-        // } else {
-            timedFUNC()
-        // }
+        timedFUNC();
 
         function timedFUNC() {
             let originalWord, extraLeft = 0,
-                addquotes = true,
-                eParent;
+            addquotes = true,
+            eParent;
             eTarget = e.target;
 
-            /* -------------------------------- */
-            /* WHERE TO APPEND CONTEXT-MENU */
-            /* Append to verseNote */
-            if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
-                eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
-                if (!eParent.querySelector('#context_menu')) {
-                    //move the #context_menu from #main to #searchPreviewFixed
-                    let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
-                    document.querySelector('#context_menu').remove()
-                    eParent.append(clonedContextMenu)
-                    clonedContextMenu.addEventListener("click", codeElmRefClick)
+            /* ********************************** */
+            /* ** WHERE TO APPEND CONTEXT-MENU ** */
+            /* ********************************** */
+            function get_eParent() {
+                /* ||||||||||||||||||||||| */
+                /* ||Append to verseNote|| */
+                /* ||||||||||||||||||||||| */
+                if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
+                    eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
+                    if (!eParent.querySelector('#context_menu')) {
+                        //move the #context_menu from #main to #searchPreviewFixed
+                        let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
+                        document.querySelector('#context_menu').remove()
+                        eParent.append(clonedContextMenu)
+                        clonedContextMenu.addEventListener("click", codeElmRefClick)
+                    }
                 }
+                /* ||||||||||||||||||| */
+                /* ||Append to verse|| */
+                /* ||||||||||||||||||| */
+                else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
+                    console.log('verse')
+                    eParent = document.querySelector('#main');
+                    if (eParent.offsetLeft != 0) {
+                        extraLeft = eParent.offsetLeft;
+                    }
+                    if (!eParent.querySelector('#context_menu') || main.querySelector('.verse_note #context_menu')) {
+                        //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
+                        //move the #context_menu from #searchPreviewFixed to #main
+                        let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
+                        document.querySelector('#context_menu').remove()
+                        main.append(clonedContextMenu)
+                    }
+                }
+                /* ||||||||||||||||||||||||||||||||| */
+                /* ||Append to #searchPreviewFixed|| */
+                /* ||||||||||||||||||||||||||||||||| */
+                else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
+                    eParent = document.querySelector('#searchPreviewFixed');
+                    if (!searchPreviewWindowFixed.querySelector('#context_menu')) {
+                        // if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
+                        // move the #context_menu from #main to #searchPreviewFixed
+                        let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
+                        main.querySelector('#context_menu').remove()
+                        searchPreviewFixed.append(clonedContextMenu)
+                    }
+                }
+                /* |||||||||||||||||||||||||||||| */
+                /* ||Append to #win2_noteholder|| */
+                /* |||||||||||||||||||||||||||||| */
+                else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
+                    eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
+                    if (!eParent.querySelector('#context_menu')) {
+                        let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
+                        main.querySelector('#context_menu').remove()
+                        eParent.append(clonedContextMenu)
+                        clonedContextMenu.addEventListener("click", codeElmRefClick)
+                    }
+                }
+                
             }
-            /* Append to verse */
-            else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
-                eParent = document.querySelector('#main');
-                if (eParent.offsetLeft != 0) {
-                    extraLeft = eParent.offsetLeft;
-                }
-                if (!eParent.querySelector('#context_menu') || main.querySelector('.verse_note #context_menu')) {
-                    //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
-                    //move the #context_menu from #searchPreviewFixed to #main
-                    let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
-                    document.querySelector('#context_menu').remove()
-                    main.append(clonedContextMenu)
-                }
-            }
-            /* Append to #searchPreviewFixed */
-            else if (elmAhasElmOfClassBasAncestor(e.target, '#searchPreviewFixed')) {
-                eParent = document.querySelector('#searchPreviewFixed');
-                if (!searchPreviewWindowFixed.querySelector('#context_menu')) {
-                    // if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
-                    // move the #context_menu from #main to #searchPreviewFixed
-                    let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                    main.querySelector('#context_menu').remove()
-                    searchPreviewFixed.append(clonedContextMenu)
-                }
-            }
-            /* Append to #win2_noteholder */
-            else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
-                eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
-                if (!eParent.querySelector('#context_menu')) {
-                    let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                    main.querySelector('#context_menu').remove()
-                    eParent.append(clonedContextMenu)
-                    clonedContextMenu.addEventListener("click", codeElmRefClick)
-                }
-            }
-
-            /* If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself */
-            if (e.target.matches('.translated, .strnum')) {
+            get_eParent()
+            
+            /* ********************************** */
+            /* ** WHERE TO APPEND CONTEXT-MENU ** */
+            /* ********************************** */
+            ifForStrongsNumberORforCrossRef()
+            function ifForStrongsNumberORforCrossRef() {
                 if (elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
                     parentIsContextMenu = 1;
                 }
-                // On Mobile Devices
-                if (isMobileDevice) {
-                    // remove windows selection
-                    window.getSelection().removeRange(window.getSelection().getRangeAt(0))
-                    // (because on mobile, the user has to press and hold for contextmenu which also selects the text)
-                }
-                if (e.target.getAttribute("translation")) {
-                    originalWord = e.target.getAttribute("translation");
-                    if (truexlit = e.target.getAttribute("data-true-xlit")) {
-                        if (elmAhasElmOfClassBasAncestor(e.target, 'rtl')) {
-                            originalWord = `“${originalWord.trim()} : ”${truexlit}`;
-                        } //because of the direction of the text
-                        else {
-                            originalWord = `“${originalWord.trim()}” : ${truexlit}`;
+                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+                /* ||If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself|| */
+                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+                if (e.target.matches('.translated, .strnum')) {
+                    // On Mobile Devices
+                    if (isMobileDevice && contextMenu_touch!="touchstart") {
+                        // remove windows selection
+                        // (because on mobile, the user has to press and hold for contextmenu which also selects the text)
+                        window.getSelection().removeRange(window.getSelection().getRangeAt(0))
+                    }
+                    if (e.target.getAttribute("translation")) {
+                        originalWord = e.target.getAttribute("translation");
+                        if (truexlit = e.target.getAttribute("data-true-xlit")) {
+                            if (elmAhasElmOfClassBasAncestor(e.target, 'rtl')) {
+                                originalWord = `“${originalWord.trim()} : ”${truexlit}`;
+                            } //because of the direction of the text
+                            else {
+                                originalWord = `“${originalWord.trim()}” : ${truexlit}`;
+                            }
+                            addquotes = false;
                         }
-                        addquotes = false;
-                    }
-                } else {
-                    originalWord = e.target.parentElement.getAttribute("translation")
-                }
-                let menu_inner;
-                let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
-                let searchicon = 'search-svgrepo-com(2).svg';
-                if(document.body.matches('.darkmode')){
-                    searchicon = 'search-svgrepo-com(2)-DarkMode.svg';
-                }
-                if (originalWord) {
-                    let xlitNlemma = '',
-                    br = '';
-                    for (let i = 0; i < arrOfStrnums.length; i++) {
-                        br = '', st = '';
-                        if(i==arrOfStrnums.length-1){br = '<br>'}
-                        let sn = arrOfStrnums[i];
-                        let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
-                        // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifyingglass"></div></button>`;
-                        xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
-                    }
-                    if (addquotes) {
-                        // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
-                        menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;
                     } else {
-                        // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
-                        menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
+                        originalWord = e.target.parentElement.getAttribute("translation")
                     }
-                    context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}`;
-                } else if (e.type == 'contextmenu') { // For strongs number in verseNote
-                    let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
-                    context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}</div>`;
-                    // context_menu.innerHTML = newStrongsDef;
-                    // context_menu.querySelector('hr').remove();
-                    // let h2relocate = context_menu.querySelector('h2');
-                    // let h2clone = h2relocate.cloneNode(true);
-                    // h2relocate.remove();
-                    // context_menu.querySelector('.strngsdefinition').prepend(h2clone)
-                }
-                if (strnum = e.target.getAttribute('strnum')) {
-                    context_menu.setAttribute('strnum', strnum)
-                } else {
-                    context_menu.removeAttribute('strnum')
-                }
-                hideRefNav('show', context_menu)
-            }
-            /* If eTarget is a Scripture Reference */
-            else {
-                context_menu.innerText = null;
-                context_menu.classList.add('win2');
-                if (e.target.matches('.crossrefs>span, span[ref]')) {
-                    let cmtitlebar = document.createElement('div');
-                    cmtitlebar.classList.add('cmtitlebar');
-                    let cmtitletext;
-                    if (bkn = e.target.getAttribute('bkn')) {
-                        cmtitletext = bkn + ' ' + e.target.innerText;
+                    let menu_inner;
+                    let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
+                    let searchicon = 'search-svgrepo-com(2).svg';
+                    if(document.body.matches('.darkmode')){
+                        searchicon = 'search-svgrepo-com(2)-DarkMode.svg';
+                    }
+                    if (originalWord) {
+                        let xlitNlemma = '',
+                        br = '';
+                        for (let i = 0; i < arrOfStrnums.length; i++) {
+                            br = '', st = '';
+                            if(i==arrOfStrnums.length-1){br = '<br>'}
+                            let sn = arrOfStrnums[i];
+                            let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                            // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifyingglass"></div></button>`;
+                            xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
+                        }
+                        if (addquotes) {
+                            // menu_inner = `${e.target.getAttribute('data-title')}<br>“${originalWord.trim()}”`;
+                            menu_inner = `${xlitNlemma}<hr>“${originalWord.trim()}”`;
+                        } else {
+                            // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
+                            menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
+                        }
+                        context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}`;
+                    } else if (e.type == contextMenu_touch) { // For strongs number in verseNote
+                        let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
+                        context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}</div>`;
+                    }
+                    if (strnum = e.target.getAttribute('strnum')) {
+                        context_menu.setAttribute('strnum', strnum)
                     } else {
-                        cmtitletext = e.target.innerText;
+                        context_menu.removeAttribute('strnum')
                     }
-                    cmtitletext = cmtitletext + ' [' + bversionName + ']';
-                    // cmtitlebar.innerText=e.target.innerText;
-                    cmtitlebar.innerHTML = cmtitletext + `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button>`;
-                    context_menu.append(cmtitlebar);
+                    hideRefNav('show', context_menu)
                 }
-                let vHolder = getCrossReference(e.target);
-                /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
-                if(crossRefinScriptureTooltip_check.checked){
-                    vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{spanVerse.append(crfnnote_DIV(spanVerse))});
-                }
+            
+                /* ||||||||||||||||||||||||||||||||||||||| */
+                /* ||If eTarget is a Scripture Reference|| */
+                /* ||||||||||||||||||||||||||||||||||||||| */
+                else {
+                    context_menu.innerText = null;
+                    context_menu.classList.add('win2');
+                    if (e.target.matches('.crossrefs>span, span[ref]')) {
+                        let cmtitlebar = document.createElement('div');
+                        cmtitlebar.classList.add('cmtitlebar');
+                        let cmtitletext;
+                        if (bkn = e.target.getAttribute('bkn')) {
+                            cmtitletext = bkn + ' ' + e.target.innerText;
+                        } else {
+                            cmtitletext = e.target.innerText;
+                        }
+                        cmtitletext = cmtitletext + ' [' + bversionName + ']';
+                        // cmtitlebar.innerText=e.target.innerText;
+                        cmtitlebar.innerHTML = cmtitletext + `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button>`;
+                        context_menu.append(cmtitlebar);
+                    }
+                    let vHolder = getCrossReference(e.target);
+                    /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
+                    if(crossRefinScriptureTooltip_check.checked){
+                        vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{spanVerse.append(crfnnote_DIV(spanVerse))});
+                    }
 
-                context_menu.append(vHolder);
-                // context_menu.append(getCrossReference(e.target));
-                
-                if (strnum = e.target.getAttribute('strnum')) {
-                    context_menu.setAttribute('strnum', strnum)
-                } else {
-                    context_menu.removeAttribute('strnum')
+                    context_menu.append(vHolder);
+                    // context_menu.append(getCrossReference(e.target));
+                    
+                    if (strnum = e.target.getAttribute('strnum')) {
+                        context_menu.setAttribute('strnum', strnum)
+                    } else {
+                        context_menu.removeAttribute('strnum')
+                    }
+                    hideRefNav('show', context_menu)
+                    transliterateAllStoredWords()
                 }
-                hideRefNav('show', context_menu)
-                transliterateAllStoredWords()
             }
             context_menu.style.left = null;
             context_menu.style.right = null;
@@ -264,16 +264,14 @@ function add_tooltipContextMenu(e) {
             spaceAbove = eTargetTop - parentElementTop + parentElementScrollTop;
             spaceBelow = parentElementHeight - eTargetBottom + parentElementScrollTop + parentElementTop;
 
-            function appendLeft() {
-                menuRight = '';
+            function appendLeft() {menuRight = '';
                 context_menu.style.right = menuRight;
                 context_menu.style.left = menuLeft + 'px';
                 formerContextMenu_Coordinates.right = menuRight;
                 formerContextMenu_Coordinates.left = menuLeft + 'px';
             }
 
-            function appendRight() {
-                if (menuRight - context_menu.offsetWidth > parentElementLeft + parentElementScrollLeft) {
+            function appendRight() {if (menuRight - context_menu.offsetWidth > parentElementLeft + parentElementScrollLeft) {
                     context_menu.style.right = menuRight + 'px';
                     formerContextMenu_Coordinates.right = menuRight + 'px';
                 } else {
@@ -286,8 +284,14 @@ function add_tooltipContextMenu(e) {
             }
 
             function appendAbove() {
+                if(crefs_holder = elmAhasElmOfClassBasAncestor(eTarget,'.chptverses.crossrefs')){
+                    /* --------------------------------------------------------- */
+                    /* Remove position RELATIVE from .crossrefs holding crossref */
+                    /* ------ It affects the determination of the position ----- */
+                    /* --------------------------------------------------------- */
+                    crefs_holder.style.position="static";
+                }
 
-                // else {
                 menuBottom = parentElementHeight - eTarget.offsetTop + 'px';
                 menuTop = '';
 
@@ -296,7 +300,7 @@ function add_tooltipContextMenu(e) {
 
                 formerContextMenu_Coordinates.top = menuTop;
                 formerContextMenu_Coordinates.bottom = menuBottom;
-                // }
+
                 //To always appendBelow in verseNotesPage
                 if (append2BottomOfTarget) {
                     let newHeight = eTarget.offsetTop + parentElement.offsetTop;
@@ -304,7 +308,12 @@ function add_tooltipContextMenu(e) {
                     if (context_menu.getBoundingClientRect().height > newHeight) {
                         context_menu.style.height = newHeight + 'px';
                     }
-                    // appendBelow()
+                }
+                if(crefs_holder = elmAhasElmOfClassBasAncestor(eTarget,'.chptverses.crossrefs')){
+                    /* --------------------------------------------------------- */
+                    /* Remove position STATIC from .crossrefs holding crossref */
+                    /* --------------------------------------------------------- */
+                    crefs_holder.style.position="";
                 }
             }
 
@@ -380,21 +389,25 @@ function add_tooltipContextMenu(e) {
 }
 
 function getCurrentStrongsDef(e) {
+    let approvedStrnum=[];
     if (strnum = e.target.getAttribute('strnum')) {
         strnum = strnum.split(' ');
+        strnum.forEach(s => {
+            if(/^[HGhg]\d+/.test(s)){
+                approvedStrnum.push(s)
+            }
+        });
+        strnum=approvedStrnum;
         getsStrongsDefinition(strnum);
     }
-    if (e.type == 'contextmenu') {
+    if (e.type == contextMenu_touch) {
         context_menu.classList.add('rightclicked');
         context_menu.removeAttribute('strnum');
         if (strnum) {
             context_menu.setAttribute('strnum', strnum);
         }
         newStrongsDef = currentStrongsDef;
-        // if (!document.querySelector('body').matches('#versenotepage')) {
-        //     toolTipOnOff(false);
-        // }
-    } else if (e.type != 'contextmenu') {
+    } else if (e.type != contextMenu_touch) {
         newStrongsDef = '';
     }
 }

@@ -388,7 +388,7 @@ async function generateAllMarkers(){
 }
 
 /* CONTEXT-MENU FOR MARKERS */
-document.addEventListener('contextmenu', markersOptions);
+document.addEventListener(contextMenu_touch, markersOptions);
 main.addEventListener('mousedown', remove_MarkersOptions);
 document.addEventListener('click', highlight_allVmultipleWithMarker_Class);
 combinedVersemarkers_list.addEventListener('click', goToPrevNxtVerse);
@@ -443,7 +443,6 @@ function markersOptions(e){
 let showAllVersesMarkers = toggleVmarkersInVerses();
 function toggleVmarkersInVerses(){
     let count=1;
-    console.log({count})
     return function toggleAllvm(){
         let sldUpVmarkers=document.querySelectorAll('.v_markers');
         if(sldUpVmarkers){
@@ -510,66 +509,75 @@ function highlight_allVmultipleWithMarker_Class(eX){
     if (eX.nodeType == undefined && eX.target.matches('.vmbtnprevious,.vmbtnnext') && document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
         return
     }
-    // If stylesheet already exists for marker in the document head
-    else if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
-        vm_marker.remove();
-        if(hlghtMarkerBtn){
-            hlghtMarkerBtn.innerText = 'Highlight Marker';
-            vmarker_unhighlight_all.disabled = true;//disable unHiglight all markers button
-        }
-    }
-    // Else Create styleSheet and append to head
     else {
-        let vm_marker_styleRule = `.vmultiple.${markerName} {
-            border-left: 10px solid red!important;
+        // If stylesheet already exists for marker in the document head
+        if(vm_marker=document.querySelector(`#vm_marker[markerfor=${markerName}]`)){
+            vm_marker.remove();
+            if(hlghtMarkerBtn){
+                hlghtMarkerBtn.innerText = 'Highlight Marker';
+                vmarker_unhighlight_all.disabled = true;//disable unHiglight all markers button
+            }
         }
-        .vmultiple.${markerName} .verse {
-            background-color: var(--vhlt-hover);
+        // Else Create styleSheet and append to head
+        else {
+            let vm_marker_styleRule = `.vmultiple.${markerName} {
+                border-left: 10px solid red!important;
+            }
+            .vmultiple.${markerName} .verse {
+                background-color: var(--vhlt2);
+            }
+            .darkmode .vmultiple.${markerName} .verse {
+                background-color: brown;
+            }
+            .vmultiple.${markerName} .v_markers {
+                display:flex!important;
+                margin-top:0!important;
+                opacity:1!important;
+                z-index:1!important;
+            }
+            /* .vmultiple.${markerName} .verse[class^=v_]:not(:hover),
+            .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
+                color:black!important;
+            } */
+        .${markerName}.vmarker, #${markerName.replace(/marker/,'vm')} button {
+                border:2px solid brown!important;
+                background-color: #fff0f2;
+                font-weight:bold;
+                border-radius:2px;
+            }
+            .darkmode #${markerName.replace(/marker/,'vm')} button {
+                background-color: #50efad;
+            }
+            .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnprevious:before,
+            .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnnext:before {
+                background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
+            }
+            .darkmode #${markerName}.vm:not(:hover) div {
+                color:black!important;
+            }
+            .darkmode .${markerName}.vmarker{
+                border:1px dashed yellow!important;
+                color: white!important;
+                background: transparent;
+            }
+            .darkmode .vmultiple.${markerName} {
+                border-color: orange!important;
+            }
+            .darkmode .vmultiple.${markerName}
+            .darkmode .${markerName}.vmarker {
+                background-color: transparent;
+            }`
+            createNewStyleSheetandRule('vm_marker',vm_marker_styleRule);
+            document.querySelector('#vm_marker').setAttribute('markerfor', markerName);
+            if(hlghtMarkerBtn){
+                hlghtMarkerBtn.innerText = 'Unhighlight Marker';
+                vmarker_unhighlight_all.disabled = false;//enable unHiglight all markers button
+            }
         }
-        .vmultiple.${markerName} .v_markers {
-            display:flex!important;
-            margin-top:0!important;
-            opacity:1!important;
-            z-index:1!important;
-        }
-        /* .vmultiple.${markerName} .verse[class^=v_]:not(:hover),
-        .vmultiple.${markerName} .verse[class^=v_]:not(:hover) span {
-            color:black!important;
-        } */
-       .${markerName}.vmarker, #${markerName.replace(/marker/,'vm')} button {
-            border:2px solid brown!important;
-            background-color: #fff0f2;
-            font-weight:bold;
-            border-radius:2px;
-        }
-        .darkmode #${markerName.replace(/marker/,'vm')} button {
-            background-color: #50efad;
-        }
-        .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnprevious:before,
-        .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnnext:before {
-            background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
-        }
-        .darkmode #${markerName}.vm:not(:hover) div {
-            color:black!important;
-        }
-        .darkmode .${markerName}.vmarker{
-            border:1px dashed yellow!important;
-            color: white!important;
-            background: transparent;
-        }
-        .darkmode .vmultiple.${markerName} {
-            border-color: orange!important;
-        }
-        .darkmode .vmultiple.${markerName}
-        .darkmode .${markerName}.vmarker {
-            background-color: transparent;
-        }`
-        createNewStyleSheetandRule('vm_marker',vm_marker_styleRule);
-        document.querySelector('#vm_marker').setAttribute('markerfor', markerName);
-        if(hlghtMarkerBtn){
-            hlghtMarkerBtn.innerText = 'Unhighlight Marker';
-            vmarker_unhighlight_all.disabled = false;//enable unHiglight all markers button
-        }
+        document.querySelectorAll(`.vmultiple.${markerName} div.v_markers.sld_up`).forEach(sldvm=>{
+            slideUpDown(sldvm,'show');
+            sldvm.style.display="";
+        })
     }
 }
 async function generateVmarkerReport(allorOne,appendVersesToSearchWindow,markerName){
@@ -752,7 +760,6 @@ async function goToPrevNxtVerse(e) {
         }
         // IF THERE ARE NO VERSES UNDER MARKER ON THE PAGE
         if(marker_s.length==0){
-            console.log(arrOf_allRefs_UnderMarker)
             const highestVerseOnPage = getHighestVisibleH2().highestVerse;
             const chptHoldersOnPage = highestVerseOnPage.parentElement;
             const versenNum = highestVerseOnPage.id.split('.')[2];
@@ -806,7 +813,6 @@ async function goToPrevNxtVerse(e) {
                 offpage_MarkerRef_gotten = true;
                 for (let i = 0; i < arrOf_allRefs_UnderMarker.length; i++) {
                     let ref_bkn = arrOf_allRefs_UnderMarker[i].split('.')[0];
-                    console.log(ref_bkn)
                     if(ref_bkn!=bkInRef){
                         if(prNx.matches('.vmbtnprevious')){
                             /* ********************************************************** */

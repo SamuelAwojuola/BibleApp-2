@@ -1,7 +1,7 @@
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
 
-main.addEventListener('contextmenu', add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener('contextmenu', add_tooltipContextMenu, false);
+main.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
+searchPreviewFixed.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
 // searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
 ppp.addEventListener('mouseout', function (e) {
@@ -14,26 +14,6 @@ main.addEventListener('mouseover', function (e) {
         e.preventDefault()
     }
 });
-
-// function add_mouseoverContextMenuEventListner() {
-//     // searchPreviewFixed.addEventListener('mouseover', add_tooltipContextMenu, false);
-//     searchPreviewFixed.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
-
-//     ppp.addEventListener('mouseover', add_tooltipContextMenu, false);
-
-//     // for strongs number breakdown on click
-//     // ppp.addEventListener('click', add_tooltipContextMenu_preventDoublick, false);
-// }
-
-// function remove_mouseoverContextMenuEventListner() {
-//     // hideRefNav('hide', context_menu); //In case it is on the screen
-//     if(document.querySelector('body').matches('#versenotepage')){
-//         col2.removeEventListener('mouseover', add_tooltipContextMenu, false);
-//     }else {
-//         ppp.removeEventListener('mouseover', add_tooltipContextMenu, false);
-//         searchPreviewFixed.removeEventListener('click', add_tooltipContextMenu, false);
-//     }
-// }
 let toolTipON = false;
 //Hide ContextMenu on clicking outside of main window
 main.addEventListener('click', function (e) {
@@ -42,30 +22,11 @@ main.addEventListener('click', function (e) {
     }
 })
 
-// function updateContextMenuPosition(oldScrollTop) {
-//     // console.log(main.scrollHeight)
-//     // console.log(oldScrollTop)
-//     // console.log(main.scrollTop)
-//     // console.log(main.clientHeight)
-//     // console.log(main.scrollHeight - main.scrollTop - main.clientHeight)
-// }
-
-// function addCMPevtListner() {
-//     let scrlT = main.scrollTop;
-//     ppp.addEventListener('scroll', updateContextMenuPosition(scrlT))
-//     searchPreviewFixed.addEventListener('scroll', updateContextMenuPosition(scrlT))
-// }
-
-// function removeCMPevtListner() {
-//     ppp.removeEventListener('scroll', updateContextMenuPosition)
-//     searchPreviewFixed.removeEventListener('scroll', updateContextMenuPosition)
-// }
-
 context_menu.addEventListener("click", codeElmRefClick);
 
 /* FOR SHOWING CROSSREFS AND VERSES NOTES */
 ppp.addEventListener("click", codeButtons);
-ppp.addEventListener("contextmenu", codeButtons);
+ppp.addEventListener(contextMenu_touch, codeButtons);
 ppp.addEventListener("mouseup", codeButtonsRemove);
 function codeButtons(e) {
     if(e.target.matches('#ppp .verse code[ref]')) {
@@ -85,7 +46,7 @@ function codeButtons(e) {
         /*  APPEND IT TO THE DESIRED CODE ELM  */
         /* *********************************** */
         if(document.querySelector('#show_crossref_comments')){
-            if (e.target.matches('.verse code') && (e.type == 'click'||'contextmenu')) {
+            if (e.target.matches('.verse code') && (e.type == 'click'||contextMenu_touch)) {
                 relocateElmTo(show_crossref_comments, e.target);
                 show_crossref_comments.classList.remove('displaynone');
             } else if (!e.target.matches('.verse code') && (e.type == 'mouseout')) {

@@ -69,10 +69,17 @@ function cacheFunctions() {
         eng2grk_sup_checkboxes.forEach((x,i)=>{
             if((i==0)||(i%2==0)){
                 let currentChkbx = document.querySelector('#'+x);
-                if((eng2grk_sup_checkboxes[i+1]=='true')&&(currentChkbx.checked==false)){
+                if((eng2grk_sup_checkboxes[i+1]=='true')){
+                    currentChkbx.checked=true;
                     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
-                    // parentBtn.classList.add('active_button');
-                    parentBtn.click()
+                    parentBtn.classList.add('active_button');
+                    // parentBtn.click()
+                }
+                else {
+                    currentChkbx.checked=false;
+                    parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
+                    parentBtn.classList.remove('active_button');
+                    // parentBtn.click()
                 }
             }
         })    

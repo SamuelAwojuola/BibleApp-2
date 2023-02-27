@@ -131,3 +131,15 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     refDisplay = ref_bkname + ' ' + (ref_chp) + '.' + (ref_ver);
     reference.value = refDisplay;
 }
+
+// TO SHOW BIBLE_NAV ON CLICK OF REFERENCE INPUT
+if(document.body.matches('#homepage')){reference.addEventListener('click', showBibleNav)}
+function showBibleNav(e) {
+    if(isMobileDevice ||showBible_Nav_check.checked){
+        hideRefNav("show",bible_nav);
+        refCol2showingChild=refnav.querySelector('#refnav_col2 > div.slideintoview');
+        refCol2showingChild.querySelector('.bkname.ref_hlt').scrollIntoView({block:"center"});
+        refCol2showingChild.querySelector('.chptnum.ref_hlt').scrollIntoView({block:"center"});
+        if(isMobileDevice){reference.blur();}
+    }
+}

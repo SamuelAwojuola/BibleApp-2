@@ -1,5 +1,11 @@
+let isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)
 let bible_nav = document.querySelector('#bible_nav');
 let refnav = document.querySelector('#refnav');
+
+let contextMenu_touch="contextmenu";
+if(isMobileDevice){
+    // contextMenu_touch="touchstart";
+}
 
 function clog(x){console.log(x);console.trace(x)}
 /* GENERAL HELPER FUNCTIONS */
@@ -220,7 +226,6 @@ function changeElmTextNodeTo(elm,txt){
 }
 function windowsSelection(){
     const selObj = window.getSelection();
-    // return selObj
     const selRange = selObj.getRangeAt(0);
     return selRange
 }

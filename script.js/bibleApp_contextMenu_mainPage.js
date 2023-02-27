@@ -2,7 +2,6 @@ const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 
 
 main.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
 searchPreviewFixed.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
-// searchPreviewFixed.addEventListener('mousedown', add_tooltipContextMenu_preventDoublick, false);
 
 ppp.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span')) {

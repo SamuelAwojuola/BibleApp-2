@@ -72,7 +72,6 @@ function add_tooltipContextMenu(e) {
                 /* ||Append to verse|| */
                 /* ||||||||||||||||||| */
                 else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
-                    console.log('verse')
                     eParent = document.querySelector('#main');
                     if (eParent.offsetLeft != 0) {
                         extraLeft = eParent.offsetLeft;
@@ -122,9 +121,9 @@ function add_tooltipContextMenu(e) {
                 if (elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
                     parentIsContextMenu = 1;
                 }
-                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
-                /* ||If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself|| */
-                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
+                /* || If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself || */
+                /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
                 if (e.target.matches('.translated, .strnum')) {
                     // On Mobile Devices
                     if (isMobileDevice && contextMenu_touch!="touchstart") {
@@ -183,9 +182,9 @@ function add_tooltipContextMenu(e) {
                     hideRefNav('show', context_menu)
                 }
             
-                /* ||||||||||||||||||||||||||||||||||||||| */
-                /* ||If eTarget is a Scripture Reference|| */
-                /* ||||||||||||||||||||||||||||||||||||||| */
+                /* ||||||||||||||||||||||||||||||||||||||||| */
+                /* || If eTarget is a Scripture Reference || */
+                /* ||||||||||||||||||||||||||||||||||||||||| */
                 else {
                     context_menu.innerText = null;
                     context_menu.classList.add('win2');

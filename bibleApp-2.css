@@ -72,12 +72,11 @@
         display: flex;
         width: 100%;
     }
-    #refdiv input,
-    #searchdiv input {
+    #refdiv input, #searchdiv input {
         width: 100%;
         flex-grow: 1;
-        /* font-size: 18px; */
     }
+    #refdiv input {padding-left: 10px;}
     #forreference,
     #forwordsearch,
     #titlebar_show_searchsettings {
@@ -101,11 +100,14 @@
         min-height: calc((var(--fontsize-refnsearch) - 6px) * 2);
         font-size: calc((var(--fontsize-refnsearch) - 6px) * 2);
     }
+    #togglenavbtn,#refdiv button,#forreference{display: none;}
+    #show_crossref_comments button {
+        font-size: calc(var(--fontsize-scripture) * 0.75);
+    }
     #context_menu {
         right: 10px!important;
         left: 10px!important;
         width: calc(100% - 25px)!important;
-        /* min-width: calc(100vw - 25px)!important; */
         max-width: calc(100vw - 25px)!important;
         height: auto!important;
     }

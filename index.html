@@ -70,13 +70,10 @@
             <option value="revelation">Revelation [Rev]</option>
           </optgroup>
           <option value="currentbk">Current Book</option>
-          <!-- <select></select> -->
-          <!-- <select></select> -->
         </select>
       </div>
-      <button id="topbartogglebtn" onclick="titlebarsearchparameters.classList.add('slideup'), slideUpDown(top_horizontal_bar_buttons, 'slideup'), this.classList.toggle('active_button')">
+      <button id="topbartogglebtn" onclick="titlebarsearchparameters.classList.add('slideup'),slideUpDown(top_horizontal_bar_buttons,'slideup'),this.classList.toggle('active_button'),modifyRefNavChildrenHeight()">
         <span></span><span></span>
-        <!-- <div id="clipart"></div> -->
       </button>
     </div>
 
@@ -101,7 +98,7 @@
         <div id="bible_nav" class="slideoutofview displaynone">
           <div class="bible_nav" name="books" id="bible_books"></div>
           <div class="bible_nav" name="chapters" id="bible_chapters"></div>
-          <!-- <div class="bible_nav" name="verses" id="bible_verses"></div> -->
+          <div class="bible_nav" name="verses" id="bible_verses"></div>
         </div>
         <div id="bible_versions" class="slideoutofview displaynone">
           <div class="bible_versions_heading">Available Bible Versions</div>
@@ -151,12 +148,12 @@
                   <button class="eng2grk_sup_btns" id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
                 </td>
               </tr>
-              <!-- <tr>
-                <td>Tooltip on Hover</td>
+              <tr>
+                <td>Bible Ref Selection</td>
                 <td>
-                  <button class="eng2grk_sup_btns" id="tool_tip" title="Tool Tip" class="active_button"><input type="checkbox" id="ttip_check" name="ttip_check" value="ttip_check"checked>Tt</button>
+                  <button class="eng2grk_sup_btns" id="showBible_Nav" title="showBible_Nav" class="active_button" onclick="checkUncheck(showBible_Nav_check)"><input type="checkbox" id="showBible_Nav_check" name="showBible_Nav_check" value="showBible_Nav_check"checked>Books & Chapters</button>
                 </td>
-              </tr> -->
+              </tr>
               <tr>
                 <td>Hovered Version</td>
                 <td>
@@ -279,18 +276,10 @@
           </div>
           
           <div class="settingssectionheadings">Change Background</div>
-          <!-- <div for="darkmodebtn">Toggle Dark/Light Mode: </div> -->
-          <!-- <div for="hidestrongshighlight" ><button id="hidestrongshighlight" onclick="hide_strongshighlight()">hl</button>Hide/Show Highlights: </div> -->
           <div style="display: flex">
             <input type="color" style="width: 100px;height: 100px;padding:0;border:0;flex-basis: 50%;" onchange="changeBackGround(this.value,'--ref-img')"></input>
             <button style="flex-basis: 50%;" onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
           </div>
-          
-          <!-- <div class="settingssectionheadings">Modify Cache</div>
-          <input type="checkbox" id="cache_strongs" name="cache_strongs" value="cache_strongs"><label for="cache_strongs"
-            title="Clear transliterated words cache">Forget Transliterated Words</label><br>
-          <input type="checkbox" id="cache_higlights" name="cache_higlights" value="cache_higlights"><label
-            for="cache_higlights" title="Clear highlighted words cache">Forget Highlited Words</label> -->
         </div>
         <div id="bibleapp_available_notes" class="slideoutofview displaynone">
         </div>

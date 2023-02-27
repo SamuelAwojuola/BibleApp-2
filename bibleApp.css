@@ -139,7 +139,7 @@ li li li{
     grid-template-columns: auto 1fr;
     grid-template-rows: auto 1fr;
     row-gap: 0;
-    border-bottom: 5px solid var(--scroll-thumb-hover-bg-color);
+    border-right: 1px solid var(--scroll-thumb-hover-bg-color);
 }
 /* #ppp code, #context_menu:not(.win2) code { */
 #ppp code, #context_menu code {
@@ -192,8 +192,10 @@ span.vmultiple code {
     box-sizing:border-box;
     font-weight:bolder;
     font-style:italic;
-    border-bottom: 3px solid var(--brown)!important;
     text-decoration:none!important;
+}
+span.vmultiple.noted code{
+    border-bottom: 2px solid var(--brown)!important;
 }
 span.vmultiple.noted code #verse_notes_button {
     background: var(--white);
@@ -404,7 +406,14 @@ span.vmultiple.noted code #verse_notes_button {
     width: 1em;
     height: 1em;
     top: 5px;
-    right: 0.75em;
+    right: 0.7em;
+}
+#context_menu:not([strnum]) .cmenu_closebtn {
+    top: 0px;
+    right: 0.3em;
+}
+#context_menu[strnum] .cmenu_closebtn {
+    right: 0.3em;
 }
 .closebtn.cmenu_closebtn:hover {
     background: url(images/cancel-svgrepo-com-BLACK.svg) center no-repeat;
@@ -448,7 +457,7 @@ span.vmultiple.noted code #verse_notes_button {
     border-right: 0.25px solid var(--grey);
     background: var(--ref-img);
     overflow: hidden;
-    z-index: 1;
+    z-index: 10;
 }
 #refnav #app_settings * {
     display: block;
@@ -470,7 +479,14 @@ span.vmultiple.noted code #verse_notes_button {
     align-items: center;
 }    
 #bible_nav {
+    background-color: transparent;
     font-size: var(--fontsize-scripture-nav)!important;
+    box-shadow: 0px 0px 10px 7px var(--shadow-color);
+}
+#bible_nav option {
+    padding-left: 7px;
+    box-shadow: inset 0px 0px 1px 0px var(--black);
+    border-radius: 5px;
 }
 .refnav .bible_nav {
     height: 99.5%;
@@ -678,7 +694,7 @@ button:not(:disabled):hover {
 }
 span[strnum] {
     cursor: pointer;
-    position: relative;
+    /* position: relative; */
     border-radius: 3px!important;
 }
 span[strnum]:hover {
@@ -994,10 +1010,7 @@ sup {
     float: left;
     overflow-y: scroll;
     height: 100%;
-}
-.bible_nav {
     font-weight: bold;
-    padding: 5px;
 }
 
 #strongsdefinitionwindow details, details {
@@ -1351,6 +1364,14 @@ border-right: var(--col2-border) solid auto!important;
 }
 #refnav_col2 {
     box-shadow: inset -2px 0 0 0 var(--black);
+    z-index:9;
+}
+#refnav_col2 > div {
+    box-shadow:  3px 0px 9px 0 var(--black);
+    /* position:absolute; */
+    position:relative;
+    height: 100%;
+    background-color: var(--buttons);
 }
 #refnav_col2 > .slideintoview.displaynone{
     display: null!important;

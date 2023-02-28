@@ -137,9 +137,9 @@ if(document.body.matches('#homepage')){reference.addEventListener('click', showB
 function showBibleNav(e) {
     if(isMobileDevice ||showBible_Nav_check.checked){
         hideRefNav("show",bible_nav);
-        refCol2showingChild=refnav.querySelector('#refnav_col2 > div.slideintoview');
+        refCol2showingChild=refnav.querySelector('#refnav_col2');
         refCol2showingChild.querySelector('.bkname.ref_hlt').scrollIntoView({block:"center"});
         refCol2showingChild.querySelector('.chptnum.ref_hlt').scrollIntoView({block:"center"});
-        if(isMobileDevice){reference.blur();}
     }
+    if(isMobileDevice){reference.blur();}
 }

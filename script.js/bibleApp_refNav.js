@@ -17,6 +17,7 @@ function populateBooks() {
         bibleBook.value = 'book_' + i;
         bibleBook.classList.add('bkname');
         bibleBook.textContent = booksList[i];
+        bibleBook.tabIndex = 0;
 
         selectBooks.appendChild(bibleBook);
         var chapterStartIncreamenter = 0;
@@ -34,6 +35,7 @@ function populateBooks() {
             bookChapters.textContent = [j + 1];
             bookChapters.classList.add('chptnum');
             bookChapters.classList.add('show_chapter');
+            bookChapters.tabIndex = 0;
             selectChapters.appendChild(bookChapters);
         }
     }
@@ -46,6 +48,7 @@ function getBksChptsNum(xxx) {
         });
     }
     let classOfChapters = document.querySelectorAll('.' + xxx.value);
+    reference.value=xxx.getAttribute('bookname');
     classOfChapters.forEach(element => {
         element.classList.add("show_chapter");
     });
@@ -168,19 +171,31 @@ function general_EscapeEventListener(e){
             if(openRefnavChild = refnav.querySelector('.slideintoview:not(#app_settings)')){
                 hideRefNav('hide',openRefnavChild);
             }
-            // Hide refnav
+            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+            /* Hide "app_settings" && "top_horizontal_bar_buttons" */
+            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
             else if (!top_horizontal_bar_buttons.matches('.sld_up')){
+                /* \/\/\/\/\/\/\/\/\ */
+                /* Hide app_settings */
+                /* \/\/\/\/\/\/\/\/\ */
                 if(app_settings.matches('.slideintoview')){hideRefNav('hide',app_settings);}
-                // Hide top_horizontal_bar_buttons
+                /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
+                /* Hide top_horizontal_bar_buttons (if app_settings is hidden) */
+                /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
                 else {
                     titlebarsearchparameters.classList.add('slideup'),
-                    slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+                    slideUpDown(top_horizontal_bar_buttons),
                     topbartogglebtn.classList.toggle('active_button')
                 }
-            } else {
-                slideUpDown(top_horizontal_bar_buttons, 'slideup'),
+            }
+            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+            /* SHOW both "top_horizontal_bar_buttons" && "app_settings" */
+            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
+            else {
+                slideUpDown(top_horizontal_bar_buttons),
                 topbartogglebtn.classList.toggle('active_button')
                 hideRefNav('show',app_settings);
+                togglenavbtn.focus()                
             }
         }
     }
@@ -302,7 +317,99 @@ function hideSearchParameters(arr) {
         hidesearchparameters.innerHTML = '▲'
     }
 }
+
+/* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
+/* *+*+* Navigating RefNav With Arrow Keys +*+*+ */
+/* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
+document.addEventListener('keydown',navigationByArrowKeys)
+const refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome];
 function navigationByArrowKeys(e){
+    // console.log(e.keyCode)
+    if(!e.keyCode==(13|32|36|37|38|39|40)){return}
+    let up_key=0,down_key=0,left_key=0,right_key=0,enter_key=0,spacebar_key=0,home_key=0;
     // Array of buttons in order of navigation
-    [togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome]
+
+    if(e.keyCode==13){enter_key=1;}
+    else if(e.keyCode==32){spacebar_key=1;}
+    else if(e.keyCode==36){home_key=1;}
+    else if(e.keyCode==37){left_key=1;e.preventDefault()}
+    else if(e.keyCode==38){up_key=1;e.preventDefault()}
+    else if(e.keyCode==39){right_key=1;e.preventDefault()}
+    else if(e.keyCode==40){down_key=1;e.preventDefault()}1
+    const idx_A = refNavMainBtns.indexOf(document.activeElement);
+    if(idx_A>-1){
+        for(let i=idx_A;i<refNavMainBtns.length;i++){
+            const rfnvb=refNavMainBtns[i]
+            if(up_key && (i-1)>-1){
+                const upperBtn=refNavMainBtns[i-1];
+                if(upperBtn==togglenavbtn){hideRefNav('hide',app_settings)}
+                upperBtn.focus();
+                return
+            }
+            else if(down_key && (i+1)<refNavMainBtns.length){
+                const lowerBtn=refNavMainBtns[i+1];
+                if(lowerBtn==biblenavigation){hideRefNav('show',app_settings)}
+                lowerBtn.focus();
+                break
+            }
+            else if(right_key){
+                if(rfnvb==biblenavigation){
+                    hideRefNav("show",bible_nav);
+                    if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {
+                        newFocusElm.focus();
+                    }
+                }
+                return
+            }
+        }
+    }
+    else if(document.activeElement.matches("#refnav_col2 *")){
+        const rfnvb = document.activeElement;
+        if(rfnvb.matches('#bible_nav .bkname')){
+            const allBkOpts = bible_nav.querySelectorAll('#bible_nav .bkname');
+            upDownKeys(rfnvb,allBkOpts);
+            if(right_key||enter_key||spacebar_key){
+                getBksChptsNum(rfnvb)
+                if(newFocus=bible_nav.querySelector('.chptnum.show_chapter.ref_hlt')){newFocus.focus();}
+                else {
+                    bible_nav.querySelector('.chptnum.show_chapter').focus();
+                }
+            }
+            else if(left_key){
+                hideRefNav("hide",bible_nav);
+                biblenavigation.focus();
+            }
+            else if(home_key){
+                allBkOpts[0].focus();
+            }
+        }
+        else if(rfnvb.matches('#bible_nav .chptnum')){
+            const allOptVrs = bible_nav.querySelectorAll('#bible_nav .chptnum');
+            upDownKeys(rfnvb,allOptVrs);
+            if(left_key){
+                if(x=bible_nav.querySelector('.bkname.tmp_hlt')){x.focus();}
+                else if(x=bible_nav.querySelector('.bkname.ref_hlt')){x.focus();}
+            }
+            else if(enter_key||spacebar_key){
+                /* Get the reference */
+                let bk=rfnvb.getAttribute('bookname');
+                let chpt=rfnvb.textContent;
+                gotoRef(bk+'.'+chpt)
+            }
+            else if(home_key){
+                allOptVrs[0].focus();
+            }
+        }
+    }
+    function upDownKeys(rfnvb,elmArr) {
+        if(up_key && rfnvb!=elmArr[0]){
+            rfnvb.previousElementSibling.focus();
+            return
+        }
+        else if(down_key && rfnvb!=elmArr[elmArr.length-1]){
+            rfnvb.nextElementSibling.focus();
+            return
+        }
+    }
 }
+togglenavbtn.focus()

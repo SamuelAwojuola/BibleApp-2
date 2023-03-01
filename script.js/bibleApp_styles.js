@@ -254,7 +254,7 @@ function engnXlit_supscript(x) {
     }
 }
 
-console.log("HELP:: press 'alt+r' to toggle original english translation of transliterated Hebrew or Greek words as a superscript ")
+// console.log("HELP:: press 'alt+r' to toggle original english translation of transliterated Hebrew or Greek words as a superscript ")
 
 document.addEventListener('keydown', showEnglishTranslationOfHGtransliteration)
 pagemaster.addEventListener("dblclick",highlightverse)

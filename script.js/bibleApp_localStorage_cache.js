@@ -70,9 +70,11 @@ function cacheFunctions() {
             if((i==0)||(i%2==0)){
                 let currentChkbx = document.querySelector('#'+x);
                 if((eng2grk_sup_checkboxes[i+1]=='true')){
-                    currentChkbx.checked=true;
                     parentBtn=elmAhasElmOfClassBasAncestor(currentChkbx, 'button');
                     parentBtn.classList.add('active_button');
+                    if(parentBtn==show_eng_superscript){engnXlit_supscript('eng')}
+                    else if(parentBtn==show_hebgrk_superscript){engnXlit_supscript('hebgrk')}
+                    else {currentChkbx.checked=true;}
                     // parentBtn.click()
                 }
                 else {

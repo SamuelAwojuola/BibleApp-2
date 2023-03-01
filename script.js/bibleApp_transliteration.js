@@ -328,7 +328,7 @@ function hideBibleNav() {
 
 /* EVENT LISTENERS FOR HIGHLIGHTING ALL ELEMENTS WITH THE SAME CLASS NAME BY HOVERING OVER ONE OF THEM */
 /* This is acomplished by modifying the styles in the head */
-main.addEventListener('mouseover', function (e) {
+document.addEventListener('mouseover', function (e) {
     let strAtt,highlightColor;
     if (!e.target.matches('#context_menu')&&e.target.getAttribute('strnum')) {
         strAtt = e.target.getAttribute('strnum')
@@ -383,7 +383,7 @@ main.addEventListener('mouseover', function (e) {
         headPart.append(newStyleInHead);
     }
 })
-main.addEventListener('mouseout', function (e) {
+document.addEventListener('mouseout', function (e) {
     if (e.target.hasAttribute('strnum')&&document.getElementById('highlightall')) {
         highlightall.remove();
     }

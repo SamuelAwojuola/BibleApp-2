@@ -171,6 +171,7 @@ function runWordSearch() {
     }
 
     
+    let booksLength;
     function searchJSON() {
         let prevBook = null;
         let currentBK = null;
@@ -179,17 +180,16 @@ function runWordSearch() {
         let searchForStrongs = returnedOBJofArrayOfWordsToSearchFor.hasStrongsNum;
         let strongsSearchArray = returnedOBJofArrayOfWordsToSearchFor.searchStrongsNumArray;
         // console.log(strongsSearchArray)
-        
+
         function loopThroughBibleBooks() {
             // let booksList = bible.Data.bookNamesByLanguage.en;
             //Books to search in
             let booksToSearchIn = listOfBooksToSearchIn(document.getElementById("biblebooksgroup").value);
-            let booksLength = booksToSearchIn.length;
+            booksLength = booksToSearchIn.length;
             let bookName = null;
             
             /* LOOP THROUGH SELECTED BOOKS TO SEARCH IN */
         
-            // let allBooksWithContentInVersion = KJV;
             let allBooksWithContentInVersion = window[bversionName];
             for (let x = 0; x < booksLength; x++) {
                 // let bookNameInVersion = Object.keys(allBooksWithContentInVersion)[x];
@@ -339,11 +339,6 @@ function runWordSearch() {
             // searchPreview.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
             searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
         }
-        // if (!searchresultdisplay.checked) {
-        // const searchFragmentClone = searchFragment.cloneNode(true)
-        //     searchPreview.append(searchFragmentClone);
-        //     showElement(searchresultwindow)
-        // }
         searchPreviewFixed.append(searchFragment);
         //To Clear "searchPreviewFixed" Window after given time
         if(!keepsearchopen.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}
@@ -351,9 +346,9 @@ function runWordSearch() {
     searchJSON();
     hideRefNav('show');
     hideRefNav('show', searchPreviewWindowFixed);
-    searchsettings.classList.add('active_button')
-    
-    if (!showreturnedverses.checked) {
+    searchsettings.classList.add('active_button');
+
+    if (booksLength>1 && !showreturnedverses.checked) {
         hideAllVerseInSearch()
     }
 }
@@ -469,11 +464,10 @@ function clearSearchWindow(){
     }
 }
 
-
-/* 
-
-<div class="crfnnote"><div class="crfnnote_btns"><button class="buttons verse_crossref_button">TSK</button><button class="buttons verse_notes_button">Note</button></div></div>
-
-<div class="crossrefs"><span>2Pet 3:12</span></div>
-
-*/
+function searchForHighlightedText(e){
+    if((e.ctrlKey && e.shiftKey && e.key.toLowerCase()=='f') && window.getSelection()){
+        wordsearch.value = window.getSelection().toString();
+        runWordSearch()        
+    }
+}
+document.addEventListener("keydown",searchForHighlightedText)

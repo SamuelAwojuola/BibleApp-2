@@ -325,6 +325,8 @@ document.addEventListener('keydown',navigationByArrowKeys)
 const refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome];
 function navigationByArrowKeys(e){
     // console.log(e.keyCode)
+    if(e.keyCode==17){if(e.keyCode==16){console.log('TRUE')}}
+    if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     let up_key=0,down_key=0,left_key=0,right_key=0,enter_key=0,spacebar_key=0,home_key=0;
     // Array of buttons in order of navigation
@@ -332,38 +334,46 @@ function navigationByArrowKeys(e){
     if(e.keyCode==13){enter_key=1;}
     else if(e.keyCode==32){spacebar_key=1;}
     else if(e.keyCode==36){home_key=1;}
-    else if(e.keyCode==37){left_key=1;e.preventDefault()}
-    else if(e.keyCode==38){up_key=1;e.preventDefault()}
-    else if(e.keyCode==39){right_key=1;e.preventDefault()}
-    else if(e.keyCode==40){down_key=1;e.preventDefault()}1
+    else if(e.keyCode==37){left_key=1;}
+    else if(e.keyCode==38){up_key=1;}
+    else if(e.keyCode==39){right_key=1;}
+    else if(e.keyCode==40){down_key=1;}1
     const idx_A = refNavMainBtns.indexOf(document.activeElement);
     if(idx_A>-1){
-        for(let i=idx_A;i<refNavMainBtns.length;i++){
-            const rfnvb=refNavMainBtns[i]
-            if(up_key && (i-1)>-1){
-                const upperBtn=refNavMainBtns[i-1];
-                if(upperBtn==togglenavbtn){hideRefNav('hide',app_settings)}
-                upperBtn.focus();
-                return
-            }
-            else if(down_key && (i+1)<refNavMainBtns.length){
-                const lowerBtn=refNavMainBtns[i+1];
-                if(lowerBtn==biblenavigation){hideRefNav('show',app_settings)}
-                lowerBtn.focus();
-                break
-            }
-            else if(right_key){
-                if(rfnvb==biblenavigation){
-                    hideRefNav("show",bible_nav);
-                    if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {
-                        newFocusElm.focus();
-                    }
+        if(up_key|down_key|left_key|right_key)ePrev()// Prevent default browser action if the active element in the dom is included in the array
+        if(e.target!=togglenavbtn && left_key){
+            hideRefNav('hide',app_settings);
+            togglenavbtn.focus();
+        }
+        else {
+            for(let i=idx_A;i<refNavMainBtns.length;i++){
+                const rfnvb=refNavMainBtns[i]
+                if(up_key && (i-1)>-1){
+                    const upperBtn=refNavMainBtns[i-1];
+                    if(upperBtn==togglenavbtn){hideRefNav('hide',app_settings)}
+                    upperBtn.focus();
+                    return
                 }
-                return
+                else if(down_key && (i+1)<refNavMainBtns.length){
+                    const lowerBtn=refNavMainBtns[i+1];
+                    if(lowerBtn==biblenavigation){hideRefNav('show',app_settings)}
+                    lowerBtn.focus();
+                    break
+                }
+                else if(right_key){
+                    if(rfnvb==biblenavigation){
+                        hideRefNav("show",bible_nav);
+                        if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {
+                            newFocusElm.focus();
+                        }
+                    }
+                    return
+                }
             }
         }
     }
     else if(document.activeElement.matches("#refnav_col2 *")){
+        if(up_key|down_key|left_key|right_key)ePrev()
         const rfnvb = document.activeElement;
         if(rfnvb.matches('#bible_nav .bkname')){
             const allBkOpts = bible_nav.querySelectorAll('#bible_nav .bkname');
@@ -403,13 +413,16 @@ function navigationByArrowKeys(e){
     }
     function upDownKeys(rfnvb,elmArr) {
         if(up_key && rfnvb!=elmArr[0]){
+            ePrev();
             rfnvb.previousElementSibling.focus();
             return
         }
         else if(down_key && rfnvb!=elmArr[elmArr.length-1]){
+            ePrev();
             rfnvb.nextElementSibling.focus();
             return
         }
     }
+    function ePrev(){e.preventDefault()}
 }
 togglenavbtn.focus()

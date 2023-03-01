@@ -229,6 +229,7 @@ function local_versionsloader(e) {
     if (clkelm.matches('#singleverse_compare_menu')) {
         clkelm.remove();
         main.removeEventListener('click', local_versionsloader)
+        searchPreviewFixed.removeEventListener('click', local_versionsloader)
         return
     }
     /* ATTACH VERSE VERSION COMPARE BUTTONS */
@@ -236,6 +237,7 @@ function local_versionsloader(e) {
         if (clkelm.querySelector('#singleverse_compare_menu')) {
             clkelm.querySelector('#singleverse_compare_menu').remove();
             main.removeEventListener('click', local_versionsloader)
+            searchPreviewFixed.removeEventListener('click', local_versionsloader)
             return
         }
         clickedVerseRef = clkelm.querySelector('[ref]').getAttribute('ref');
@@ -273,8 +275,13 @@ function local_versionsloader(e) {
                 })
             }
         }
-        clkelm.append(sverse_comp)
+        if(clkelm.matches('.vmultiple,.vmultiple .verse')){
+            clkelm.append(sverse_comp)
+        } else if(clkelm.matches('.verse')){
+            insertElmAbeforeElmB(sverse_comp, clkelm.querySelector('.crfnnote'))
+        }
         main.addEventListener('click', local_versionsloader)
+        searchPreviewFixed.addEventListener('click', local_versionsloader)
         sverse_comp.classList.remove('displaynone')
         // sverse_comp.classList.add('slideintoview')
     }
@@ -282,32 +289,47 @@ function local_versionsloader(e) {
 
 // main.addEventListener('click', addLocalVersionsLoaderButtons)
 main.addEventListener(contextMenu_touch, addLocalVersionsLoaderButtons)
+searchPreviewFixed.addEventListener(contextMenu_touch, addLocalVersionsLoaderButtons)
 
 function addLocalVersionsLoaderButtons(e) {
     // The local versions loader should not be loaded if there is context menu in the window.
     // IF there is 'context_menu', then the first click should remove it.
-    if (main.querySelector('#context_menu.slideintoview') == null) {
+    if (main.querySelector('#context_menu.slideintoview') == null && searchPreviewFixed.querySelector('#context_menu.slideintoview') == null) {
         // add_VersionsLoader_preventDoublick(e) // this works with click eventListener
         local_versionsloader(e) // this works with contextmenu eventListener
     }
 }
 //Get and append (or un-append) reference on click of comparison version button
 main.addEventListener('click', localVersionLoader)
+searchPreviewFixed.addEventListener('click', localVersionLoader)
 
 function localVersionLoader(e) {
     let clkelm = e.target;
     if (clkelm.matches('#singleverse_compare_menu [bversion]')) {
-        let verseHolder = elmAhasElmOfClassBasAncestor(clkelm, 'vmultiple');
+        let verseHolder, vmOvr;
+        /* FOR MAIN WINDOW */
+        if(vh=elmAhasElmOfClassBasAncestor(clkelm, 'vmultiple')){
+            verseHolder = vh; vmOvr=true;
+        }
+        /* FOR SEARCH WINDOW */
+        else if(vh=elmAhasElmOfClassBasAncestor(clkelm, '.verse')){
+            verseHolder = vh; vmOvr=false;
+        };
         let bversion = clkelm.getAttribute('bversion')
         if (!clkelm.matches('.active_button')) {
-            let bkID = verseHolder.id.split('.')[0].split('_')[1];
-            
             let refBreakDownObj = breakDownClickedVerseRef();
             bC = refBreakDownObj.bC;
             cV = refBreakDownObj.cV;
             bN = refBreakDownObj.bN;
+            bCnCv = refBreakDownObj.bCnCv;
             clkelm.classList.toggle('active_button');
-            parseSingleVerse(null, bC, cV, null, verseHolder, bN, null, true, bversion);
+            if(vmOvr){
+                console.log('here');
+                parseSingleVerse(null, bC, cV, null, verseHolder, bN, null, true, bversion);
+            }
+            else {
+                insertElmAbeforeElmB(getCrossReference(bN + '.' + bCnCv,null,bversion), verseHolder.querySelector('.crfnnote'))
+            }
         } else {
             verseHolder.querySelector('.v_' + bversion).remove();
             clkelm.classList.toggle('active_button');

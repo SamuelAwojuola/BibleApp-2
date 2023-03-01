@@ -142,7 +142,8 @@ function appendCrossReferences(e) {
 }
 
 /* FOR GETTING THE ACTUAL BIBLE TEXT OF A CROSS-REFERENCE */
-function getCrossReference(x,bkn) {
+function getCrossReference(x,bkn,bvName) {
+    // x is the ref as a string or the code elm itself
     let crf2get;
     if(typeof (x)=='string'){
         crf2get = x.replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
@@ -227,18 +228,23 @@ function getCrossReference(x,bkn) {
         for (i = vrs1; i < vrs2 + 1; i++) {
             let verseSpan = document.createElement('span');
             function vNum() {
+                if(bkn){bookName=bkn;}
+                let b_vn='';
+                if(!bvName){bvName=bversionName;}
+                else if(bvName){b_vn=`-${bvName}`;}
+
                 let verseNum = document.createElement('code');
                 verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
                 verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
-                verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}]`));
-                if(bkn){bookName=bkn}
-                verseNum.title = bversionName + ' ' + bookName;
+                verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
+                verseNum.title = bvName + ' ' + fullBkn;
                 verseSpan.classList.add('verse');
+                verseSpan.classList.add('v_'+bvName);
                 // if(br){
                 verseSpan.innerHTML = br + verseSpan.innerHTML;
                 // }
                 // else{verseSpan.innerHTML='<div></div>'+verseSpan.innerHTML;}
-                let vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
+                let vText = window[bvName][fullBkn][chp1 - 1][i - 1]
                 vHolder.append(parseVerseText(vText, verseSpan));
                 verseSpan.prepend(' ');
                 verseSpan.prepend(verseNum);

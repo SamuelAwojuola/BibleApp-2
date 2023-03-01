@@ -164,7 +164,6 @@ function showHideTransliterationSection(e){
             arrOfchkState.push(x.checked)
         }
         setItemInLocalStorage('eng2grk_sup_checkboxes', arrOfchkState);
-        console.log(arrOfchkState);
     }
 }
 

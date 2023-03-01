@@ -844,6 +844,9 @@ sup {
     text-align: right;
     padding-right: 10px;
 }
+#bibleapp_cache ul,#bibleapp_cache ol {
+    max-width: 300px;
+}
 .strnum:after {
     content: attr(data-lemma);
     font-style: italic;

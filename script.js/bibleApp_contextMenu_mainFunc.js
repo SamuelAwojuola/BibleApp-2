@@ -262,6 +262,7 @@ function add_tooltipContextMenu(e) {
             // Space above and below target
             spaceAbove = eTargetTop - parentElementTop + parentElementScrollTop;
             spaceBelow = parentElementHeight - eTargetBottom + parentElementScrollTop + parentElementTop;
+            console.log(spaceBelow);
 
             function appendLeft() {menuRight = '';
                 context_menu.style.right = menuRight;
@@ -283,7 +284,7 @@ function add_tooltipContextMenu(e) {
             }
 
             function appendAbove() {
-                if(crefs_holder = elmAhasElmOfClassBasAncestor(eTarget,'.chptverses.crossrefs')){
+                if(crefs_holder = elmAhasElmOfClassBasAncestor(eTarget,'.chptverses .crossrefs')){
                     /* --------------------------------------------------------- */
                     /* Remove position RELATIVE from .crossrefs holding crossref */
                     /* ------ It affects the determination of the position ----- */

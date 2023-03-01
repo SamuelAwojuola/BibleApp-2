@@ -225,13 +225,14 @@ function getCrossReference(x,bkn,bvName) {
     function getVersesInVerseRange(vRange){
         let vrs1 = vRange[0];
         let vrs2 = vRange[1];
+        if(bkn){bookName=bkn;}
+        let b_vn='';
+        if(!bvName){bvName=bversionName;}
+        else if(bvName){b_vn=`-${bvName}`;}
+        
         for (i = vrs1; i < vrs2 + 1; i++) {
             let verseSpan = document.createElement('span');
             function vNum() {
-                if(bkn){bookName=bkn;}
-                let b_vn='';
-                if(!bvName){bvName=bversionName;}
-                else if(bvName){b_vn=`-${bvName}`;}
 
                 let verseNum = document.createElement('code');
                 verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);

@@ -125,12 +125,6 @@
     #togglenavbtn {
         min-width: 46.3px;
     }
-    /* #refnav #app_settings>button { */
-        /* font-size: 28.5px; */
-        /* min-width: 46px!important; */
-        /* width:var(--width-sidebuttons)!important; */
-        /* height:var(--width-sidebuttons); */
-    /* } */
     #forreference,
     #forwordsearch,
     #titlebar_show_searchsettings {
@@ -146,12 +140,6 @@
         --fontsize-title: 14px;
         --width-mainbutton: 35px;
         --width-sidebuttons: 27px;
-    }
-    #refnav #app_settings>button {
-        /* font-size: 22.5px; */
-        /* width: 42px!important; */
-        /* min-width: 42px!important; */
-        /* padding: 4px 2px; */
     }
     #forreference,
     #forwordsearch,

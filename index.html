@@ -80,17 +80,17 @@
     <!-- BIBLE REFERENCE SIDE BAR -->
     <nav id="refnav">
       <div id="app_settings" class="refnav slideoutofview displaynone" style="margin-left:-50px;" name="settings">
-        <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
-        <button id="bibles" onclick="hideRefNav(null, bible_versions)" title="Bible Versions">
+        <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" toopen="bible_nav" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
+        <button id="bibles" onclick="hideRefNav(null, bible_versions)" toopen="bible_versions" title="Bible Versions">
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->
           &#128218;</button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
-        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search"></button>
+        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search"></button>
         </button>
-        <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" title="Show strongs definition window">Str</button>
-        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
-        <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
-        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" toopen="strongsdefinitionwindow" title="Show strongs definition window">Str</button>
+        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
+        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
       </div>

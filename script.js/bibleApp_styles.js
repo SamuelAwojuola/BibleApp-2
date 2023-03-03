@@ -309,6 +309,7 @@ function centerNavigationAndOtherSettings(vh){
     border: none;
     border:transparent!important;
 }
+#refnav #refnav_col2 {border-radius:5px;}
 #refnav #app_settings,
 #refnav #refnav_col2 > div {
     border-radius:5px;
@@ -358,6 +359,7 @@ function centerNavigationAndOtherSettings(vh){
     border: none;
     border:transparent!important;
 }
+#refnav #refnav_col2 {border-radius:5px;}
 #refnav #app_settings,
 #refnav #refnav_col2 > div {
     position: absolute;

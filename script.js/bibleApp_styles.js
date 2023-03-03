@@ -315,6 +315,7 @@ function centerNavigationAndOtherSettings(vh){
     border-radius:5px!important;
     border:2px solid dimgrey!important;
     box-shadow: 10px 10px 12px 0px rgb(30 30 30)!important;
+    box-shadow: 5px 5px 10px 0px rgb(30 30 30)!important;
 }
 #refnav #refnav_col2 > div {
     z-index: 2;
@@ -366,6 +367,7 @@ function centerNavigationAndOtherSettings(vh){
     border-radius:5px!important;
     border:2px solid dimgrey!important;
     box-shadow: 10px 10px 12px 0px rgb(30 30 30)!important;
+    box-shadow: 5px 5px 10px 0px rgb(30 30 30)!important;
     z-index: 2;
 }
 #refnav #refnav_col2 > div {

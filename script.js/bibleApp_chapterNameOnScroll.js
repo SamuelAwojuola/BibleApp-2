@@ -170,7 +170,6 @@ function loadNewChapter_Before_First_DisplayedChapterOnPage(){
     let firstChapter = main.querySelector('.chptverses:first-of-type')
     bkNumb = firstChapter.getAttribute('bookid');
     let chptNumb = firstChapter.getAttribute('chapter') - 1;
-    // let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)-1}"]`)//Stops generating chapters when scrolling gets to the beginning of book
     let prevChapter = bible_chapters.querySelector(`[value="bk${bkNumb}ch${Number(chptNumb)}"]`).previousElementSibling
     if (prevChapter) {
         remove_LOWEST_Chapter()
@@ -225,6 +224,12 @@ function goToNextPrevChapter(pn){
             loadNewChapter_Before_First_DisplayedChapterOnPage()
             hchpt_H.previousElementSibling.previousElementSibling.scrollIntoView()
         }
+        gotochpt_prev.style.setProperty('background-color', 'brown', 'important');
+        bottomleft_btns.style.setProperty('opacity', '1', 'important');
+        setTimeout(() => {
+            gotochpt_prev.style.backgroundColor="";
+            bottomleft_btns.style.opacity="";
+        }, 300);
     }
     // Goto next chapter
     else if(pn=='+'){
@@ -236,6 +241,12 @@ function goToNextPrevChapter(pn){
             loadNewChapter_After_Last_DisplayedChapterOnPage()
             hchpt_H.nextElementSibling.nextElementSibling.scrollIntoView()
         }
+        gotochpt_next.style.setProperty('background-color', 'brown', 'important');
+        bottomleft_btns.style.setProperty('opacity', '1', 'important');
+        setTimeout(() => {
+            gotochpt_next.style.backgroundColor="";
+            bottomleft_btns.style.opacity="";
+        }, 300);
     }
 
 }

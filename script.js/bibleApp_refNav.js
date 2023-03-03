@@ -318,6 +318,127 @@ function hideSearchParameters(arr) {
     }
 }
 
+/* *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+ */
+/* FOR CENTERING THE REFNAV & ITS CHILDREN ON NARROW MOBILE SCREENS */
+/* *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+ */
+function centerNavigationAndOtherSettings(vh){
+    /* HORIZONTALLY */
+    if (vh=='h') {
+        if(document.head.querySelector('#h_centeredSettings')){
+            h_centeredSettings.remove();
+            center_settings_h_check.checked=false;
+        } else {
+            const styleRule = `
+#refnav {
+    position: absolute;
+    left: 1.5em;
+    margin-top: 1em;
+    height: calc(100% - 5em);
+    border-radius: 5px;
+    background-color: none;
+    overflow: visible;
+    z-index: 98;
+}
+#refnav #app_settings {
+    background: var(--ref-img);
+    position: fixed;
+    display: flex;
+    height: fit-content;
+    height: auto;
+    max-width: calc(100% - ((var(--width-sidebuttons) - 0.25em)*3));
+/*  left: calc((((var(--width-sidebuttons) - 0.25em)*1))); */
+    bottom: 1em;
+    background-color: transparent;
+    overflow-x: auto;
+    z-index: 10;
+}
+#refnav #app_settings button {
+    width: 0.2em!important;
+    margin: 0;
+    padding: 0;
+    border-radius:0!important;
+}
+#refnav #refnav_col2 {
+    border: none;
+    border:transparent!important;
+}
+#refnav #refnav_col2 {border-radius:5px;}
+#refnav #app_settings,
+#refnav #refnav_col2 > div {
+    border-radius:5px!important;
+    border:2px solid dimgrey!important;
+    box-shadow: 3px 3px 5px 0px rgba(30,30,30,0.5),6px 6px 3px -1px rgba(30,30,30,0.5)!important;
+}
+#refnav #app_settings:hover~#refnav_col2,
+#refnav #refnav_col2 > div.slideoutofview {
+    z-index: 1;
+}`;
+            createNewStyleSheetandRule('h_centeredSettings', styleRule)
+            center_settings_h_check.checked=true;
+            center_settings_v_check.checked=false;
+            if(document.head.querySelector('#v_centeredSettings')){
+                v_centeredSettings.remove();
+            }
+        }
+    }
+    /* VERTICALLY */
+    else if(vh=='v'){
+        if(document.head.querySelector('#v_centeredSettings')){
+            v_centeredSettings.remove();
+            center_settings_v_check.checked=false;
+        } else {
+            const styleRule =
+`#refnav {
+    position: absolute;
+    top: 1em;
+    left: 1em;
+    height: calc(100% - 5em);
+    background-color: none!important;
+    z-index: 98;
+    overflow: visible;
+}
+#refnav #app_settings {
+    display:block;
+    max-width:auto;
+    height: auto;
+    background-color: transparent;
+    border: none;
+}
+#refnav #app_settings button {border-radius:0!important;}
+#refnav #refnav_col2 {
+    border: none;
+    border:transparent!important;
+}
+#refnav #refnav_col2 {border-radius:5px;}
+#refnav #app_settings,
+#refnav #refnav_col2 > div {
+    position: absolute;
+    border-radius:5px!important;
+    border:2px solid dimgrey!important;
+    box-shadow: 3px 3px 5px 0px rgba(30,30,30,0.5),6px 6px 3px -1px rgba(30,30,30,0.5)!important;
+}
+#refnav #refnav_col2 > div {
+    left: 3.5rem;
+}
+#refnav #app_settings:hover~#refnav_col2,
+#refnav #refnav_col2 > div.slideoutofview {
+    z-index: 1;
+}
+@media screen and (max-device-width: 540px) {
+    #refnav #app_settings {
+        bottom:0;
+    }
+}`;
+            createNewStyleSheetandRule('v_centeredSettings', styleRule)
+            center_settings_v_check.checked=true;
+            center_settings_h_check.checked=false;
+            if(document.head.querySelector('#h_centeredSettings')){
+                h_centeredSettings.remove();
+            }
+        }
+    }
+}
+
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
 /* *+*+* Navigating RefNav With Arrow Keys +*+*+ */
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
@@ -342,6 +463,9 @@ function navigationByArrowKeys(e){
     }
     const idx_A = refNavMainBtns.indexOf(document.activeElement);
     if(idx_A>-1){
+        /* ---------------------------------------------------------- */
+        /* TO ADAPT THE KEYS DIRECTIONS WHEN THE REFNAV IS HORIZONTAL */
+        /* ---------------------------------------------------------- */
         if(center_settings_h_check.checked){
             if (idx_A>0 && idx_A<refNavMainBtns.length-4) {
                 switch (e.keyCode) {
@@ -395,8 +519,13 @@ function navigationByArrowKeys(e){
                 else if(right_key){
                     if(rfnvb==biblenavigation){
                         hideRefNav("show",bible_nav);
-                        if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {
-                            newFocusElm.focus();
+                        rfnvb.classList.toggle('active_button')
+                        if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {newFocusElm.focus();}
+                    } else {
+                        if (sectionToShow=rfnvb.getAttribute('toopen')) {
+                            sectionToShow=refnav_col2.querySelector('#'+sectionToShow);
+                            hideRefNav("show",sectionToShow);
+                            rfnvb.classList.toggle('active_button')
                         }
                     }
                     return

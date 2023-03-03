@@ -1,4 +1,3 @@
-// Check if device is a mobile device
 let formerContextMenu_Coordinates = {};
 /* RIGHT-CLICK MENU */
 let timer1, timer2;

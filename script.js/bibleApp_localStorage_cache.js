@@ -74,6 +74,8 @@ function cacheFunctions() {
                     parentBtn.classList.add('active_button');
                     if(parentBtn==show_eng_superscript){engnXlit_supscript('eng')}
                     else if(parentBtn==show_hebgrk_superscript){engnXlit_supscript('hebgrk')}
+                    else if(parentBtn==center_settings_h){centerNavigationAndOtherSettings('h')}
+                    else if(parentBtn==center_settings_v){centerNavigationAndOtherSettings('v')}
                     else {currentChkbx.checked=true;}
                     // parentBtn.click()
                 }
@@ -85,6 +87,9 @@ function cacheFunctions() {
                 }
             }
         })    
+    } else if(isMobileDevice){
+        center_settings_v_check.checked=true;
+        centerNavigationAndOtherSettings('v')
     }
     // For Darkmode
     if (localStorage.getItem('darkmode')) {darkLightMode()}

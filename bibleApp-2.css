@@ -57,13 +57,6 @@
         --fontsize-strongstooltip: 17px;
         --width-mainbutton: 45px;
     }
-    #refnav #app_settings>button {
-        /* font-size: 32.5px; */
-        /* overflow: hidden; */
-        /* width: 50px!important;
-        min-width: 50px; */
-        /* padding: 6px 2px; */
-    }
     #togglenavbtn {
         min-width: 50.3px;
     }
@@ -122,8 +115,6 @@
         flex-basis: 100%;
     }
     #topbartogglebtn {
-        /* right: 1em; */
-        /* top: 90vh; */
         opacity: 0.8;
     }
 }
@@ -134,12 +125,12 @@
     #togglenavbtn {
         min-width: 46.3px;
     }
-    #refnav #app_settings>button {
+    /* #refnav #app_settings>button { */
         /* font-size: 28.5px; */
         /* min-width: 46px!important; */
         /* width:var(--width-sidebuttons)!important; */
         /* height:var(--width-sidebuttons); */
-    }
+    /* } */
     #forreference,
     #forwordsearch,
     #titlebar_show_searchsettings {

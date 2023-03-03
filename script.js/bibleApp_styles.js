@@ -312,7 +312,7 @@ function centerNavigationAndOtherSettings(vh){
 #refnav #refnav_col2 {border-radius:5px;}
 #refnav #app_settings,
 #refnav #refnav_col2 > div {
-    border-radius:5px;
+    border-radius:5px!important;
     border:2px solid dimgrey!important;
     box-shadow: 10px 10px 12px 0px rgb(30 30 30)!important;
 }
@@ -363,7 +363,7 @@ function centerNavigationAndOtherSettings(vh){
 #refnav #app_settings,
 #refnav #refnav_col2 > div {
     position: absolute;
-    border-radius:5px;
+    border-radius:5px!important;
     border:2px solid dimgrey!important;
     box-shadow: 10px 10px 12px 0px rgb(30 30 30)!important;
     z-index: 2;

@@ -227,8 +227,10 @@ function getCrossReference(x,bkn,bvName) {
         let vrs2 = vRange[1];
         if(bkn){bookName=bkn;}
         let b_vn='';
-        if(!bvName){bvName=bversionName;}
-        else if(bvName){b_vn=`-${bvName}`;}
+        let b_v='';
+        // if(!bvName){bvName=bversionName;}
+        // else 
+        if(bvName){b_vn=`-${bvName}`;}
         
         for (i = vrs1; i < vrs2 + 1; i++) {
             let verseSpan = document.createElement('span');
@@ -238,14 +240,17 @@ function getCrossReference(x,bkn,bvName) {
                 verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
                 verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
                 verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
-                verseNum.title = bvName + ' ' + fullBkn;
+                verseNum.title = b_v + ' ' + fullBkn;
                 verseSpan.classList.add('verse');
-                verseSpan.classList.add('v_'+bvName);
+                verseSpan.classList.add('v_'+b_v);
                 // if(br){
                 verseSpan.innerHTML = br + verseSpan.innerHTML;
-                // }
-                // else{verseSpan.innerHTML='<div></div>'+verseSpan.innerHTML;}
-                let vText = window[bvName][fullBkn][chp1 - 1][i - 1]
+                let vText;
+                if(bvName){
+                    vText = window[bvName][fullBkn][chp1 - 1][i - 1]
+                } else {
+                    vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
+                }
                 vHolder.append(parseVerseText(vText, verseSpan));
                 verseSpan.prepend(' ');
                 verseSpan.prepend(verseNum);

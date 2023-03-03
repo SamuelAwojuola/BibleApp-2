@@ -101,8 +101,8 @@ async function fetchBookNotes(jsBkNm) {
   return await response.json()
 }
 
-function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHere) {
-  // console.log({bookName, chapternumber, verseNumber, appendHere})
+async function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHere) {
+  let newVerseNote;
   if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
     let refObj = breakDownClickedVerseRef();
     bookName = refObj.bN;
@@ -110,40 +110,32 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber, appendHer
     verseNumber = refObj.cV;
   }
 
-  function getVerseNote() {
-    fetchBookNotes().then(jsonObject => {
-      bible_book = jsonObject;
-      appendNote4selectedVerse();
-      // Scroll the verseNote into view
-      if(appendHere && !isFullyScrolledIntoView(appendHere.parentElement)){
-          appendHere.parentElement.scrollIntoView({behavior: "smooth",block: "end", inline: "nearest"})
-          // transliteratedWords_Array.forEach(storedStrnum => {
-          //   showTransliteration(storedStrnum)})
-      }
-    })
+  async function getVerseNote() {
+    bible_book = await fetchBookNotes();
+    appendNote4selectedVerse();
+    // Scroll the verseNote into view
+    if(appendHere && !isFullyScrolledIntoView(appendHere.parentElement)){
+        appendHere.parentElement.scrollIntoView({behavior: "smooth",block: "end", inline: "nearest"})
+    }
 
-    function appendNote4selectedVerse() {
+    async function appendNote4selectedVerse() {
       if (bible_book.notes[chapternumber - 1]['_' + verseNumber]) {
-        // clog('hello there')
         //Check for verse number
         noteForCurrentlyEditedVerse = bible_book.notes[chapternumber - 1]['_' + verseNumber];
-        // console.log(bible_book.notes[chapternumber - 1].length);
-        // console.log(noteForCurrentlyEditedVerse);
-        
         if(document.querySelector('body').matches('#versenotepage')){  
           const fullRef = `${bookName} ${chapternumber}:${verseNumber}`
           noteForCurrentlyEditedVerse = `<blockquote>${docFrag2String(getCrossReference(fullRef)).replace(/(\[\w+ \d+:\d+)(\])(.+)/ig, '<hr>$3 <small>$1 ' + bversionName + '$2</small><hr>')}</blockquote>${generateRefsInNote(noteForCurrentlyEditedVerse)}`;
         }else{
           noteForCurrentlyEditedVerse = generateRefsInNote(noteForCurrentlyEditedVerse);
         }
-        
         appendHere.innerHTML = noteForCurrentlyEditedVerse;
-        transliterateAllStoredWords()
-        return noteForCurrentlyEditedVerse
+        transliterateAllStoredWords();
+        newVerseNote=noteForCurrentlyEditedVerse
       }
     }
+    return await newVerseNote
   }
-  return getVerseNote()
+  return await getVerseNote()
 }
 /* **************************************************** */
 function saveJSONFileToLocalDrive(e) {

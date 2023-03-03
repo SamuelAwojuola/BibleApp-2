@@ -180,10 +180,6 @@ function appendVerseNote(e) {
     else {
         siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
         closeNote(siblingVersenote,masterVerseHolder)
-        // siblingVersenote.classList.add('slideup');
-        // setTimeout(() => {
-        //     siblingVersenote.style.display = 'none';
-        // }, 100);
     }
 }
 function closeNote(vnote,vholder,dIS){
@@ -318,4 +314,36 @@ function generateRefsInNote(txt){
         return txt
     }
     return txt
+}
+if(document.body.matches('#homepage')){
+    main.addEventListener("click",showVersenoteToTheRight)
+}
+function showVersenoteToTheRight(e){
+    let bn,bc,cv;
+    if (e) {
+        et=e.target;
+        if (et.matches('.vmultiple, .vmultiple *')) {
+            const chtHolder=elmAhasElmOfClassBasAncestor(et,'.chptverses');
+            bn=chtHolder.getAttribute('bookname');
+            bc=chtHolder.getAttribute('chapter');
+            if (et.matches('.vmultiple')){cv = et.id.split('.')[2]}
+            else{cv = Number(elmAhasElmOfClassBasAncestor(et,'.vmultiple').id.split('.')[2])+1};
+            lastClickedVerseOBJ={bn,bc,cv}
+            innerFunc_1()
+        }
+    } else if (lastClickedVerseOBJ) {
+        bn=lastClickedVerseOBJ.bc;
+        bc=lastClickedVerseOBJ.bn;
+        cv=lastClickedVerseOBJ.cv;
+        innerFunc_1()
+    }
+    async function innerFunc_1(){
+        if (show_versenote_totheright_check.checked) {
+            let verseHasNote = await readFromVerseNotesFiles(bn, bc, cv,versenote_totheright_div2);
+            if(verseHasNote){
+                versenote_totheright.classList.add("showingNote");
+                versenote_totheright_div1.innerText=`${bn} ${bc}:${cv}`
+            }
+        }
+    }
 }

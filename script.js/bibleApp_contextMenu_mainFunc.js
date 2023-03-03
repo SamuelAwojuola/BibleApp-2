@@ -38,7 +38,7 @@ function add_tooltipContextMenu(e) {
     }
 
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
-    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span, .win2_noteholder span')) {
+    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span, .win2_noteholder span, #versenote_totheright, #versenote_totheright *')) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -91,9 +91,21 @@ function add_tooltipContextMenu(e) {
                     if (!searchPreviewWindowFixed.querySelector('#context_menu')) {
                         // if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
                         // move the #context_menu from #main to #searchPreviewFixed
-                        let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                        main.querySelector('#context_menu').remove()
+                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
+                        pagemaster.querySelector('#context_menu').remove()
                         searchPreviewFixed.append(clonedContextMenu)
+                    }
+                }
+                /* ||||||||||||||||||||||||||||||||||| */
+                /* ||Append to #versenote_totheright|| */
+                /* ||||||||||||||||||||||||||||||||||| */
+                else if (elmAhasElmOfClassBasAncestor(e.target, '#versenote_totheright')) {
+                    eParent = elmAhasElmOfClassBasAncestor(e.target, '#versenote_totheright');
+                    if (!eParent.querySelector('#context_menu')) {
+                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
+                        pagemaster.querySelector('#context_menu').remove()
+                        eParent.append(clonedContextMenu)
+                        clonedContextMenu.addEventListener("click", codeElmRefClick)
                     }
                 }
                 /* |||||||||||||||||||||||||||||| */
@@ -102,8 +114,8 @@ function add_tooltipContextMenu(e) {
                 else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
                     eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
                     if (!eParent.querySelector('#context_menu')) {
-                        let clonedContextMenu = main.querySelector('#context_menu').cloneNode(true);
-                        main.querySelector('#context_menu').remove()
+                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
+                        pagemaster.querySelector('#context_menu').remove()
                         eParent.append(clonedContextMenu)
                         clonedContextMenu.addEventListener("click", codeElmRefClick)
                     }
@@ -261,7 +273,6 @@ function add_tooltipContextMenu(e) {
             // Space above and below target
             spaceAbove = eTargetTop - parentElementTop + parentElementScrollTop;
             spaceBelow = parentElementHeight - eTargetBottom + parentElementScrollTop + parentElementTop;
-            console.log(spaceBelow);
 
             function appendLeft() {menuRight = '';
                 context_menu.style.right = menuRight;
@@ -329,7 +340,6 @@ function add_tooltipContextMenu(e) {
 
             // If the eTarget is in the contextMenu, create a new context menu using the coordinates of the present one
             if (parentIsContextMenu) {
-                // console.log('parent is ContextMenu');
                 context_menu.style.top = formerContextMenu_Coordinates.top;
                 context_menu.style.bottom = formerContextMenu_Coordinates.bottom;
                 context_menu.style.left = formerContextMenu_Coordinates.left;

@@ -1,7 +1,7 @@
-let lastRef;
+let browserHistory_lastRef;
 let updateRefBrowserHistory = (ref) => {
     // if(e.state.ref&&e.state.ref==ref){return}
-    lastRef = ref;
+    browserHistory_lastRef = ref;
     
     // if (ref && (window.location.hash==''||ref!=window.location.hash.split('%20').join(' '))) {
     if (ref) {

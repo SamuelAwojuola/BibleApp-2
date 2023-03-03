@@ -1,14 +1,15 @@
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
 
-main.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
-searchPreviewFixed.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
+pagemaster.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
+// main.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
+// searchPreviewFixed.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
 
-ppp.addEventListener('mouseout', function (e) {
+pagemaster.addEventListener('mouseout', function (e) {
     if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span')) {
         clearTimeout(timer1)
     }
 });
-main.addEventListener('mouseover', function (e) {
+pagemaster.addEventListener('mouseover', function (e) {
     if (e.target.matches('.translated')) {
         e.preventDefault()
     }
@@ -24,9 +25,9 @@ main.addEventListener('click', function (e) {
 context_menu.addEventListener("click", codeElmRefClick);
 
 /* FOR SHOWING CROSSREFS AND VERSES NOTES */
-ppp.addEventListener("click", codeButtons);
-ppp.addEventListener(contextMenu_touch, codeButtons);
-ppp.addEventListener("mouseup", codeButtonsRemove);
+pagemaster.addEventListener("click", codeButtons);
+pagemaster.addEventListener(contextMenu_touch, codeButtons);
+pagemaster.addEventListener("mouseup", codeButtonsRemove);
 function codeButtons(e) {
     if(e.target.matches('#ppp .verse code[ref]')) {
         /* *********************************** */

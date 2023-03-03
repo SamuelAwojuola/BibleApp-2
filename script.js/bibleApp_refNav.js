@@ -322,7 +322,7 @@ function hideSearchParameters(arr) {
 /* *+*+* Navigating RefNav With Arrow Keys +*+*+ */
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
 document.addEventListener('keydown',navigationByArrowKeys)
-const refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome];
+const refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
 function navigationByArrowKeys(e){
     // console.log(e.keyCode)
     if(e.keyCode==17){if(e.keyCode==16){console.log('TRUE')}}
@@ -331,15 +331,47 @@ function navigationByArrowKeys(e){
     let up_key=0,down_key=0,left_key=0,right_key=0,enter_key=0,spacebar_key=0,home_key=0;
     // Array of buttons in order of navigation
 
-    if(e.keyCode==13){enter_key=1;}
-    else if(e.keyCode==32){spacebar_key=1;}
-    else if(e.keyCode==36){home_key=1;}
-    else if(e.keyCode==37){left_key=1;}
-    else if(e.keyCode==38){up_key=1;}
-    else if(e.keyCode==39){right_key=1;}
-    else if(e.keyCode==40){down_key=1;}1
+    switch(e.keyCode){
+        case 13:enter_key=1;break;
+        case 32:spacebar_key=1;break;
+        case 36:home_key=1;break;
+        case 37:left_key=1;break;
+        case 38:up_key=1;break;
+        case 39:right_key=1;break;
+        case 40:down_key=1;
+    }
     const idx_A = refNavMainBtns.indexOf(document.activeElement);
     if(idx_A>-1){
+        if(center_settings_h_check.checked){
+            if (idx_A>0 && idx_A<refNavMainBtns.length-4) {
+                switch (e.keyCode) {
+                    //left becomes up
+                    case 37:up_key=1;left_key=0;break;
+                    //right becomes down
+                    case 39:down_key=1;right_key=0;break;
+                    //up becomes right
+                    case 38:right_key=1;up_key=0;break;
+                    //down becomes left
+                    case 40:left_key=1;down_key=0;
+                  }
+            }
+            if(e.keyCode==37 && document.activeElement==sidemenubtn_rightbottom){
+              //left becomes up
+              up_key=1;
+              left_key=0
+            } else if(idx_A>refNavMainBtns.length-5){
+                switch (e.keyCode) {
+                    //up becomes down
+                    case 38:down_key=1;up_key=0;break;
+                    //down becomes up
+                    case 40:up_key=1;down_key=0;
+                    //left becomes up
+                    case 37:up_key=1;left_key=0;break;
+                    //right becomes down
+                    case 39:down_key=1;right_key=0;break;
+                  }
+            }
+        }
         if(up_key|down_key|left_key|right_key)ePrev()// Prevent default browser action if the active element in the dom is included in the array
         if(e.target!=togglenavbtn && left_key){
             hideRefNav('hide',app_settings);

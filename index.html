@@ -21,14 +21,6 @@
 
 <body id="homepage">
   <div id="pagemaster">
-    
-    <div id="bottomleft_btns">
-      <div class="flex">
-        <button id="gotochpt_prev" class="nextprevchpt" onclick="goToNextPrevChapter('-')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
-        <button id="gotochpt_next" class="nextprevchpt" onclick="goToNextPrevChapter('+')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
-        <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
-      </div>
-    </div>
       
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
@@ -177,6 +169,12 @@
                 <td>
                   <button class="eng2grk_sup_btns" id="center_settings_h" onclick="centerNavigationAndOtherSettings('h')"  title="Center Settings Horizontally"><input type="checkbox" id="center_settings_h_check" name="center_settings_h_check" value="center_settings_h_check">Horizontally</button>
                   <button class="eng2grk_sup_btns" id="center_settings_v" onclick="centerNavigationAndOtherSettings('v')"  title="Center Settings Vertically"><input type="checkbox" id="center_settings_v_check" name="center_settings_v_check" value="center_settings_v_check">Vertically</button>
+                </td>
+              </tr>
+              <tr>
+                <td>VerseNote To The Right</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">Right Side Versnote</button>
                 </td>
               </tr>
             </table>
@@ -342,7 +340,21 @@
       </div>
       <div id="ppp"></div>
         <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->
-    </main>
+        
+      </main>
+    <div id="bottomleft_btns">
+      <div class="flex">
+        <button id="gotochpt_prev" class="nextprevchpt" onclick="goToNextPrevChapter('-')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="gotochpt_next" class="nextprevchpt" onclick="goToNextPrevChapter('+')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
+      </div>
+    </div>
+    <div id="versenote_totheright">
+      <button class="closebtn note_closebtn_x" onclick="versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML=''"></button>
+      <div id="versenote_totheright_div1">
+      </div>
+      <div id="versenote_totheright_div2"></div>
+    </div>
   </div>
   <div id="singleverse_compare_menu" class="displaynone"></div>
   <div name="verse_note" id="verse_note" class="verse_note">

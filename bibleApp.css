@@ -96,6 +96,7 @@ html {
     font-family: var(--main-font);
 }
 body {
+    display: flex;
     position: relative;
     margin: 0;
     overflow-y: hidden;
@@ -115,6 +116,42 @@ body>svg {
 /* svg{
     filter: invert(27%) sepia(51%) saturate(2878%) hue-rotate(346deg) brightness(104%) contrast(97%);
 }*/
+#versenote_totheright {
+    position: relative;
+    display: none;
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    max-width: 33vw;
+    height: inherit;
+    background-color: var(--buttons);
+    font-size: var(--fontsize-main);
+    overflow-y: hidden;
+}
+#versenote_totheright.showingNote {
+    display: flex;
+    flex-direction: column;
+}
+#versenote_totheright #versenote_totheright_div1 {
+    font-size: 1.5em;
+    box-shadow: 0 5px 5px var(--shadow-color);
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+#versenote_totheright #versenote_totheright_div2 {
+    position: relative;
+    padding: 0.5rem;
+    overflow-y: auto;
+    height: 100%;
+}
+#versenote_totheright .note_closebtn_x {
+    top:0;
+    right: 0;
+}
+#versenote_totheright .context_menu,#versenote_totheright code {
+    font-size: var(--fontsize-main)!important;
+}
 button * {pointer-events: none;}
 .text_content:empty::before{
     content: 'Take down a comment to the verse';
@@ -137,7 +174,7 @@ li li li{
     left: 0;
     height: 100%;
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto 1fr auto;
     grid-template-rows: auto 1fr;
     row-gap: 0;
     border-right: 1px solid var(--scroll-thumb-hover-bg-color);
@@ -339,7 +376,10 @@ span.vmultiple.noted code #verse_notes_button {
     padding: 10px;
 }
 .text_content span[ref],
-.text_content span[strnum]:not(#context_menu span[strnum]){
+.text_content span[strnum]:not(#context_menu span[strnum]),
+#versenote_totheright span[ref],
+#versenote_totheright span[strnum]:not(#context_menu span[strnum])
+{
     font-weight: bold;
     border-bottom: var(--black) 1px solid;
     color: var(--black);
@@ -680,15 +720,15 @@ button:not(:disabled):hover {
     display: none !important;
 }
 #main {
-    max-width: 100%;
+    position: relative;
+    display: flex;
     grid-column-start: 2;
     grid-column-end: 3;
     grid-row-start: 2;
     grid-row-end: 3;
-    overflow-y: scroll;
-    display: flex;
-    position: relative;
+    max-width: 100%;
     box-shadow: inset 1px 0px 2px 0px var(--shadow-color);
+    overflow-y: scroll;
 }
 #main>*>* {
     padding-left: 5px;
@@ -1476,7 +1516,7 @@ border-right: var(--col2-border) solid auto!important;
 #top_horizontal_bar{
     position: relative;
     grid-column-start: 1;
-    grid-column-end: 3;
+    grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 2;
     border-bottom: 2px solid var(--grey);
@@ -2247,12 +2287,18 @@ div.v_markers div#autocomplete_items {
 /* BOTTOM LEFT NAV BUTTONS */
 
 #bottomleft_btns {
-    position: fixed;
     display: block;
-    bottom: 1em;
-    right: 0.75em;
-    z-index: 99;
+    margin-top: auto;
+    margin-bottom: 1em;
+    margin-left: auto;
+    margin-right: 0.75em;
+    grid-column-start: 2;
+    grid-row-start: 2;
     opacity: 0.5;
+    z-index: 99;
+    /* position: fixed; */
+    /* bottom: 1em; */
+    /* right: 0.75em; */
 }
 #bottomleft_btns:hover {
     opacity: 1;

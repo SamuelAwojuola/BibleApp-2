@@ -169,23 +169,39 @@ function showHideTransliterationSection(e){
     }
 }
 
-function darkLightMode() {
-    if (document.body.classList.contains('darkmode')) {
-        document.body.classList.remove('darkmode')
-        darkmodebtn.innerText = '🌤'
-        let allBtnImgs = document.querySelectorAll('button > img')
-        allBtnImgs.forEach(img=>{
-            img.src = img.src.replace(/-DarkMode\.svg/, '.svg')
-        })
-        localStorage.removeItem('darkmode')
+function darkLightMode(dl) {
+    if (dl) {
+        if (dl=='lightmode') {
+            button_image_color.setAttribute('colormode','darkmode')
+            let allBtnImgs = document.querySelectorAll('button > img')
+            allBtnImgs.forEach(img=>{
+                img.src = img.src.replace(/-DarkMode\.svg/, '.svg')
+            })
+        } else if(dl=='darkmode'){
+            button_image_color.setAttribute('colormode','lightmode')
+            let allBtnImgs = document.querySelectorAll('button > img')
+            allBtnImgs.forEach(img=>{
+                img.src = img.src.replace(/\.svg/, '-DarkMode.svg')
+            })
+        }
     } else {
-        document.body.classList.add('darkmode')
-        darkmodebtn.innerText = '🌑';
-        let allBtnImgs = document.querySelectorAll('button > img')
-        allBtnImgs.forEach(img=>{
-            img.src = img.src.replace(/\.svg/, '-DarkMode.svg')
-        })
-        setItemInLocalStorage('darkmode', 'true')
+        if (document.body.classList.contains('darkmode')) {
+            document.body.classList.remove('darkmode')
+            darkmodebtn.innerText = '🌤'
+            let allBtnImgs = document.querySelectorAll('button > img')
+            allBtnImgs.forEach(img=>{
+                img.src = img.src.replace(/-DarkMode\.svg/, '.svg')
+            })
+            localStorage.removeItem('darkmode')
+        } else {
+            document.body.classList.add('darkmode')
+            darkmodebtn.innerText = '🌑';
+            let allBtnImgs = document.querySelectorAll('button > img')
+            allBtnImgs.forEach(img=>{
+                img.src = img.src.replace(/\.svg/, '-DarkMode.svg')
+            })
+            setItemInLocalStorage('darkmode', 'true')
+        }
     }
 }
 

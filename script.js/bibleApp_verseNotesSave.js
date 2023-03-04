@@ -147,7 +147,7 @@ function saveJSONFileToLocalDrive(e) {
     chapternumber = cNv[0];
     verseNumber = cNv[1];
     /* MODIFY THE BIBLE NOTES JSON FILE */
-    writeToVerseNotesFiles(bookName, chapternumber, verseNumber);
+    writeToVerseNotesFiles(bookName, chapternumber, verseNumber)
   }
 }
 /* **************************************************** */
@@ -169,7 +169,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
       b_bk = jsonObject, writeNote()
     })
 
-    function writeNote() {
+    async function writeNote() {
       let newNote = noteEditingTarget.innerHTML;
       if (newNote == "<p><br><\/p>") {
         noteEditingTarget.innerHTML = null;
@@ -211,7 +211,16 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
       b_bk['notes'] = copyOfAllVerseNotesInCurrentBook;
       let newJSON_data = JSON.stringify(b_bk, null, 4);
       // downloadFile(newJSON_data, 'notes_'+bookName);
-      saveToLocalDrive(newJSON_data);
+      let r = await saveToLocalDrive(newJSON_data);
+      // r will be false if the save operation was cancelled
+      if(r!=false){
+        let verseServing = main.querySelector(`code[ref="${bookName} ${chapternumber}:${verseNumber}"]`)
+        verseServing = elmAhasElmOfClassBasAncestor(verseServing, '.vmultiple');
+        verseServing.classList.add('noted')
+        return true
+      } else {
+          return false
+      }
     }
   }
   return modifyCreateVerseNote()

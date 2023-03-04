@@ -273,10 +273,19 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
                 refHlt.scrollIntoView(false);
             });
         }
+        else if(elm2HideShow==app_settings){
+            const idx = refNavMainBtns.indexOf(document.activeElement)
+            if(idx<2 || idx>10){
+                biblenavigation.focus()
+            }
+        }
     } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideoutofview'))||(elm2HideShow.classList.contains('slideintoview'))))) {
         if(elm2HideShow==bible_nav && isMobileDevice){
             topbartogglebtn.style.right='0.75em';
             bottomleft_btns.style.right='0.75em';
+        }
+        if(elm2HideShow==app_settings){
+            togglenavbtn.focus();
         }
         elm2HideShow.classList.remove('slideintoview');
         elm2HideShow.classList.add('slideoutofview');
@@ -452,6 +461,12 @@ if (document.body.matches('#homepage')) {
 function navigationByArrowKeys(e){
     // console.log(e.keyCode)
     if(e.keyCode==17){if(e.keyCode==16){console.log('TRUE')}}
+
+    /* TOGGLE REF_NAV WITH CTRL+SHIFT+Z */
+    if (e.ctrlKey && e.shiftKey && e.keyCode==90) {
+        hideRefNav(null,app_settings);
+    }
+    
     if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     let up_key=0,down_key=0,left_key=0,right_key=0,enter_key=0,spacebar_key=0,home_key=0;
@@ -468,6 +483,7 @@ function navigationByArrowKeys(e){
     }
     const idx_A = refNavMainBtns.indexOf(document.activeElement);
     if(idx_A>-1){
+        /* ---------------------------------------------------------- */
         /* ---------------------------------------------------------- */
         /* TO ADAPT THE KEYS DIRECTIONS WHEN THE REFNAV IS HORIZONTAL */
         /* ---------------------------------------------------------- */
@@ -501,6 +517,8 @@ function navigationByArrowKeys(e){
                   }
             }
         }
+        /* ---------------------------------------------------------- */
+        /* ---------------------------------------------------------- */
         if(up_key|down_key|left_key|right_key)ePrev()// Prevent default browser action if the active element in the dom is included in the array
         if(e.target!=togglenavbtn && left_key){
             hideRefNav('hide',app_settings);

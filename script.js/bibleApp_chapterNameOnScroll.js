@@ -208,7 +208,7 @@ function checkVisible(elm) {
 
 /* GO TO PREVIOUS / NEXT CHAPTER */
 function goToNextPrevChapter(pn){
-    if(pn.nodeType==undefined && pn.ctrlKey){
+    if(pn.nodeType==undefined && pn.ctrlKey && !pn.shiftKey && !pn.altKey){
         // "pn" may be a string (+/-) or a windows key press event
         if(pn.keyCode==38){pn='-'}
         else if(pn.keyCode==40){pn='+'}

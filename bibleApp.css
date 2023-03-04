@@ -123,7 +123,7 @@ body>svg {
     grid-column-end: 4;
     grid-row-start: 2;
     grid-row-end: 3;
-    max-width: 33vw;
+    max-width: 0;
     height: inherit;
     background-color: var(--buttons);
     font-size: var(--fontsize-main);
@@ -132,6 +132,7 @@ body>svg {
 #versenote_totheright.showingNote {
     display: flex;
     flex-direction: column;
+    max-width: 33vw;
 }
 #versenote_totheright #versenote_totheright_div1 {
     font-size: 1.5em;
@@ -234,6 +235,26 @@ span.vmultiple code {
 }
 span.vmultiple.noted code{
     border-bottom: 2px solid var(--brown)!important;
+}
+span.vmultiple.noted code:before {
+    content: 'N';
+    position: absolute;
+    left: 0px;
+    top: -0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: red;
+}
+[class*="marker_"] code:before,
+[class^="marker_"] code:before,
+[class~="marker_"] code:before {
+    content: 'M';
+    position: absolute;
+    left: 0px;
+    top: -0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: purple;
 }
 span.vmultiple.noted code #verse_notes_button {
     background: var(--white);
@@ -1567,6 +1588,7 @@ border-right: var(--col2-border) solid auto!important;
     width: 100%;
     font-size: var(--fontsize-refnsearch);
     flex-grow: 1;
+    padding-left: 0.5em;
 }
 #refdiv input{
     font-size: calc(var(--fontsize-refnsearch)*1.5);
@@ -2349,4 +2371,41 @@ body:not(.darkmode) #bottomleft_btns button, body:not(.darkmode) #topbartogglebt
 #bottomleft_btns #sidemenubtn_rightbottom {
     border-radius: 0.25em;
     margin-top: 1em;
+}
+
+/* button:not(#refnav_col2 button):focus,  */
+#app_settings button:focus,
+#top_horizontal_bar_buttons button:focus,
+#bottomleft_btns button:focus,
+button#topbartogglebtn:focus {
+    transform: scale(1.1);
+}
+/* #app_settings button:not(#refnav_col2 button):not(#togglenavbtn):focus, */
+#app_settings button:focus,
+#top_horizontal_bar_buttons button:not(#togglenavbtn):focus,
+#bottomleft_btns button:focus,
+button#topbartogglebtn:focus {
+    background-color: peachpuff;
+    border-radius: 50px!important;
+}
+#bottomleft_btns:focus-within {
+    opacity: 1;
+}
+#bottomleft_btns:focus-within button:not(:focus){
+    opacity: 0.5;
+}
+#bottomleft_btns button:focus,
+button#topbartogglebtn:focus {
+    background-color: peachpuff!important;
+}
+#app_settings:focus-within{
+    overflow: visible!important;
+}
+.darkmode #app_settings button:focus,
+.darkmode #top_horizontal_bar_buttons button:focus,
+.darkmode #bottomleft_btns button:focus,
+.darkmode button#topbartogglebtn:focus,
+.darkmode #bottomleft_btns button:focus,
+.darkmode button#topbartogglebtn:focus {
+    background-color:brown!important;
 }

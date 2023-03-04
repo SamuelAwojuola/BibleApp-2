@@ -14,6 +14,9 @@
     .verse {
       display: block;
     }
+    .darkmode {
+        color:white!important;
+    }    
   </style>
   <link rel="stylesheet" href="bibleApp.css">
   <link rel="stylesheet" href="bibleApp-2.css">
@@ -175,6 +178,12 @@
                 <td>VerseNote To The Right</td>
                 <td>
                   <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">Right Side Versnote</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Toggle Button Image Color</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="button_image_color" colormode="darkmode" onclick="darkLightMode(this.getAttribute('colormode'))"  title="Toggle button image color">Toggle Buttons Image Color</button>
                 </td>
               </tr>
             </table>

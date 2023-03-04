@@ -97,9 +97,7 @@ function appendVerseNote(e) {
                 // setTimeout(() => {slideUpDown(vnt,'show')}, anim_dur);
                 // vnt.classList.remove('slideup');
                 masterVerseHolder.classList.add('showing_versenote');
-                console.log(vnt);
                 if(tempDiv = elmAhasElmOfClassBasAncestor(vnt,`.note_temp_holder.${noteID}`)) {
-                    console.log('praise');
                     tempDiv.classList.remove('versenote_hidden');
                 }
             } else {

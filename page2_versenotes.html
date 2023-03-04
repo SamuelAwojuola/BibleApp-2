@@ -30,7 +30,7 @@
     </div>
       <div id="col1">
         <!-- <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button> -->
-        <div id="bibleapp_available_notes" class=""></div>
+        <div id="bibleapp_available_notes" class=""><i><br><br>Loading<br>Available<br>Notes... <br><br>Please<br>Wait...</i></div>
     </div>
     <div id="col2">
         <div id="context_menu" class="context_menu slideoutofview"></div>
@@ -77,13 +77,6 @@
     /* SHOW HIDE BUTTONS */
     const buttonContainer = document.querySelector('.button-container');
     const buttonGroup = document.querySelector('.button-group');
-
-    // buttonContainer.addEventListener('mouseenter', () => {
-    //     buttonGroup.classList.add('visible');
-    // });
-    // buttonContainer.addEventListener('mouseleave', () => {
-    //     buttonGroup.classList.remove('visible');
-    // });
     
     function toggleDarkLightMode(cls){
         document.querySelector('body').classList.toggle(cls);

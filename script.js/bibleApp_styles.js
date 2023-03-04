@@ -152,7 +152,9 @@ function loadfontsizes(){
     }
     styleLocalstorageSet()
 }
-eng2grk_sup_table.addEventListener('click',showHideTransliterationSection)
+if (document.body.matches('#homepage')) {
+    eng2grk_sup_table.addEventListener('click',showHideTransliterationSection)
+}
 function showHideTransliterationSection(e){
     if(elmAhasElmOfClassBasAncestor(e.target,'#eng2grk_sup_table')){
         let eng2grkChkBoxes = eng2grk_sup_table.querySelectorAll('button input');

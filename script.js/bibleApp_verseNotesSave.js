@@ -23,7 +23,9 @@ function findAllBookChptnVersesWithNote(){
         getAllRefsInBookThatHaveNote(bookName, buildArrayOfRefs)
       } else {
         appendAllRefsWithNote()
-        appendMarkersToSideBar()
+        if (document.body.matches('#homepage')) {
+          appendMarkersToSideBar()
+        }
       }
     }
     return objOfRefsWithNote

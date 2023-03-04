@@ -442,8 +442,13 @@ function centerNavigationAndOtherSettings(vh){
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
 /* *+*+* Navigating RefNav With Arrow Keys +*+*+ */
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
-document.addEventListener('keydown',navigationByArrowKeys)
-const refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
+let refNavMainBtns
+if (document.body.matches('#homepage')) {
+    document.addEventListener('keydown',navigationByArrowKeys)
+    refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
+    
+    togglenavbtn.focus()
+}
 function navigationByArrowKeys(e){
     // console.log(e.keyCode)
     if(e.keyCode==17){if(e.keyCode==16){console.log('TRUE')}}
@@ -586,4 +591,3 @@ function navigationByArrowKeys(e){
     }
     function ePrev(){e.preventDefault()}
 }
-togglenavbtn.focus()

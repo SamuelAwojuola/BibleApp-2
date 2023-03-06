@@ -1,13 +1,14 @@
 :root {
     --fontsize-main: 15px;
-    --fontsize-refnsearch: 30px;
-    --fontsize-versionsbuttons: 20px;
+    --fontsize-refnsearch: 11px;
+    --fontsize-versionsbuttons: 15px;
+    --minHeighWidth-leftside_btns:20px;
     --fontsize-scripture-nav: 15px;
-    --fontsize-scripture: 13px;
-    --fontsize-ref: 8px;
-    --fontsize-strongstooltip: 13px;
+    --fontsize-scripture: 15px;
+    --fontsize-ref: 12px;
+    --fontsize-strongstooltip: 15px;
     --fontsize-title:20px;
-    --width-sidebuttons:60px;
+    --width-sidebuttons:30px;
     --heighWidth-refnsrchbtn:58px;
     --width-mainbutton:35px;
     --ref-hlt: #dde3db;
@@ -133,6 +134,7 @@ body>svg {
     display: flex;
     flex-direction: column;
     max-width: 33vw;
+    box-shadow: inset 1px 0px var(--black);
 }
 #versenote_totheright #versenote_totheright_div1 {
     font-size: 1.5em;
@@ -249,6 +251,15 @@ span.vmultiple.noted code:before {
 [class^="marker_"] code:before,
 [class~="marker_"] code:before {
     content: 'M';
+    position: absolute;
+    left: 0px;
+    top: -0.5em;
+    font-size: 0.8em;
+    font-weight: bold;
+    color: purple;
+}
+span.vmultiple.noted[class*="marker_"] code:before {
+    content: 'N-M';
     position: absolute;
     left: 0px;
     top: -0.5em;
@@ -530,7 +541,8 @@ span.vmultiple.noted code #verse_notes_button {
     width: calc(var(--width-sidebuttons) * 0.8);
 }
 #refnav #app_settings>button {
-    min-width: 45px;
+    min-width: var(--minHeighWidth-leftside_btns);
+    min-height: var(--minHeighWidth-leftside_btns);
     width:var(--width-sidebuttons)!important;
     height:var(--width-sidebuttons);
     padding: 6px 2px;
@@ -1008,6 +1020,7 @@ sup {
     margin-top: 0.5px;
 }
 #searchprametersbtnholder>button {
+    display: inline;
     font-size: 13px;
     width: auto;
 }
@@ -1723,7 +1736,7 @@ border-right: var(--col2-border) solid auto!important;
     font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
     font-weight: 400;
     /* min-width: calc(45px + var(--col2-border))!important; */
-    min-width: 45px;
+    min-width: var(--minHeighWidth-leftside_btns);
     width: var(--width-sidebuttons)!important;
 }
 #togglenavbtn img {
@@ -2078,6 +2091,7 @@ div.v_markers .vmarker {
     position: relative;
     font-style: italic;
     cursor: pointer;
+    z-index: 1;
 }
 div.v_markers .vmarker:hover {
     color: var(--brown);
@@ -2338,7 +2352,7 @@ body:not(.darkmode) #bottomleft_btns button, body:not(.darkmode) #topbartogglebt
 }
 #bottomleft_btns button, #topbartogglebtn {
     width: var(--width-sidebuttons);
-    min-width: 45px;
+    min-width: var(--minHeighWidth-leftside_btns);
     height: var(--width-sidebuttons);
     border: 1px solid #333333!important;
     box-shadow: 2.75px 2.75px 0 0.05em black;

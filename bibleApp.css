@@ -1335,9 +1335,34 @@ summary {
     font-weight: bolder;
     margin: 0;
 }
-/* #searchPreviewFixed .chptheading+.verse {
-    margin-top: 5px;
-}*/
+#searchPreviewFixed .chptheading:not(.dhid)::before {
+    /* content: '▲'; */
+    content: '';
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    min-width: 1em;
+    height: 1em;
+    padding: 0.5em;
+    position: relative;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+#searchPreviewFixed .chptheading.dhid::before {
+    /* content: '▼'; */
+    content: '';
+    background: url(images/arrow-down-svgrepo-com.svg) center no-repeat;
+    min-width: 1em;
+    height: 1em;
+    padding: 0.5em;
+    position: relative;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+.darkmode #searchPreviewFixed .chptheading:not(.dhid)::before {
+    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
+}
+.darkmode #searchPreviewFixed .chptheading.dhid::before {
+    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
+}
 #searchdiv_fixed {
     display: flex;
     width: 100%;

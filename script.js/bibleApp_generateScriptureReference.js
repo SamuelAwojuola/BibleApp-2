@@ -426,7 +426,12 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
 
         createTransliterationAttr(verseSpan, trans_lang);
         verseSpan.classList.add('verse');
-        appendHere.appendChild(verseSpan);
+        const lastVersionInVerseHolder=appendHere.querySelector('.verse:last-of-type')
+        if(lastVersionInVerseHolder && lastVersionInVerseHolder.nextElementSibling){
+            insertElmAafterElmB(verseSpan, lastVersionInVerseHolder)
+        } else {
+            appendHere.appendChild(verseSpan);
+        }
         transliteratedWords_Array.forEach(storedStrnum => {
             showTransliteration(storedStrnum)
         });

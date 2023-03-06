@@ -316,8 +316,14 @@ function generateRefsInNote(txt){
 if(document.body.matches('#homepage')){
     main.addEventListener("click",showVersenoteToTheRight)
 }
+let lastClickedVerseOBJ;
 function showVersenoteToTheRight(e){
     let bn,bc,cv;
+    if(show_versenote_totheright_check.checked) {
+        show_versenote_totheright_2_check.checked=true;    
+    } else {
+        show_versenote_totheright_2_check.checked=false;
+    }
     if (e) {
         et=e.target;
         if (et.matches('.vmultiple, .vmultiple *')) {
@@ -327,11 +333,11 @@ function showVersenoteToTheRight(e){
             if (et.matches('.vmultiple')){cv = et.id.split('.')[2]}
             else{cv = Number(elmAhasElmOfClassBasAncestor(et,'.vmultiple').id.split('.')[2])+1};
             lastClickedVerseOBJ={bn,bc,cv}
-            innerFunc_1()
+            innerFunc_1();
         }
     } else if (lastClickedVerseOBJ) {
-        bn=lastClickedVerseOBJ.bc;
-        bc=lastClickedVerseOBJ.bn;
+        bn=lastClickedVerseOBJ.bn;
+        bc=lastClickedVerseOBJ.bc;
         cv=lastClickedVerseOBJ.cv;
         innerFunc_1()
     }
@@ -340,8 +346,32 @@ function showVersenoteToTheRight(e){
             let verseHasNote = await readFromVerseNotesFiles(bn, bc, cv,versenote_totheright_div2);
             if(verseHasNote){
                 versenote_totheright.classList.add("showingNote");
-                versenote_totheright_div1.innerText=`${bn} ${bc}:${cv}`
+                versenote_totheright_div1.innerText=`${bn} ${bc}:${cv}`;
+                
+                let etVmult;
+                if(et.matches('.vmultiple')){
+                    etVmult=et;
+                    etVmult.scrollIntoView({behavior:"smooth",block:"center"});
+                }
+                else{
+                    etVmult = elmAhasElmOfClassBasAncestor(et,'.vmultiple');
+                }
+                etVmult.style.borderLeft='5px solid red';
+                etVmult.style.borderTop='5px solid red';
+                etVmult.style.borderBottom='5px solid red';
+                versenote_totheright.style.borderTop='5px solid red';
+                versenote_totheright.style.borderBottom='5px solid red';
+                versenote_totheright.style.borderRight='5px solid red';
+                setTimeout(() => {
+                    etVmult.scrollIntoView({behavior:"smooth",block:"center"});
+                    setTimeout(() => {
+                        etVmult.style.border='';
+                        versenote_totheright.style.border='';
+                    }, 1500);
+                }, 100);
             }
+        } else {
+            versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML='';
         }
     }
 }

@@ -362,7 +362,6 @@ function centerNavigationAndOtherSettings(vh){
     z-index: 10;
 }
 #refnav #app_settings button {
-    width: 0.2em!important;
     margin: 0;
     padding: 0;
     border-radius:0!important;
@@ -434,6 +433,9 @@ function centerNavigationAndOtherSettings(vh){
     z-index: 1;
 }
 @media screen and (max-device-width: 540px) {
+    #refnav {
+        left: 0.5em;
+    }
     #refnav #app_settings {
         bottom:0;
     }

@@ -178,6 +178,9 @@ function unCheckOthers(x,z){
 function insertElmAbeforeElmB(newNode, existingNode) {
     existingNode.parentNode.insertBefore(newNode, existingNode);
 }
+function insertElmAafterElmB(newNode, existingNode) {
+    existingNode.parentNode.insertBefore(newNode, existingNode.nextElementSibling);
+}
 function relocateElmTo(elm, moveHere) {
     let elmCopy = elm.cloneNode(true);
     elm.remove();
@@ -307,6 +310,7 @@ replaceAllCheckBoxesWithFinnerOnes()
 /* Markers Input Autocomplete from available markers */
 function autocomplete(e) {
     // function autocomplete(input, arr) {
+    if(!e.target.matches('.v_markerinputnbtn_holder input')){return}
     //Close the existing list if it is open
     closeList();
     let inputElm=e.target;

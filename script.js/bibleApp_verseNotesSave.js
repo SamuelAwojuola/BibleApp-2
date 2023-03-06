@@ -39,7 +39,8 @@ function appendAllRefsWithNote(){
     for (key in objOfRefsWithNote) {
       detailSum = `${detailSum}<details ${openORclose}><summary>${key}</summary>${codeWithRefinIt(key,objOfRefsWithNote)}</details>`
     }
-    bibleapp_available_notes.innerHTML = detailSum;
+    // bibleapp_available_notes.innerHTML = detailSum;
+    biblenotes_nav.innerHTML = detailSum;
   function codeWithRefinIt(bookName,objOfRefsWithNote){
     let arrOfrefs = objOfRefsWithNote[bookName];
     let codeWithRef='<span>';
@@ -160,7 +161,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
   }
 
   async function fetchBookNotes() {
-    const response = await fetch(`bible_notes/notes_${bookName}.json`);
+    let response = await fetch(`bible_notes/notes_${bookName}.json`);
     return await response.json()
   }
 
@@ -216,7 +217,15 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
       if(r!=false){
         let verseServing = main.querySelector(`code[ref="${bookName} ${chapternumber}:${verseNumber}"]`)
         verseServing = elmAhasElmOfClassBasAncestor(verseServing, '.vmultiple');
-        verseServing.classList.add('noted')
+        verseServing.classList.add('noted');
+
+        /* ***************************************** */
+        /* Update notes_ file in serviceWorker cache */
+        /* ***************************************** */
+        await fetch(`bible_notes/notes_${bookName}.json`);
+        /* ***************************************** The above may seem pointless, but it is done in an attempt to ensure the fetched files are always the latest.
+        If the requested file has been stored in the cache, then when a fetch request is made, that is what is fetched. After this, the service worker fetches the file from the network, if availabe and updates the chache.
+        So, I fetch the file immediately after it is modified so that in order that the fresh file will be what is available when next it is fetched. ***************************************** */
         return true
       } else {
           return false
@@ -247,16 +256,15 @@ function indicateThatVerseHasNoteInJSONnotes_file() {
     }
     old_bk_name = bk_name;
   });
-
 }
-async function getAllRefsInBookThatHaveNote(bookName, callback) {
+function getAllRefsInBookThatHaveNote(bookName, callback) {
+    let items = [];
   fetchBookNotes(bookName).then(jsonObject => {
     bible_book = jsonObject;
-    versesWithNotes()
+    versesWithNotes();
   })
 
   function versesWithNotes() {
-    var items = [];
     for (key in bible_book.notes) {
       let jsonChapter = bible_book.notes[key];
       if (Object.keys(jsonChapter).length > 0) {
@@ -265,6 +273,9 @@ async function getAllRefsInBookThatHaveNote(bookName, callback) {
         }
       }
     }
+    /* ********************************************************************************** */
+    /* THe following does not add markers to the file but only gets the available markers */
+    /* ********************************************************************************** */
     // if book has markers (colating all markers in the bible notes)
     if(bible_book.markers){
       let bookMarkers_tempArray = [];

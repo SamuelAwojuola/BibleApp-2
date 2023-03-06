@@ -350,35 +350,44 @@ function runWordSearch() {
 
     if (booksLength>1 && !showreturnedverses.checked) {
         hideAllVerseInSearch()
-    }
+    } else {appendResultCountToHeader()}
 }
 
 
 function hideAllVerseInSearch() {
+    appendResultCountToHeader(true)
+}
+function appendResultCountToHeader(hideResult=false) {
     let chpHeadingInFixedSearch = document.querySelectorAll('#searchPreviewFixed .chptheading');
     let totalVerseReturned = 0;
     chpHeadingInFixedSearch.forEach(h2 => {
+        /* ************************** */
+        /* dhid -- descendants hidden */
+        /* ************************** */
+        if (hideResult) {
+            h2.classList.toggle('dhid');
+        }
         let verseUnderBook = h2.nextElementSibling;
         let verseCount = 0;
         while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
-            verseUnderBook.classList.toggle('displaynone');
+            if (hideResult) {
+                verseUnderBook.classList.toggle('displaynone');
+            }
             verseCount++;
             totalVerseReturned++;
             verseUnderBook = verseUnderBook.nextElementSibling;
         }
         h2.innerText = h2.innerText + ' - ' + verseCount;
     });
-    //Add eventListner to h2
-    searchPreviewFixed.addEventListener('click', showVersesUnderH2)
-    // console.log(totalVerseReturned)
-    // totalfound.innerText="Total Verses Found: "+totalVerseReturned;
     totalfound.innerHTML = "Found in <b>" + totalVerseReturned + "</b> verses in the <b>" + bversionName + "</b>" ;
 }
+searchPreviewFixed.addEventListener('click', showVersesUnderH2)
 
 function showVersesUnderH2(e) {
     let h2 = e.target;
     if (h2.classList.contains('chptheading')) {
         let verseUnderBook = h2.nextElementSibling;
+        h2.classList.toggle('dhid');
         while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
             verseUnderBook.classList.toggle('displaynone');
             verseUnderBook = verseUnderBook.nextElementSibling;
@@ -466,8 +475,13 @@ function clearSearchWindow(){
 
 function searchForHighlightedText(e){
     if((e.ctrlKey && e.shiftKey && e.key.toLowerCase()=='f') && window.getSelection()){
-        wordsearch.value = window.getSelection().toString();
+        const srchSel=window.getSelection().toString();
+        wordsearch.value = srchSel;
+        wordsearch_fixed.value = srchSel;
         runWordSearch()        
     }
 }
 document.addEventListener("keydown",searchForHighlightedText)
+hidesearchparameters.click()
+showonlysearchinput.click()
+keepsearchopen.checked=true;

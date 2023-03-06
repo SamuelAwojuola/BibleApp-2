@@ -426,8 +426,11 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
 
         createTransliterationAttr(verseSpan, trans_lang);
         verseSpan.classList.add('verse');
-        const lastVersionInVerseHolder=appendHere.querySelector('.verse:last-of-type')
-        if(lastVersionInVerseHolder && lastVersionInVerseHolder.nextElementSibling){
+        const lastVersionInVerseHolder=appendHere.querySelector('.verse:last-of-type');
+        /* ****************************************************************************** */
+        /* appendHere.nodeType==1 ensure it is an element node and not a documentFragment */
+        /* ****************************************************************************** */
+        if(appendHere.nodeType==1 && lastVersionInVerseHolder && lastVersionInVerseHolder.nextElementSibling){
             insertElmAafterElmB(verseSpan, lastVersionInVerseHolder)
         } else {
             appendHere.appendChild(verseSpan);

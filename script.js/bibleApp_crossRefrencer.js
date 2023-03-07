@@ -234,22 +234,23 @@ function getCrossReference(x,bkn,bvName) {
         
         for (i = vrs1; i < vrs2 + 1; i++) {
             let verseSpan = document.createElement('span');
-            function vNum() {
 
+            function vNum() {
                 let verseNum = document.createElement('code');
                 verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
                 verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
                 verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
                 verseNum.title = b_v + ' ' + fullBkn;
                 verseSpan.classList.add('verse');
-                verseSpan.classList.add('v_'+b_v);
-                // if(br){
                 verseSpan.innerHTML = br + verseSpan.innerHTML;
+                // if(br){
                 let vText;
                 if(bvName){
                     vText = window[bvName][fullBkn][chp1 - 1][i - 1]
+                    verseSpan.classList.add('v_'+bvName);
                 } else {
                     vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
+                    verseSpan.classList.add('v_'+bversionName);
                 }
                 vHolder.append(parseVerseText(vText, verseSpan));
                 verseSpan.prepend(' ');

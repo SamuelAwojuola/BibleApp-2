@@ -39,8 +39,11 @@ function appendAllRefsWithNote(){
     for (key in objOfRefsWithNote) {
       detailSum = `${detailSum}<details ${openORclose}><summary>${key}</summary>${codeWithRefinIt(key,objOfRefsWithNote)}</details>`
     }
-    // bibleapp_available_notes.innerHTML = detailSum;
-    biblenotes_nav.innerHTML = detailSum;
+    if(bibleapp_available_notes.querySelector('#biblenotes_nav')){
+      biblenotes_nav.innerHTML = detailSum;
+    } else {
+      bibleapp_available_notes.innerHTML = detailSum;
+    }
   function codeWithRefinIt(bookName,objOfRefsWithNote){
     let arrOfrefs = objOfRefsWithNote[bookName];
     let codeWithRef='<span>';

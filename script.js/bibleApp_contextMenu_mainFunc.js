@@ -4,6 +4,8 @@ let timer1, timer2;
 let rightClickedElm = null;
 let newStrongsDef = '';
 let append2BottomOfTarget = 0;
+let cmenu_backwards_navigation_arr=[];
+let prev_contextmenu;
 function createNewContextMenu(){
     // If there isn't a contextMenu already, create one
     if (!document.querySelector('#context_menu')) {
@@ -28,7 +30,16 @@ function add_tooltipContextMenu(e) {
     e.preventDefault();
     parentIsContextMenu = 0;
     createNewContextMenu();
+    let prv_indx=null;
+    let cCmenu_dX, cCmenu_dY, prv_cmenuIndx=false, prv_title;
     formerContextMenu_Coordinates.transform = context_menu.style.transform;
+    prev_contextmenu=context_menu.cloneNode(true);
+    if(prvBtnIndx=context_menu.querySelector('.cmtitlebar .prv')){
+        if(prvBtnIndx.hasAttribute('indx')){
+            prv_cmenuIndx=parseInt(prvBtnIndx.getAttribute('indx'));
+            console.log(prv_cmenuIndx);
+        }
+    }
     const interactEnabled = context_menu.matches('.slideintoview');
     
     // If the traget is a strong's number
@@ -131,6 +142,31 @@ function add_tooltipContextMenu(e) {
             function ifForStrongsNumberORforCrossRef() {
                 if (elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
                     parentIsContextMenu = 1;
+                    /* Store the old cmenu to go back to it */
+                    cCmenu_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
+                    cCmenu_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+                    if(typeof prv_cmenuIndx === 'number'){
+                        /* For contextMenu whose parent was contextMenu: In case it is one that is called from the array and there are other saved cmenus in the array */
+                        console.log('na here');
+                        cmenu_backwards_navigation_arr.splice(prv_cmenuIndx+1,0,prev_contextmenu);
+                        cmenu_backwards_navigation_arr.length=prv_cmenuIndx+2;
+                        prv_indx=`indx="${prv_cmenuIndx+1}"`;
+                    }
+                    else {
+                        console.log('Jesus');
+                        cmenu_backwards_navigation_arr.push(prev_contextmenu);
+                        prv_indx=`indx="${cmenu_backwards_navigation_arr.length-1}"`;
+                        let codeChildren = context_menu.querySelector('.cmtitlebar code').childNodes;
+                        for(let i=0;i<codeChildren.length;i++){
+                            let codetxt=codeChildren[i];
+                            if(codetxt.nodeType==3){
+                                prv_title=`title="${codetxt.wholeText}"`;
+                                console.log(codetxt);
+                                console.log(prv_title);
+                                break
+                            }    
+                        }
+                    }
                 }
                 /* |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| */
                 /* || If eTraget is a [Translated Strongs Word] or the [Strongs Number] itself || */
@@ -169,8 +205,8 @@ function add_tooltipContextMenu(e) {
                             br = '', st = '';
                             if(i==arrOfStrnums.length-1){br = '<br>'}
                             let sn = arrOfStrnums[i];
-                            let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
-                            // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; runWordSearch()"><div class="magnifyingglass"></div></button>`;
+                            let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; wordsearch_fixed.value='${sn}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>`;
+                            // let srchBtn = `<button class="cmenusrchbtn" onclick="wordsearch.value='${sn}'; wordsearch_fixed.value='${sn}'; runWordSearch()"><div class="magnifyingglass"></div></button>`;
                             xlitNlemma = `${xlitNlemma}${br}<code>${srchBtn}${sn}/${getsStrongsLemmanNxLit(sn).xlit}/${getsStrongsLemmanNxLit(sn).lemma}</code>`
                         }
                         if (addquotes) {
@@ -180,10 +216,10 @@ function add_tooltipContextMenu(e) {
                             // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
                             menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
                         }
-                        context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}`;
+                        context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}`;
                     } else if (e.type == contextMenu_touch) { // For strongs number in verseNote
-                        let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
-                        context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div>${newStrongsDef}</div>`;
+                        let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; wordsearch_fixed.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
+                        context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}</div>`;
                     }
                     if (strnum = e.target.getAttribute('strnum')) {
                         context_menu.setAttribute('strnum', strnum)
@@ -210,7 +246,7 @@ function add_tooltipContextMenu(e) {
                         }
                         cmtitletext = cmtitletext + ' [' + bversionName + ']';
                         // cmtitlebar.innerText=e.target.innerText;
-                        cmtitlebar.innerHTML = cmtitletext + `<button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button>`;
+                        cmtitlebar.innerHTML = cmtitletext + `<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>`;
                         context_menu.append(cmtitlebar);
                     }
                     let vHolder = getCrossReference(e.target);
@@ -346,7 +382,11 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.right = formerContextMenu_Coordinates.right;
                 context_menu.style.transform = formerContextMenu_Coordinates.transform
                 context_menu.querySelector('details').open = true;
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);
             } else {
+                /* Clear the saved cmenus */
+                cmenu_backwards_navigation_arr=[];
                 // TOP & BOTTOM
                 if((!parentElement.matches('.text_content')) && parentElement.matches('#searchPreviewFixed')){
                     appendBelow();
@@ -435,6 +475,41 @@ function hideRightClickContextMenu() {
     }
 }
 
+/* C-Menu History Navigation */
+function cmenu_goBackFront(x){
+    let indx = parseInt(x.getAttribute('indx'));
+    let calledByPrv = x.classList.contains('prv');
+    let prvTitle;
+    /* GET PRESENT TRANSFORM */
+    let cCmenu_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
+    let cCmenu_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+    let currentContextMenu_style = context_menu.getAttribute('style');
+    /* Replace the context menu with the save one */
+    let cMenuParent = context_menu.parentNode;
+    let prev_contextmenu=context_menu;
+    if (calledByPrv) {
+        /* Add the cmenu to the cmenu_backwards_navigation_arr */
+        cmenu_backwards_navigation_arr.splice(indx+1,1,prev_contextmenu);
+        prvTitle=prev_contextmenu.querySelector('.cmtitlebar button.prv').getAttribute('title')
+    }
+    console.log({indx,cCmenu_dX});
+
+    cMenuParent.replaceChild(cmenu_backwards_navigation_arr[indx], context_menu);
+    // context_menu.replaceWith(cmenu_backwards_navigation_arr[indx]);
+    
+
+    context_menu.setAttribute('style',currentContextMenu_style);
+    context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
+    context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);
+    enableInteractJSonEl('.cmtitlebar', context_menu);
+
+    if(calledByPrv){
+        let nxtBtn=context_menu.querySelector('.cmtitlebar .nxt');
+        nxtBtn.setAttribute('indx',indx+1);
+        nxtBtn.setAttribute('title',prvTitle);
+    }
+}
+
 /* MAKING CONTEXT_MENU DRAGGABLE */
 // target elements with the "draggable" class
 function enableInteractJSonEl(dragTarget, elmAffected) {
@@ -506,14 +581,14 @@ function enableInteractJSonEl(dragTarget, elmAffected) {
     function dragMoveListener(event) {
         var target = event.target
         // keep the dragged position in the data-x/data-y attributes
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy        
+        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
         // Always Make ContextMenu translateX Equal ZERO While in #searchPreviewFixed 
         if(elmAhasElmOfClassBasAncestor(elmAffected,'#searchPreviewFixed')){x=0}
         // translate the element
         elmAffected.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
 
-        // update the posiion attributes
+        // update the position attributes
         target.setAttribute('data-x', x)
         target.setAttribute('data-y', y)
     }

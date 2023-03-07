@@ -61,7 +61,7 @@ function getBksChptsNum(xxx) {
 
 var stl = 0;
 var currentBookValue = null;
-
+let app_settings = document.querySelector('#app_settings')
 if(!document.querySelector('body').matches('#versenotepage')){
     refnav.addEventListener("click", function (e) {
         // if((e.target===(undefined||null))||(e.target.toString().replace(/[\s\r\n]+/g, '').length==0)){return}

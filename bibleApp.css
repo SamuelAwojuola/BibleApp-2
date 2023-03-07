@@ -483,6 +483,11 @@ span.vmultiple.noted code #verse_notes_button {
 .note_closebtn_x {
     background: var(--img-cancel) center no-repeat;
 }
+.note_closebtn_x {
+    position:absolute;
+    top:10px;
+    right:10px;
+}
 #cmenu_navnclose_btns {
     position: absolute;
     top: 5px;
@@ -707,8 +712,31 @@ button {
     pointer-events: none;
 }
 #context_menu div{z-index: 2;}
-#context_menu hr:not(:last-child){margin-top:0}
+#context_menu[strnum] hr:not(:last-child){margin-top:0}
 #context_menu hr:last-child{margin-bottom:0}
+#context_menu:not([strnum]) hr {
+    border: 0!important;
+    height: 1px!important;
+    background: black!important;
+    overflow: visible;
+    display: flex;
+    /* flex-direction: column-reverse; */
+    flex-direction: column-reverse;
+    align-items: flex-end;
+}
+#context_menu:not([strnum]) hr::before {
+    content: attr(vrange);
+    width: auto;
+    height: auto;
+    font-style: italic;
+    font-size: 0.8em;
+    font-weight: bold;
+    -moz-border-radius: 0.25em;
+    -webkit-border-radius: 0.25em;
+    border-radius: 0.25em;
+    background-color: white;
+    margin-bottom: -0.5em;
+}
 #context_menu .strngsdefinition:last-child hr:last-of-type{display: none;}
 #context_menu .cmtitlebar{
     position: sticky;
@@ -2469,4 +2497,13 @@ button#topbartogglebtn:focus {
 .darkmode #bottomleft_btns button:focus,
 .darkmode button#topbartogglebtn:focus {
     background-color:brown!important;
+}
+.darkmode .note_edit_button.active {color:black!important}
+.darkmode .note_edit_button.active:hover {color:white!important}
+
+.vtemp{
+    box-shadow: inset 3px 0 red,inset 0 3px red,inset 0 -3px red!important;
+}
+.righttemp{
+    box-shadow: inset -3px 0 red,inset 0 3px red,inset 0 -3px red!important;
 }

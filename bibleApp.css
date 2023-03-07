@@ -472,14 +472,34 @@ span.vmultiple.noted code #verse_notes_button {
     transition: all 0.3s ease-in-out;
 }
 .cmenu_closebtn,
-.note_closebtn_x {
+.note_closebtn_x,
+#cmenu_navnclose_btns button.prv,
+#cmenu_navnclose_btns button.nxt {
     background-color: whitesmoke!important;
-    background: var(--img-cancel) center no-repeat;
-    position: absolute;
     width: 1em;
     height: 1em;
+}
+.cmenu_closebtn,
+.note_closebtn_x {
+    background: var(--img-cancel) center no-repeat;
+}
+#cmenu_navnclose_btns {
+    position: absolute;
     top: 5px;
     right: 0.7em;
+    display: flex;
+}
+#cmenu_navnclose_btns button.prv {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    transform: rotate(-90deg);
+}
+#cmenu_navnclose_btns button.prv:not([indx]),
+#cmenu_navnclose_btns button.nxt:not([indx]) {
+    display: none;
+}
+#cmenu_navnclose_btns button.nxt {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    transform: rotate(90deg);
 }
 #context_menu:not([strnum]) .cmenu_closebtn {
     top: 0px;
@@ -1315,11 +1335,6 @@ summary {
     cursor: pointer;
     font-weight:900;
 }
-/* .hidesearchparameters>*:not(div),
-.hidesearchparameters #searchprametersbtnholder,
-.hidesearchparameters #searchdiv_fixed {
-    display: none !important;
-} */
 #searchPreviewFixed {
     position: relative;
     height: 100%;

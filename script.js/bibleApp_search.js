@@ -361,13 +361,17 @@ function appendResultCountToHeader(hideResult=false) {
     let chpHeadingInFixedSearch = document.querySelectorAll('#searchPreviewFixed .chptheading');
     let totalVerseReturned = 0;
     chpHeadingInFixedSearch.forEach(h2 => {
+        let verseUnderBook = h2.nextElementSibling;
         /* ************************** */
         /* dhid -- descendants hidden */
         /* ************************** */
         if (hideResult) {
-            h2.classList.toggle('dhid');
+            if (verseUnderBook.classList.contains('displaynone')) {
+                h2.classList.remove('dhid');
+            } else {
+                h2.classList.add('dhid');
+            }
         }
-        let verseUnderBook = h2.nextElementSibling;
         let verseCount = 0;
         while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
             if (hideResult) {
@@ -387,7 +391,11 @@ function showVersesUnderH2(e) {
     let h2 = e.target;
     if (h2.classList.contains('chptheading')) {
         let verseUnderBook = h2.nextElementSibling;
-        h2.classList.toggle('dhid');
+        if (verseUnderBook.classList.contains('displaynone')) {
+            h2.classList.remove('dhid');
+        } else {
+            h2.classList.add('dhid');
+        }
         while (verseUnderBook && verseUnderBook.classList.contains('verse')) {
             verseUnderBook.classList.toggle('displaynone');
             verseUnderBook = verseUnderBook.nextElementSibling;
@@ -396,17 +404,25 @@ function showVersesUnderH2(e) {
         searchparametertitlebar.scrollIntoView(); //This is to compensate for the shifting out of view of the search parmeter section
     }
 }
-
+/* ******************************************** */
+/* On Checking and Unchecking "Show all verses" */
+/* ******************************************** */
 showreturnedverses.addEventListener('change', function () {
+    let versesInFixed = searchPreviewFixed.querySelectorAll('.verse');
+    let chpHeadingInFixedSearch = document.querySelectorAll('#searchPreviewFixed .chptheading');
     if (this.checked) {
-        let versesInFixed = searchPreviewFixed.querySelectorAll('.verse');
+        chpHeadingInFixedSearch.forEach(h2 => {
+            h2.classList.remove('dhid');
+        })
         versesInFixed.forEach(elm => {
             elm.classList.remove('displaynone')
         });
         setItemInLocalStorage('showVersesInSearch', 'yes')
     }
     else {
-        let versesInFixed = searchPreviewFixed.querySelectorAll('.verse');
+        chpHeadingInFixedSearch.forEach(h2 => {
+            h2.classList.add('dhid');
+        })
         versesInFixed.forEach(elm => {
             elm.classList.add('displaynone')
         });
@@ -482,6 +498,10 @@ function searchForHighlightedText(e){
     }
 }
 document.addEventListener("keydown",searchForHighlightedText)
-hidesearchparameters.click()
-showonlysearchinput.click()
-keepsearchopen.checked=true;
+keepsearchopen.addEventListener('change', function (e) {
+    if (e.target.checked) {
+        localStorage.setItem('keepsearchopen',true)
+    } else {
+        localStorage.setItem('keepsearchopen',false)
+    }
+})

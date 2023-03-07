@@ -319,7 +319,7 @@ function changeVerseAlignment() {
 }
 
 function hideSearchParameters(arr) {
-    searchparameters.classList.toggle('hidesearchparameters');
+    // searchparameters.classList.toggle('hidesearchparameters');
     if (hidesearchparameters.innerText != '▼') {
         hidesearchparameters.innerHTML = '▼'
     } else {

@@ -64,6 +64,9 @@ function cacheFunctions() {
         });
         fontsizes.value = localStorage.getItem('currentFontSizeSet');
     }
+    if (kso=localStorage.getItem('keepsearchopen')) {
+        keepsearchopen.checked=kso;
+    }
     if (localStorage.getItem('eng2grk_sup_checkboxes')) {
         const eng2grk_sup_checkboxes = localStorage.getItem('eng2grk_sup_checkboxes').split(',');
         eng2grk_sup_checkboxes.forEach((x,i)=>{
@@ -76,6 +79,10 @@ function cacheFunctions() {
                     else if(parentBtn==show_hebgrk_superscript){engnXlit_supscript('hebgrk')}
                     else if(parentBtn==center_settings_h){centerNavigationAndOtherSettings('h')}
                     else if(parentBtn==center_settings_v){centerNavigationAndOtherSettings('v')}
+                    else if(currentChkbx==show_versenote_totheright_check){
+                        show_versenote_totheright_check.checked=true;
+                        show_versenote_totheright_2_check.checked=true
+                    }
                     else {currentChkbx.checked=true;}
                     // parentBtn.click()
                 }

@@ -156,7 +156,7 @@ function add_tooltipContextMenu(e) {
                         console.log('Jesus');
                         cmenu_backwards_navigation_arr.push(prev_contextmenu);
                         prv_indx=`indx="${cmenu_backwards_navigation_arr.length-1}"`;
-                        let codeChildren = context_menu.querySelector('.cmtitlebar code').childNodes;
+                        let codeChildren = context_menu.querySelector('.cmtitlebar, .cmtitlebar code').childNodes;
                         for(let i=0;i<codeChildren.length;i++){
                             let codetxt=codeChildren[i];
                             if(codetxt.nodeType==3){

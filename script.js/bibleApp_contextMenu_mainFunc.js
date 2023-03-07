@@ -37,7 +37,6 @@ function add_tooltipContextMenu(e) {
     if(prvBtnIndx=context_menu.querySelector('.cmtitlebar .prv')){
         if(prvBtnIndx.hasAttribute('indx')){
             prv_cmenuIndx=parseInt(prvBtnIndx.getAttribute('indx'));
-            console.log(prv_cmenuIndx);
         }
     }
     const interactEnabled = context_menu.matches('.slideintoview');
@@ -147,13 +146,11 @@ function add_tooltipContextMenu(e) {
                     cCmenu_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
                     if(typeof prv_cmenuIndx === 'number'){
                         /* For contextMenu whose parent was contextMenu: In case it is one that is called from the array and there are other saved cmenus in the array */
-                        console.log('na here');
                         cmenu_backwards_navigation_arr.splice(prv_cmenuIndx+1,0,prev_contextmenu);
                         cmenu_backwards_navigation_arr.length=prv_cmenuIndx+2;
                         prv_indx=`indx="${prv_cmenuIndx+1}"`;
                     }
                     else {
-                        console.log('Jesus');
                         cmenu_backwards_navigation_arr.push(prev_contextmenu);
                         prv_indx=`indx="${cmenu_backwards_navigation_arr.length-1}"`;
                         let codeChildren = context_menu.querySelector('.cmtitlebar, .cmtitlebar code').childNodes;
@@ -161,8 +158,6 @@ function add_tooltipContextMenu(e) {
                             let codetxt=codeChildren[i];
                             if(codetxt.nodeType==3){
                                 prv_title=`title="${codetxt.wholeText}"`;
-                                console.log(codetxt);
-                                console.log(prv_title);
                                 break
                             }    
                         }
@@ -492,12 +487,8 @@ function cmenu_goBackFront(x){
         cmenu_backwards_navigation_arr.splice(indx+1,1,prev_contextmenu);
         prvTitle=prev_contextmenu.querySelector('.cmtitlebar button.prv').getAttribute('title')
     }
-    console.log({indx,cCmenu_dX});
-
     cMenuParent.replaceChild(cmenu_backwards_navigation_arr[indx], context_menu);
     // context_menu.replaceWith(cmenu_backwards_navigation_arr[indx]);
-    
-
     context_menu.setAttribute('style',currentContextMenu_style);
     context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
     context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);

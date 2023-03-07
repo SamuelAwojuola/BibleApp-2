@@ -101,14 +101,16 @@
         <div id="searchPreviewWindowFixed" class="slideoutofview displaynone">
           <div id="searchparameters" class="hidesearchparameters">
             <div id="searchparametertitlebar_holder">
-              <div id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters([case_sensitive,search_phrase,search_all_words,whole_word,search_anyWord]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">Search Parameters</div>
-              <button id="showonlysearchinput" class="displaynone" onclick="toggleClassAndActiveButton([searchprametersbtnholder,where2display], 'displaynone', this)" class="active_button">+</button>
-              <button id="hidesearchparameters" onclick="hideSearchParameters([searchprametersbtnholder,searchdiv_fixed]),toggleClassAndActiveButton(showonlysearchinput,'displaynone')">&#9660;</button>
+              <button id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone')">Search Parameters</button>
+              
+              <button id="showonlysearchinput" class="" onclick="toggleClassAndActiveButton(searchdiv_fixed, 'displaynone', this)" class="active_button"></button>
+              
+              <button id="hidesearchparameters" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone',this)">&#9660;</button>
             </div>
             <div id="searchdiv_fixed">
               <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
             </div>
-            <div id="searchprametersbtnholder">
+            <div id="searchprametersbtnholder" class="displaynone">
               <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
               <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
               <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>
@@ -116,7 +118,7 @@
               <button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="search_anyWord" name="phraseornot" value="search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
             </div>
   
-            <span id="where2display">
+            <span id="where2display" class="displaynone">
               <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"
                 checked><label for="searchresultdisplay">Show search results in this window only</label><br>
               <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"

@@ -185,7 +185,7 @@ function add_tooltipContextMenu(e) {
                             addquotes = false;
                         }
                     } else {
-                        originalWord = e.target.parentElement.getAttribute("translation")
+                        originalWord = e.target.parentElement.getAttribute("translation");
                     }
                     let menu_inner;
                     let arrOfStrnums = e.target.getAttribute('strnum').split(' ');
@@ -376,7 +376,7 @@ function add_tooltipContextMenu(e) {
                 context_menu.style.left = formerContextMenu_Coordinates.left;
                 context_menu.style.right = formerContextMenu_Coordinates.right;
                 context_menu.style.transform = formerContextMenu_Coordinates.transform
-                context_menu.querySelector('details').open = true;
+                if(cm_dtl = context_menu.querySelector('details')){cm_dtl.open = true;}
                 context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
                 context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);
             } else {

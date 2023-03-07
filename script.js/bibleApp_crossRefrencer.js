@@ -184,10 +184,11 @@ function getCrossReference(x,bkn,bvName) {
         let grp1 = vrsGrpsByCommas.shift(); // Will contain a full reference, c.g., Gen 2:16-17
         let vRange1 = verseRange(grp1);
         getVersesInVerseRange(vRange1);
-        let vRanges = [];
+        let vRanges = []; // populated by getVranges(vg)
         vrsGrpsByCommas.forEach(vg=>getVranges(vg))
-        vRanges.forEach(vR=>{
-            br='<hr>'
+        vRanges.forEach((vR,j)=>{
+            let bcv=`"${bk} ${chp1}:${vrsGrpsByCommas[j]}"`;
+            br=`<hr vrange=${bcv}>`
             getVersesInVerseRange(vR)
         })
         function getVranges(vg){
@@ -231,33 +232,43 @@ function getCrossReference(x,bkn,bvName) {
         // if(!bvName){bvName=bversionName;}
         // else 
         if(bvName){b_vn=`-${bvName}`;}
-        
-        for (i = vrs1; i < vrs2 + 1; i++) {
-            let verseSpan = document.createElement('span');
-
-            function vNum() {
-                let verseNum = document.createElement('code');
-                verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
-                verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
-                verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
-                verseNum.title = b_v + ' ' + fullBkn;
-                verseSpan.classList.add('verse');
-                verseSpan.innerHTML = br + verseSpan.innerHTML;
-                // if(br){
-                let vText;
-                if(bvName){
-                    vText = window[bvName][fullBkn][chp1 - 1][i - 1]
-                    verseSpan.classList.add('v_'+bvName);
-                } else {
-                    vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
-                    verseSpan.classList.add('v_'+bversionName);
-                }
-                vHolder.append(parseVerseText(vText, verseSpan));
-                verseSpan.prepend(' ');
-                verseSpan.prepend(verseNum);
-                // br = '<br>';
+        let verseSpan;
+        // e.g., 11-28
+        if (vrs1 <= vrs2) {
+            for (i = vrs1; i < vrs2 + 1; i++) {
+                verseSpan = document.createElement('span');
+                vNum(i);
             }
-            vNum();
+        }
+        // e.g., 28-11
+        else if (vrs1 > vrs2){
+            for (i = vrs1; i > vrs2 - 1; i--) {
+                verseSpan = document.createElement('span');
+                vNum(i);
+            }
+        }
+        function vNum(i) {
+            let verseNum = document.createElement('code');
+            verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
+            verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
+            verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
+            verseNum.title = b_v + ' ' + fullBkn;
+            verseSpan.classList.add('verse');
+            let vText;
+            if(bvName){
+                vText = window[bvName][fullBkn][chp1 - 1][i - 1]
+                verseSpan.classList.add('v_'+bvName);
+            } else {
+                vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
+                verseSpan.classList.add('v_'+bversionName);
+            }
+            vHolder.append(parseVerseText(vText, verseSpan));
+            verseSpan.prepend(' ');
+            verseSpan.prepend(verseNum);
+            // if(br){
+            verseSpan.innerHTML = br + verseSpan.innerHTML;
+            // br = '<br>';
+            br='';//Divider is only added at the start of the comma separated group, so once added, remove it
         }
     }
     createTransliterationAttr(vHolder)

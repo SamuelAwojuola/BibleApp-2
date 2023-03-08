@@ -154,7 +154,10 @@ function indicateBooknChapterInNav(bk, chpt) {
 document.addEventListener('keydown', general_EscapeEventListener);
 function general_EscapeEventListener(e){
     if (e.key === "Escape") {
-        if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
+        if(document.querySelector('#versenote_totheright.showingNote')){
+            versenote_totheright.classList.remove('showingNote');
+        }        
+        else if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
             bookmark_content.classList.remove('displayblock');
             bookmarks_holder.classList.remove('showing_bookmarks');
         }        

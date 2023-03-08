@@ -347,28 +347,32 @@ function showVersenoteToTheRight(e){
             /* This keeps the verseNote upto date */
             let verseHasNote = await readFromVerseNotesFiles(bn, bc, cv,versenote_totheright_div2); // I can make it so that if a verseNote is already attached, inline, I just clone the content and append to the right side verseNote window
             if(verseHasNote){
-                if (versenote_totheright_div1.innerText!=`${bn} ${bc}:${cv}`) {
+                if (versenote_totheright_div1.innerText!=`${bn} ${bc}:${cv}` || !versenote_totheright.classList.contains("showingNote")) {
                     versenote_totheright.classList.add("showingNote");
                     versenote_totheright_div1.innerText=`${bn} ${bc}:${cv}`;
                     
                     let etVmult;
                     if(et.matches('.vmultiple')){
                         etVmult=et;
-                        etVmult.scrollIntoView({behavior:"smooth",block:"center"});
+                        // if(!isFullyScrolledIntoView(etVmult)){
+                            etVmult.scrollIntoView({behavior:"smooth"});
+                        // }
                     }
                     else{
                         etVmult = elmAhasElmOfClassBasAncestor(et,'.vmultiple');
                     }
                     // etVmult.classList.add('vtemp');
-                    etVmult.style.borderLeft='5px solid red';
-                    etVmult.style.borderTop='5px solid red';
-                    etVmult.style.borderBottom='5px solid red';
+                    etVmult.style.borderLeft='10px solid red';
+                    etVmult.style.borderTop='2px dashed red';
+                    etVmult.style.borderBottom='2px dashed red';
                     // versenote_totheright.classList.add('righttemp');
-                    versenote_totheright.style.borderTop='5px solid red';
-                    versenote_totheright.style.borderBottom='5px solid red';
-                    versenote_totheright.style.borderRight='5px solid red';
+                    // versenote_totheright.style.borderTop='10px solid red';
+                    // versenote_totheright.style.borderBottom='2px dashed red';
+                    // versenote_totheright.style.borderRight='2px dashed red';
                     setTimeout(() => {
-                        etVmult.scrollIntoView({behavior:"smooth",block:"center"});
+                        // if(!isFullyScrolledIntoView(etVmult)){
+                            etVmult.scrollIntoView({behavior:"smooth"});
+                        // }
                         setTimeout(() => {
                             // etVmult.classList.remove('vtemp');
                             // versenote_totheright.classList.remove('righttemp');        

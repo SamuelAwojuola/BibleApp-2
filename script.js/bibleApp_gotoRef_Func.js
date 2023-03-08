@@ -59,7 +59,6 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
         ref_bkname=ref_bknameMatch[0];
         ref_chpnVer=spaceSepratedRef.split(ref_bkname).pop();
         ref_bkname=ref_bkname.trim();
-        console.log(ref_bkname);
     }
     /* If no bookname */
     else {
@@ -74,13 +73,12 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
         let ref_chpnVer_arr=ref_chpnVer.split(' ')
         ref_chp=Number(ref_chpnVer_arr[0].trim());
         if (ref_chpnVer_arr.length>1) {
-            ref_ver=Number(ref_chpnVer_arr[1].trim().match(/[1-9]/)[0]);
+            ref_ver=Number(ref_chpnVer_arr[1].trim().match(/[1-9]+/)[0]);
         }
     }
  
     // Find id of Book
     ref_Abrev.forEach((ref_, ref_indx) => {
-        console.log({ref_bkname,ref_chp,ref_ver})
         if (ref_.includes(ref_bkname.toUpperCase())) {
             ref_bkname = bible.Data.bookNamesByLanguage.en[ref_indx]
             let refb = ref_indx;

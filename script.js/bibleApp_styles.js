@@ -303,9 +303,8 @@ function highlight_N_bookmark_verse(e){
         /* Remove Book Mark */
         /* **************** */
         let vref=e.target.querySelector('code[ref]').getAttribute('ref');
-        console.log(vref);
-        bookmark_content.querySelector(`[ref="${vref}"]`).remove()
-        bookMarkedVersesArr=bookMarkedVersesArr.splice(bookMarkedVersesArr.indexOf(vref),1);
+        bookmark_content.querySelector(`[ref="${vref}"]`).remove();
+        bookMarkedVersesArr.splice(bookMarkedVersesArr.indexOf(vref),1);
         setItemInLocalStorage('bookmarks',bookMarkedVersesArr);
         if(bookMarkedVersesArr.length==0){
             bookmarks_holder.classList.add('displaynone');

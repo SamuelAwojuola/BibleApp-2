@@ -473,11 +473,18 @@ span.vmultiple.noted code #verse_notes_button {
 }
 .cmenu_closebtn,
 .note_closebtn_x,
-#cmenu_navnclose_btns button.prv,
-#cmenu_navnclose_btns button.nxt {
+#cmenu_navnclose_btns button {
     background-color: whitesmoke!important;
-    width: 1em;
+    min-width: 1em;
     height: 1em;
+}
+#cmenu_navnclose_btns button {
+    border-radius: 2px;
+    font-weight: bold;
+    box-shadow: 1px 1px 1px var(--shadow-color);
+}
+#cmenu_navnclose_btns button:not(:disabled):hover {
+    background-color: burlywood!important;
 }
 .cmenu_closebtn,
 .note_closebtn_x {
@@ -491,20 +498,26 @@ span.vmultiple.noted code #verse_notes_button {
 #cmenu_navnclose_btns {
     position: absolute;
     top: 5px;
-    right: 0.7em;
+    right: 0.2em;
     display: flex;
 }
 #cmenu_navnclose_btns button.prv {
     background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
     transform: rotate(-90deg);
+    margin-left: 2px;
+    box-shadow: -1px -1px 1px var(--shadow-color);
 }
 #cmenu_navnclose_btns button.prv:not([indx]),
-#cmenu_navnclose_btns button.nxt:not([indx]) {
-    display: none;
+#cmenu_navnclose_btns button.nxt:not([indx]),
+#cmenu_navnclose_btns button:disabled,
+#cmenu_navnclose_btns button[disabled] {
+    /* display: none; */
+    opacity: 0.3;
 }
 #cmenu_navnclose_btns button.nxt {
     background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
     transform: rotate(90deg);
+    margin-right: 2px;
 }
 #context_menu:not([strnum]) .cmenu_closebtn {
     top: 0px;
@@ -711,20 +724,40 @@ button {
 #context_menu code button.cmenusrchbtn img {
     pointer-events: none;
 }
+#context_menu .verse {
+    padding: 5px;
+}
+#context_menu .verse:hover {
+    box-shadow: 0 0 2px 1px var(--shadow-color)!important;
+    border-radius: 3px;
+    overflow: hidden;
+}
+#context_menu .crfnnote {
+    margin-bottom: 2px;
+    border-radius: 3px;
+}
+#context_menu .crfnnote_btns {
+    margin-bottom: 0;
+}
+#context_menu .crossrefs {
+    border-radius: 3px;
+    margin-bottom: 0;
+}
 #context_menu div{z-index: 2;}
 #context_menu[strnum] hr:not(:last-child){margin-top:0}
 #context_menu hr:last-child{margin-bottom:0}
+#context_menu .verse_crossref_button{font-size: 0.7em;}
 #context_menu:not([strnum]) hr {
     border: 0!important;
     height: 1px!important;
-    background: black!important;
+    background: var(--black)!important;
     overflow: visible;
     display: flex;
     /* flex-direction: column-reverse; */
     flex-direction: column-reverse;
     align-items: flex-end;
 }
-#context_menu:not([strnum]) hr::before {
+.text_content #context_menu:not([strnum]) hr::before {
     content: attr(vrange);
     width: auto;
     height: auto;
@@ -734,7 +767,7 @@ button {
     -moz-border-radius: 0.25em;
     -webkit-border-radius: 0.25em;
     border-radius: 0.25em;
-    background-color: white;
+    background: var(--whitish_noteContextMenu);
     margin-bottom: -0.5em;
 }
 #context_menu .strngsdefinition:last-child hr:last-of-type{display: none;}
@@ -919,7 +952,7 @@ span.vmultiple:hover{
     inset -2px 0px 0px 0px var(--grey);
     transition: 250ms ease-in;
 }*/
-.v_dblclckd {
+.v_dblclckd .verse {
     background-color: var(--vhlt-hover);
     border-radius: 10px;
     box-shadow: 0px 0px 0px 1px var(--grey);
@@ -1637,6 +1670,7 @@ border-right: var(--col2-border) solid auto!important;
     background: var(--ref-img);
     border-bottom: 2px solid #70707072;
     display: flex;
+    flex-grow: 1;
     z-index: 1;
     -webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
@@ -1646,10 +1680,6 @@ border-right: var(--col2-border) solid auto!important;
 /* #ref_search_versions_holder > div input:not([type=checkbox]) {
     width: 100px;
 }*/
-#top_horizontal_bar_buttons>button {
-    font-size:var(--width-mainbutton);
-    padding: 0;
-}
 #top_horizontal_bar #ref_search_versions_holder, #top_horizontal_bar #titlebarsearchparameters > *{
     border-bottom: none!important;
 }
@@ -1661,6 +1691,7 @@ border-right: var(--col2-border) solid auto!important;
 #ref_search_versions_holder {
     display: flex;
     flex-wrap: wrap;
+    flex-grow: 1;
 }
 /* #refdiv {background-color: yellow;}
 #bibleversions_btns {background-color: greenyellow;}*/
@@ -1810,9 +1841,11 @@ border-right: var(--col2-border) solid auto!important;
 #togglenavbtn {
     font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
     font-weight: 400;
+    padding: 0;
     /* min-width: calc(45px + var(--col2-border))!important; */
     min-width: var(--minHeighWidth-leftside_btns);
     width: var(--width-sidebuttons)!important;
+    box-shadow: 1px 0 black;
 }
 #togglenavbtn img {
     width: calc(var(--fontsize-refnsearch) * 2)!important;
@@ -2506,4 +2539,55 @@ button#topbartogglebtn:focus {
 }
 .righttemp{
     box-shadow: inset -3px 0 red,inset 0 3px red,inset 0 -3px red!important;
+}
+
+#bookmarks_holder {
+    position: relative;
+    margin-left: auto;
+    margin-right: 0.5em;
+    cursor: pointer;
+}
+#bookmark_content {
+    display: none;
+    position: absolute;
+    right: 0;
+    margin-top: 0;
+    padding: 0px 0px;
+    background-color: #f9f9f9;
+    box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.2);
+    border: 1px solid var(--shadow-color);
+    z-index: 1;
+}
+#bookmarks_holder #bookmark_content.displayblock {
+    display: block;
+}
+#bookmarks_holder #bookmark_content * {
+    padding: 1px 5px;
+    list-style-type: none;
+}
+.darkmode #bookmarks_holder #bookmark_content * {
+    background-color: var(--shadow-color);
+}
+#bookmarks_holder #bookmark_content *:hover {
+    cursor: pointer;
+    background-color: var(--greenish);
+    color: black!important;
+}
+#bookmarks_holder #bookmark_head {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.5em;
+    font-style: italic;
+}
+#bookmarks_holder #bookmark_head::after {
+    content: '▼';
+    margin-left: 0.25em;
+    font-size: 0.8em;
+}
+#bookmarks_holder.showing_bookmarks #bookmark_head::after {
+    content: '▲';
+    margin-left: 0.25em;
+    font-size: 0.8em;
 }

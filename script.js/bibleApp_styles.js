@@ -271,15 +271,70 @@ function engnXlit_supscript(x) {
         }
     }
 }
-
 // console.log("HELP:: press 'alt+r' to toggle original english translation of transliterated Hebrew or Greek words as a superscript ")
 
-document.addEventListener('keydown', showEnglishTranslationOfHGtransliteration)
-pagemaster.addEventListener("dblclick",highlightverse)
-function highlightverse(e){
-    if(e.target.matches('.verse:not(.v_dblclckd)')){
-        e.target.classList.add('v_dblclckd')
-    } else if(e.target.matches('.v_dblclckd')){
-        e.target.classList.remove('v_dblclckd')
+document.addEventListener('keydown', showEnglishTranslationOfHGtransliteration);
+
+/* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
+/* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/ BOOK MARKS /\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
+/* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
+pagemaster.addEventListener("dblclick",highlight_N_bookmark_verse);
+bookmarks_holder.addEventListener("click",getBookmarkRef)
+let bookMarkedVersesArr=[];
+function highlight_N_bookmark_verse(e){
+    if(e.target.matches('.verse') && e.target.parentElement.matches('.vmultiple:not(.v_dblclckd)')){
+        /* Change Background Color */
+        e.target.parentElement.classList.add('v_dblclckd');
+
+        /* **************** */
+        /* Create Book Mark */
+        /* **************** */
+        let vref=e.target.querySelector('code[ref]').getAttribute('ref');
+        let newBookMark=createNewElement('li');
+        newBookMark.setAttribute('ref',vref);
+        newBookMark.innerText=vref;
+        bookmark_content.prepend(newBookMark);
+        bookMarkedVersesArr.push(vref);
+        setItemInLocalStorage('bookmarks',bookMarkedVersesArr)
+        bookmarks_holder.classList.remove('displaynone');
+    } else if(e.target.matches('.verse') && e.target.parentElement.matches('.v_dblclckd')){
+        e.target.parentElement.classList.remove('v_dblclckd');
+        /* **************** */
+        /* Remove Book Mark */
+        /* **************** */
+        let vref=e.target.querySelector('code[ref]').getAttribute('ref');
+        console.log(vref);
+        bookmark_content.querySelector(`[ref="${vref}"]`).remove()
+        bookMarkedVersesArr=bookMarkedVersesArr.splice(bookMarkedVersesArr.indexOf(vref),1);
+        setItemInLocalStorage('bookmarks',bookMarkedVersesArr);
+        if(bookMarkedVersesArr.length==0){
+            bookmarks_holder.classList.add('displaynone');
+        }
     }
+}
+function getBookmarkRef(e){
+    if(e.target.parentElement==bookmark_content){
+        gotoRef(e.target.getAttribute('ref'))
+    }
+    /* Clicking on the bookmark_head */
+    else if(e.target==bookmark_head) {
+        bookmark_content.classList.toggle('displayblock')
+        bookmarks_holder.classList.toggle('showing_bookmarks');
+    }
+}
+main.addEventListener('click', function (e) {
+    if(!e.target.matches('#bookmarks_holder, #bookmarks_holder *') && document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
+        bookmark_content.classList.remove('displayblock')
+        bookmarks_holder.classList.remove('showing_bookmarks');
+    } 
+})
+
+function loadBookmarksFromCache(arr){
+    bookMarkedVersesArr=arr;
+    arr.forEach(vref => {
+        let newBookMark=createNewElement('li');
+        newBookMark.setAttribute('ref',vref);
+        newBookMark.innerText=vref;
+        bookmark_content.append(newBookMark);
+    });
 }

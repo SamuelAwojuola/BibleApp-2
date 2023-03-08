@@ -30,8 +30,7 @@ function add_tooltipContextMenu(e) {
     e.preventDefault();
     parentIsContextMenu = 0;
     createNewContextMenu();
-    let prv_indx=null;
-    let cCmenu_dX, cCmenu_dY, prv_cmenuIndx=false, prv_title;
+    let prv_indx='',cCmenu_dX, cCmenu_dY, prv_cmenuIndx=false, prv_title='',cmenu_tsk_display='displaynone',dzabled='disabled';
     formerContextMenu_Coordinates.transform = context_menu.style.transform;
     prev_contextmenu=context_menu.cloneNode(true);
     if(prvBtnIndx=context_menu.querySelector('.cmtitlebar .prv')){
@@ -139,6 +138,9 @@ function add_tooltipContextMenu(e) {
             /* ********************************** */
             ifForStrongsNumberORforCrossRef()
             function ifForStrongsNumberORforCrossRef() {
+                /* ||||||||||||||||||||||||||||||||||||||||||||||| */
+                /* || FOR WHEN IT IS CALLED FROM A CONTEXT-MENU || */
+                /* ||||||||||||||||||||||||||||||||||||||||||||||| */
                 if (elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
                     parentIsContextMenu = 1;
                     /* Store the old cmenu to go back to it */
@@ -149,10 +151,12 @@ function add_tooltipContextMenu(e) {
                         cmenu_backwards_navigation_arr.splice(prv_cmenuIndx+1,0,prev_contextmenu);
                         cmenu_backwards_navigation_arr.length=prv_cmenuIndx+2;
                         prv_indx=`indx="${prv_cmenuIndx+1}"`;
+                        dzabled='';
                     }
                     else {
                         cmenu_backwards_navigation_arr.push(prev_contextmenu);
                         prv_indx=`indx="${cmenu_backwards_navigation_arr.length-1}"`;
+                        dzabled='';
                         let codeChildren = context_menu.querySelector('.cmtitlebar, .cmtitlebar code').childNodes;
                         for(let i=0;i<codeChildren.length;i++){
                             let codetxt=codeChildren[i];
@@ -211,10 +215,10 @@ function add_tooltipContextMenu(e) {
                             // menu_inner = `${e.target.getAttribute('data-title')}<br>${originalWord.trim()}`;
                             menu_inner = `${xlitNlemma}<hr>${originalWord.trim()}`;
                         }
-                        context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}`;
+                        context_menu.innerHTML = `<div class="cmtitlebar">${menu_inner}<div id="cmenu_navnclose_btns"><button class="cmenu_tsk ${cmenu_tsk_display}" onclick="toggleCMenuTSK(this)">TSK</button><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)" ${dzabled}></button><button class="nxt" onclick="cmenu_goBackFront(this)" disabled></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}`;
                     } else if (e.type == contextMenu_touch) { // For strongs number in verseNote
                         let srchBtn = `<code><button class="cmenusrchbtn" onclick="wordsearch.value='${arrOfStrnums}'; wordsearch_fixed.value='${arrOfStrnums}'; runWordSearch()"><img src="images/${searchicon}" alt="&#128270;"></button>${arrOfStrnums}/${getsStrongsLemmanNxLit(arrOfStrnums).xlit}/${getsStrongsLemmanNxLit(arrOfStrnums).lemma}</code>`;
-                        context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}</div>`;
+                        context_menu.innerHTML = `<div class="cmtitlebar">${srchBtn}<div id="cmenu_navnclose_btns"><button class="cmenu_tsk ${cmenu_tsk_display}" onclick="toggleCMenuTSK(this)">TSK</button><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)" ${dzabled}></button><button class="nxt" onclick="cmenu_goBackFront(this)" disabled></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>${newStrongsDef}</div>`;
                     }
                     if (strnum = e.target.getAttribute('strnum')) {
                         context_menu.setAttribute('strnum', strnum)
@@ -228,6 +232,9 @@ function add_tooltipContextMenu(e) {
                 /* || If eTarget is a Scripture Reference || */
                 /* ||||||||||||||||||||||||||||||||||||||||| */
                 else {
+                    if (crossRefinScriptureTooltip_check.checked) {
+                        cmenu_tsk_display="";
+                    }
                     context_menu.innerText = null;
                     context_menu.classList.add('win2');
                     if (e.target.matches('.crossrefs>span, span[ref]')) {
@@ -241,7 +248,7 @@ function add_tooltipContextMenu(e) {
                         }
                         cmtitletext = cmtitletext + ' [' + bversionName + ']';
                         // cmtitlebar.innerText=e.target.innerText;
-                        cmtitlebar.innerHTML = cmtitletext + `<div id="cmenu_navnclose_btns"><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)"></button><button class="nxt" onclick="cmenu_goBackFront(this)"></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>`;
+                        cmtitlebar.innerHTML = cmtitletext + `<div id="cmenu_navnclose_btns"><button class="cmenu_tsk ${cmenu_tsk_display}" onclick="toggleCMenuTSK(this)">TSK</button><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)" ${dzabled}></button><button class="nxt" onclick="cmenu_goBackFront(this)" disabled></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>`;
                         context_menu.append(cmtitlebar);
                     }
                     let vHolder = getCrossReference(e.target);
@@ -498,7 +505,13 @@ function cmenu_goBackFront(x){
         let nxtBtn=context_menu.querySelector('.cmtitlebar .nxt');
         nxtBtn.setAttribute('indx',indx+1);
         nxtBtn.setAttribute('title',prvTitle);
+        nxtBtn.removeAttribute('disabled');
     }
+}
+
+/* To Toggle TSK in CMenu When Present */
+function toggleCMenuTSK(){
+    context_menu.querySelectorAll('.crfnnote').forEach(crfn=>{crfn.classList.toggle('displaynone')})
 }
 
 /* MAKING CONTEXT_MENU DRAGGABLE */

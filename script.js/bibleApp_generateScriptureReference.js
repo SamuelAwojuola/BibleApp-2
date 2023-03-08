@@ -389,8 +389,16 @@ function parseVerseText(vT, verseSpan) {
 }
 
 function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch = false, bibleVersionName) {
+    let vref = `${bookName} ${chNumInBk+1}:${vNumInChpt}`;
     let verseMultipleSpan = document.createElement('span');
-    verseMultipleSpan.classList.add('vmultiple')
+    verseMultipleSpan.classList.add('vmultiple');
+    /* ***************************** */
+    /* Check if verse was bookmarked */
+    /* ***************************** */
+    if (bookMarkedVersesArr.indexOf(vref)>-1) {
+        verseMultipleSpan.classList.add('v_dblclckd');
+    }
+    verseMultipleSpan.setAttribute('ref', vref);
     let verseSpan = document.createElement('span');
     let verseNum = document.createElement('code');
     // let bereanIndex = jsonVerseIdex - versesOT;/* TO BE CHANGED */
@@ -419,7 +427,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             verseNum.prepend((chNumInBk) + ':' + vNumInChpt + ' ');
             // verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         }
-        verseNum.setAttribute('ref', bookName + ' ' + (chNumInBk) + ':' + vNumInChpt);
+        verseNum.setAttribute('ref', vref);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
         verseSpan.prepend(' ');
         verseSpan.prepend(verseNum);

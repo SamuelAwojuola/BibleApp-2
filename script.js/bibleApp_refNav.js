@@ -148,11 +148,18 @@ function indicateBooknChapterInNav(bk, chpt) {
     // }
 }
 
+/* **************************************************** */
+/* *********** GENERAL ESCAPE EVENTLISTENER *********** */
+/* **************************************************** */
 document.addEventListener('keydown', general_EscapeEventListener);
 function general_EscapeEventListener(e){
     if (e.key === "Escape") {
+        if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
+            bookmark_content.classList.remove('displayblock');
+            bookmarks_holder.classList.remove('showing_bookmarks');
+        }        
         // Remove ContextMenu if present
-        if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
+        else if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
             hideRightClickContextMenu();
         }
         // Hide vmarker_options_menu

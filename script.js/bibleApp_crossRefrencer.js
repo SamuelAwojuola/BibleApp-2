@@ -187,8 +187,7 @@ function getCrossReference(x,bkn,bvName) {
         let vRanges = []; // populated by getVranges(vg)
         vrsGrpsByCommas.forEach(vg=>getVranges(vg))
         vRanges.forEach((vR,j)=>{
-            let bcv=`"${bk} ${chp1}:${vrsGrpsByCommas[j]}"`;
-            br=`<hr vrange=${bcv}>`
+            br=`<hr vrange="${bk} ${chp1}:${vrsGrpsByCommas[j]}">`
             getVersesInVerseRange(vR)
         })
         function getVranges(vg){

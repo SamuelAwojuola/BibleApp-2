@@ -67,6 +67,11 @@ function cacheFunctions() {
     if (kso=localStorage.getItem('keepsearchopen')) {
         keepsearchopen.checked=kso;
     }
+    if (bkm_arr=localStorage.getItem('bookmarks')) {
+        bkm_arr=bkm_arr.split(',');
+        if(bkm_arr.length>0){bookmarks_holder.classList.remove('displaynone');}
+        loadBookmarksFromCache(bkm_arr);
+    }
     if (localStorage.getItem('eng2grk_sup_checkboxes')) {
         const eng2grk_sup_checkboxes = localStorage.getItem('eng2grk_sup_checkboxes').split(',');
         eng2grk_sup_checkboxes.forEach((x,i)=>{

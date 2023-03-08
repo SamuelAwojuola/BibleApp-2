@@ -389,7 +389,9 @@ function parseVerseText(vT, verseSpan) {
 }
 
 function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch = false, bibleVersionName) {
+    console.log(chNumInBk);
     let vref = `${bookName} ${chNumInBk+1}:${vNumInChpt}`;
+    // let vref = bookName + ' ' + chNumInBk + ':' + vNumInChpt;
     let verseMultipleSpan = document.createElement('span');
     verseMultipleSpan.classList.add('vmultiple');
     /* ***************************** */
@@ -419,7 +421,7 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             // verseSpan.classList.add(`hello_there`);
             if (bible.isRtlVersion(bibleVersionName, bookName) == true) {
                 verseSpan.classList.add('rtl');
-                verseNum.prepend(`${(chNumInBk + 1)}:${vNumInChpt} ${bibleVersionName}`);
+                verseNum.prepend(`${(chNumInBk)}:${vNumInChpt} ${bibleVersionName}`);
             } else {
                 verseNum.prepend(`${bibleVersionName} ${(chNumInBk)}:${vNumInChpt}`);
             }
@@ -427,7 +429,8 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             verseNum.prepend((chNumInBk) + ':' + vNumInChpt + ' ');
             // verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         }
-        verseNum.setAttribute('ref', vref);
+    console.log(chNumInBk);
+        verseNum.setAttribute('ref', `${bookName} ${chNumInBk}:${vNumInChpt}`);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
         verseSpan.prepend(' ');
         verseSpan.prepend(verseNum);

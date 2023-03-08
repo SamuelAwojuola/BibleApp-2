@@ -254,7 +254,11 @@ function add_tooltipContextMenu(e) {
                     let vHolder = getCrossReference(e.target);
                     /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
                     if(crossRefinScriptureTooltip_check.checked){
-                        vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{spanVerse.append(crfnnote_DIV(spanVerse))});
+                        vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{
+                            let tskHolder=crfnnote_DIV(spanVerse);
+                            tskHolder.classList.add('displaynone');
+                            spanVerse.append(tskHolder);
+                        });
                     }
 
                     context_menu.append(vHolder);

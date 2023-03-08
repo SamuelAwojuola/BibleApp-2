@@ -69,11 +69,12 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     
     ref_chp = 1;// default
     ref_ver = 1;// default
+    console.log(ref_chpnVer)
     if(ref_chpnVer.trim().length>0){
         let ref_chpnVer_arr=ref_chpnVer.split(' ')
         ref_chp=Number(ref_chpnVer_arr[0].trim());
         if (ref_chpnVer_arr.length>1) {
-            ref_ver=Number(ref_chpnVer_arr[1].trim().match(/[1-9]+/)[0]);
+            ref_ver=Number(ref_chpnVer_arr[1].trim().match(/[1-9][0-9]*/)[0]);
         }
     }
  

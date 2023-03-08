@@ -478,6 +478,9 @@ span.vmultiple.noted code #verse_notes_button {
     min-width: 1em;
     height: 1em;
 }
+.darkmode #cmenu_navnclose_btns button {
+    color: black !important;
+}
 #cmenu_navnclose_btns button {
     border-radius: 2px;
     font-weight: bold;
@@ -2542,7 +2545,7 @@ button#topbartogglebtn:focus {
 }
 
 #bookmarks_holder {
-    position: relative;
+    /* position: relative; */
     margin-left: auto;
     margin-right: 0.5em;
     cursor: pointer;
@@ -2578,7 +2581,6 @@ button#topbartogglebtn:focus {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 0.5em;
     font-style: italic;
 }
 #bookmarks_holder #bookmark_head::after {

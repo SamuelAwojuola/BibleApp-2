@@ -1,4 +1,77 @@
 {
-        "book":"II Thessalonians",
-        "notes": [{},{},{}]
-    }
+ "book": "II Thessalonians",
+ "notes": [
+  {},
+  {},
+  {}
+ ],
+ "markers": {
+  "Angels": {
+   "1": [
+    [
+     7
+    ]
+   ]
+  },
+  "Antichrist": {
+   "2": [
+    [
+     3
+    ]
+   ]
+  },
+  "Eternal_Judgment": {
+   "1": [
+    [
+     9
+    ]
+   ]
+  },
+  "Goals": {
+   "1": [
+    [
+     12
+    ]
+   ],
+   "2": [
+    [
+     14
+    ]
+   ]
+  },
+  "Instructions": {
+   "3": [
+    [
+     1
+    ],
+    [
+     6
+    ]
+   ]
+  },
+  "Judgment": {
+   "1": [
+    [
+     5
+    ]
+   ]
+  },
+  "KingdomOfGod": {
+   "1": [
+    [
+     5
+    ]
+   ]
+  },
+  "SecondComing": {
+   "1": [
+    [
+     7
+    ],
+    [
+     8
+    ]
+   ]
+  }
+ }
+}

@@ -54,63 +54,33 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
         refArrbySpace.splice(0, 1, '4')
     }
 
-    if (refArrbySpace.length == 4) {//Full reference of a book that has 1 & 2 such as '1 Samuel 10 15' and '2 Samuel 2 5'
-        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
-            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
-            ref_chp = refArrbySpace[2];
-            ref_ver = refArrbySpace[3];
-        }
-    } else if (refArrbySpace.length == 3) { //Could be, e.g., '1 Sam 3' or 'Joh 3 3'
-        //Just book name without chapter and verse reference. E.g., '2 Corinthians'. Default to chapter 1 verse 1
-        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
-            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
-            ref_chp = refArrbySpace[2];
-            ref_ver = 1;
-        }
-        //Just book name and chapter without verse reference. E.g., 'Romans 5'. Default to verse 1
-        else if (isNaN(refArrbySpace[0]) && Number(refArrbySpace[1])) {
-            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
-            ref_chp = refArrbySpace[1];
-            ref_ver = refArrbySpace[2];
-        }
-    } else if (refArrbySpace.length == 2) { //In this case there are different possibilities
-        //Just book name without chapter and verse reference. E.g., '2 Corinthians'. Default to chapter 1 verse 1
-        if (Number(refArrbySpace[0]) && isNaN(refArrbySpace[1])) {
-            ref_bkname = refArrbySpace[0] + ' ' + changeSingleStringToTitleCase(refArrbySpace[1]);
-            ref_chp = 1;
-            ref_ver = 1;
-        }
-        //Just book name and chapter without verse reference. E.g., 'Romans 5'. Default to verse 1
-        else if (isNaN(refArrbySpace[0]) && Number(refArrbySpace[1])) {
-            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
-            ref_chp = refArrbySpace[1];
-            ref_ver = 1;
-        }
-        //Just chapter and verse reference without book name. E.g., '5:5'. Default to current opened book
-        else if (Number(refArrbySpace[0]) && Number(refArrbySpace[1])) {
-            let currentBook = bible_books.querySelector('.ref_hlt');
-            ref_bkname = currentBook.getAttribute('bookname');
-            ref_chp = refArrbySpace[0];
-            ref_ver = refArrbySpace[1];
-        }
-    } else if (refArrbySpace.length == 1) { //In this case there are only TWO possibilities
-        //Just book name without chapter and verse reference. E.g., 'Ruth'. Default to chapter 1 verse 1
-        if (isNaN(refArrbySpace[0])) {
-            ref_bkname = changeSingleStringToTitleCase(refArrbySpace[0]);
-            ref_chp = 1;
-            ref_ver = 1;
-        }
-        //Just the chapter without the book name and verse reference. E.g., '10'. Default to current book and verse 1
-        else if (Number(refArrbySpace[0])) {
-            let currentBook = bible_books.querySelector('.ref_hlt');
-            ref_bkname = currentBook.getAttribute('bookname');
-            ref_chp = refArrbySpace[0];
-            ref_ver = 1;
-        }
+    let spaceSepratedRef=refArrbySpace.join(' ')
+    if (ref_bknameMatch = spaceSepratedRef.match(/([1-9]*\s*)([a-zA-Z]\s*)+/)) {
+        ref_bkname=ref_bknameMatch[0];
+        ref_chpnVer=spaceSepratedRef.split(ref_bkname).pop();
+        ref_bkname=ref_bkname.trim();
+        console.log(ref_bkname);
+    }
+    /* If no bookname */
+    else {
+        let currentBook = bible_books.querySelector('.ref_hlt');
+        ref_bkname = currentBook.getAttribute('bookname');
+        ref_chpnVer=spaceSepratedRef.split(ref_bkname).pop();
     }
     
+    ref_chp = 1;// default
+    ref_ver = 1;// default
+    if(ref_chpnVer.trim().length>0){
+        let ref_chpnVer_arr=ref_chpnVer.split(' ')
+        ref_chp=Number(ref_chpnVer_arr[0].trim());
+        if (ref_chpnVer_arr.length>1) {
+            ref_ver=Number(ref_chpnVer_arr[1].trim().match(/[1-9]/)[0]);
+        }
+    }
+ 
     // Find id of Book
     ref_Abrev.forEach((ref_, ref_indx) => {
+        console.log({ref_bkname,ref_chp,ref_ver})
         if (ref_.includes(ref_bkname.toUpperCase())) {
             ref_bkname = bible.Data.bookNamesByLanguage.en[ref_indx]
             let refb = ref_indx;
@@ -128,7 +98,7 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
             return
         }
     });
-    refDisplay = ref_bkname + ' ' + (ref_chp) + '.' + (ref_ver);
+    refDisplay = ref_bkname + ' ' + (ref_chp) + ':' + (ref_ver);
     reference.value = refDisplay;
 }
 

@@ -14,6 +14,7 @@
     --ref-hlt: #dde3db;
     --searchedword-hlt: maroon;
     --ref-img: url(images/background.jpg);
+    --ref-img: #D7D5D1;
     --img-cancel: url(images/cancel-svgrepo-com.svg);
     --img-chkbox:url(images/check-box-svgrepo-com.svg);
     --ref-paper: url(images/IyEMTp.jpg);
@@ -40,6 +41,7 @@
     --span-trans-hover:rgb(151, 116, 0);
     --span-hover:#f6efe3;
     --chpt: rgb(238, 227, 202);
+    --chpt: #F6D588;
     --verse-hover: rgb(248, 246, 241);
     --main-font: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     --top-bar-bground-color: #212121;
@@ -148,7 +150,23 @@ body>svg {
     overflow-y: auto;
     height: 100%;
 }
-#versenote_totheright .note_closebtn_x {
+.refnav_col2_closebtn {
+    position: sticky;
+    top: 0px;
+    margin-left: auto;
+    height: 1em!important;
+    width: 1em!important;
+    background: var(--img-cancel) center no-repeat;
+    border:none;
+    box-shadow:none;
+    z-index: 10;
+}
+#btns_vtotheright {position: absolute;display: flex;flex-direction: row-reverse;}
+.darkmode #btns_vtotheright button {background-color:black!important;border:whitesmoke!important;}
+#noteDetacher_inHeader {margin-right:1em;}
+#btns_vtotheright .note_closebtn_x {position: relative;}
+#btns_vtotheright .note_closebtn_d {background: none;}
+#versenote_totheright .note_closebtn_x,#btns_vtotheright {
     top:0;
     right: 0;
 }
@@ -214,14 +232,10 @@ li li li{
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-/* #refnav button:not(:last-child) { */
-    #refnav button:not(#bibleapp_versemarkers button):not(:last-child) {
-    border-bottom: none;
+#refnav:hover, #context_menu:hover, #versenote_totheright:hover {z-index: 11;}
+#refnav button:not(#bibleapp_versemarkers button):not(:last-child) {
+border-bottom: none;
 }
-/* #refnav button:last-child {
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-}*/
 button#darkmodebtn {
     font-family: apple color emoji,segoe ui emoji,notocoloremoji,segoe ui symbol,android emoji,emojisymbols,emojione mozilla;
 }
@@ -731,7 +745,6 @@ button {
     padding: 5px;
 }
 #context_menu .verse:hover {
-    box-shadow: 0 0 2px 1px var(--shadow-color)!important;
     border-radius: 3px;
     overflow: hidden;
 }
@@ -802,21 +815,13 @@ button {
     background: var(--ref-img);
     box-shadow: 0px -21px 0px 25px var(--scroll-track-bg-color);
     z-index: -1;
+    pointer-events: none;
 }
-/* #context_menu .cmtitlebar code {
-    font-size: 1.2em;
-}*/
-/* #context_menu .cmtitlebar::after{
-    position: absolute;
-    content: '';
-    left: -10px;
-    bottom: -3px;
-    border-top: 2px solid var(--scroll-track-bg-color);
-    background: var(--ref-img);
-    width: 110%;
-    height: 0px;
-    z-index: -1;
-}*/
+/* #versenote_totheright #context_menu {
+    left:1em!important;
+    right:1em!important;
+    width: calc(100% - 2em);
+} */
 #context_menu:not(.win2) .cmtitlebar~span{
     font-size:var(--fontsize-scripture);
 }
@@ -1998,7 +2003,7 @@ input:focus {
     --darkmode-border:#807e5880;
     --darkmode-border-2:rgba(0, 132, 132, 0.779);
     --darkmode-border-2:#62776d;
-    --darkmode-bg1color: #212121;
+    --darkmode-bg1color: #181a1b;
     --img-cancel:url(images/cancel-svgrepo-com-DarkMode.svg);
     --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
     --darkslategray:darkslategray;
@@ -2499,7 +2504,7 @@ body:not(.darkmode) #bottomleft_btns button, body:not(.darkmode) #topbartogglebt
 }
 
 /* button:not(#refnav_col2 button):focus,  */
-#app_settings button:focus,
+#app_settings button:not(.refnav_col2_closebtn):focus,
 #top_horizontal_bar_buttons button:focus,
 #bottomleft_btns button:focus,
 button#topbartogglebtn:focus {
@@ -2592,4 +2597,23 @@ button#topbartogglebtn:focus {
     content: '▲';
     margin-left: 0.25em;
     font-size: 0.8em;
+}
+#app_settings .refnav_col2_closebtn {
+    display: none!important;
+    background: none;
+    background-color:none!important;
+    border:none;
+    box-shadow:none;
+    overflow:visible;
+    transform:rotate(-180deg);
+    margin-top:1em;
+    z-index: 1000;
+}
+#app_settings .refnav_col2_closebtn:hover {
+    background-color:none!important;
+    border:none;
+    box-shadow:none;
+    overflow:visible;
+    transform:rotate(-180deg);
+    z-index: 1000;
 }

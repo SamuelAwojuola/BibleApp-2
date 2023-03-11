@@ -43,9 +43,10 @@
             <div id="bibleversions_btns">
             </div>
             <div id="bookmarks_holder" class="displaynone">
-              <div id="bookmark_head">Bookmarks</div>
-                <ol id="bookmark_content">
-              </ol>
+              <div id="bookmark_head">
+                <button id="noteDetacher_inHeader" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check,notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check">N-D</button>
+                Bookmarks</div>
+              <ol id="bookmark_content"></ol>
             </div>
           </div>
         </div>
@@ -91,19 +92,26 @@
         <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        
+        <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',app_settings)"><img src="images/arrow-right-angle-svgrepo-com.svg" alt=""></button>
+        
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
+
       </div>
       <div id="refnav_col2">
         <div id="bible_nav" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bible_nav)"></button>
           <div class="bible_nav" name="books" id="bible_books"></div>
           <div class="bible_nav" name="chapters" id="bible_chapters"></div>
           <div class="bible_nav" name="verses" id="bible_verses"></div>
         </div>
         <div id="bible_versions" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bible_versions)"></button>
           <div class="bible_versions_heading">Available Bible Versions</div>
         </div>
         <div id="searchPreviewWindowFixed" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',searchPreviewWindowFixed)"></button>
           <div id="searchparameters" class="hidesearchparameters">
             <div id="searchparametertitlebar_holder">
               <button id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone')">Search Parameters</button>
@@ -135,6 +143,7 @@
           <div id="searchPreviewFixed"></div>
         </div>
         <div id="bibleapp_cache" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_cache)"></button>
           <div class="" id="eng2grk_sup">
             <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
             <table id="eng2grk_sup_table">
@@ -185,6 +194,7 @@
                 <td>VerseNote To The Right</td>
                 <td>
                   <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
+                  <button class="eng2grk_sup_btns" id="detach_versenote_totheright" onclick="checkUncheck(detach_versenote_totheright_check),detachVersenoteToTheRight()"><input type="checkbox" id="detach_versenote_totheright_check" name="detach_versenote_totheright_check">Note Window Detached</button>
                 </td>
               </tr>
               <tr>
@@ -315,11 +325,15 @@
           </div>
         </div>
         <div id="bibleapp_available_notes" class="slideoutofview displaynone">
-          <button class="eng2grk_sup_btns" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
+          <div>
+            <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_available_notes)"></button>
+            <button class="eng2grk_sup_btns" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
+          </div>
           <div id="biblenotes_nav"></div>
 
         </div>
         <div id="bibleapp_versemarkers" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_versemarkers)"></button>
           <details>
             <summary id="bibleapp_versemarkers_settings">
               <div class="openCloseIconHolder"></div>
@@ -344,6 +358,7 @@
           </div>
         </div>
         <div id="strongsdefinitionwindow" class="slideoutofview displaynone">
+          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',strongsdefinitionwindow)"></button>
           <div id="strongsnum_inputholder">
             <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition(strongsnum_input.value.split(/[,\s]+/))" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
           </div>
@@ -369,9 +384,11 @@
       </div>
     </div>
     <div id="versenote_totheright">
-      <button class="closebtn note_closebtn_x" onclick="versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML=''"></button>
-      <div id="versenote_totheright_div1">
+      <div id="btns_vtotheright" class="closebtn">
+        <button class="note_closebtn_x" onclick="versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML=''"></button>
+        <button class="note_closebtn_x note_closebtn_d" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check,notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check_2">D</button>
       </div>
+      <div id="versenote_totheright_div1"></div>
       <div id="versenote_totheright_div2"></div>
     </div>
   </div>

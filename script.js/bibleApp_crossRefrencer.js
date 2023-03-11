@@ -1,8 +1,7 @@
 /* FOR GENERATING GETTING AND APPENDING CROSSREFERNCES (TSK) OF VERSES THAT HAVE THEM */
 bversionName = 'KJV';
 if(document.querySelector('#homepage')){
-    main.addEventListener('click', appendCrossReferences);
-    searchPreviewWindowFixed.addEventListener('click', appendCrossReferences);
+    document.addEventListener('click', appendCrossReferences);
     main.addEventListener('mousedown', getCurrentBVN)
 }
 else if(versenotepage = document.querySelector('body#versenotepage')){
@@ -33,7 +32,7 @@ function getCurrentBVN(e) {
 }
 
 function appendCrossReferences(e) {
-    if (!e.target.matches('#verse_crossref_button, .verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
+    if (!e.target.matches('[bversion], #verse_crossref_button, .verse_crossref_button')&&!e.target.parentNode.matches('#verse_crossref_button')) {
         return
     }
     let eTarget;//Holds the 'ref' attribute;

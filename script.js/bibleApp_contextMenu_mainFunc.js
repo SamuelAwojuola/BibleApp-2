@@ -30,7 +30,7 @@ function add_tooltipContextMenu(e) {
     e.preventDefault();
     parentIsContextMenu = 0;
     createNewContextMenu();
-    let prv_indx='',cCmenu_dX, cCmenu_dY, prv_cmenuIndx=false, prv_title='',cmenu_tsk_display='displaynone',dzabled='disabled';
+    let prv_indx='',currentContextMenu_style,cmenu_cmt_dX, cmenu_cmt_dY, cmenu_dX,cmenu_dY, prv_cmenuIndx=false, prv_title='',cmenu_tsk_display='displaynone',dzabled='disabled';
     formerContextMenu_Coordinates.transform = context_menu.style.transform;
     prev_contextmenu=context_menu.cloneNode(true);
     if(prvBtnIndx=context_menu.querySelector('.cmtitlebar .prv')){
@@ -47,7 +47,7 @@ function add_tooltipContextMenu(e) {
     }
 
     // FOR SHOWING AND HIDING THE RIGHTCLICK MENU
-    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span, .win2_noteholder span, #versenote_totheright, #versenote_totheright *')) {
+    if (e.target.matches('.translated, .strnum, .crossrefs>span, .verse_note span, .win2_noteholder span, #versenote_totheright, #versenote_totheright span')) {
         getCurrentStrongsDef(e);
         clearTimeout(timer1);
         clearTimeout(timer2);
@@ -144,8 +144,12 @@ function add_tooltipContextMenu(e) {
                 if (elmAhasElmOfClassBasAncestor(e.target, '.context_menu')) {
                     parentIsContextMenu = 1;
                     /* Store the old cmenu to go back to it */
-                    cCmenu_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
-                    cCmenu_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+                    
+                    currentContextMenu_style = context_menu.getAttribute('style');
+                    cmenu_cmt_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
+                    cmenu_cmt_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+                    cmenu_dX = context_menu.getAttribute('data-x');
+                    cmenu_dY = context_menu.getAttribute('data-y');
                     if(typeof prv_cmenuIndx === 'number'){
                         /* For contextMenu whose parent was contextMenu: In case it is one that is called from the array and there are other saved cmenus in the array */
                         cmenu_backwards_navigation_arr.splice(prv_cmenuIndx+1,0,prev_contextmenu);
@@ -382,15 +386,17 @@ function add_tooltipContextMenu(e) {
 
             // If the eTarget is in the contextMenu, create a new context menu using the coordinates of the present one
             if (parentIsContextMenu) {
-                context_menu.style.top = formerContextMenu_Coordinates.top;
-                context_menu.style.bottom = formerContextMenu_Coordinates.bottom;
-                context_menu.style.left = formerContextMenu_Coordinates.left;
-                context_menu.style.right = formerContextMenu_Coordinates.right;
-                context_menu.style.transform = formerContextMenu_Coordinates.transform
+                context_menu.setAttribute('style',currentContextMenu_style);            
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cmenu_cmt_dX);
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cmenu_cmt_dY);
+                context_menu.setAttribute('data-y',cmenu_dX);
+                context_menu.setAttribute('data-x',cmenu_dY);
                 if(cm_dtl = context_menu.querySelector('details')){cm_dtl.open = true;}
-                context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
-                context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);
             } else {
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-x',0);
+                context_menu.querySelector('.cmtitlebar').setAttribute('data-y',0);
+                context_menu.setAttribute('data-y',0);
+                context_menu.setAttribute('data-x',0);
                 /* Clear the saved cmenus */
                 cmenu_backwards_navigation_arr=[];
                 // TOP & BOTTOM
@@ -467,28 +473,16 @@ function getCurrentStrongsDef(e) {
     }
 }
 
-//Hide RightClickContextMenu
-function hideRightClickContextMenu() {
-    if (context_menu.matches('.slideintoview')) {
-        context_menu.classList.add('displaynone')
-        hideRefNav('hide', context_menu);
-        //for dragging eventListner to be removed
-        interact('.cmtitlebar').unset();
-        newStrongsDef = '';
-        // context_menu.innerHTML = '';
-        context_menu.style.right = null;
-        if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
-    }
-}
-
 /* C-Menu History Navigation */
 function cmenu_goBackFront(x){
     let indx = parseInt(x.getAttribute('indx'));
     let calledByPrv = x.classList.contains('prv');
     let prvTitle;
     /* GET PRESENT TRANSFORM */
-    let cCmenu_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
-    let cCmenu_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+    let cmenu_cmt_dX = context_menu.querySelector('.cmtitlebar').getAttribute('data-x');
+    let cmenu_cmt_dY = context_menu.querySelector('.cmtitlebar').getAttribute('data-y');
+    let cmenu_dX = context_menu.getAttribute('data-x');
+    let cmenu_dY = context_menu.getAttribute('data-y');
     let currentContextMenu_style = context_menu.getAttribute('style');
     /* Replace the context menu with the save one */
     let cMenuParent = context_menu.parentNode;
@@ -501,8 +495,10 @@ function cmenu_goBackFront(x){
     cMenuParent.replaceChild(cmenu_backwards_navigation_arr[indx], context_menu);
     // context_menu.replaceWith(cmenu_backwards_navigation_arr[indx]);
     context_menu.setAttribute('style',currentContextMenu_style);
-    context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cCmenu_dX);
-    context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cCmenu_dY);
+    context_menu.querySelector('.cmtitlebar').setAttribute('data-x',cmenu_cmt_dX);
+    context_menu.querySelector('.cmtitlebar').setAttribute('data-y',cmenu_cmt_dY);
+    context_menu.setAttribute('data-x',cmenu_dX);
+    context_menu.setAttribute('data-y',cmenu_dY);
     enableInteractJSonEl('.cmtitlebar', context_menu);
 
     if(calledByPrv){
@@ -510,6 +506,20 @@ function cmenu_goBackFront(x){
         nxtBtn.setAttribute('indx',indx+1);
         nxtBtn.setAttribute('title',prvTitle);
         nxtBtn.removeAttribute('disabled');
+    }
+}
+
+//Hide RightClickContextMenu
+function hideRightClickContextMenu() {
+    if (context_menu.matches('.slideintoview')) {
+        context_menu.classList.add('displaynone')
+        hideRefNav('hide', context_menu);
+        //for dragging eventListner to be removed
+        // interact('.cmtitlebar').unset();
+        newStrongsDef = '';
+        // context_menu.innerHTML = '';
+        context_menu.style.right = null;
+        if(!document.querySelector('#versenotepage') && toolTipON==true){toolTipOnOff();}
     }
 }
 
@@ -521,83 +531,81 @@ function toggleCMenuTSK(){
 /* MAKING CONTEXT_MENU DRAGGABLE */
 // target elements with the "draggable" class
 function enableInteractJSonEl(dragTarget, elmAffected) {
-    interact(dragTarget).draggable({
-        // enable inertial throwing
-        inertia: true,
-        // keep the element within the area of it's parent
-        modifiers: [
-            interact.modifiers.restrictRect({
-                restriction: 'parent',
-                endOnly: true
-            })
-        ],
-        // enable autoScroll
-        autoScroll: true,
+    // interact(elmAffected)
+    interact(dragTarget)
+        .draggable({
+            // enable inertial throwing
+            inertia: true,
+            // enable autoScroll
+            autoScroll: true,
+            // keep the element within the area of it's parent
+            modifiers: [
+                interact.modifiers.restrictRect({
+                    restriction: 'parent',
+                    endOnly: true
+                })
+            ],
+            listeners: {
+                // call this function on every dragmove event
+                move: dragMoveListener.bind(null,'drag',dragTarget,elmAffected),
+            }
+        })
+        // .resizable({
+        //     // resize from all edges and corners
+        //     edges: { left: true, right: true, bottom: true, top: true },
+        //     listeners: {
+        //         move (event) {
+        //             var target = event.target;
+        //             var x = (parseFloat(target.getAttribute('data-x')) || 0);
+        //             var y = (parseFloat(target.getAttribute('data-y')) || 0);
+            
+        //             // update the element's style
+        //             elmAffected.style.width = event.rect.width + 'px';
+        //             elmAffected.style.height = event.rect.height + 'px';
+            
+        //             // translate when resizing from top or left edges
+        //             x += event.deltaRect.left;
+        //             y += event.deltaRect.top;
+            
+        //             elmAffected.style.transform = 'translate(' + x + 'px,' + y + 'px)';
+            
+        //             elmAffected.setAttribute('data-x', x);
+        //             elmAffected.setAttribute('data-y', y);
+        //         }
+        //     },
+        //     modifiers: [
+        //     // keep the edges inside the parent
+        //     interact.modifiers.restrictEdges({
+        //         outer: 'parent'
+        //     }),
+        
+        //     // minimum size
+        //     interact.modifiers.restrictSize({
+        //         min: { width: 100, height: 50 }
+        //     })
+        //     ],
 
-        listeners: {
-            // call this function on every dragmove event
-            move: dragMoveListener,
-
-            // call this function on every dragend event
-            // end (event) {
-            //   // var textEl = event.target.querySelector('p')
-            //   var xdx = (event.pageX - event.x0).toFixed(2);
-            //   var ydy = (event.pageY - event.y0).toFixed(2);
-            // }
-        }
-    })
-    /* // To Make Context Menu Resizable
-    interact('#context_menu').resizable({
-        // resize from all edges and corners
-        edges: { left: true, right: true, bottom: true, top: true },
-    
-        listeners: {
-          move (event) {
-            var target = event.target
-            var x = (parseFloat(target.getAttribute('data-x')) || 0)
-            var y = (parseFloat(target.getAttribute('data-y')) || 0)
-    
-            // update the element's style
-            target.style.width = event.rect.width + 'px'
-            target.style.height = event.rect.height + 'px'
-    
-            // translate when resizing from top or left edges
-            x += event.deltaRect.left
-            y += event.deltaRect.top
-    
-            target.style.transform = 'translate(' + x + 'px,' + y + 'px)'
-    
-            target.setAttribute('data-x', x)
-            target.setAttribute('data-y', y)
-            // target.textContent = Math.round(event.rect.width) + '\u00D7' + Math.round(event.rect.height)
-          }
-        },
-        modifiers: [
-          // keep the edges inside the parent
-          interact.modifiers.restrictEdges({
-            outer: 'parent'
-          }),
-    
-          // minimum size
-          interact.modifiers.restrictSize({
-            min: { width: 100, height: 50 }
-          })
-        ],
-    
-        inertia: true
-    }) */
-    function dragMoveListener(event) {
-        var target = event.target
-        // keep the dragged position in the data-x/data-y attributes
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-        // Always Make ContextMenu translateX Equal ZERO While in #searchPreviewFixed 
-        if(elmAhasElmOfClassBasAncestor(elmAffected,'#searchPreviewFixed')){x=0}
-        // translate the element
-        elmAffected.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
-
-        // update the position attributes
-        target.setAttribute('data-x', x)
-        target.setAttribute('data-y', y)
-    }
+        //     inertia: true
+        // })
 }
+function dragMoveListener(moveTye,dragTarget,elmAffected,event) {
+    var target = event.target;
+    // if(moveTye=='drag' && target==elmAffected){
+    //     target=elmAffected.querySelector(dragTarget)
+    // }
+    
+    // keep the dragged position in the data-x/data-y attributes
+    var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+    // Always Make ContextMenu translateX Equal ZERO While in #searchPreviewFixed 
+    if(elmAhasElmOfClassBasAncestor(elmAffected,'#searchPreviewFixed')){x=0}
+    // translate the element
+    elmAffected.style.transform = 'translate(' + x + 'px, ' + y + 'px)'
+
+    // update the position attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+}
+// this function is used later in the resizing and gesture
+// window.dragMoveListener = dragMoveListener;
+enableInteractJSonEl('.cmtitlebar', context_menu);

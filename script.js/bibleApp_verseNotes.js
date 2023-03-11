@@ -355,7 +355,7 @@ function showVersenoteToTheRight(e){
                     if(et.matches('.vmultiple')){
                         etVmult=et;
                         // if(!isFullyScrolledIntoView(etVmult)){
-                            etVmult.scrollIntoView({behavior:"smooth"});
+                            // etVmult.scrollIntoView({behavior:"smooth"});
                         // }
                     }
                     else{
@@ -371,7 +371,7 @@ function showVersenoteToTheRight(e){
                     // versenote_totheright.style.borderRight='2px dashed red';
                     setTimeout(() => {
                         // if(!isFullyScrolledIntoView(etVmult)){
-                            etVmult.scrollIntoView({behavior:"smooth"});
+                            // etVmult.scrollIntoView({behavior:"smooth"});
                         // }
                         setTimeout(() => {
                             // etVmult.classList.remove('vtemp');
@@ -387,3 +387,20 @@ function showVersenoteToTheRight(e){
         }
     }
 }
+
+/* **************************** */
+/* DETACH RIGHT SIDE VERSE NOTE */
+/* **************************** */
+function detachVersenoteToTheRight(){
+    if(document.head.querySelector('#detached_versenotesWindow')){
+        show_versenote_totheright_check.checked = false;
+        showVersenoteToTheRight()
+        detached_versenotesWindow.remove();
+    } else {
+        const styleRule =`#versenote_totheright {position:absolute;z-index:10;min-width:50vw;right:calc((100vw - 50vw) / 2);top:1em;max-height:calc(100% - 5em);box-shadow:0 5px 5px 1px var(--shadow-color)!important;border-radius: 2.5px;}`;
+        show_versenote_totheright_check.checked = true;
+        showVersenoteToTheRight()
+        createNewStyleSheetandRule('detached_versenotesWindow', styleRule);
+    }
+}
+// enableInteractJSonEl('#versenote_totheright_div1', versenote_totheright)

@@ -16,7 +16,7 @@ pagemaster.addEventListener('mouseover', function (e) {
 });
 let toolTipON = false;
 //Hide ContextMenu on clicking outside of main window
-main.addEventListener('click', function (e) {
+main.addEventListener('mousedown', function (e) {
     if (document.querySelector('.context_menu') && (/* !e.target.matches('[strnum]') && */ !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
         hideRightClickContextMenu()
     }

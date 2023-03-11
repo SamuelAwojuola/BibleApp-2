@@ -154,17 +154,17 @@ function indicateBooknChapterInNav(bk, chpt) {
 document.addEventListener('keydown', general_EscapeEventListener);
 function general_EscapeEventListener(e){
     if (e.key === "Escape") {
-        if(document.querySelector('#versenote_totheright.showingNote')){
+        // Remove ContextMenu if present
+        if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
+            hideRightClickContextMenu();
+        }
+        else if(document.querySelector('#versenote_totheright.showingNote')){
             versenote_totheright.classList.remove('showingNote');
         }        
         else if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
             bookmark_content.classList.remove('displayblock');
             bookmarks_holder.classList.remove('showing_bookmarks');
         }        
-        // Remove ContextMenu if present
-        else if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
-            hideRightClickContextMenu();
-        }
         // Hide vmarker_options_menu
         else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
             prev_vmrkoptm.remove()
@@ -356,7 +356,7 @@ function centerNavigationAndOtherSettings(vh){
     border-radius: 5px;
     background-color: none;
     overflow: visible;
-    z-index: 98;
+    z-index: 10;
 }
 #refnav #app_settings {
     background: var(--ref-img);
@@ -390,6 +390,11 @@ function centerNavigationAndOtherSettings(vh){
 #refnav #app_settings:hover~#refnav_col2,
 #refnav #refnav_col2 > div.slideoutofview {
     z-index: 1;
+}
+#app_settings .refnav_col2_closebtn {
+    position: absolute!important;
+    display:block!important;
+    left:-1.5em!important;
 }`;
             createNewStyleSheetandRule('h_centeredSettings', styleRule)
             center_settings_h_check.checked=true;
@@ -412,7 +417,7 @@ function centerNavigationAndOtherSettings(vh){
     left: 1em;
     height: calc(100% - 5em);
     background-color: none!important;
-    z-index: 98;
+    z-index: 10;
     overflow: visible;
 }
 #refnav #app_settings {
@@ -441,6 +446,13 @@ function centerNavigationAndOtherSettings(vh){
 #refnav #app_settings:hover~#refnav_col2,
 #refnav #refnav_col2 > div.slideoutofview {
     z-index: 1;
+}
+#app_settings .refnav_col2_closebtn {
+    position: absolute!important;
+    display:block!important;
+    bottom:-1em!important;
+    top:101%!important;
+    margin-top:0;
 }
 @media screen and (max-device-width: 540px) {
     #refnav {

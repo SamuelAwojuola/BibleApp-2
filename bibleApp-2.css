@@ -93,7 +93,7 @@
         min-height: calc((var(--fontsize-refnsearch) - 6px) * 2);
         font-size: calc((var(--fontsize-refnsearch) - 6px) * 2);
     }
-    #togglenavbtn,#refdiv button,#forreference{display: none;}
+    /* #togglenavbtn, */#refdiv button,#forreference{display: none;}
     #show_crossref_comments button {
         font-size: calc(var(--fontsize-scripture) * 0.75);
     }
@@ -116,6 +116,40 @@
     }
     #topbartogglebtn {
         opacity: 0.8;
+    }
+    #searchprametersbtnholder>* {
+        flex: 1 1 50%!important;
+    }
+    #otherButtonsInHead button {
+        margin: 0;
+        font-size: 0.85rem;
+    }
+    #ref_search_versions_holder #searchdiv, #wordsearch,#searchdiv #titlebar_show_searchsettings {
+        display: none;
+    }
+    #opensearch {
+        display: flex;
+        width: 2em;
+        height: 2em;
+        padding: 5px;
+    }
+    /* #opensearch > img {
+        width: 120%;
+        height: 120%;
+    } */
+    #ref_search_versions_holder #refdiv {
+        display: flex;
+        width: auto;
+        flex: 1 1 70%;
+    }
+    #otherButtonsInHead {
+        margin-left: 0;
+    }
+    #bookmarks_holder {
+        margin-left: auto;
+    }
+    #noteDetacher_inHeader {
+        padding-left: 1.2em;
     }
 }
 @media screen and (max-device-width: 400px) {

@@ -1110,7 +1110,7 @@ sup {
 }
 #searchprametersbtnholder {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     margin-top: 0.5px;
 }
 #searchprametersbtnholder>button {
@@ -1118,6 +1118,13 @@ sup {
     font-size: 13px;
     width: auto;
 }
+#searchprametersbtnholder>button {
+    flex: 1 1 25%;
+}
+#searchprametersbtnholder #biblebooksgroup_fixed {
+    flex: 1 1 75%;
+}
+#opensearch {display: none;}
 .bible_versions_heading, #bibleapp_versemarkers_settings{
     box-shadow: 0 0.5px 0 var(--shadow-color);
     background-color: var(--whitesmoke);
@@ -1471,10 +1478,11 @@ input#wordsearch_fixed {
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
+#forwordsearch img,#forwordsearch_fixed img {transform: rotateZ(-90deg);}
 input#wordsearch_fixed {
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-    background: var(--buttons);
+    /* background: var(--buttons); */
 }
 #searchPreviewWindowFixed button {
     border: 1px solid rgb(198, 198, 198);
@@ -1704,6 +1712,7 @@ border-right: var(--col2-border) solid auto!important;
     display: flex;
     flex-wrap: wrap;
     flex-grow: 1;
+    flex: 1 1;
 }
 /* #refdiv {background-color: yellow;}
 #bibleversions_btns {background-color: greenyellow;}*/
@@ -1851,15 +1860,17 @@ border-right: var(--col2-border) solid auto!important;
     background: var(--selection);
 }
 #togglenavbtn {
-    font-size: calc(var(--fontsize-refnsearch) * 2.3)!important;
+    /* font-size: calc(var(--fontsize-refnsearch) * 2.3)!important; */
+    font-size: calc(var(--width-sidebuttons)*0.65)!important;
     font-weight: 400;
     padding: 0;
     /* min-width: calc(45px + var(--col2-border))!important; */
-    min-width: var(--minHeighWidth-leftside_btns);
+    min-width: var(--minHeighWidth-leftside_btns)!important;
     width: var(--width-sidebuttons)!important;
     box-shadow: 1px 0 black;
 }
 #togglenavbtn img {
+    width: calc(var(--fontsize-refnsearch) * 2)!important;
     width: calc(var(--fontsize-refnsearch) * 2)!important;
     max-width: 60.5px!important;
 }
@@ -2067,7 +2078,7 @@ input:focus {
     box-shadow: inset 0 -1.5em 0px 0px rgba(255, 223, 117, 0.663),
     0 5px 5px -2px var(--shadow-orange)!important;
 }
-.darkmode #fontchange, .darkmode #biblebooksgroup, .darkmode #fontsizes {
+.darkmode #fontchange, .darkmode .biblebooksgroup, .darkmode #fontsizes {
     background-color: #000000;
 }
 .darkmode #refnav .bible_nav *:hover, .darkmode #refnav .tmp_hlt {
@@ -2555,6 +2566,15 @@ button#topbartogglebtn:focus {
 #otherButtonsInHead{
     margin-left: auto;
     display: flex;
+}
+#otherButtonsInHead #scriptureCompareWinDetacher_inHeader {
+    display: flex;
+    max-width: 2em;
+    padding: 5px;
+}
+#otherButtonsInHead img {
+    width: 120%;
+    height: 120%;
 }
 #bookmarks_holder{
     /* position: relative; */

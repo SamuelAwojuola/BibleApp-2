@@ -38,12 +38,13 @@
             <div id="searchdiv">
               <button id="titlebar_show_searchsettings" onclick="toggleClassAndActiveButton(titlebarsearchparameters, 'slideup',this)"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button><input class="footersection" id="wordsearch" title="What to search for"
                 placeholder="Type Words to Search For" onInput="this.parentNode.dataset.value = this.value" size="4"><button onclick="runWordSearch()" class="footersection"
-                id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
+                id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
             </div>
             <div id="bibleversions_btns">
             </div>
             <div id="otherButtonsInHead">
-              <button id="scriptureCompareWinDetacher_inHeader" onclick="hideRefNav(null,scriptureCompareWindow)" title="detach from rightside">Compare</button>
+              <button id="opensearch" class="footersection" onclick="hideRefNav(null,searchPreviewWindowFixed)" title="Open Search"><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
+              <button id="scriptureCompareWinDetacher_inHeader" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
               <button id="noteDetacher_inHeader" onclick="detachInlineVerseNote(),checkUncheck(notedetach_check)" title="detach inline versenote"><input type="checkbox" id="notedetach_check">N-D</button>
             </div>
             <div id="bookmarks_holder">
@@ -57,7 +58,7 @@
       <div id="titlebarsearchparameters" class="slideup">
         <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words-Not Phrase</button><button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="t_search_anyWord" name="t_phraseornot" value="t_search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
 
-        <select id="biblebooksgroup">
+        <select id="biblebooksgroup" class="biblebooksgroup" onchange="console.log('YES'),biblebooksgroup_fixed.value=biblebooksgroup.value">
           <option value="allbks" selected>ALL BOOKS</option>
           <option value="ot">OT</option>
           <optgroup label="Old Testament">
@@ -90,17 +91,17 @@
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->
           &#128218;</button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
-        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search"></button>
+        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
+        
+        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" style="transform:scale(1.3)"></button>
         </button>
         <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" toopen="strongsdefinitionwindow" title="Show strongs definition window">Str</button>
-        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button>
         <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
-        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
+        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" style="transform:scale(1.5)"></button>
         
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
-        
-        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side">Cmp</button>
         
         <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',app_settings)"><img src="images/arrow-right-angle-svgrepo-com.svg" alt=""></button>
         
@@ -127,9 +128,29 @@
               <button id="hidesearchparameters" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone',this)">&#9660;</button>
             </div>
             <div id="searchdiv_fixed">
-              <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For"><button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com (2).svg" alt="..."></button>
+              <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For">
+              <button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
             </div>
             <div id="searchprametersbtnholder" class="displaynone">
+              <select id="biblebooksgroup_fixed" class="biblebooksgroup" onchange="console.log('YES'),biblebooksgroup.value=biblebooksgroup_fixed.value">
+                  <option value="allbks" selected>ALL BOOKS</option>
+                  <option value="ot">OT</option>
+                  <optgroup label="Old Testament">
+                    <option value="pentateuch">Pentateuch [Gen-Deut]</option>
+                    <option value="history">History [Jos-Est]</option>
+                    <option value="wisdom">Wisdom [Job-SOS]</option>
+                    <option value="majorProphets">Major Prophets [Isa-Dan]</option>
+                    <option value="minorProphets">Minor Prophets [Hos-Mal]</option>
+                  </optgroup>
+                  <option value="nt">NT</option>
+                  <optgroup label="New Testament">
+                    <option value="nt_narrative">Gospels [Mat-Act]</option>
+                    <option value="pauline">Pauline [Rom-Heb]</option>
+                    <option value="generalEpistles">General Epistles [Jam-Jud]</option>
+                    <option value="revelation">Revelation [Rev]</option>
+                  </optgroup>
+                  <option value="currentbk">Current Book</option>
+              </select>
               <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
               <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
               <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>

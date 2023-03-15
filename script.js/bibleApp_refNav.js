@@ -478,7 +478,7 @@ function centerNavigationAndOtherSettings(vh){
 let refNavMainBtns
 if (document.body.matches('#homepage')) {
     document.addEventListener('keydown',navigationByArrowKeys)
-    refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,comparewindowBtn,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
+    refNavMainBtns=[togglenavbtn,biblenavigation,bibles,comparewindowBtn,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
     
     togglenavbtn.focus()
     document.addEventListener('keydown',function(e){

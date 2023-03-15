@@ -53,6 +53,7 @@ function appendCrossReferences(e) {
                 vHolder = masterVerseHolder;
                 if (refCode){
                     siblingCrossREF = generateCrossRefsFromRefCode(refCode);
+                    if(!siblingCrossREF){return}
                     siblingCrossREF.style.zIndex = -1;
                     setTimeout(() => {slideUpDown(siblingCrossREF)}, 1);
                     setTimeout(()=>{siblingCrossREF.scrollIntoView({behavior:"smooth",block:"nearest"})},300)
@@ -145,7 +146,7 @@ function getCrossReference(x,bkn,bvName) {
     // x is the ref as a string or the code elm itself
     let crf2get;
     if(typeof (x)=='string'){
-        crf2get = x.replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
+        crf2get = x.replace(/\s+/ig, ' ').replace(/\s*([:;,.-])\s*/ig, '$1').replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
     }
     else {
             if(x.hasAttribute('ref')){
@@ -160,7 +161,7 @@ function getCrossReference(x,bkn,bvName) {
             crf2get=bk+bkNchv[1];
         }
         else {
-            crf2get = x.innerText;
+            crf2get = x.innerText.replace(/\s+/ig, ' ').replace(/\s*([:;,.-])\s*/ig, '$1');
         }
     }
     // Requires that book name not have space: Not Valid: '1 Cor'. Valid: '1Cor'
@@ -260,16 +261,17 @@ function getCrossReference(x,bkn,bvName) {
                 vText = window[bversionName][fullBkn][chp1 - 1][i - 1]
                 verseSpan.classList.add('v_'+bversionName);
             }
-            vHolder.append(parseVerseText(vText, verseSpan));
-            verseSpan.prepend(' ');
-            verseSpan.prepend(verseNum);
-            // if(br){
-            verseSpan.innerHTML = br + verseSpan.innerHTML;
-            // br = '<br>';
-            br='';//Divider is only added at the start of the comma separated group, so once added, remove it
+            if(vText){
+                vHolder.append(parseVerseText(vText, verseSpan));
+                verseSpan.prepend(' ');
+                verseSpan.prepend(verseNum);
+                // if(br){
+                verseSpan.innerHTML = br + verseSpan.innerHTML;
+                // br = '<br>';
+                br='';//Divider is only added at the start of the comma separated group, so once added, remove it
+            }
         }
     }
     createTransliterationAttr(vHolder)
     return vHolder;
 }
-// main.addEventListener("click", searchPreviewRefClick)

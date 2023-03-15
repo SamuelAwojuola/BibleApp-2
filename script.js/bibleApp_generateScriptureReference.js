@@ -299,7 +299,7 @@ function parseVerseText(vT, verseSpan) {
                     wStringREGEXED = wStringREGEXED.replace(/(""$)|"$/g, '”');
                     italicsStartnEnd(wStringREGEXED)
                     if(italicStart==true && italicEnd==false){
-                        console.log('italicsStartnEnd')
+                        // console.log('italicsStartnEnd')
                         wordSpan.append(wStringREGEXED);
                         wordSpan.classList.add('em');
                     }
@@ -389,7 +389,6 @@ function parseVerseText(vT, verseSpan) {
 }
 
 function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookName, vIdx, fromSearch = false, bibleVersionName) {
-    console.log(chNumInBk);
     let vref = `${bookName} ${chNumInBk+1}:${vNumInChpt}`;
     // let vref = bookName + ' ' + chNumInBk + ':' + vNumInChpt;
     let verseMultipleSpan = document.createElement('span');
@@ -429,7 +428,6 @@ function parseSingleVerse(bkid, chNumInBk, vNumInChpt, vText, appendHere, bookNa
             verseNum.prepend((chNumInBk) + ':' + vNumInChpt + ' ');
             // verseSpan.id = ('_' + bkid + '.' + (chNumInBk) + '.' + (vNumInChpt - 1));
         }
-    console.log(chNumInBk);
         verseNum.setAttribute('ref', `${bookName} ${chNumInBk}:${vNumInChpt}`);
         verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
         verseSpan.prepend(' ');

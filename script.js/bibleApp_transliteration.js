@@ -130,17 +130,17 @@ if(document.querySelector('#pagemaster')){
 pagemaster.addEventListener("dblclick",transliterateWordsOnDoubleClick)
 
 var transliteratedWords_Array = [];
-function transliterateAllStoredWords(){
-    transliteratedWords_Array.forEach(storedStrnum => {showTransliteration(storedStrnum)});
+function transliterateAllStoredWords(targetedSection){
+    transliteratedWords_Array.forEach(storedStrnum => {showTransliteration(storedStrnum,targetedSection)});
 }
-function showTransliteration(stn) {
+function showTransliteration(stn,targetedSection) {
     let allSimilarWords;
+    if(!targetedSection){targetedSection=pagemaster;}
     if(/G|H\d+/i.test(stn)&&stn!=='G*'){
-        allSimilarWords = pagemaster.querySelectorAll('.' + stn + ':not(.vnotestrnum)');
+        allSimilarWords = targetedSection.querySelectorAll('.' + stn + '[data-xlit]:not(.vnotestrnum)');
         // ':not(.vnotestrnum)' so as to exempt strnums in verseNotes
     } else {return}
-    // allSimilarWords = pagemaster.querySelectorAll('.' + stn);
-    // let allSimilarWords = document.getElementsByClassName(stn);
+    if(allSimilarWords.length<1){return}
     allSimilarWords.forEach(elm => {
         elm.innerHTML = '';
         let xlitFragment = new DocumentFragment();

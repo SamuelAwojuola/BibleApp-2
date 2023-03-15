@@ -11,17 +11,23 @@ let ref_Abrev;
 // }
 ref_Abrev = bible.Data.books;
 //On enter go to reference
-document.addEventListener("keypress", function (event) {
-    if(document.activeElement.matches('.reference') && event.key === "Enter") {
-        let focusElm = document.activeElement;
-        if(focusElm.matches('.homepage')){
-            gotoRef(focusElm.value)
-        } else {
-            getCrossReference(focusElm)
+document.addEventListener("keypress", enterKeyFunc);
+function enterKeyFunc(event) {
+    if (event.key === "Enter") {
+        if(document.activeElement.matches('.reference')) {
+            let focusElm = document.activeElement;
+            if(focusElm.matches('.homepage')){
+                gotoRef(focusElm.value)
+            } else {
+                getCrossReference(focusElm)
+            }
+            event.preventDefault();
         }
-        event.preventDefault();
+        else if(document.activeElement.matches('.verses_input')) {
+            fill_Compareverse(document.activeElement)
+        }
     }
-});
+}
 
 function changeSingleStringToTitleCase(str) {
     return str.charAt(0).toUpperCase() + str.substr(1).toLowerCase();
@@ -41,6 +47,8 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     //seperate between number and letter
     ref = ref.replace(/(\d)([a-zA-Z]+)/g, '$1 $2');
     ref = ref.replace(/([a-zA-Z]+)(\d)/g, '$1 $2');
+    //remove any artifact after verse number
+    ref = ref.replace(/(((i|ii|iii|iiii|1|2|3|4)\s)*[a-zA-Z] [0-9]*\s*[0-9]*).*/ig, '$1').trim();
     let refArrbySpace = ref.split(" ");
 
     // Convert Roman Numerals at start of bookName to numbers
@@ -69,7 +77,6 @@ function gotoRef(ref_to_get, shouldBrowserHistoryBeUpdated=true) {
     
     ref_chp = 1;// default
     ref_ver = 1;// default
-    console.log(ref_chpnVer)
     if(ref_chpnVer.trim().length>0){
         let ref_chpnVer_arr=ref_chpnVer.split(' ')
         ref_chp=Number(ref_chpnVer_arr[0].trim());

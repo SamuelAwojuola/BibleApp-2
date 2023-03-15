@@ -69,7 +69,7 @@ function cacheFunctions() {
     }
     if (bkm_arr=localStorage.getItem('bookmarks')) {
         bkm_arr=bkm_arr.split(',');
-        if(bkm_arr.length>0){bookmarks_holder.classList.remove('displaynone');}
+        // if(bkm_arr.length>0){bookmarks_holder.classList.remove('displaynone');}
         loadBookmarksFromCache(bkm_arr);
     }
     if (localStorage.getItem('eng2grk_sup_checkboxes')) {

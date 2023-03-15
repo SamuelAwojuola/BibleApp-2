@@ -17,7 +17,7 @@ function showVerseNote(e, x) {
     if(e){
         if (e.type=='click') {
             // Get verse note, if available, from JSON file and append it
-            if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
+            if (e.target.matches('#verse_notes_button') || (notedetach_check.checked && e.target.matches('.vmultiple, .vmultiple *'))) {
                 appendVerseNote(e);
             }
             // Edit verse note
@@ -27,7 +27,7 @@ function showVerseNote(e, x) {
             }
         } else if (e.type==contextMenu_touch) {
             // Open verse note in a new window (on rightClick of #verse_notes_button)
-            if (e.target.matches('#verse_notes_button') || e.target.parentNode.matches('#verse_notes_button')) {
+            if (e.target.matches('#verse_notes_button')) {
                 appendVerseNote(e);
             }
         }
@@ -64,11 +64,22 @@ function showVerseNote(e, x) {
 
 /* TO GET VERSE NOTE FROM JSON FILE AND APPEND EITHER TO THE VERSENOTE DIV OR TO A NEW HTML PAGE */
 function appendVerseNote(e) {
-    let eTarget = e.target;
-    //Get reference of clicked verse
-    clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
-    let siblingVersenote;
-    let masterVerseHolder = elmAhasElmOfClassBasAncestor(e.target, '.vmultiple');
+    let eTarget=e.target, siblingVersenote, masterVerseHolder;
+    if (eTarget.matches('.vmultiple, .vmultiple *')) {
+        console.log('YES');
+        //Get reference of clicked verse
+        if(eTarget.matches('.vmultiple')){
+            masterVerseHolder = eTarget;
+        } else if(eTarget.matches('.vmultiple *')){
+            masterVerseHolder = elmAhasElmOfClassBasAncestor(eTarget, '.vmultiple');
+        }
+        clickedVerseRef = masterVerseHolder.querySelector('[ref]').getAttribute('ref');
+    } else {
+        console.log('NO');
+        //Get reference of clicked verse
+        clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
+        masterVerseHolder = elmAhasElmOfClassBasAncestor(eTarget, '.vmultiple');
+    }
 
     //Make notes always come after crossref
     let whereTOappend = undefined;
@@ -99,6 +110,18 @@ function appendVerseNote(e) {
                 masterVerseHolder.classList.add('showing_versenote');
                 if(tempDiv = elmAhasElmOfClassBasAncestor(vnt,`.note_temp_holder.${noteID}`)) {
                     tempDiv.classList.remove('versenote_hidden');
+                }
+                if(dn=document.querySelector('.most_recent_note')) {
+                    dn.classList.remove('most_recent_note');
+                }
+                vnt.classList.add('most_recent_note')
+                if(notedetach_check.checked){
+                    if(dn=document.querySelector('.detached_note')) {
+                        dn.classList.remove('detached_note');
+                        closeNote(dn);
+                    }
+                    vnt.querySelector('.notes_ref_head').innerText=bN+' '+bC+':'+cV;
+                    vnt.classList.add('detached_note','most_recent_note');
                 }
             } else {
                 let verseNoteDiv = new DocumentFragment();
@@ -139,10 +162,18 @@ function appendVerseNote(e) {
                 } */
                 
                 let appendHere = newVerseNote.querySelector('.text_content');
+                newVerseNote.classList.add('most_recent_note');
+                if(notedetach_check.checked){
+                    if(dn=document.querySelector('.detached_note')) {
+                        dn.classList.remove('detached_note');
+                        closeNote(dn);
+                    }
+                    newVerseNote.querySelector('.notes_ref_head').innerText=bN+' '+bC+':'+cV;
+                    newVerseNote.classList.add('detached_note');
+                }
                 verseNoteDiv.append(newVerseNote);
                 whereTOappend.parentNode.insertBefore(verseNoteDiv, whereTOappend.nextSibling);
-                masterVerseHolder.classList.add('showing_versenote');
-                
+                masterVerseHolder.classList.add('showing_versenote');                
                 siblingVersenote = X_hasNoSibling_Y_b4_Z(masterVerseHolder, '.verse_note', '.vmultiple').elmY;
                 
                 //ACTUAL FUNCTION TO GET AND APPEND VERSE NOTE
@@ -182,15 +213,19 @@ function appendVerseNote(e) {
 }
 function closeNote(vnote,vholder,dIS){
     if(!vnote){
-        if(dIS){
+        if (vholder) {
+            vnoteID = vholder.id.replace(/(_\d+)\.(\d+)\.(\d+)/ig, 'note$1_$2_$3');
+            vnote = document.getElementById(vnoteID);
+        } else if(dIS){
             vnote = elmAhasElmOfClassBasAncestor(dIS,'.verse_note');
             vnoteID = vnote.id;
             vholderID = vnoteID.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
             vholder = document.getElementById(vholderID);
         }
-    } else if (vholder) {
-        vnoteID = vholder.id.replace(/(_\d+)\.(\d+)\.(\d+)/ig, 'note$1_$2_$3');
-        vnote = document.getElementById(vnoteID);
+    } else if (!vholder) {
+        vnoteID = vnote.id;
+        vholderID = vnoteID.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
+        vholder = document.getElementById(vholderID);
     }
     let tempDiv;
     if(!document.querySelector('.note_temp_holder.' + vnoteID)){
@@ -397,10 +432,57 @@ function detachVersenoteToTheRight(){
         showVersenoteToTheRight()
         detached_versenotesWindow.remove();
     } else {
-        const styleRule =`#versenote_totheright {position:absolute;z-index:10;min-width:50vw;right:calc((100vw - 50vw) / 2);top:1em;max-height:calc(100% - 5em);box-shadow:0 5px 5px 1px var(--shadow-color)!important;border-radius: 2.5px;}`;
+        const styleRule =`#versenote_totheright {
+            position:absolute;
+            z-index:10;
+            min-width:50vw;right:calc((100vw - 50vw) / 2);
+            top:1em;
+            max-height:calc(100% - 5em);
+            box-shadow:0 5px 5px 1px var(--shadow-color)!important;border-radius: 2.5px;
+        }`;
         show_versenote_totheright_check.checked = true;
         showVersenoteToTheRight()
         createNewStyleSheetandRule('detached_versenotesWindow', styleRule);
     }
 }
-// enableInteractJSonEl('#versenote_totheright_div1', versenote_totheright)
+function detachInlineVerseNote(){
+    if(document.head.querySelector('#detached_inlineVerseNote')){
+        notedetach_check.checked = false;
+        detached_inlineVerseNote.remove();
+        main.classList.remove('detached_inlineversenote');
+        main.querySelectorAll('.verse_note').forEach(nrh=>{
+            if(nrh.matches('.sld_up')){
+                nrh.removeAttribute('style')
+                nrh.classList.remove('sld_up');
+                // nrh.style.display='none';
+                // slideUpDown(nrh,'show')
+                slideUpDown(nrh,'hide')
+            }
+            nrh.querySelector('.notes_ref_head').innerHTML='';
+        })
+    } else {
+        notedetach_check.checked=true;
+        if(mrn=document.querySelector('.most_recent_note')){mrn.classList.add('detached_note')}
+        main.querySelectorAll('.notes_ref_head').forEach(nrh=>{
+            let vnote = nrh.parentElement;
+            let noteTxtDiv = vnote.querySelector('.text_content');
+            let fullRef = noteTxtDiv.getAttribute('bk')+' '+noteTxtDiv.getAttribute('b_cv');
+            nrh.innerHTML=fullRef.replace(/\./,':');
+        })
+        main.classList.add('detached_inlineversenote')
+        const styleRule =`.verse_note.detached_note {
+            position:fixed;
+            z-index:10;
+            min-width:50vw;right:calc((100vw - 50vw) / 2);
+            top:3em;
+            max-height:calc(100% - 5em);
+            box-shadow:0 5px 5px 1px var(--shadow-color)!important;border-radius: 2.5px;
+            display: flex;
+            flex-direction: column;
+            max-width: 33vw;
+            box-shadow: inset 1px 0px var(--black);
+            padding:0!important;
+        }`;
+        createNewStyleSheetandRule('detached_inlineVerseNote', styleRule);
+    }
+}

@@ -478,20 +478,23 @@ function centerNavigationAndOtherSettings(vh){
 let refNavMainBtns
 if (document.body.matches('#homepage')) {
     document.addEventListener('keydown',navigationByArrowKeys)
-    refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
+    refNavMainBtns=[togglenavbtn,biblenavigation,bibles,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,comparewindowBtn,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
     
     togglenavbtn.focus()
+    document.addEventListener('keydown',function(e){
+        /* CTRL+SHIFT+D */
+        if (e.altKey && e.code=='KeyZ') {
+            detachInlineVerseNote()
+        }
+    })
 }
 function navigationByArrowKeys(e){
-    // console.log(e.keyCode)
-    if(e.keyCode==17){if(e.keyCode==16){console.log('TRUE')}}
-
+    if(document.activeElement.matches('input')){return}
     /* TOGGLE REF_NAV WITH CTRL+SHIFT+Z */
     if (e.ctrlKey && e.shiftKey && e.keyCode==90) {
         hideRefNav(null,app_settings);
     }
     
-    if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     if(!e.keyCode==(13|32|36|37|38|39|40)){return}
     let up_key=0,down_key=0,left_key=0,right_key=0,enter_key=0,spacebar_key=0,home_key=0;
     // Array of buttons in order of navigation

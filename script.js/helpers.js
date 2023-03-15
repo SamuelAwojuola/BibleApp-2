@@ -628,7 +628,14 @@ function crfnnote_DIV(vHolder){
     const tskBtn = '<button class="buttons verse_crossref_button">TSK</button>';
     // const noteBtn = '<button class="buttons verse_notes_button">Note</button>';
     const noteBtn = '';
-    crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+    
+    if (vHolder && crossReferences_fullName[vHolder.querySelector('code[ref]').getAttribute('ref').replace(/(\w)\s([0-9]+)/g, '$1.$2').replace(/:/g, '.')]) {
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+    } else if (vHolder){
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns" title="Not Crossreferenced"><button class="verse_crossref_button" style="display:none;">TSK</button>${noteBtn}<i style="font-size:0.55em;color:red;">Not Crossreferenced</i></div>`;
+    } else {
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+    }
     // if(vHolder){vHolder.classList.add('verse');}
     return crfnnote_DIV
 }
@@ -980,4 +987,37 @@ function appendMarkersToSideBar(){
             }
         })
     }
+}
+
+/* SCRIPTURE COMPARE WINDOW */
+function fill_Compareverse(x){
+    const x_p = x.parentElement;
+    const x_input = x_p.querySelector('.verses_input');
+    const ref = x_input.value.replace(/\s+/ig, ' ').replace(/\s*([:;,.-])\s*/ig, '$1');
+    x_input.value = ref;
+    x_p.nextElementSibling.innerHTML="";
+    const vHolder = getCrossReference(ref);
+    /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
+    transliterateAllStoredWords(vHolder)
+    if(crossRefinScriptureTooltip_check.checked){
+        vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{
+            const tskHolder=crfnnote_DIV(spanVerse);
+            // tskHolder.classList.add('displaynone');
+            spanVerse.append(tskHolder);
+        });
+    }
+    x_p.nextElementSibling.append(vHolder)
+}
+function add_verseCompColumn(x){
+    let scriptureCompare_columns = elmAhasElmOfClassBasAncestor(x,'.scriptureCompare_columns');
+    let newCompareColumn = createNewElement('DIV', '.scriptureCompare_columns');
+    newCompareColumn.innerHTML = `<div class="input_n_btn"><input class="verses_input"></input><button onclick="fill_Compareverse(this)">GO</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
+    <div class="compare_verses"></div>`;
+    insertElmAafterElmB(newCompareColumn, scriptureCompare_columns)
+}
+function delete_verseCompColumn(x){
+    let scriptureCompare_columns = elmAhasElmOfClassBasAncestor(x,'.scriptureCompare_columns');
+    if(scriptureCompare_columns_holder.querySelectorAll('.scriptureCompare_columns').length>1){
+        scriptureCompare_columns.remove()
+    } else {scriptureCompare_columns.querySelector('.compare_verses').innerHTML='';}
 }

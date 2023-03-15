@@ -278,8 +278,10 @@ document.addEventListener('keydown', showEnglishTranslationOfHGtransliteration);
 /* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
 /* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/ BOOK MARKS /\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
 /* \/\/\/\\/\/\/\/\/\/\\/\/\/\/\/\/\/\//\/\/\/\/\/\/\/\/\/\/\/\/\/\\/\/\/\ */
-pagemaster.addEventListener("dblclick",highlight_N_bookmark_verse);
-bookmarks_holder.addEventListener("click",getBookmarkRef)
+if(document.body.matches('#homepage')){
+    pagemaster.addEventListener("dblclick",highlight_N_bookmark_verse);
+    bookmarks_holder.addEventListener("click",getBookmarkRef)
+}
 let bookMarkedVersesArr=[];
 function highlight_N_bookmark_verse(e){
     if(e.target.matches('.verse') && e.target.parentElement.matches('.vmultiple:not(.v_dblclckd)')){
@@ -296,7 +298,7 @@ function highlight_N_bookmark_verse(e){
         bookmark_content.prepend(newBookMark);
         bookMarkedVersesArr.push(vref);
         setItemInLocalStorage('bookmarks',bookMarkedVersesArr)
-        bookmarks_holder.classList.remove('displaynone');
+        // bookmarks_holder.classList.remove('displaynone');
     } else if(e.target.matches('.verse') && e.target.parentElement.matches('.v_dblclckd')){
         e.target.parentElement.classList.remove('v_dblclckd');
         /* **************** */
@@ -306,9 +308,9 @@ function highlight_N_bookmark_verse(e){
         bookmark_content.querySelector(`[ref="${vref}"]`).remove();
         bookMarkedVersesArr.splice(bookMarkedVersesArr.indexOf(vref),1);
         setItemInLocalStorage('bookmarks',bookMarkedVersesArr);
-        if(bookMarkedVersesArr.length==0){
-            bookmarks_holder.classList.add('displaynone');
-        }
+        // if(bookMarkedVersesArr.length==0){
+        //     bookmarks_holder.classList.add('displaynone');
+        // }
     }
 }
 function getBookmarkRef(e){

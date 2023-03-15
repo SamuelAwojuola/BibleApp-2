@@ -68,13 +68,8 @@ function add_tooltipContextMenu(e) {
                 /* ||||||||||||||||||||||| */
                 if (elmAhasElmOfClassBasAncestor(e.target, '.verse_note')) {
                     eParent = elmAhasElmOfClassBasAncestor(e.target, '.verse_note').querySelector('.text_content');
-                    if (!eParent.querySelector('#context_menu')) {
-                        //move the #context_menu from #main to #searchPreviewFixed
-                        let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
-                        document.querySelector('#context_menu').remove()
-                        eParent.append(clonedContextMenu)
-                        clonedContextMenu.addEventListener("click", codeElmRefClick)
-                    }
+                    //move the #context_menu from #main to #searchPreviewFixed
+                    innerFunc_get_eParent()
                 }
                 /* ||||||||||||||||||| */
                 /* ||Append to verse|| */
@@ -87,9 +82,7 @@ function add_tooltipContextMenu(e) {
                     if (!eParent.querySelector('#context_menu') || main.querySelector('.verse_note #context_menu')) {
                         //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
                         //move the #context_menu from #searchPreviewFixed to #main
-                        let clonedContextMenu = document.querySelector('#context_menu').cloneNode(true);
-                        document.querySelector('#context_menu').remove()
-                        main.append(clonedContextMenu)
+                        main.append(innerFunc_get_eParent())
                     }
                 }
                 /* ||||||||||||||||||||||||||||||||| */
@@ -100,9 +93,7 @@ function add_tooltipContextMenu(e) {
                     if (!searchPreviewWindowFixed.querySelector('#context_menu')) {
                         // if the #context_menu is not in #searchPreviewFixed, then it must be in #main 
                         // move the #context_menu from #main to #searchPreviewFixed
-                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
-                        pagemaster.querySelector('#context_menu').remove()
-                        searchPreviewFixed.append(clonedContextMenu)
+                        searchPreviewFixed.append(innerFunc_get_eParent())
                     }
                 }
                 /* ||||||||||||||||||||||||||||||||||| */
@@ -110,26 +101,32 @@ function add_tooltipContextMenu(e) {
                 /* ||||||||||||||||||||||||||||||||||| */
                 else if (elmAhasElmOfClassBasAncestor(e.target, '#versenote_totheright')) {
                     eParent = elmAhasElmOfClassBasAncestor(e.target, '#versenote_totheright');
-                    if (!eParent.querySelector('#context_menu')) {
-                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
-                        pagemaster.querySelector('#context_menu').remove()
-                        eParent.append(clonedContextMenu)
-                        clonedContextMenu.addEventListener("click", codeElmRefClick)
-                    }
+                    innerFunc_get_eParent()
                 }
                 /* |||||||||||||||||||||||||||||| */
                 /* ||Append to #win2_noteholder|| */
                 /* |||||||||||||||||||||||||||||| */
                 else if (elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder')) {
                     eParent = elmAhasElmOfClassBasAncestor(e.target, '.win2_noteholder');
-                    if (!eParent.querySelector('#context_menu')) {
-                        let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
-                        pagemaster.querySelector('#context_menu').remove()
-                        eParent.append(clonedContextMenu)
-                        clonedContextMenu.addEventListener("click", codeElmRefClick)
-                    }
+                    innerFunc_get_eParent()
+                }
+                /* ||||||||||||||||||||||||||||||||||||| */
+                /* ||Append to #scriptureCompareWindow|| */
+                /* ||||||||||||||||||||||||||||||||||||| */
+                else if (elmAhasElmOfClassBasAncestor(e.target, '#scriptureCompareWindow')) {
+                    eParent = elmAhasElmOfClassBasAncestor(e.target, '#scriptureCompareWindow');
+                    innerFunc_get_eParent()
                 }
                 
+            }
+            function innerFunc_get_eParent(){
+                if (!eParent.querySelector('#context_menu')) {
+                    let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
+                    pagemaster.querySelector('#context_menu').remove();
+                    eParent.append(clonedContextMenu);
+                    clonedContextMenu.addEventListener("click", codeElmRefClick);
+                    return clonedContextMenu
+                }
             }
             get_eParent()
             

@@ -683,7 +683,8 @@ async function generateVmarkerReport(allorOne,appendVersesToSearchWindow,markerN
                         let vHolder = getCrossReference(ref);
                         searchPreviewFixed.append(vHolder);
                         let allSearchVerses = searchPreviewFixed.querySelectorAll('span.verse');
-                        allSearchVerses[allSearchVerses.length-1].append(crfnnote_DIV());
+                        const vsInAllSearchVerses = allSearchVerses[allSearchVerses.length-1];
+                        vsInAllSearchVerses.append(crfnnote_DIV());
                     })
                     if(!keepsearchopen.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}
                     // Empty the window where they will be appended (using the search window for now)

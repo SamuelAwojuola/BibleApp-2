@@ -166,8 +166,8 @@ function runWordSearch() {
         
         /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
         let allVsInFrag = appendHere.querySelectorAll('.verse')
-        let numOfVsInFrag = allVsInFrag.length;
-        allVsInFrag[numOfVsInFrag-1].append(crfnnote_DIV())
+        let verseInFrag = allVsInFrag[allVsInFrag.length-1];
+        verseInFrag.append(crfnnote_DIV(verseInFrag))
     }
 
     

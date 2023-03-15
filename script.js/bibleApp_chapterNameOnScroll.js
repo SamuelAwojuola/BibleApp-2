@@ -208,6 +208,7 @@ function checkVisible(elm) {
 
 /* GO TO PREVIOUS / NEXT CHAPTER */
 function goToNextPrevChapter(pn){
+    if(document.activeElement.matches('.verse_note .text_content, .verse_note .text_content *')){return}
     if(pn.nodeType==undefined && pn.ctrlKey && !pn.shiftKey && !pn.altKey){
         // "pn" may be a string (+/-) or a windows key press event
         if(pn.keyCode==38){pn='-'}

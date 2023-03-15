@@ -66,7 +66,6 @@ function showVerseNote(e, x) {
 function appendVerseNote(e) {
     let eTarget=e.target, siblingVersenote, masterVerseHolder;
     if (eTarget.matches('.vmultiple, .vmultiple *')) {
-        console.log('YES');
         //Get reference of clicked verse
         if(eTarget.matches('.vmultiple')){
             masterVerseHolder = eTarget;
@@ -75,7 +74,6 @@ function appendVerseNote(e) {
         }
         clickedVerseRef = masterVerseHolder.querySelector('[ref]').getAttribute('ref');
     } else {
-        console.log('NO');
         //Get reference of clicked verse
         clickedVerseRef = elmAhasElmOfClassBasAncestor(eTarget, '[ref]').getAttribute('ref');
         masterVerseHolder = elmAhasElmOfClassBasAncestor(eTarget, '.vmultiple');
@@ -446,6 +444,9 @@ function detachVersenoteToTheRight(){
     }
 }
 function detachInlineVerseNote(){
+    /* ****************************** */
+    /* UN-DETACH THE INLINE-VERSENOTE */
+    /* ****************************** */
     if(document.head.querySelector('#detached_inlineVerseNote')){
         notedetach_check.checked = false;
         detached_inlineVerseNote.remove();
@@ -454,13 +455,17 @@ function detachInlineVerseNote(){
             if(nrh.matches('.sld_up')){
                 nrh.removeAttribute('style')
                 nrh.classList.remove('sld_up');
-                // nrh.style.display='none';
+                nrh.style.display='none';
                 // slideUpDown(nrh,'show')
                 slideUpDown(nrh,'hide')
             }
             nrh.querySelector('.notes_ref_head').innerHTML='';
         })
-    } else {
+    }
+    /* *************************** */
+    /* DETACH THE INLINE-VERSENOTE */
+    /* *************************** */
+    else {
         notedetach_check.checked=true;
         if(mrn=document.querySelector('.most_recent_note')){mrn.classList.add('detached_note')}
         main.querySelectorAll('.notes_ref_head').forEach(nrh=>{

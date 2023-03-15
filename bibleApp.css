@@ -14,7 +14,7 @@
     --ref-hlt: #dde3db;
     --searchedword-hlt: maroon;
     --ref-img: url(images/background.jpg);
-    --ref-img: #D7D5D1;
+    /* --ref-img: #D7D5D1; */
     --img-cancel: url(images/cancel-svgrepo-com.svg);
     --img-chkbox:url(images/check-box-svgrepo-com.svg);
     --ref-paper: url(images/IyEMTp.jpg);
@@ -132,17 +132,12 @@ body>svg {
     font-size: var(--fontsize-main);
     overflow-y: hidden;
 }
-#versenote_totheright.showingNote {
-    display: flex;
-    flex-direction: column;
-    max-width: 33vw;
-    box-shadow: inset 1px 0px var(--black);
-}
-#versenote_totheright #versenote_totheright_div1 {
+#versenote_totheright #versenote_totheright_div1, .notes_ref_head {
     font-size: 1.5em;
     box-shadow: 0 5px 5px var(--shadow-color);
     padding-left: 0.5rem;
     padding-right: 0.5rem;
+    width: 100%;
 }
 #versenote_totheright #versenote_totheright_div2 {
     position: relative;
@@ -169,6 +164,13 @@ body>svg {
 #versenote_totheright .note_closebtn_x,#btns_vtotheright {
     top:0;
     right: 0;
+}
+#btns_compareWindow_totheright {
+    position: relative;
+    display: flex;
+}
+#btns_compareWindow_totheright button {
+    min-width: 2em;
 }
 #versenote_totheright .context_menu,#versenote_totheright code {
     font-size: var(--fontsize-main)!important;
@@ -504,7 +506,8 @@ span.vmultiple.noted code #verse_notes_button {
     background-color: burlywood!important;
 }
 .cmenu_closebtn,
-.note_closebtn_x {
+.note_closebtn_x,
+.compwin_closebtn_x {
     background: var(--img-cancel) center no-repeat;
 }
 .note_closebtn_x {
@@ -762,7 +765,8 @@ button {
 #context_menu div{z-index: 2;}
 #context_menu[strnum] hr:not(:last-child){margin-top:0}
 #context_menu hr:last-child{margin-bottom:0}
-#context_menu .verse_crossref_button{font-size: 0.7em;}
+/* #context_menu .verse_crossref_button{font-size: 0.7em;} */
+.verse_crossref_button{font-size: 0.55em;}
 #context_menu:not([strnum]) hr {
     border: 0!important;
     height: 1px!important;
@@ -1959,7 +1963,7 @@ input:focus {
 .crfnnote_btns::before{
     display: block;
     content: '';
-    background-color: var(--verse-higlight);
+    /* background-color: var(--verse-higlight); */
     height: 100%;
     width: 100%;
     position: absolute;
@@ -2548,10 +2552,13 @@ button#topbartogglebtn:focus {
 .righttemp{
     box-shadow: inset -3px 0 red,inset 0 3px red,inset 0 -3px red!important;
 }
-
-#bookmarks_holder {
-    /* position: relative; */
+#otherButtonsInHead{
     margin-left: auto;
+    display: flex;
+}
+#bookmarks_holder{
+    /* position: relative; */
+    /* margin-left: auto; */
     margin-right: 0.5em;
     cursor: pointer;
 }
@@ -2565,6 +2572,9 @@ button#topbartogglebtn:focus {
     box-shadow: 4px 4px 4px 0px rgba(0,0,0,0.2);
     border: 1px solid var(--shadow-color);
     z-index: 1;
+}
+#bookmark_content:empty::before {
+    content: "No Bookmark";
 }
 #bookmarks_holder #bookmark_content.displayblock {
     display: block;
@@ -2616,4 +2626,105 @@ button#topbartogglebtn:focus {
     overflow:visible;
     transform:rotate(-180deg);
     z-index: 1000;
+}
+
+
+#main.detached_inlineversenote .note_temp_holder {
+    display: contents;
+}
+#main.detached_inlineversenote .verse_note,
+#main.detached_inlineversenote .note_temp_holder {
+    z-index: 20!important;
+}
+#main.detached_inlineversenote .verse_note:not(.detached_note) {
+    display: none;
+    z-index: -1!important;
+}
+#scriptureCompareWindow {
+    position: relative;
+    background-color: var(--buttons);
+    font-size: var(--fontsize-main);
+    overflow-y: hidden;
+}
+#scriptureCompareWindow.showingNote,
+#versenote_totheright.showingNote {
+    display: flex;
+    flex-direction: column;
+    max-width: 33vw;
+    box-shadow: inset 1px 0px var(--black);
+}
+#scriptureCompareWindow,
+#scriptureCompareWindow.showingNote{
+    max-width: 80vw;
+    box-shadow:0 5px 5px 1px var(--shadow-color)!important;
+    border-radius: 2.5px;
+    z-index:10;
+}
+#scriptureCompareWindow #scriptureCompare_columns_holder {
+    display: flex;
+    height: 100%;
+    padding-bottom: 1em;
+}
+#scriptureCompareWindow .scriptureCompare_columns {
+    display: flex;
+    min-width: 10em;
+    flex-direction: column;
+}
+#scriptureCompareWindow .scriptureCompare_columns:last-child  {
+    margin-right: 0.5em;
+}
+#scriptureCompareWindow .scriptureCompare_columns {
+    margin-left: 0.5em;
+    max-width: 25vw;
+}
+#scriptureCompareWindow .scriptureCompare_columns .compare_verses {
+    height: 100%;
+    box-shadow: 0  5px 5px -5px grey;
+    padding-left: 0.25em;
+    padding-right: 0.5em;
+    overflow-y: scroll;
+}
+#scriptureCompareWindow .scriptureCompare_columns input {
+    width: 100%!important;
+    height: 100%!important;
+}
+#scriptureCompareWindow .input_n_btn {
+    display: flex;
+}
+#scriptureCompareWindow .input_n_btn * {
+    border: 1px solid saddlebrown!important;
+    min-width: 1.2em;
+}
+#scriptureCompareWindow .input_n_btn *:not(:first-child) {
+    border-left: none!important;
+}
+#scriptureCompareWindow .input_n_btn *:first-child {
+    border-top-left-radius:  5px!important;
+    border-bottom-left-radius:  5px!important;
+}
+#scriptureCompareWindow .input_n_btn *:last-child {
+    border-top-right-radius:  5px!important;
+    border-bottom-right-radius: 5px!important;
+}
+#scriptureCompareWindow #btns_compareWindow_totheright.closebtn {
+    position: relative;
+    margin-top: 0;
+    width: 100%;
+    height: 1em;
+    border:none;
+    box-shadow:none;
+    z-index: 10;
+}
+#scriptureCompareWindow #btns_compareWindow_totheright .compwin_closebtn_x {
+    margin-left: auto;
+    height: 1em!important;
+    width: 1em!important;
+    background: var(--img-cancel) center no-repeat;
+}
+#scriptureCompareWindow .verse:not(code) {
+    font-size: var(--fontsize-scripture);
+}
+#scriptureCompareWindow code {
+    font-size: var(--fontsize-ref);
+    font-weight: bold;
 }

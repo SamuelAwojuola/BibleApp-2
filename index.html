@@ -42,10 +42,14 @@
             </div>
             <div id="bibleversions_btns">
             </div>
-            <div id="bookmarks_holder" class="displaynone">
+            <div id="otherButtonsInHead">
+              <button id="scriptureCompareWinDetacher_inHeader" onclick="hideRefNav(null,scriptureCompareWindow)" title="detach from rightside">Compare</button>
+              <button id="noteDetacher_inHeader" onclick="detachInlineVerseNote(),checkUncheck(notedetach_check)" title="detach inline versenote"><input type="checkbox" id="notedetach_check">N-D</button>
+            </div>
+            <div id="bookmarks_holder">
               <div id="bookmark_head">
-                <button id="noteDetacher_inHeader" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check,notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check">N-D</button>
-                Bookmarks</div>
+                Bookmarks
+              </div>
               <ol id="bookmark_content"></ol>
             </div>
           </div>
@@ -93,11 +97,13 @@
         <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
         <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" ></button><!-- &#9881; 🛠-->
         
-        <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',app_settings)"><img src="images/arrow-right-angle-svgrepo-com.svg" alt=""></button>
-        
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
         <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
-
+        
+        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side">Cmp</button>
+        
+        <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',app_settings)"><img src="images/arrow-right-angle-svgrepo-com.svg" alt=""></button>
+        
       </div>
       <div id="refnav_col2">
         <div id="bible_nav" class="slideoutofview displaynone">
@@ -315,11 +321,13 @@
             <div class="settingssectionheadings">Shortcut Keys</div>
             <ul>
               <li>Alt + T: Toggle Showing translated word when the displayed word is the Lemma Transliteration</li>
+              <li>Alt + Z: Detach Versnote and Center it on the page.</li>
               <li>Alt + T: Toggle Showing Hebrew/Greek Lemma Transliteration</li>
               <li>Alt + H: Toggle highlighting hovered version</li>
               <li>Ctrl + Up Arrow Key: Go to previous chapter</li>
               <li>Ctrl + Down Arrow Key: Go to next chapter</li>
-              <li>Ctrl + Shift + f: Search for highlighted text</li>
+              <li>Ctrl + Shift + F: Search for highlighted text</li>
+              <li>Ctrl + Shift + Z: Toggle Side Nav <i>does not work if any input has the focus</i>.</li>
               <li>Escape: Toggle Showing side and top bar and their contents</li>
             </ul>
           </div>
@@ -364,6 +372,19 @@
           </div>
           <div id="strongsdefinition_text"></div>
         </div>
+        <!-- SCRIPTURE COMPARE WINDOW -->
+        <div id="scriptureCompareWindow" class="showingNote slideoutofview displaynone">
+          <div id="btns_compareWindow_totheright" class="closebtn">
+            <button class="compwin_closebtn_x" onclick="hideRefNav('hide',scriptureCompareWindow), scriptureCompareWindow_div2.innerHTML=''"></button>
+          </div>
+          <div id="scriptureCompare_columns_holder">
+            <div class="scriptureCompare_columns">
+              <div class="input_n_btn"><input class="verses_input"></input><button onclick="fill_Compareverse(this)">GO</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
+              <div class="compare_verses"></div>
+            </div>
+          </div>
+        </div>
+        
       </div>
     </nav>
     
@@ -383,20 +404,21 @@
         <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
       </div>
     </div>
+    <!-- SIDE VERSENOTES -->
     <div id="versenote_totheright">
       <div id="btns_vtotheright" class="closebtn">
         <button class="note_closebtn_x" onclick="versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML=''"></button>
-        <button class="note_closebtn_x note_closebtn_d" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check,notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check_2">D</button>
+        <button class="note_closebtn_x note_closebtn_d" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check_2">D</button>
       </div>
       <div id="versenote_totheright_div1"></div>
       <div id="versenote_totheright_div2"></div>
-    </div>
+    </div>    
   </div>
   <div id="singleverse_compare_menu" class="displaynone"></div>
   <div name="verse_note" id="verse_note" class="verse_note">
   
     <!--element to edit-->
-    <!--<div id="editor" data-placeholder="Go on, start editing..."></div>-->
+    <div class="notes_ref_head"></div>
   
     <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
     <div class="save_edit_btns_holder">

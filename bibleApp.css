@@ -158,7 +158,10 @@ body>svg {
 }
 #btns_vtotheright {position: absolute;display: flex;flex-direction: row-reverse;}
 .darkmode #btns_vtotheright button {background-color:black!important;border:whitesmoke!important;}
-#noteDetacher_inHeader {margin-right:1em;}
+#noteDetacher_inHeader {
+    margin-right:1em;
+    padding-left:1.5em;
+}
 #btns_vtotheright .note_closebtn_x {position: relative;}
 #btns_vtotheright .note_closebtn_d {background: none;}
 #versenote_totheright .note_closebtn_x,#btns_vtotheright {
@@ -2543,9 +2546,9 @@ button#topbartogglebtn:focus {
 button#topbartogglebtn:focus {
     background-color: peachpuff!important;
 }
-#app_settings:focus-within{
+/* #app_settings:focus-within{
     overflow: visible!important;
-}
+} */
 .darkmode #app_settings button:focus,
 .darkmode #top_horizontal_bar_buttons button:focus,
 .darkmode #bottomleft_btns button:focus,
@@ -2570,7 +2573,20 @@ button#topbartogglebtn:focus {
 #otherButtonsInHead #scriptureCompareWinDetacher_inHeader {
     display: flex;
     max-width: 2em;
+    max-height: 2em;
     padding: 5px;
+}
+#otherButtonsInHead button {
+    border-radius: 5px;
+}
+.darkmode #otherButtonsInHead button {
+    border: 2px solid grey!important;
+}
+.darkmode #otherButtonsInHead button:not(:first-of-type) {
+    border-left: none!important;
+}
+.darkmode #otherButtonsInHead #scriptureCompareWinDetacher_inHeader {
+    max-height: none;
 }
 #otherButtonsInHead img {
     width: 120%;

@@ -148,9 +148,6 @@
     #bookmarks_holder {
         margin-left: auto;
     }
-    #noteDetacher_inHeader {
-        padding-left: 1.2em;
-    }
 }
 @media screen and (max-device-width: 400px) {
      :root {

@@ -91,7 +91,7 @@
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->
           &#128218;</button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
-        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
+        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side" toopen="scriptureCompareWindow"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
         
         <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" style="transform:scale(1.3)"></button>
         </button>
@@ -174,6 +174,18 @@
           <div class="" id="eng2grk_sup">
             <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
             <table id="eng2grk_sup_table">
+              <tr style="border-top:1px solid var(--black)">
+                <td>Hovered Version</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="hl_hoveredversion" onclick="versionHighlighting_ON_OFF()" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
+                </td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--black)">
+                <td>Scroll TO Verse</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="scrollToVerseBtn" onclick="checkUncheck(scrollToVerseBtn_check)" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
+                </td>
+              </tr>
               <tr>
                 <td>English</td>
                 <td>
@@ -193,35 +205,23 @@
                 </td>
               </tr>
               <tr>
-                <td>Hovered Version</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="hl_hoveredversion" onclick="versionHighlighting_ON_OFF()" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Scroll TO Verse</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="scrollToVerseBtn" onclick="checkUncheck(scrollToVerseBtn_check)" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
-                </td>
-              </tr>
-              <tr>
                 <td>CrossRefs In Tooltip</td>
                 <td>
                   <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">TSK/CRef</button>
                 </td>
               </tr>
-              <tr>
-                <td>Center Navigations & Settings</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="center_settings_h" onclick="centerNavigationAndOtherSettings('h')"  title="Center Settings Horizontally"><input type="checkbox" id="center_settings_h_check" name="center_settings_h_check" value="center_settings_h_check">Horizontally</button>
-                  <button class="eng2grk_sup_btns" id="center_settings_v" onclick="centerNavigationAndOtherSettings('v')"  title="Center Settings Vertically"><input type="checkbox" id="center_settings_v_check" name="center_settings_v_check" value="center_settings_v_check">Vertically</button>
-                </td>
-              </tr>
-              <tr>
+              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
                 <td>VerseNote To The Right</td>
                 <td>
                   <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
                   <button class="eng2grk_sup_btns" id="detach_versenote_totheright" onclick="checkUncheck(detach_versenote_totheright_check),detachVersenoteToTheRight()"><input type="checkbox" id="detach_versenote_totheright_check" name="detach_versenote_totheright_check">Note Window Detached</button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
+                <td>Center Navigations & Settings</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="center_settings_h" onclick="centerNavigationAndOtherSettings('h')"  title="Center Settings Horizontally"><input type="checkbox" id="center_settings_h_check" name="center_settings_h_check" value="center_settings_h_check">Horizontally</button>
+                  <button class="eng2grk_sup_btns" id="center_settings_v" onclick="centerNavigationAndOtherSettings('v')"  title="Center Settings Vertically"><input type="checkbox" id="center_settings_v_check" name="center_settings_v_check" value="center_settings_v_check">Vertically</button>
                 </td>
               </tr>
               <tr>

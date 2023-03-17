@@ -118,8 +118,32 @@ function changeFontSize(targetgroup, plusMinus) {
     documentROOT.style.setProperty(targ, currentSize);
     styleLocalstorageSet()
 }
-function changeBackGround(newColor,targetgroup='--ref-img') {
-    documentROOT.style.setProperty(targetgroup, newColor);
+function changeBackGround(defaultOrNot,newColor,targetgroup='--ref-img') {
+    /* To Apply Color to Multiple CSS Variables */
+    let brightnessAmt=0.1; //-1 <-> 1 (0.42==42%)
+    let newRule='';
+    for (let i = 2; i < arguments.length; i++) {
+        /* Default Should Not Reset this  */
+        if(document.body.matches('.darkmode') && defaultOrNot && document.head.querySelector('#darkmode')) {
+            document.head.querySelector('#darkmode').remove();
+        }
+        else if(document.body.matches('.darkmode') && !defaultOrNot){
+            if (arguments[i]=='--ref-img') {
+                arguments[i]=='--darkmode-bg1color';
+                newRule=`${newRule}--darkmode-bg1color:${newColor};`;
+            }
+            if(arguments[i]=='--buttons'){
+                newRule=`${newRule}${arguments[i]}:${pSBC(0.01,newColor)};`;
+            }
+            if(i==arguments.length-1){createNewStyleSheetandRule('darkmode', `.darkmode{${newRule}}`)}
+        } else {
+            if(arguments[i]=='--buttons'){
+                documentROOT.style.setProperty(arguments[i], pSBC(brightnessAmt,newColor));
+            } else {
+                    documentROOT.style.setProperty(arguments[i], newColor);
+            }
+        }
+    }
     styleLocalstorageSet()
 }
 
@@ -134,6 +158,7 @@ function styleLocalstorageSet() {
         ["--fontsize-refnsearch", rootStyles.getPropertyValue('--fontsize-refnsearch')],
         ["--fontsize-main", rootStyles.getPropertyValue('--fontsize-main')],
         ["--fontsize-versionsbuttons", rootStyles.getPropertyValue('--fontsize-versionsbuttons')],
+        ["--buttons", rootStyles.getPropertyValue('--buttons')],
         ["--width-sidebuttons", rootStyles.getPropertyValue('--width-sidebuttons')]
     ]
     setItemInLocalStorage(fontsizes.value, variableArray);

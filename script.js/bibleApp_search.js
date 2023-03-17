@@ -90,11 +90,17 @@ function arrayOfWordsToSearchFor(w) {
         let styleRule = '';
         searchStrongsNumArray.forEach((x,i)=>{styleRule=`${styleRule}#searchPreviewFixed [strnum*="${x}"${caseSensitivity}],`});
         non_StrongsNumArray.forEach((x,i)=>{styleRule=`${styleRule}#searchPreviewFixed [translation*="${x}"${caseSensitivity}],`});
-        //Remove last comma in "styleRule"
-        styleRule = styleRule.substring(0, styleRule.length - 1);
+        let styleRule2 = styleRule.replace(/,/g,':hover,');
         styleRule = `${styleRule}{
-            font-style:italic;color:var(--searchedword-hlt);border-bottom: 3px solid orange!important;
+            font-style:italic;color:var(--searchedword-hlt);
+            /*border-bottom: 3px solid orange!important;*/
+            box-shadow: inset 0 -4px orange;
+        }${styleRule2}{
+            box-shadow: inset 0 -4px orange,
+                0px 0px 0px 1px grey!important;
         }`
+        //Remove last comma (', {' to '{') in "styleRule"
+        styleRule = styleRule.replace(/,\s*\{/g,'{')
         createNewStyleSheetandRule(styleID, styleRule)
     }
     createStyleRuleForSearchedWords()

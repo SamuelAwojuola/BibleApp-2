@@ -156,10 +156,13 @@ body>svg {
     box-shadow:none;
     z-index: 10;
 }
-#btns_vtotheright {position: absolute;display: flex;flex-direction: row-reverse;}
-.darkmode #btns_vtotheright button {background-color:black!important;border:whitesmoke!important;}
+#btns_vtotheright {
+    position: absolute;
+    display: flex;
+    flex-direction: row-reverse;
+}
 #noteDetacher_inHeader {
-    margin-right:1em;
+    margin-right:0.5em;
     padding-left:1.5em;
 }
 #btns_vtotheright .note_closebtn_x {position: relative;}
@@ -290,9 +293,6 @@ span.vmultiple.noted code #verse_notes_button {
     background: var(--white);
     color: var(--green);
 }
-.darkmode span.vmultiple.noted code #verse_notes_button {
-    background: var(--brown);
-}
 #show_crossref_comments{
     position: absolute;
     left: -8%;
@@ -304,14 +304,6 @@ span.vmultiple.noted code #verse_notes_button {
     border-radius: 2px;
     box-shadow: 2px 2px 0px 0px var(--shadow-color);
 }
-.darkmode #show_crossref_comments {
-    border: 1px solid white!important;
-}
-.darkmode #show_crossref_comments button{
-    border: 1px solid whitesmoke!important;
-    color: white!important;
-    background-color: darkcyan;
-}
 .vmultiple:not([class*=marker_]) #verse_marker_button,
 .vmultiple:not(.noted) #verse_notes_button {
     background-color: none!important;
@@ -319,9 +311,6 @@ span.vmultiple.noted code #verse_notes_button {
 }
 .vmultiple[class*=marker_] #verse_marker_button {
     background-color: rgb(251, 216, 151);
-}
-.darkmode .vmultiple[class*=marker_] #verse_marker_button {
-    background-color: burlywood!important;
 }
 #show_crossref_comments button{
     flex: 1 1 40%;
@@ -365,9 +354,6 @@ span.vmultiple.noted code #verse_notes_button {
     line-height: auto;
     opacity: 1;
     /* z-index: 2; */
-}
-.darkmode .crossrefs {
-    background: transparent;
 }
 .crfnnote {
     margin-bottom: 5px;
@@ -497,9 +483,6 @@ span.vmultiple.noted code #verse_notes_button {
     min-width: 1em;
     height: 1em;
 }
-.darkmode #cmenu_navnclose_btns button {
-    color: black !important;
-}
 #cmenu_navnclose_btns button {
     border-radius: 2px;
     font-weight: bold;
@@ -511,7 +494,9 @@ span.vmultiple.noted code #verse_notes_button {
 .cmenu_closebtn,
 .note_closebtn_x,
 .compwin_closebtn_x {
-    background: var(--img-cancel) center no-repeat;
+    /* background: var(--img-cancel) center no-repeat; */
+    background: url(images/cancel-svgrepo-com.svg) center no-repeat;
+
 }
 .note_closebtn_x {
     position:absolute;
@@ -924,52 +909,9 @@ span.vmultiple:hover{
     transition: 250ms ease-in;
     z-index: 4;
 }
-/* HIGHLIGHT VERSION */
-/* :has(.v_KJV:hover) span.v_KJV,
-:has(.v_ESV:hover) span.v_ESV,
-:has(.v_NET:hover) span.v_NET,
-:has(.v_ABP-en:hover) span.v_ABP-en,
-:has(.v_NIV’84:hover) span.v_NIV’84,
-:has(.v_accented:hover) span.v_accented,
-:has(.v_ABP-gr:hover) span.v_ABP-gr {
-    background-color: var(--whitesmoke);
-    box-shadow: inset 2px 0px 0px 0px var(--grey),
-    inset -2px 0px 0px 0px var(--grey);
-    transition: 250ms ease-in;
-}
-:has(.v_KJV:hover) .chptverses .vmultiple:first-child span.v_KJV,
-:has(.v_ESV:hover) .chptverses .vmultiple:first-child span.v_ESV,
-:has(.v_NET:hover) .chptverses .vmultiple:first-child span.v_NET,
-:has(.v_ABP-en:hover) .chptverses .vmultiple:first-child span.v_ABP-en,
-:has(.v_NIV’84:hover) .chptverses .vmultiple:first-child span.v_NIV’84,
-:has(.v_accented:hover) .chptverses .vmultiple:first-child span.v_accented,
-:has(.v_ABP-gr:hover) .chptverses .vmultiple:first-child span.v_ABP-gr
-{
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    box-shadow: inset 0px 2px 0px 0px var(--grey),
-    inset 2px 0px 0px 0px var(--grey),
-    inset -2px 0px 0px 0px var(--grey);
-    transition: 250ms ease-in;
-}
-:has(.v_KJV:hover) .chptverses .vmultiple:last-child span.v_KJV,
-:has(.v_ESV:hover) .chptverses .vmultiple:last-child span.v_ESV,
-:has(.v_NET:hover) .chptverses .vmultiple:last-child span.v_NET,
-:has(.v_ABP-en:hover) .chptverses .vmultiple:last-child span.v_ABP-en,
-:has(.v_NIV’84:hover) .chptverses .vmultiple:last-child span.v_NIV’84,
-:has(.v_accented:hover) .chptverses .vmultiple:last-child span.v_accented,
-:has(.v_ABP-gr:hover) .chptverses .vmultiple:last-child span.v_ABP-gr
-{
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    box-shadow: inset 0px -2px 0px 0px var(--grey),
-    inset 2px 0px 0px 0px var(--grey),
-    inset -2px 0px 0px 0px var(--grey);
-    transition: 250ms ease-in;
-}*/
 .v_dblclckd .verse {
     background-color: var(--vhlt-hover);
-    border-radius: 10px;
+    border-radius: 2px;
     box-shadow: 0px 0px 0px 1px var(--grey);
 }
 span.translated:hover {
@@ -1128,7 +1070,9 @@ sup {
     flex: 1 1 75%;
 }
 #opensearch {display: none;}
-.bible_versions_heading, #bibleapp_versemarkers_settings{
+.bible_versions_heading,
+#bibleapp_versemarkers_settings,
+#biblenotes_nav_settings{
     box-shadow: 0 0.5px 0 var(--shadow-color);
     background-color: var(--whitesmoke);
     /* background-image: var(--ref-img); */
@@ -1136,25 +1080,28 @@ sup {
     font-weight: bold;
     text-align: center;
 }
-#bibleapp_versemarkers {
+#bibleapp_versemarkers,
+#bibleapp_available_notes {
     border-right: solid 2px;
     height: 100%;
     width: 15em;
     overflow-x: hidden;
 }
-
-#bibleapp_versemarkers details {
+#bibleapp_versemarkers details,
+#bibleapp_available_notes details.settings {
     border-bottom: 2.5px solid;
     padding-bottom: 0;
     box-shadow: 0 2px 5px var(--shadow-color);
     /* background-color: var(--whitesmoke); */
 }
-#bibleapp_versemarkers details > div {
+#bibleapp_versemarkers details > div,
+#bibleapp_available_notes details.settings > div {
     box-shadow: 0 2px 5px var(--shadow-color);
     margin: 0.5em;
     padding: 0.25em;
 }
-#bibleapp_versemarkers summary {
+#bibleapp_versemarkers summary,
+#bibleapp_available_notes summary#biblenotes_nav_settings {
     display: flex;
     justify-content: space-between;
     box-shadow: 0 2px 5px var(--shadow-color);
@@ -1163,10 +1110,12 @@ sup {
     height: 2em;
     padding-bottom: 0.3em;
 }
-#bibleapp_versemarkers summary .openCloseIconHolder {
+#bibleapp_versemarkers summary .openCloseIconHolder,
+#bibleapp_available_notes summary#biblenotes_nav_settings .openCloseIconHolder {
     height: 5em!important;
 }
-#bibleapp_versemarkers summary img {
+#bibleapp_versemarkers summary img,
+#bibleapp_available_notes summary#biblenotes_nav_settings img {
     width: 1.4em;
 }
 #bibleapp_versemarkers #otherbooks_versemarkers_list,
@@ -1455,12 +1404,6 @@ summary {
     position: relative;
     margin-right: 5px;
     margin-left: 5px;
-}
-.darkmode #searchPreviewFixed .chptheading:not(.dhid)::before {
-    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
-}
-.darkmode #searchPreviewFixed .chptheading.dhid::before {
-    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
 }
 #showonlysearchinput.active_button::before {
     content:'+';
@@ -1862,6 +1805,13 @@ border-right: var(--col2-border) solid auto!important;
 #bibleapp_available_notes details:hover > summary {
     background: var(--selection);
 }
+#bibleapp_available_notes details.settings summary+div {
+    display: flex!important;
+}
+#bibleapp_available_notes details.settings button {
+    border-radius: 5px!important;
+    border: 1px solid grey!important;
+}
 #togglenavbtn {
     /* font-size: calc(var(--fontsize-refnsearch) * 2.3)!important; */
     font-size: calc(var(--width-sidebuttons)*0.65)!important;
@@ -1988,157 +1938,7 @@ input:focus {
     flex-wrap: wrap;
 }
 
-/* DARKMODE SECTION *//* @media (prefers-color-scheme: dark) */
-.darkmode {
-    --verse-hover: transparent;
-    --ref-img:#202124;
-    --ref-img:#25262c;
-    --ref-img:#121212;
-    --whitesmoke:#202124;
-    --whitesmoke:#25262c;
-    --whitesmoke:#121212;
-    --vmultiple-hover: rgb(0, 13, 13);
-    --vhlt: rgb(0, 21, 21);
-    --vhlt2: rgb(0, 39, 39);
-    --selection: rgba(0, 255, 0, 0.6);
-    --selection: rgb(2 20 7);
-    --black: white;
-    --grey: rgb(22, 29, 24);
-    --searchedword-hlt: orange;
-    --whitish_noteContextMenu: rgb(18, 18, 18);
-    --versenote-contextmenu: rgb(18, 18, 18);
-    --verse-higlight:rgb(18, 18, 18);
-    --chpt:rgb(0, 25, 26);
-    --chpt:rgb(53, 42, 17);
-    --chpt2:rgb(0, 0, 0);
-    --vhlt3:rgb(10, 9, 12);
-    --vhlt3:rgb(8,4,0);
-    --buttons:rgb(0, 12, 12);
-    --buttons-txtcolor:rgb(245, 255, 251);
-    --buttons-txtcolor:#e8e6e3;
-    --buttons-txtcolor:#ffffff;
-    --darkmode-border:rgb(0, 78, 78);
-    --darkmode-border:#807e5880;
-    --darkmode-border-2:rgba(0, 132, 132, 0.779);
-    --darkmode-border-2:#62776d;
-    --darkmode-bg1color: #181a1b;
-    --img-cancel:url(images/cancel-svgrepo-com-DarkMode.svg);
-    --img-chkbox:url(images/check-box-svgrepo-com-DarkMode.svg);
-    --darkslategray:darkslategray;
-    --darkslategray:rgb(107, 84, 0);
-    --crossrefbackground:#8d6500;
-    --crossrefbackground:rgb(8,4,0);
-}
-.darkmode button, .darkmode input {
-    background-color: var(--vhlt);
-    background-color: var(--chpt2);
-    color: var(--buttons-txtcolor)!important;
-}
-.darkmode #strongsdefinitionwindow summary>div:first-of-type, .darkmode summary>div:first-of-type {
-    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
-    min-width: 1em;
-    height: 2em;
-    margin: 10px;
-}
-.darkmode #strongsdefinitionwindow details[open] > summary > div:first-of-type,
-.darkmode details[open] > summary > div:first-of-type {
-    background: url(images/white-arrow-down-svgrepo-com.svg) center no-repeat;
-}
-.darkmode #hidesearchparameters,
-.darkmode #showonlysearchinput,
-.darkmode .cmenu_closebtn,
-.darkmode .closebtn,
-.darkmode .note_closebtn,
-.darkmode #bibleapp_available_notes {
-    background-color: transparent!important;
-}
-.darkmode #searchparameters {
-    background: none;
-}
-.darkmode button+button {
-    border-left: none!important;
-}
-.darkmode #searchparameters button {
-    border-top: none!important;
-    border-bottom: none!important;
-}
-.darkmode #searchparameters * button:first-child {
-    border-left: none!important;
-}
-.darkmode #searchparameters * button:last-child {
-    border-right: none!important;
-}
-.darkmode button:hover .checkboxreplacement:has(input[type="checkbox"]):before {
-    background-color: transparent;
-    border: 1px solid white;
-    border-radius: 5px;
-}
-.darkmode button .checkboxreplacement:has(input[type="checkbox"]:checked):before {
-    background: var(--img-chkbox) center no-repeat;
-    background-color: var(--chpt);
-}
-.darkmode span[ref]:hover, .darkmode .strnum:hover {
-    box-shadow: inset 0 -1.5em 0px 0px rgba(255, 223, 117, 0.663),
-    0 5px 5px -2px var(--shadow-orange)!important;
-}
-.darkmode #fontchange, .darkmode .biblebooksgroup, .darkmode #fontsizes {
-    background-color: #000000;
-}
-.darkmode #refnav .bible_nav *:hover, .darkmode #refnav .tmp_hlt {
-    background-color: var(--ref-img);
-    box-shadow: 0px 3px 0px 0px var(--vhlt-border), 0px -3px 0px 0px var(--vhlt-border);
-}
-.darkmode ::selection {
-    background-color: purple;
-}
-.darkmode * {
-    color:var(--buttons-txtcolor)!important;
-    color:white!important;
-    color:rgb(255, 255, 243)!important;
-    border-color: var(--darkmode-border)!important;
-}
-.darkmode #topbartogglebtn,
-.darkmode #sidemenubtn_rightbottom {
-    transition: all 0.5s ease 0s;
-}
-.darkmode #sidemenubtn_rightbottom {
-    background-color: var(--darkmode-border-2);
-}
-.darkmode #topbartogglebtn span {
-    background-color: grey;
-}
-.darkmode #topbartogglebtn:hover span {
-    background-color: whitesmoke;
-}
-/* .darkmode .active_button, .darkmode #searchsettings.active_button {
-    background-color: burlywood!important;
-    color: #000!important;
-}*/
-.darkmode .active_button, .darkmode #searchsettings.active_button {
-    background-color: grey !important;
-    background-color: #3f5560 !important;
-    background-color: #3f6056 !important;
-    background-color: var(--chpt) !important;
-}
-.darkmode #refnav_col2, .darkmode #togglenavbtn {
-    border-right: var(--col2-border) solid var(--darkmode-border)!important;
-}
-.darkmode #context_menu .cmtitlebar::before {
-    box-shadow: inset 0px -0.15em 0px 0px var(--darkslategray);
-}
-.darkmode #context_menu {
-    border: 2px solid var(--darkslategray)!important;
-    box-shadow: inset 0px 23px 0px 0px var(--darkslategray);
-}
-.darkmode .strngsdefinition h5,
-.darkmode .strngsdefinition h6 {
-    background-color: var(--darkslategray);
-    border-bottom: 5px solid var(--darkslategray);
-}
-.darkmode #context_menu code button.cmenusrchbtn {
-    border: rgb(166, 166, 166)!important;
-    background-color: transparent;
-}
+
 /* SEARCH ICON WITH CSS DIV */
 .magnifying_glass {
     /* font-size: 10em; */
@@ -2163,18 +1963,6 @@ input:focus {
     width: 0.45em;
     height: 0.08em;
     transform: rotate(-60deg);
-}
-.darkmode .magnifying_glass {
-    border: 0.1em solid white!important;
-    box-shadow: inset -0.05em -0.09em 0em 0.2em #8ebdf9e0!important;
-}
-.darkmode .magnifying_glass:before {
-    background: white;
-}
-.darkmode span[class^=v_]:hover,
-.darkmode span.vmultiple:hover {
-    background-color: var(--vmultiple-hover)!important;
-    background-color: transparent!important;
 }
 .verse_note td,
 .verse_note th {
@@ -2406,33 +2194,16 @@ div.v_markers div#autocomplete_items {
 .vm_btns .checkboxreplacement:has(:checked) {
     border: 1px solid var(--black);
 }
-.darkmode .vm_btns:hover .checkboxreplacement {
-    background-color: #0b5913;
-}
-.darkmode .vm_btns:hover button,
-.darkmode .vm_btns:hover button div {
-    color: black!important;
-    font-weight: bold;
-    background-color: pink!important;
-}
 .vm_btns:hover button,
 .vm_btns:hover button div {
     color: black!important;
     font-weight: bold;
     background-color: var(--chpt) !important;
 }
-.darkmode .vm_btns:hover .vmbtnprevious:before,
-.darkmode .vm_btns:hover .vmbtnnext:before {
-    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
-}
 .vm_btns .vmbtnprevious,
 .vm_btns .vmbtnnext {
     width: 25%!important;
     font-weight: bold;
-}
-.darkmode .vm_btns .vmbtnprevious:hover,
-.darkmode .vm_btns .vmbtnnext:hover {
-    background-color: rgb(210, 185, 126) !important;
 }
 .vm_btns .vmbtnprevious:before,
 .vm_btns .vmbtnnext:before {
@@ -2440,10 +2211,6 @@ div.v_markers div#autocomplete_items {
     width:80%;
     height:80%;
     background: url(images/arrow-up-svgrepo-com.svg) center no-repeat!important;
-}
-.darkmode .vm_btns .vmbtnprevious:before,
-.darkmode .vm_btns .vmbtnnext:before {
-    background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat!important;
 }
 .vm_btns .vmbtnprevious:before {
     transform: rotate(-90deg);
@@ -2549,17 +2316,6 @@ button#topbartogglebtn:focus {
 /* #app_settings:focus-within{
     overflow: visible!important;
 } */
-.darkmode #app_settings button:focus,
-.darkmode #top_horizontal_bar_buttons button:focus,
-.darkmode #bottomleft_btns button:focus,
-.darkmode button#topbartogglebtn:focus,
-.darkmode #bottomleft_btns button:focus,
-.darkmode button#topbartogglebtn:focus {
-    background-color:brown!important;
-}
-.darkmode .note_edit_button.active {color:black!important}
-.darkmode .note_edit_button.active:hover {color:white!important}
-
 .vtemp{
     box-shadow: inset 3px 0 red,inset 0 3px red,inset 0 -3px red!important;
 }
@@ -2572,25 +2328,17 @@ button#topbartogglebtn:focus {
 }
 #otherButtonsInHead #scriptureCompareWinDetacher_inHeader {
     display: flex;
-    max-width: 2em;
-    max-height: 2em;
+    min-width: 2em;
+    max-width: 5.5em;
     padding: 5px;
 }
 #otherButtonsInHead button {
-    border-radius: 5px;
-}
-.darkmode #otherButtonsInHead button {
-    border: 2px solid grey!important;
-}
-.darkmode #otherButtonsInHead button:not(:first-of-type) {
-    border-left: none!important;
-}
-.darkmode #otherButtonsInHead #scriptureCompareWinDetacher_inHeader {
-    max-height: none;
+    border-radius: 3px;
+    flex-grow: 1;
 }
 #otherButtonsInHead img {
-    width: 120%;
-    height: 120%;
+    width: 100%;
+    max-height: 1.2em;
 }
 #bookmarks_holder{
     /* position: relative; */
@@ -2618,9 +2366,6 @@ button#topbartogglebtn:focus {
 #bookmarks_holder #bookmark_content * {
     padding: 1px 5px;
     list-style-type: none;
-}
-.darkmode #bookmarks_holder #bookmark_content * {
-    background-color: var(--shadow-color);
 }
 #bookmarks_holder #bookmark_content *:hover {
     cursor: pointer;

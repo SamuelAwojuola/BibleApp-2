@@ -10,16 +10,14 @@
   <meta name="mobile-web-app-capable" content="yes">
   <script src="ckeditor/ckeditor.js"></script>
   <script src="script.js/interact.min.js"></script>
-  <style id="verse_alignement">
+  <!-- <style id="verse_alignement">
     .verse {
       display: block;
-    }
-    .darkmode {
-        color:white!important;
-    }    
-  </style>
+    }   
+  </style> -->
   <link rel="stylesheet" href="bibleApp.css">
   <link rel="stylesheet" href="bibleApp-2.css">
+  <link rel="stylesheet" href="bibleApp-darkmode.css">
 </head>
 
 <body id="homepage">
@@ -335,8 +333,8 @@
           
           <div class="settingssectionheadings">Change Background</div>
           <div style="display: flex">
-            <input type="color" style="width: 100px;height: 100px;padding:0;border:0;flex-basis: 50%;" onchange="changeBackGround(this.value,'--ref-img')"></input>
-            <button style="flex-basis: 50%;" onclick="changeBackGround('url(images/background.jpg)','--ref-img')">Default</button>
+            <input type="color" style="width: 100px;height: 100px;padding:0;border:0;flex-basis: 50%;" onchange="changeBackGround(null,this.value,'--ref-img','--buttons','--whitesmoke')"></input>
+            <button style="flex-basis: 50%;" onclick="changeBackGround('default','url(images/background.jpg)','--ref-img','--buttons','--whitesmoke')">Default</button>
           </div>
           <div>
             <div class="settingssectionheadings">Shortcut Keys</div>
@@ -356,7 +354,19 @@
         <div id="bibleapp_available_notes" class="slideoutofview displaynone">
           <div>
             <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_available_notes)"></button>
-            <button class="eng2grk_sup_btns" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
+            
+            <details class="settings">
+              <summary id="biblenotes_nav_settings">
+                <div class="openCloseIconHolder"></div>
+                <div>Verse Markers</div>
+                <img src="images/settings-gear-svgrepo-com.svg" alt="⚙">
+                </summary>
+              <div>
+                <button class="" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
+                <button class="" id="refresh_available_versenotes" onclick="appendAllRefsWithNote()"  title="Refresh Abailable Versenotes">Refresh</button>
+              </div>
+            </details>
+            
           </div>
           <div id="biblenotes_nav"></div>
 
@@ -400,7 +410,7 @@
           </div>
           <div id="scriptureCompare_columns_holder">
             <div class="scriptureCompare_columns">
-              <div class="input_n_btn"><input class="verses_input"></input><button onclick="fill_Compareverse(this)">GO</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
+              <div class="input_n_btn"><input class="verses_input" placeholder="Enter Bible Reference"></input><button onclick="fill_Compareverse(this)">GO</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
               <div class="compare_verses"></div>
             </div>
           </div>

@@ -146,7 +146,7 @@ function getCrossReference(x,bkn,bvName) {
     // x is the ref as a string or the code elm itself
     let crf2get;
     if(typeof (x)=='string'){
-        crf2get = x.replace(/\s+/ig, ' ').replace(/\s*([:;,.-])\s*/ig, '$1').replace(/\bI\s/i, 1).replace(/\bII\s/i, 2);
+        crf2get = x.replace(/\s+/ig, ' ').replace(/\s*([:;,.-])\s*/ig, '$1').replace(/\bI\s/i, 1).replace(/\bII\s/i, 2).replace(/\bIII\s/i, 3).replace(/\bIV\s/i, 4).replace(/\bV\s/i, 5);
     }
     else {
             if(x.hasAttribute('ref')){
@@ -251,7 +251,7 @@ function getCrossReference(x,bkn,bvName) {
             verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
             verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
             verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
-            verseNum.title = b_v + ' ' + fullBkn;
+            verseNum.title = b_v + ' ' + fullBkn + chp1 + ':' + i;
             verseSpan.classList.add('verse');
             let vText;
             if(bvName){
@@ -274,4 +274,156 @@ function getCrossReference(x,bkn,bvName) {
     }
     createTransliterationAttr(vHolder)
     return vHolder;
+}
+
+
+/* GETTING PREVIOUS OR NEXT VERSE */
+function cmenu_goToPrevOrNextVerse(prvNxt){
+    let new_bk,new_chp,new_vn,fullBkn,bversionName;
+    let allcmVerses = context_menu.querySelectorAll('.verse');
+    /* replace the topmost verse */
+    let v;
+    
+    if (prvNxt=='prev') {
+        v = allcmVerses[0];
+        let vref = v.querySelector('code[ref]').getAttribute('ref');
+        let vrefObj = breakDownRef(vref);
+        let newRef2get;
+        /* Not the First Verse */
+        if(vrefObj.cv>1){
+            new_bk=vrefObj.bn;
+            new_chp=vrefObj.bc;
+            new_vn=vrefObj.cv-1;
+            fullBkn=fullBookName(new_bk).fullBkn;
+            newRef2get=`${new_bk} ${new_chp}:${new_vn}`;
+        }
+        /* *********************** IF FIRST VERSE ********************** */
+        /* Go to last verse in previous chapter if it is not chapter one */
+        /* ************************************************************* */
+        else if(vrefObj.cv==1 && vrefObj.bc>1){
+            new_bk=vrefObj.bn;
+            new_chp=vrefObj.bc-1;
+            new_vn=lastVerseInPrevChpt(new_chp);
+            fullBkn=fullBookName(new_bk).fullBkn;
+            newRef2get=`${new_bk} ${new_chp}:${new_vn}`;
+        }
+        /* **************** IF FIRST CHAPTER *************** */
+        /* Go to last verse in last chapter of previous book */
+        /* ************************************************* */
+        else if(vrefObj.cv==1 && vrefObj.bc==1){
+            let prvBk;
+            let bkIndx=fullBookName(vrefObj.bn).bkIndex;
+            if (bkIndx>1) {// Not Genesis
+                prvBk=bible.Data.bookNamesByLanguage.en[bkIndx-1];
+                bkIndx=bkIndx-1
+            } else {return}
+            let lastChptInBk = bible.Data.verses[bkIndx].length;
+            let lastVerseInlastChptInBk = bible.Data.verses[bkIndx][lastChptInBk-1];
+            new_bk=prvBk;
+            new_chp=lastChptInBk;
+            new_vn=lastVerseInlastChptInBk;
+            fullBkn=fullBookName(new_bk).fullBkn;
+            newRef2get=`${new_bk} ${new_chp}:${new_vn}`;
+        }
+        function lastVerseInPrevChpt(chpt){
+            return bible.Data.verses[fullBookName(vrefObj.bn).bkIndex][chpt-1]
+        }
+    }
+    else if(prvNxt=='next'){
+        v = allcmVerses[allcmVerses.length-1];
+        let vref = v.querySelector('code[ref]').getAttribute('ref');
+        let vrefObj = breakDownRef(vref);
+        let currentBookIndx = fullBookName(vrefObj.bn).bkIndex;
+        let lastVerseInChapter=bible.Data.verses[currentBookIndx][vrefObj.bc-1];
+        let lastChapterInBook=bible.Data.verses[currentBookIndx].length;
+        /* ******************************** */
+        /* Go to the next verse in chapter  */
+        /* If Not the Last Verse in Chapter */
+        /* ******************************** */
+        if(vrefObj.cv < lastVerseInChapter){
+            new_bk=vrefObj.bn;
+            new_chp=vrefObj.bc;
+            new_vn=vrefObj.cv+1;
+            fullBkn=fullBookName(new_bk).fullBkn;
+            console.log({lastVerseInChapter,new_bk,new_chp,new_vn,fullBkn});
+        }
+        /* ************************************************ */
+        /* ******* Go to first verse in next chapter ****** */
+        /* If this is the last verse in the current chapter */
+        /* ************************************************ */
+        else if(vrefObj.cv == lastVerseInChapter){
+            if(vrefObj.bc < lastChapterInBook){
+                new_bk=vrefObj.bn;
+                new_chp=vrefObj.bc+1;
+                new_vn=1;
+                fullBkn=fullBookName(new_bk).fullBkn;
+            }
+            /* Go to the next book */
+            else if(vrefObj.bc == lastChapterInBook){
+                let nextBookIndx = currentBookIndx + 1;
+                // If it is not Revelation
+                if (nextBookIndx < 65) {
+                    new_bk=bible.Data.bookNamesByLanguage.en[nextBookIndx];
+                    new_chp=1;
+                    new_vn=1;
+                    fullBkn=fullBookName(new_bk).fullBkn;
+                }
+                else {return}
+            }
+        }
+    }
+    function fullBookName(bkn) {
+        console.log(bkn.toUpperCase())
+        let fullBkn;
+        let bkIndex;
+        bible.Data.books.forEach((bkAbrv, ref_indx) => {
+            if (bkAbrv.includes(bkn.toUpperCase())) {
+                fullBkn = bible.Data.bookNamesByLanguage.en[ref_indx];
+                bkIndex = ref_indx;
+            }
+        });
+        return {fullBkn, bkIndex}
+    }
+    v.classList.forEach(c=>{if(c.startsWith('v_')){bversionName=c.replace(/v_/,'')}});
+    
+    if (prvNxt=='prev') {       
+        // Remove the Last Vere in the ContextMenu
+        allcmVerses[allcmVerses.length-1].remove()
+        // Prepend New Verse Above Highest Verse in ContextMenu
+        insertElmAbeforeElmB(createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName), v)
+    }
+    else if(prvNxt=='next'){
+        // Remove the first Vere in the ContextMenu
+        allcmVerses[0].remove()
+        // Append New Verse After Lowest Verse in ContextMenu
+        insertElmAafterElmB(createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName), v)
+    }
+}
+function breakDownRef(ref){
+    ref=ref.replace(/\s+/ig,' ').replace(/\s*([:;,.-])\s*/ig,'$1').replace(/\bI\s/i,1).replace(/\bII\s/i,2).replace(/\bIII\s/i,3).replace(/\bIV\s/i,4).replace(/\bV\s/i,5);
+    ref=ref.replace(/:([0-9]+)/,'.$1').replace(/(\w)[\s*]([0-9]+)/,'$1.$2').split('.');
+    let bn=ref[0];
+    let bc=Number(ref[1]);
+    let cv=Number(ref[2]);
+    return {bn,bc,cv}
+}
+
+function createSingleVerse(bk,chp,vn,fullBkn,bversionName){
+    let vHolder = new DocumentFragment();
+    let verseNum = document.createElement('code');
+    let verseSpan = document.createElement('span');
+    let vText;
+    verseNum.setAttribute('ref', fullBkn + ' ' + (chp) + ':' + vn);
+    verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
+    verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp)}:${vn}]`));
+    verseNum.title = bversionName + ' ' + fullBkn + chp + ':' + i;
+    verseSpan.classList.add('verse');
+    vText = window[bversionName][fullBkn][chp - 1][vn - 1]
+    verseSpan.classList.add('v_'+bversionName);
+    vHolder.append(parseVerseText(vText, verseSpan));
+    verseSpan.prepend(' ');
+    verseSpan.prepend(verseNum);
+    verseSpan.innerHTML = verseSpan.innerHTML;
+    createTransliterationAttr(vHolder)
+    return vHolder
 }

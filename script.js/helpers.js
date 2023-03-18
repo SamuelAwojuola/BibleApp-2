@@ -155,6 +155,15 @@ function disableButton(cls, disableValue) {
     // Or just create a css style for class, e.g., 'button_disabled',
     // and then add the class to buttons to be disabled
 }
+function ancestorWithPositionRelative(a,pos='relative'){
+    while (a.parentElement && a.parentElement.tagName.toUpperCase() != 'HTML') {
+        if (getComputedStyle(a.parentElement).position==pos) {
+            return a.parentNode
+        }
+        a = a.parentElement;
+    }
+    return false
+}
 
 // Check or uncheck radio/checkbox input
 function checkUncheck(x){

@@ -75,14 +75,16 @@ function add_tooltipContextMenu(e) {
                 /* ||Append to verse|| */
                 /* ||||||||||||||||||| */
                 else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
+                    console.log('#main');
                     eParent = document.querySelector('#main');
                     if (eParent.offsetLeft != 0) {
                         extraLeft = eParent.offsetLeft;
                     }
-                    if (!eParent.querySelector('#context_menu') || main.querySelector('.verse_note #context_menu')) {
+                    if (ancestorWithPositionRelative(context_menu)!=main || !main.querySelector('#context_menu')) {
+                        console.log('#main');
                         //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
                         //move the #context_menu from #searchPreviewFixed to #main
-                        main.append(innerFunc_get_eParent())
+                        innerFunc_get_eParent()
                     }
                 }
                 /* ||||||||||||||||||||||||||||||||| */
@@ -117,13 +119,14 @@ function add_tooltipContextMenu(e) {
                     eParent = elmAhasElmOfClassBasAncestor(e.target, '#scriptureCompareWindow');
                     innerFunc_get_eParent()
                 }
-                
             }
             function innerFunc_get_eParent(){
-                if (!eParent.querySelector('#context_menu')) {
+                console.log({eParent});
+                if (ancestorWithPositionRelative(context_menu)!=eParent || !eParent.querySelector('#context_menu')) {
                     let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
                     pagemaster.querySelector('#context_menu').remove();
                     eParent.append(clonedContextMenu);
+                    console.log(eParent);
                     clonedContextMenu.addEventListener("click", codeElmRefClick);
                     return clonedContextMenu
                 }
@@ -233,9 +236,9 @@ function add_tooltipContextMenu(e) {
                 /* || If eTarget is a Scripture Reference || */
                 /* ||||||||||||||||||||||||||||||||||||||||| */
                 else {
-                    if (crossRefinScriptureTooltip_check.checked) {
+                    // if (crossRefinScriptureTooltip_check.checked) {
                         cmenu_tsk_display="";
-                    }
+                    // }
                     context_menu.innerText = null;
                     context_menu.classList.add('win2');
                     if (e.target.matches('.crossrefs>span, span[ref]')) {
@@ -249,18 +252,18 @@ function add_tooltipContextMenu(e) {
                         }
                         cmtitletext = cmtitletext + ' [' + bversionName + ']';
                         // cmtitlebar.innerText=e.target.innerText;
-                        cmtitlebar.innerHTML = cmtitletext + `<div id="cmenu_navnclose_btns"><button class="cmenu_tsk ${cmenu_tsk_display}" onclick="toggleCMenuTSK(this)">TSK</button><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)" ${dzabled}></button><button class="nxt" onclick="cmenu_goBackFront(this)" disabled></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>`;
+                        cmtitlebar.innerHTML = cmtitletext + `<div id="cmenu_navnclose_btns"><button class="prv_verse" onclick="cmenu_goToPrevOrNextVerse('prev')"></button><button class="nxt_verse" onclick="cmenu_goToPrevOrNextVerse('next')"></button><button class="cmenu_tsk ${cmenu_tsk_display}" onclick="toggleCMenuTSK(this)">TSK</button><button class="prv" ${prv_indx} ${prv_title} onclick="cmenu_goBackFront(this)" ${dzabled}></button><button class="nxt" onclick="cmenu_goBackFront(this)" disabled></button><button class="closebtn cmenu_closebtn" onclick="hideRightClickContextMenu()"></button></div></div>`;
                         context_menu.append(cmtitlebar);
                     }
                     let vHolder = getCrossReference(e.target);
                     /* FOR CROSS-REFS & NOTES IN SEARCH WINDOW */
-                    if(crossRefinScriptureTooltip_check.checked){
+                    // if(crossRefinScriptureTooltip_check.checked){
                         vHolder.querySelectorAll('span.verse').forEach(spanVerse=>{
                             let tskHolder=crfnnote_DIV(spanVerse);
                             tskHolder.classList.add('displaynone');
                             spanVerse.append(tskHolder);
                         });
-                    }
+                    // }
 
                     context_menu.append(vHolder);
                     // context_menu.append(getCrossReference(e.target));

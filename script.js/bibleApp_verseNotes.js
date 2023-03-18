@@ -210,7 +210,7 @@ function appendVerseNote(e) {
     }
 }
 function closeNote(vnote,vholder,dIS){
-    if(!vnote){
+    if(!vnote||vholder){
         if (vholder) {
             vnoteID = vholder.id.replace(/(_\d+)\.(\d+)\.(\d+)/ig, 'note$1_$2_$3');
             vnote = document.getElementById(vnoteID);
@@ -220,7 +220,7 @@ function closeNote(vnote,vholder,dIS){
             vholderID = vnoteID.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
             vholder = document.getElementById(vholderID);
         }
-    } else if (!vholder) {
+    } else if (!vholder||vnote) {
         vnoteID = vnote.id;
         vholderID = vnoteID.replace(/note/ig, '').replace(/(\d+)_(\d+)_(\d+)/ig, '$1.$2.$3');
         vholder = document.getElementById(vholderID);

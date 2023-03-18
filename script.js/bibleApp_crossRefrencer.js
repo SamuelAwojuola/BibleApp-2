@@ -251,7 +251,7 @@ function getCrossReference(x,bkn,bvName) {
             verseNum.setAttribute('ref', fullBkn + ' ' + (chp1) + ':' + i);
             verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
             verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp1)}:${i}${b_vn}]`));
-            verseNum.title = b_v + ' ' + fullBkn + chp1 + ':' + i;
+            // verseNum.title = b_v + ' ' + fullBkn + chp1 + ':' + i;
             verseSpan.classList.add('verse');
             let vText;
             if(bvName){
@@ -384,6 +384,7 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
     }
     v.classList.forEach(c=>{if(c.startsWith('v_')){bversionName=c.replace(/v_/,'')}});
     let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName);
+    createTransliterationAttr(newVerse);
     /* ************ */
     /* Add CrossRef */
     /* ************ */
@@ -402,6 +403,11 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
         // Remove the first Vere in the ContextMenu
         allcmVerses[0].remove()
     }
+    /* ************************* */
+    /* Show Transliterated Words */
+    /* ************************* */
+    transliteratedWords_Array.forEach(storedStrnum=>{showTransliteration(storedStrnum)});
+    // createTransliterationAttr(newVerse)
 }
 function breakDownRef(ref){
     ref=ref.replace(/\s+/ig,' ').replace(/\s*([:;,.-])\s*/ig,'$1').replace(/\bI\s/i,1).replace(/\bII\s/i,2).replace(/\bIII\s/i,3).replace(/\bIV\s/i,4).replace(/\bV\s/i,5);
@@ -420,15 +426,14 @@ function createSingleVerse(bk,chp,vn,fullBkn,bversionName){
     verseNum.setAttribute('ref', fullBkn + ' ' + (chp) + ':' + vn);
     verseNum.setAttribute('aria-hidden', 'true'); //so that screen readers ignore the verse numbers
     verseNum.prepend(document.createTextNode(`[${(bk)} ${(chp)}:${vn}]`));
-    verseNum.title = bversionName + ' ' + fullBkn + chp + ':' + i;
+    // verseNum.title = bversionName + ' ' + fullBkn + chp + ':' + i;
     verseSpan.classList.add('verse');
     vText = window[bversionName][fullBkn][chp - 1][vn - 1]
     verseSpan.classList.add('v_'+bversionName);
     vHolder.append(parseVerseText(vText, verseSpan));
     verseSpan.prepend(' ');
     verseSpan.prepend(verseNum);
-    verseSpan.innerHTML = verseSpan.innerHTML;
-    createTransliterationAttr(vHolder)
+    // createTransliterationAttr(vHolder)
     return vHolder
 }
 

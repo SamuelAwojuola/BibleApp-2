@@ -240,7 +240,13 @@ li li li{
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-#refnav:hover, #context_menu:hover, #versenote_totheright:hover {z-index: 11;}
+#refnav:hover {
+    position:relative;
+    z-index: 21;
+}
+#context_menu:hover, #versenote_totheright:hover {
+    z-index: 11;
+}
 #refnav button:not(#bibleapp_versemarkers button):not(:last-child) {
 border-bottom: none;
 }

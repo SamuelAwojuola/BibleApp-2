@@ -140,6 +140,9 @@
     background-color:black!important;
     border:whitesmoke!important;
 }
+.darkmode .verse_note {
+    background: var(--darkmode-bg1color);
+}
 .darkmode span.vmultiple.noted code #verse_notes_button {
     background: var(--brown);
 }

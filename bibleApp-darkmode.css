@@ -161,7 +161,31 @@
     background: transparent;
 }
 .darkmode #cmenu_navnclose_btns button {
-    color: black !important;
+    background-color: var(--buttons)!important;
+    color: var(--txtcolor)!important;
+    border: 1px solid var(--black);
+}
+.darkmode #cmenu_navnclose_btns button:hover {
+    color: black!important;
+    background-color: pink!important;
+}
+.darkmode #cmenu_navnclose_btns button.cmenu_closebtn {
+    background: url(images/cancel-svgrepo-com-DarkMode.svg) center no-repeat;
+}
+.darkmode #cmenu_navnclose_btns button.cmenu_closebtn:hover {
+    background: url(images/cancel-svgrepo-com-BLACK.svg) center no-repeat;
+}
+.darkmode #cmenu_navnclose_btns button.nxt_verse,
+.darkmode #cmenu_navnclose_btns button.nxt,
+.darkmode #cmenu_navnclose_btns button.prv_verse,
+.darkmode #cmenu_navnclose_btns button.prv {
+    background: url(images/arrow-up-svgrepo-com-DarkMode.svg) center no-repeat;
+}
+.darkmode #cmenu_navnclose_btns button.nxt_verse:hover,
+.darkmode #cmenu_navnclose_btns button.nxt:hover,
+.darkmode #cmenu_navnclose_btns button.prv_verse:hover,
+.darkmode #cmenu_navnclose_btns button.prv:hover {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
 }
 .darkmode #searchPreviewFixed .chptheading:not(.dhid)::before {
     background: url(images/white-arrow-up-svgrepo-com.svg) center no-repeat;
@@ -238,6 +262,9 @@ body.darkmode, .darkmode input, .darkmode textarea, .darkmode select, .darkmode 
 }
 body.darkmode {
     background-color: var(--darkmode-bg1color)!important;
+}
+.darkmode #top_horizontal_bar_buttons, .darkmode #refnav #app_settings {
+    background-color: var(--buttons)!important;
 }
 .darkmode #bottomleft_btns button, .darkmode #topbartogglebtn{
     border: 1px solid #62776d!important;

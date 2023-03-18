@@ -503,17 +503,41 @@ span.vmultiple.noted code #verse_notes_button {
     top:10px;
     right:10px;
 }
-#cmenu_navnclose_btns {
+#context_menu:not([strnum]) .cmtitlebar #cmenu_navnclose_btns {
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    margin-left: 0.2em;
+    padding: 0;
+}
+#context_menu[strnum] .cmtitlebar #cmenu_navnclose_btns {
     position: absolute;
+    display: flex;
     top: 5px;
     right: 0.2em;
-    display: flex;
 }
 #cmenu_navnclose_btns button.prv {
     background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
     transform: rotate(-90deg);
     margin-left: 2px;
     box-shadow: -1px -1px 1px var(--shadow-color);
+}
+#cmenu_navnclose_btns button.prv_verse {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    margin-left: 2px;
+    box-shadow: 1px 1px 1px var(--shadow-color);
+}
+#cmenu_navnclose_btns button.nxt_verse {
+    background: url(images/arrow-up-svgrepo-com.svg) center no-repeat;
+    transform: rotate(-180deg);
+    margin-left: 1px;
+    /* margin-right: auto; */
+    box-shadow: -1px -1px 1px var(--shadow-color);
+}
+#cmenu_navnclose_btns button.nxt_verse,
+#cmenu_navnclose_btns button.cmenu_tsk,
+#cmenu_navnclose_btns button.nxt {
+    margin-right: 0.3em!important;
 }
 #cmenu_navnclose_btns button.prv:not([indx]),
 #cmenu_navnclose_btns button.nxt:not([indx]),
@@ -734,6 +758,7 @@ button {
 }
 #context_menu .verse {
     padding: 5px;
+    display: block;
 }
 #context_menu .verse:hover {
     border-radius: 3px;
@@ -792,6 +817,9 @@ button {
     /* margin-bottom: 10px; */
     /* box-shadow: 0px -21.5px 13px 28px var(--scroll-track-bg-color); */
     z-index: 3;
+}
+#context_menu:not([strnum]) .cmtitlebar {
+    display: flex;
 }
 .verse_note #context_menu .cmtitlebar{
     box-shadow: 0px -26.5px 8px 17px var(--scroll-track-bg-color);
@@ -868,6 +896,7 @@ span[strnum]:hover {
 }
 span[strnum] > span[strnum] {
     border: none;
+    box-shadow: none;
 }
 /* span.vmultiple {
     position: relative;
@@ -879,6 +908,7 @@ span.vmultiple:hover {
     border-radius: 0.1em;
 }
 #searchPreviewFixed span.verse {
+    display: block;
     box-shadow: 0px 2px 0px 0px var(--grey);
     padding-bottom: 5px;
     margin-right: 0px;
@@ -1092,7 +1122,10 @@ sup {
     border-bottom: 2.5px solid;
     padding-bottom: 0;
     box-shadow: 0 2px 5px var(--shadow-color);
-    /* background-color: var(--whitesmoke); */
+    background-color: var(--whitesmoke);
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 #bibleapp_versemarkers details > div,
 #bibleapp_available_notes details.settings > div {
@@ -1110,9 +1143,20 @@ sup {
     height: 2em;
     padding-bottom: 0.3em;
 }
+#bibleapp_available_notes summary#biblenotes_nav_settings{
+    margin: 0!important;
+    padding: 0.3em!important;
+}
 #bibleapp_versemarkers summary .openCloseIconHolder,
 #bibleapp_available_notes summary#biblenotes_nav_settings .openCloseIconHolder {
     height: 5em!important;
+}
+summary#biblenotes_nav_settings .openCloseIconHolder~div,
+summary#bibleapp_versemarkers_settings .openCloseIconHolder~div{
+    display: flex!important;
+    flex: 1;
+    justify-content: center;
+    align-items: flex-end;
 }
 #bibleapp_versemarkers summary img,
 #bibleapp_available_notes summary#biblenotes_nav_settings img {
@@ -1808,9 +1852,12 @@ border-right: var(--col2-border) solid auto!important;
 #bibleapp_available_notes details.settings summary+div {
     display: flex!important;
 }
+#bibleapp_versemarkers details.settings button,
 #bibleapp_available_notes details.settings button {
     border-radius: 5px!important;
     border: 1px solid grey!important;
+    margin-left: 10px;
+    min-height: 1em;
 }
 #togglenavbtn {
     /* font-size: calc(var(--fontsize-refnsearch) * 2.3)!important; */
@@ -2508,4 +2555,8 @@ button#topbartogglebtn:focus {
 #scriptureCompareWindow code {
     font-size: var(--fontsize-ref);
     font-weight: bold;
+}
+#cmenu_navnclose_btns button {
+    box-shadow: none!important;
+    border: 1px solid var(--black);
 }

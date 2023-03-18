@@ -352,14 +352,12 @@
           </div>
         </div>
         <div id="bibleapp_available_notes" class="slideoutofview displaynone">
-          <div>
-            <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_available_notes)"></button>
-            
+          <div>            
             <details class="settings">
               <summary id="biblenotes_nav_settings">
                 <div class="openCloseIconHolder"></div>
-                <div>Verse Markers</div>
-                <img src="images/settings-gear-svgrepo-com.svg" alt="⚙">
+                <div><img class="dmalterable" src="images/settings-gear-svgrepo-com.svg" alt="⚙">Verse Notes</div>
+                <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_available_notes)"></button>
                 </summary>
               <div>
                 <button class="" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
@@ -372,12 +370,11 @@
 
         </div>
         <div id="bibleapp_versemarkers" class="slideoutofview displaynone">
-          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_versemarkers)"></button>
-          <details>
+          <details class="settings">
             <summary id="bibleapp_versemarkers_settings">
               <div class="openCloseIconHolder"></div>
-              <div>Verse Markers</div>
-              <img src="images/settings-gear-svgrepo-com.svg" alt="⚙">
+              <div><img class="dmalterable" src="images/settings-gear-svgrepo-com.svg" alt="⚙">Verse Markers</div>
+              <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_versemarkers)"></button>              
               </summary>
             <div>
               <div>Autocomplete</div>
@@ -406,7 +403,7 @@
         <!-- SCRIPTURE COMPARE WINDOW -->
         <div id="scriptureCompareWindow" class="showingNote slideoutofview displaynone">
           <div id="btns_compareWindow_totheright" class="closebtn">
-            <button class="compwin_closebtn_x" onclick="hideRefNav('hide',scriptureCompareWindow), scriptureCompareWindow_div2.innerHTML=''"></button>
+            <button class="compwin_closebtn_x" onclick="hideRefNav('hide',scriptureCompareWindow)"></button>
           </div>
           <div id="scriptureCompare_columns_holder">
             <div class="scriptureCompare_columns">

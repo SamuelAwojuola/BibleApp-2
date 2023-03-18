@@ -121,12 +121,10 @@ function add_tooltipContextMenu(e) {
                 }
             }
             function innerFunc_get_eParent(){
-                console.log({eParent});
                 if (ancestorWithPositionRelative(context_menu)!=eParent || !eParent.querySelector('#context_menu')) {
                     let clonedContextMenu = pagemaster.querySelector('#context_menu').cloneNode(true);
                     pagemaster.querySelector('#context_menu').remove();
                     eParent.append(clonedContextMenu);
-                    console.log(eParent);
                     clonedContextMenu.addEventListener("click", codeElmRefClick);
                     return clonedContextMenu
                 }

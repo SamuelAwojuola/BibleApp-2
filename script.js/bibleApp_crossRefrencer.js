@@ -345,7 +345,6 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
             new_chp=vrefObj.bc;
             new_vn=vrefObj.cv+1;
             fullBkn=fullBookName(new_bk).fullBkn;
-            console.log({lastVerseInChapter,new_bk,new_chp,new_vn,fullBkn});
         }
         /* ************************************************ */
         /* ******* Go to first verse in next chapter ****** */
@@ -373,7 +372,6 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
         }
     }
     function fullBookName(bkn) {
-        console.log(bkn.toUpperCase())
         let fullBkn;
         let bkIndex;
         bible.Data.books.forEach((bkAbrv, ref_indx) => {
@@ -385,18 +383,24 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
         return {fullBkn, bkIndex}
     }
     v.classList.forEach(c=>{if(c.startsWith('v_')){bversionName=c.replace(/v_/,'')}});
-    
-    if (prvNxt=='prev') {       
+    let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName);
+    /* ************ */
+    /* Add CrossRef */
+    /* ************ */
+    let tskHolder=crfnnote_DIV(newVerse);
+    tskHolder.classList.add('displaynone');
+    newVerse.querySelector('span.verse').append(tskHolder);
+    if (prvNxt=='prev') {
+        // Prepend New Verse Above Highest Verse in ContextMenu
+        insertElmAbeforeElmB(newVerse, v)
         // Remove the Last Vere in the ContextMenu
         allcmVerses[allcmVerses.length-1].remove()
-        // Prepend New Verse Above Highest Verse in ContextMenu
-        insertElmAbeforeElmB(createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName), v)
     }
     else if(prvNxt=='next'){
+        // Append New Verse After Lowest Verse in ContextMenu
+        insertElmAafterElmB(newVerse, v)
         // Remove the first Vere in the ContextMenu
         allcmVerses[0].remove()
-        // Append New Verse After Lowest Verse in ContextMenu
-        insertElmAafterElmB(createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName), v)
     }
 }
 function breakDownRef(ref){
@@ -426,4 +430,16 @@ function createSingleVerse(bk,chp,vn,fullBkn,bversionName){
     verseSpan.innerHTML = verseSpan.innerHTML;
     createTransliterationAttr(vHolder)
     return vHolder
+}
+
+/* *********************************** */
+/* Change Verse on Scroll Over CodeRef */
+/* *********************************** */
+pagemaster.addEventListener("wheel", wheelDirection, { passive: false });
+function wheelDirection(e) {
+    if(e.target.matches('#context_menu:not([strnum]) code[ref]')){
+        e.preventDefault();
+        if(e.deltaY<0){cmenu_goToPrevOrNextVerse('prev')}
+        else if(e.deltaY>0){cmenu_goToPrevOrNextVerse('next')}
+    }
 }

@@ -2566,3 +2566,5 @@ button#topbartogglebtn:focus {
     box-shadow: none!important;
     border: 1px solid var(--black);
 }
+#context_menu .compare_withinsearchresult_button {display: none;}
+.verse_compare .cmenu_closebtn {display: inline;margin-right:5px;border:none!important;}

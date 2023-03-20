@@ -299,6 +299,8 @@ function compareThisSearchVerse(dis){
     newRef2get=`${new_bk} ${new_chp}:${new_vn}`;
     let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName);
     let newVerseInner = newVerse.querySelector('.verse');
+    // newVerseInner.innerHTML=newVerseInner.innerHTML + '<button class="closebtn cmenu_closebtn" onclick="this.parentElement.remove()">';
+    newVerseInner.prepend(createNewElement('button','.closebtn','.cmenu_closebtn', '[onclick=this.parentElement.remove()]'));
     newVerseInner.classList.add('verse_compare');
     newVerseInner.setAttribute('ref', vrefModified + ' ' + bversionName);
     newVerseInner.querySelector('code[ref]').innerText=newVerseInner.querySelector('code[ref]').innerText.replace(/\[/,'['+bversionName+' ');
@@ -408,17 +410,29 @@ function cmenu_goToPrevOrNextVerse(prvNxt, searchWindowVerse){
     }
     v.classList.forEach(c=>{if(c.startsWith('v_')){b_version_n=c.replace(/v_/,'')}});
     if(!b_version_n){b_version_n=bversionName}
-    let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,b_version_n);
-    createTransliterationAttr(newVerse);
+    let newVerseDocFrag=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,b_version_n);
+    createTransliterationAttr(newVerseDocFrag);
     /* ************ */
     /* Add CrossRef */
     /* ************ */
-    let tskHolder=crfnnote_DIV(newVerse);
-    tskHolder.classList.add('displaynone');
-    newVerse.querySelector('span.verse').append(tskHolder);
+    let tskHolder=crfnnote_DIV(newVerseDocFrag);
+    if(searchWindowVerse==context_menu){
+        tskHolder.classList.add('displaynone');
+    }
+    newVerse=newVerseDocFrag.querySelector('span.verse');
+    newVerse.append(tskHolder);
+    /* Copy all the classes of the former verse */
+    newVerse.setAttribute('class',v.getAttribute('class'));
+    if(newVerse.classList.contains('verse_compare')){
+        let vrefModified = newVerse.querySelector('code[ref]').getAttribute('ref').replace(/[:.]+/,'_');
+        newVerse.setAttribute('ref', vrefModified + ' ' + bversionName);
+        newVerse.querySelector('code[ref]').innerText=newVerse.querySelector('code[ref]').innerText.replace(/\[/,'['+bversionName+' ');
+        // newVerse.innerHTML='<button class="closebtn cmenu_closebtn" onclick="this.parentElement.remove()">' + newVerse.innerHTML;
+        newVerse.prepend(createNewElement('button','.closebtn','.cmenu_closebtn', '[onclick=this.parentElement.remove()]'));
+    }
     if (prvNxt=='prev') {
         // Prepend New Verse Above Highest Verse in ContextMenu
-        insertElmAbeforeElmB(newVerse, v)
+        insertElmAbeforeElmB(newVerseDocFrag, v)
         // Remove the Last Vere in the ContextMenu
         allcmVerses[allcmVerses.length-1].remove()
     }

@@ -75,13 +75,11 @@ function add_tooltipContextMenu(e) {
                 /* ||Append to verse|| */
                 /* ||||||||||||||||||| */
                 else if (elmAhasElmOfClassBasAncestor(e.target, '#main')) {
-                    console.log('#main');
                     eParent = document.querySelector('#main');
                     if (eParent.offsetLeft != 0) {
                         extraLeft = eParent.offsetLeft;
                     }
                     if (ancestorWithPositionRelative(context_menu)!=main || !main.querySelector('#context_menu')) {
-                        console.log('#main');
                         //if the #context_menu is not in #main, then it must be in #searchPreviewFixed
                         //move the #context_menu from #searchPreviewFixed to #main
                         innerFunc_get_eParent()

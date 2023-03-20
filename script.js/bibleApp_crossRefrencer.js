@@ -18,6 +18,10 @@ function getCurrentBVN(e) {
     }
     if (classesOfe) {
         getBVN(classesOfe)
+        /* ********************************************* */
+        /* Modify all .compare_withinsearchresult_button */
+        /* ********************************************* */
+        document.querySelectorAll('.compare_withinsearchresult_button').forEach(csrb=>{csrb.setAttribute('b_version',bversionName); csrb.innerText=bversionName})
     }
 
     function getBVN(classesOfe) {
@@ -276,11 +280,42 @@ function getCrossReference(x,bkn,bvName) {
     return vHolder;
 }
 
-
+/* COMPARE THIS SEARCH VERSE */
+function compareThisSearchVerse(dis){
+    let v = elmAhasElmOfClassBasAncestor(dis,'.verse');
+    let vref = v.querySelector('code[ref]').getAttribute('ref');
+    let vrefModified = vref.replace(/[:.]+/,'_');
+    // Check if current Bible Version has already been compared
+    if(elmAhasElmOfClassBasAncestor(v,`#searchPreviewFixed[b_version="${bversionName}"]`)){return}
+    if(prevComparedVerse = v.parentElement.querySelector('.verse_compare[ref="' + vrefModified + ' ' + bversionName + '"]')){
+        prevComparedVerse.remove()
+        return
+    }
+    let vrefObj = breakDownRef(vref);
+    let new_bk=vrefObj.bn;
+    let new_chp=vrefObj.bc;
+    let new_vn=vrefObj.cv;
+    let fullBkn=fullBookName(new_bk).fullBkn;
+    newRef2get=`${new_bk} ${new_chp}:${new_vn}`;
+    let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName);
+    let newVerseInner = newVerse.querySelector('.verse');
+    newVerseInner.classList.add('verse_compare');
+    newVerseInner.setAttribute('ref', vrefModified + ' ' + bversionName);
+    newVerseInner.querySelector('code[ref]').innerText=newVerseInner.querySelector('code[ref]').innerText.replace(/\[/,'['+bversionName+' ');
+    insertElmAafterElmB(newVerse, v);
+    let tElm = elmAhasElmOfClassBasAncestor(v,'#context_menu,#searchPreviewFixed,.vmultiple');
+    transliteratedWords_Array.forEach(storedStrnum=>{showTransliteration(storedStrnum/* ,tElm */)});
+}
 /* GETTING PREVIOUS OR NEXT VERSE */
-function cmenu_goToPrevOrNextVerse(prvNxt){
-    let new_bk,new_chp,new_vn,fullBkn,bversionName;
-    let allcmVerses = context_menu.querySelectorAll('.verse');
+function cmenu_goToPrevOrNextVerse(prvNxt, searchWindowVerse){
+    let new_bk,new_chp,new_vn,fullBkn,b_version_n;
+    let allcmVerses;
+    if (!searchWindowVerse) {
+        allcmVerses = context_menu.querySelectorAll('.verse');
+        searchWindowVerse = context_menu;
+    } else {
+        allcmVerses = searchWindowVerse;
+    }
     /* replace the topmost verse */
     let v;
     
@@ -371,19 +406,9 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
             }
         }
     }
-    function fullBookName(bkn) {
-        let fullBkn;
-        let bkIndex;
-        bible.Data.books.forEach((bkAbrv, ref_indx) => {
-            if (bkAbrv.includes(bkn.toUpperCase())) {
-                fullBkn = bible.Data.bookNamesByLanguage.en[ref_indx];
-                bkIndex = ref_indx;
-            }
-        });
-        return {fullBkn, bkIndex}
-    }
-    v.classList.forEach(c=>{if(c.startsWith('v_')){bversionName=c.replace(/v_/,'')}});
-    let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,bversionName);
+    v.classList.forEach(c=>{if(c.startsWith('v_')){b_version_n=c.replace(/v_/,'')}});
+    if(!b_version_n){b_version_n=bversionName}
+    let newVerse=createSingleVerse(new_bk,new_chp,new_vn,fullBkn,b_version_n);
     createTransliterationAttr(newVerse);
     /* ************ */
     /* Add CrossRef */
@@ -406,18 +431,9 @@ function cmenu_goToPrevOrNextVerse(prvNxt){
     /* ************************* */
     /* Show Transliterated Words */
     /* ************************* */
-    transliteratedWords_Array.forEach(storedStrnum=>{showTransliteration(storedStrnum)});
+    transliteratedWords_Array.forEach(storedStrnum=>{showTransliteration(storedStrnum/* ,searchWindowVerse */)});
     // createTransliterationAttr(newVerse)
 }
-function breakDownRef(ref){
-    ref=ref.replace(/\s+/ig,' ').replace(/\s*([:;,.-])\s*/ig,'$1').replace(/\bI\s/i,1).replace(/\bII\s/i,2).replace(/\bIII\s/i,3).replace(/\bIV\s/i,4).replace(/\bV\s/i,5);
-    ref=ref.replace(/:([0-9]+)/,'.$1').replace(/(\w)[\s*]([0-9]+)/,'$1.$2').split('.');
-    let bn=ref[0];
-    let bc=Number(ref[1]);
-    let cv=Number(ref[2]);
-    return {bn,bc,cv}
-}
-
 function createSingleVerse(bk,chp,vn,fullBkn,bversionName){
     let vHolder = new DocumentFragment();
     let verseNum = document.createElement('code');
@@ -446,5 +462,11 @@ function wheelDirection(e) {
         e.preventDefault();
         if(e.deltaY<0){cmenu_goToPrevOrNextVerse('prev')}
         else if(e.deltaY>0){cmenu_goToPrevOrNextVerse('next')}
+    }
+    else if(e.target.matches('#searchPreviewFixed > .verse code[ref]')){
+        e.preventDefault();
+        let targetVerseInsearchWindow = [elmAhasElmOfClassBasAncestor(e.target,'.verse')];
+        if(e.deltaY<0){cmenu_goToPrevOrNextVerse('prev',targetVerseInsearchWindow)}
+        else if(e.deltaY>0){cmenu_goToPrevOrNextVerse('next',targetVerseInsearchWindow)}
     }
 }

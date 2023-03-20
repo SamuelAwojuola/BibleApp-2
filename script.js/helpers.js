@@ -580,7 +580,11 @@ function arrayOfElementsBetween(a, b) {
 }
 
 /* ********************************************* */
+/* ********************************************* */
 /* LIGHTCITY BIBLE APP SPECIFIC HELPER FUNCTIONS */
+/* ********************************************* */
+/*              Scripture Reference              */
+/* ********************************************* */
 /* ********************************************* */
 function codeElmRefClick(e) {
     if (e.target.tagName == "CODE" && !e.target.matches('.cmtitlebar>code')) {
@@ -620,6 +624,25 @@ function refDetails4rmCodeElm(codeElm){
         bookChapter:bC,
         chapterVerse:cV
     }
+}
+function breakDownRef(ref){
+    ref=ref.replace(/\s+/ig,' ').replace(/\s*([:;,.-])\s*/ig,'$1').replace(/\bI\s/i,1).replace(/\bII\s/i,2).replace(/\bIII\s/i,3).replace(/\bIV\s/i,4).replace(/\bV\s/i,5);
+    ref=ref.replace(/:([0-9]+)/,'.$1').replace(/(\w)[\s*]([0-9]+)/,'$1.$2').split('.');
+    let bn=ref[0];
+    let bc=Number(ref[1]);
+    let cv=Number(ref[2]);
+    return {bn,bc,cv}
+}
+function fullBookName(bkn) {
+    let fullBkn;
+    let bkIndex;
+    bible.Data.books.forEach((bkAbrv, ref_indx) => {
+        if (bkAbrv.includes(bkn.toUpperCase())) {
+            fullBkn = bible.Data.bookNamesByLanguage.en[ref_indx];
+            bkIndex = ref_indx;
+        }
+    });
+    return {fullBkn, bkIndex}
 }
 
 /* WATCH FOR INACTIVITY IN ELM AND RUN FUNCTION AFTER SET-TIME */
@@ -663,15 +686,16 @@ function crfnnote_DIV(vHolder){
     let crfnnote_DIV = document.createElement('DIV');
     crfnnote_DIV.classList.add('crfnnote');
     const tskBtn = '<button class="buttons verse_crossref_button">TSK</button>';
+    const compareBtn = `<button class="buttons compare_withinsearchresult_button" onclick="compareThisSearchVerse(this)" b_version="${bversionName}">${bversionName}</button>`;// Modified in getCurrentBVN function everytime the bversionName is updated
     // const noteBtn = '<button class="buttons verse_notes_button">Note</button>';
     const noteBtn = '';
     
     if (vHolder && crossReferences_fullName[vHolder.querySelector('code[ref]').getAttribute('ref').replace(/(\w)\s([0-9]+)/g, '$1.$2').replace(/:/g, '.')]) {
-        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}${compareBtn}</div>`;
     } else if (vHolder){
-        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns" title="Not Crossreferenced"><button class="verse_crossref_button" style="display:none;">TSK</button>${noteBtn}<i style="font-size:0.55em;color:red;">Not Crossreferenced</i></div>`;
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns" title="Not Crossreferenced"><button class="verse_crossref_button" style="font-size:0.55em;color:red;font-style:italic;">NO TSK</button>${noteBtn}${compareBtn}</div>`;
     } else {
-        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}</div>`;
+        crfnnote_DIV.innerHTML = `<div class="crfnnote_btns">${tskBtn}${noteBtn}${compareBtn}</div>`;
     }
     // if(vHolder){vHolder.classList.add('verse');}
     return crfnnote_DIV

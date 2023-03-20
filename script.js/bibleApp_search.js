@@ -346,6 +346,7 @@ function runWordSearch() {
             searchPreviewFixed.innerHTML = '<code>Sorry, <i><b>"' + wordsearchValue + '"</b></i><br>Was Not Found!<br><br>Your Search Parameters Were:<br>[<b>' + caseSensitiveSearch + phraseSearch + wholeWordSearch + '</b>]</code>';
         }
         searchPreviewFixed.append(searchFragment);
+        searchPreviewFixed.setAttribute('b_version',bversionName);
         //To Clear "searchPreviewFixed" Window after given time
         if(!keepsearchopen.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}
     }
@@ -357,6 +358,7 @@ function runWordSearch() {
     if (booksLength>1 && !showreturnedverses.checked) {
         hideAllVerseInSearch()
     } else {appendResultCountToHeader()}
+    transliteratedWords_Array.forEach(storedStrnum=>{showTransliteration(storedStrnum,searchPreviewWindowFixed)});
 }
 
 

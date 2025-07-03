@@ -1,0 +1,2601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Only TimeLine</title>
+    <style id="tableAndTimelineStyles">
+        :root{
+            --scroll-track-bg-color:#878787;
+            --scroll-thumb-border-color:#000000;
+            --scroll-thumb-bgcolor:#4b4b4b;
+            --scroll-thumb-hover-border:#939cff;
+            --scroll-thumb-hover-bg-color:#555;    
+        }
+        * {
+            box-sizing: border-box;
+        }
+        ::-webkit-scrollbar {
+            width:0.5em;
+            height:0.5em;
+        }
+
+        ::-webkit-scrollbar-track {
+            background:var(--scroll-track-bg-color);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background:var(--scroll-thumb-bgcolor);
+            border-top:2px solid var(--scroll-thumb-border-color);
+            border-bottom:2px solid var(--scroll-thumb-border-color);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background:var(--scroll-thumb-hover-bg-color);
+            border-top:2px solid var(--scroll-thumb-hover-border);
+            border-bottom:2px solid var(--scroll-thumb-hover-border);
+        }
+        body.darkmode,.darkmode {
+            background: black;
+        }
+        body {
+            background: grey;
+        }
+        body {
+            display: grid;
+            grid-template-columns: auto 1fr;
+        }
+        #main,
+        #stylesPanel {
+            left: 0;
+            top: 0;
+            z-index: 2;
+            background: cadetblue;
+            height: 100%;
+            height: fit-content;
+            width: fit-content;
+        }
+        #stylesPanel {
+            padding:2.5px;
+            position:sticky;
+            top:0px;
+            left:0px;
+            height:calc(100vh - 20px);
+            overflow-y:scroll;
+            z-index:20;
+        }
+        #stylesPanel:has(#pannelHideBtn + button:not(.displaynone)) table{
+            min-width:150px;
+        }
+        #stylesPanel > table tr:first-of-type td{
+            width:auto!important;
+        }
+        #main {
+            display:inline-grid;
+            /* grid-template-columns:auto 1fr; */
+            width:100%;
+            height:450px;
+            border:2px solid #ccc;
+            box-shadow:10px 5px 0px grey;
+            overflow:auto;
+        }
+        .event_node {
+            position: absolute;
+            border: 1px solid #000;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            padding: 8px;
+        }
+        .resizable {
+            resize: both;
+            overflow: auto;
+        }
+        .resizable[tabindex="2"] {
+            resize: vertical !important;
+        }
+        button,td,input,select {
+            font-size: 10px !important;
+        }
+        table table {
+            width: 100%;
+        }
+        .tableSectionHeaders td {
+            cursor: pointer;
+        }
+        td[for] {
+            text-align: right;
+            background: rgb(228, 228, 228);
+        }
+        td {
+            width: 75px;
+            background: #607d8b;
+        }
+        td:last-child {
+            width: 1px;
+        }
+        td:last-child input[type="checkbox"] {
+            width: auto !important;
+        }
+        td:last-child {
+            width:auto!important;
+        }
+        tr td:first-child {
+            width: 50px !important;
+        }
+        td button {
+            width: 100%;
+        }
+        #row_snappingdistance td {
+            border-top: 5px solid !important;
+        }
+        hr {
+            margin: 0 !important;
+        }
+        button:active {
+            background: burlywood;
+            /* font-weight: bold; */
+        }
+        input,textarea {
+            width: 100%;
+            height: -webkit-fill-available;
+        }
+        textarea {font-size: 1em;}
+        .pureHTMLtimeline,
+        .pureHTMLtimeline div {
+            overflow: hidden !important;
+        }
+        .pureHTMLtimeline div:focus {
+            box-shadow: 3px 3px 3px 0px blue;
+            z-index: 10 !important;
+        }
+        .pureHTMLtimeline *:active {
+            box-shadow: 0 0 0 1px blue;
+        }
+        .pureHTMLtimeline div.group:focus,
+        .pureHTMLtimeline div.group {
+            /* border:1px dashed black!important; */
+            box-shadow: 0 0 0 1px maroon, inset 0 0 0 1px white;
+        }
+        #stylesPanel td:first-child[colspan] button {
+            width: auto;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        tr.tableSectionHeaders td {
+            background: white;
+            font-weight: bold;
+            text-align: center;
+            border-top: 2px solid white;
+            border-bottom: 1px solid white;
+            width: 100px!important;
+        }
+        .paths_modifiers div div {
+            display:flex;
+            align-items:flex-start;
+            height: 100%;
+        }
+    </style>
+    <style id="darkmodeStyles">
+        :root {
+            --darkmode-bg1color: black;
+        }
+
+        .darkmode #main,
+        .darkmode #stylesPanel {
+            background: #0d1f2d;
+        }
+
+        .darkmode td {
+            background: transparent !important;
+        }
+
+        .darkmode td input {
+            background: transparent !important;
+            color: white;
+        }
+
+        .darkmode button {
+            background: #333637;
+            border: 1px;
+            color: whitesmoke;
+            box-shadow: 0 0 1px whitesmoke inset, 0 0 0.9px whitesmoke;
+        }
+
+        .darkmode div {
+            color: white;
+        }
+
+        /* :not([style*="background:transparent"]) */
+        .darkmode .pureHTMLtimeline,
+        .darkmode .event_node:not([style*="resize:vertical"]):not([style*="resize: vertical"]) {
+            background: var(--darkmode-bg1color) !important;
+        }
+
+        .darkmode .event_node[style*="border:1px"],
+        .darkmode .event_node[style*="border: 1px"] {
+            border-color: white !important;
+        }
+
+        .darkmode .event_node[style*="resize: vertical"][style*="background: black"],
+        .darkmode .event_node[style*="resize:vertical"][style*="background:black"] {
+            background: white !important;
+        }
+
+        .darkmode .event_node[style*="resize: vertical"]:not([style*="background: black"]),
+        .darkmode .event_node[style*="resize:vertical"]:not([style*="background:black"]) {
+            background: lightsalmon !important;
+        }
+
+        .displaynone {
+            display: none;
+        }
+
+        #tr_dashed.disabled, .disabled {
+            display:none;
+            pointer-events:none;
+            opacity:60%;
+        }
+        #tr_dashed.disabled *, .disabled * {
+            pointer-events:none;
+            opacity:60%;
+            user-select:none;
+        }
+    </style>
+    <style>
+        .temporary_div:hover {
+            background: orange !important;
+            box-shadow: 0 0 0 1px maroon !important;
+        }
+
+        path:focus {
+            outline: none;
+            stroke: orange;
+        }
+    </style>
+    <style>
+        .pureHTMLtimeline {--dashed-color: black;}
+        .darkmode .pureHTMLtimeline {--dashed-color:white;}
+        svg.pureHTMLtimeline-svg-container{position:absolute;left:0;top:0;height:100%;width:100%;overflow:visible;pointer-events:none;}path{pointer-events:painted;}
+        path:hover {cursor:pointer;stroke:grey;}
+    </style>
+</head>
+
+<body class="darkmode">
+    <div id="stylesPanel">
+        <table>
+            <tr>
+                <td>
+                    <table>
+                        <tr class="divs_modifiers paths_modifiers">
+                            <td colspan="2">
+                                <div style="display: flex;">
+                                    <button id="pannelHideBtn" onclick="stylesPanel.querySelectorAll('#stylesPanel *').forEach(x=>{!x.matches('table, #pannelHideBtn, *:has(#pannelHideBtn)')?x.classList.toggle('displaynone'):null;})">|||</button>
+                                    <button onclick="createDiv('type1')" title="add Event">Event</button>
+                                    <button onclick="createDiv('type2')" title="add Vertical Line">Vertical Line</button>
+                                </div>
+                            </td>
+                            <td>
+                                <input type="checkbox" id="group_all" name="group_all" onchange="groupAttributes(this)" title="Select All">
+                            </td>
+                        </tr>
+                        <tr id="tr_dashed" class="disabled">
+                            <td for="dashed">Dashed:</td>
+                            <td style="display: flex;">
+                                <input class="dashed_checkboxes" type="checkbox" id="dashedInput_check" name="dashedInput_check" onchange="changeToDashedLine(this.checked)" groupstyle="dashed" style="width:auto;">
+                                <input type="text" id="dashedInput" placeholder="spacing" value="10">
+                            </td>
+                            <td>
+                                <!-- <input class="group_checkboxes" type="checkbox" id="group_dashedInput" name="group_dashedInput" onchange="groupAttributes(this)" groupstyle="dashed"> -->
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="divs_modifiers">
+                        <tr class="tableSectionHeaders"><td colspan="3" onclick="toggleElementsSiblings(event,this)" oncontextmenu="toggleElementsSiblings(event,this)">FONT & TEXT</td></tr>
+                        <tr class="divs_modifiers">
+                            <td for="fontFamilyInput">Font Family:</td>
+                            <td style="display:flex;flex-direction:column;">
+                                <input type="text" id="fontFamilyInput" placeholder="check dropdown">
+                                <select id="setfontFamilyInput" oninput="fontFamilyInput.value=this.value, groupAttributes(fontFamilyInput),applyStyles()">
+                                    <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
+                                    <option value="Calibri, sans-serif">Calibri</option>
+                                    <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
+                                    <option value="'Courier New',monospace">Courier New</option>
+                                    <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
+                                    <option value="Garamond, sans-serif">Garamond</option>
+                                    <option value="Georgia, sans-serif">Georgia</option>
+                                    <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
+                                    <option value="Marvel">Marvel</option>
+                                    <option value="Merriweather">Merriweather</option>
+                                    <option value="Poppins">Perpetua</option>
+                                    <option value="Perpetua, sans-serif">Poppins</option>
+                                    <option value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">System-ui</option>
+                                    <option value="'Times New Roman', serif">Times New Roman</option>
+                                    <option value="Verdana, sans-serif">Verdana</option>
+                                </select>
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_fontFamilyInput" name="group_fontFamilyInput" onchange="groupAttributes(this)" groupstyle="fontFamily">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="fontSizeInput">Font Size:</td>
+                            <td>
+                                <input type="text" id="fontSizeInput" placeholder="16px,2em,1rem" oninput="updateRange(this,fontSize_rangeinputs)" >
+                                <input type="range" min="0" max="360" value="0" class="slider" id="fontSize_rangeinputs" oninput="fontSizeInput.value=(this.value+'px'),applyStyles()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_fontSizeInput" name="group_fontSizeInput" onchange="groupAttributes(this)" groupstyle="fontSize">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="fontWeightInput">Font Weight:</td>
+                            <td><input type="text" id="fontWeightInput" placeholder="normal,bold,bolder"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_fontWeightInput" name="group_fontWeightInput" onchange="groupAttributes(this)" groupstyle="fontWeight">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="textColorInput">TextColor:</td>
+                            <td style="display:flex;">
+                                <input type="text" id="textColorInput">
+                                <input id="textColorPicker_input" type="color" style="width:40px;height: auto;" oninput="textColorInput.value=this.value, applyStyles()"></input>
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_textColorInput" name="group_textColorInput" onchange="groupAttributes(this)" groupstyle="color"></td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="textAlignInput">TextAlign:</td>
+                            <td><input type="text" id="textAlignInput" placeholder="right,justify,left,center"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_textAlignInput" name="group_textAlignInput" onchange="groupAttributes(this)" groupstyle="textAlign">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="textAlign_vertical">TextAlign Vertical:</td>
+                            <td><input type="checkbox" id="textAlign_vertical" name="textAlign_vertical" onchange="verticalTextAlignment()"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_textAlign_vertical" name="group_textAlign_vertical" onchange="groupAttributes(this), verticalTextAlignment(this)" groupstyle="textAlign">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table class="divs_modifiers">
+                        <tr class="tableSectionHeaders"><td colspan="3" onclick="toggleElementsSiblings(event,this)" oncontextmenu="toggleElementsSiblings(event,this)">DIV DIMENSIONS & BACKGROUND</td></tr>
+                        <tr class="divs_modifiers">
+                            <td for="backgroundInput">Back-ground:</td>
+                            <td>
+                                <div style="display:flex;">
+                                    <input type="text" id="backgroundInput">
+                                    <input id="bgColorPicker_input" type="color" style="width:40px;height: auto;" oninput="backgroundInput.value=this.value,applyStyles()"></input>
+                                </div>
+                                <input type="range" min="0" max="100" value="1" class="slider transparency_range" title="Transparency" oninput="selectedDiv ? selectedDiv.style.background = (addTransparencyToColor(bgColorPicker_input.value,(100-this.value)/100)):null">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_backgroundInput" name="group_backgroundInput" onchange="groupAttributes(this)" groupstyle="background">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="paddingInput">Padding:</td>
+                            <td><input type="text" id="paddingInput"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_paddingInput" name="group_paddingInput" onchange="groupAttributes(this)" groupstyle="padding">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="paddingLeftInput">Padding Left:</td>
+                            <td>
+                                <input type="text" id="paddingLeftInput" oninput="updateRange(this,paddingLeftInput_range)">
+                                <input type="range" min="0" max="360" value="0" id="paddingLeftInput_range" class="slider" oninput="paddingLeftInput.value=(this.value+'px'),applyStyles()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_paddingLeftInput" name="group_paddingLeftInput" onchange="groupAttributes(this)" groupstyle="paddingLeft">
+                            </td>
+                        </tr>
+                        <tr class="divs_modifiers paths_modifiers">
+                            <td for="widthInput">Width:</td>
+                            <td>
+                                <input type="text" id="widthInput" oninput="updateRange(this,widthInput_range)">
+                                <input type="range" min="0" max="360" value="0" id="widthInput_range" class="slider" oninput="widthInput.value=(this.value+'px'),applyStyles()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_widthInput" name="group_widthInput" onchange="groupAttributes(this)" groupstyle="width"></td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="heightInput">Height:</td>
+                            <td>
+                                <input type="text" id="heightInput" oninput="updateRange(this,heightInput_range)">
+                                <input type="range" min="0" max="360" value="0" id="heightInput_range" class="slider" oninput="heightInput.value=(this.value+'px'),applyStyles()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_heightInput" name="group_heightInput" onchange="groupAttributes(this)" groupstyle="height"></td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="borderInput">Border:</td>
+                            <td><input type="text" id="borderInput"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_borderInput" name="group_borderInput" onchange="groupAttributes(this)" groupstyle="border"></td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="borderRadiusInput">Border Radius:</td>
+                            <td>
+                                <input type="text" id="borderRadiusInput" oninput="updateRange(this,borderRadius_range)">
+                                <input type="range" min="0" max="360" value="0" id="borderRadius_range" class="slider" oninput="borderRadiusInput.value=(this.value+'px'),applyStyles()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_borderRadiusInput" name="group_borderRadiusInput" onchange="groupAttributes(this)" groupstyle="borderRadius"></td>
+                        </tr>
+                        <tr class="divs_modifiers">
+                            <td for="zIndexInput">zIndex:</td>
+                            <td><input type="text" id="zIndexInput"></td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_zIndexInput" name="group_zIndexInput" onchange="groupAttributes(this)" groupstyle="zIndex"></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr>
+                <td>
+                    <table class="paths_modifiers">
+                        <tr class="tableSectionHeaders"><td colspan="3" onclick="toggleElementsSiblings(event,this)" oncontextmenu="toggleElementsSiblings(event,this)">SVG PATHS</td></tr>
+                        <tr class="paths_modifiers">
+                            <td colspan="3"><textarea id="paths_coordinates" oninput="pathCoordinates()" placeholder="Select a path for coordinates."></textarea></td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="paths_arrowhead" colspan="3">
+                                <div for="paths_arrowhead" style="display:inline-grid;grid-template-columns: 1fr 1fr 1fr;">
+                                    <div><div>Arrow Head:</div><input class="group_checkboxes" type="checkbox" id="group_arrowHeadInput" name="group_arrowHeadInput" onchange="path_head(this)" groupstyle="closePath"></div>
+                                    <div for="paths_detachFromDIV"><div>Detach From Div:</div><input class="group_checkboxes" type="checkbox" id="group_detachFromDIVInput" name="group_detachFromDIVInput" onchange="path_detachFromDIV()" groupstyle="closePath"></div>
+                                    <div for="closePathInput"><div>Close Path:</div><input class="group_checkboxes" type="checkbox" id="group_closePathInput" name="group_closePathInput" onchange="pathclose(this)" groupstyle="closePath">
+                                </div>
+                            </td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="curvePathEdgesInput">Curve Edges:</td>
+                            <td>
+                                <input id="curvePathEdgesInput" class="group_checkboxes" type="text" value="1" name="curvePathEdgesInput" oninput="updateRange(this,group_rangeinputs)" onchange="path_curveEdges(this)" groupstyle="curvePathEdges">
+                                <input type="range" min="1" max="100" value="5" class="slider" id="group_rangeinputs" oninput="curvePathEdgesInput.value=this.value,path_curveEdges(this)">
+                            </td>
+                            <td>
+                                <input class="group_checkboxes" style="width:1px;" type="checkbox" id="group_curvePathEdgesInput" name="group_curvePathEdgesInput" onchange="path_curveEdges()" groupstyle="curvePathEdges">
+                            </td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="pathStrokeWidthInput">Stroke Width:</td>
+                            <td>
+                                <input id="pathStrokeWidthInput" class="group_checkboxes" type="text" value="1" name="pathStrokeWidthInput"  oninput="updateRange(this,pathStrokeWidth_range)"
+                                onchange="pathStrokeWidth_range.value = this.value,path_strokeWidth()" groupstyle="curvePathEdges">
+                                <input type="range" min="1" max="100" value="5" class="slider" id="pathStrokeWidth_range" oninput="pathStrokeWidthInput.value=this.value,path_strokeWidth()">
+                            </td>
+                            <td>
+                                <input class="group_checkboxes" style="width:1px;" type="checkbox" id="group_pathStrokeWidth_Input" name="group_pathStrokeWidth_Input" onchange="path_strokeWidth(this)" groupstyle="curvePathEdges">
+                            </td>
+                            </td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="pathStrokeColor_Input">Path Stroke:</td>
+                            <td>
+                                <div style="display:flex;">
+                                    <input type="text" id="pathStrokeColor_Input" onchange="path_strokeColor()">
+                                    <input id="pathStrokeColor_colorInput" type="color" style="width:40px;height: auto;" oninput="pathStrokeColor_Input.value=this.value,path_strokeColor()"></input>
+                                </div>
+                                <input type="range" min="0" max="100" value="1" class="slider transparency_range" id="transparency_pathColorFill_rangeinputs" title="Transparency" oninput="path_strokeColor(addTransparencyToColor(pathStrokeColor_colorInput.value,(100-this.value)/100))">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_pathStrokeColor_Input" name="group_pathStrokeColor_Input" onchange="path_strokeColor()" groupstyle="pathStrokeColor_">
+                            </td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="pathColorFill_Input">Path Fill:</td>
+                            <td>
+                                <div style="display:flex;">
+                                    <input type="text" id="pathColorFill_Input" onchange="path_fill(),pathColorFill_colorInput.value=this.value" oninput="pathColorFill_colorInput.value=this.value">
+                                    <input id="pathColorFill_colorInput" type="color" style="width:40px;height: auto;" oninput="pathColorFill_Input.value=this.value,path_fill()"></input>
+                                </div>
+                                <input type="range" min="0" max="100" value="1" class="slider transparency_range" id="transparency_pathColorFill_rangeinputs" title="Transparency" oninput="path_fill(addTransparencyToColor(pathColorFill_Input.value,(100-this.value)/100))">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_pathColorFill_Input" name="group_pathColorFill_Input" onchange="path_fill()" groupstyle="pathColorFill_">
+                            </td>
+                        </tr>
+                        <tr class="paths_modifiers">
+                            <td for="arrowHead_Input">Arrow Size:</td>
+                            <td>
+                                <input type="text" id="arrowHead_Input" onchange="arrowHead()" oninput="arrowHead(),updateRange(this,arrowHead_rangeinputs)">
+                                <input type="range" min="0" max="360" value="0" class="slider" id="arrowHead_rangeinputs" oninput="arrowHead_Input.value=this.value,arrowHead()">
+                            </td>
+                            <td><input class="group_checkboxes" type="checkbox" id="group_arrowHead_Input" name="group_arrowHead_Input" onchange="arrowHead()" groupstyle="arrowHead_">
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table>
+                        <tr id="row_snappingdistance">
+                            <td for="snappingDistanceInput">Snap Size:</td>
+                            <td><input type="text" id="snappingDistanceInput"></td>
+                            <td><button onclick="snappingDistance = Number(snappingDistanceInput.value.trim())">*</button>
+                            </td>
+                        </tr>
+                        <tr class="">
+                            <td for="rotationInput">Rotation:</td>
+                            <td colspan="2">
+                                <input id="rotationInput" class="group_checkboxes" type="text" value="1" name="rotationInput"  oninput="updateRange(this,rotation_rangeinputs)" onchange="group_rotation_rangeinputs.value = this.value,rotationOfSelectedElement(this)" groupstyle="curvePathEdges">
+                                <input type="range" min="0" max="360" value="0" class="slider" id="rotation_rangeinputs" oninput="rotationInput.value=this.value,rotationOfSelectedElement(this)">
+                            </td>
+                            <!-- <td>
+                                <input class="group_checkboxes" style="width:1px;" type="checkbox" id="group_curvePathEdgesInput" name="group_curvePathEdgesInput" onchange="path_curveEdges(this)" groupstyle="curvePathEdges">
+                            </td> -->
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+        <hr>
+        <button id="delete_btn" onclick="deleteEventORLine()" disabled>Delete</button><hr>
+        <button id="defaulstyles_btn" onclick="defaultStyles()" disabled>Default</button>
+        <button onclick="applyStyles()">Apply Styles</button><hr>
+        <button onclick="copyContainerContent()" title="Copy HTML Timeline" style="font-weight: bold;">COPY<hr><em>EXPORT</em></button>
+        <button onclick="replace_pureHTMLtimeline()" title="Replace Current Timeline with Copied Timeline">PASTE<hr><em>IMPORT</em></button>
+        <!-- <button onclick="make_manuallyAddedDivsDraggable()" title="Make Pasted Divs Draggable">Refresh</button> -->
+    </div>
+    <div id="main">
+        <!-- <div style="width:160px;padding:2.5px;position:sticky;top:0px;left:0px;z-index:1;width:auto;">
+        </div> -->
+        <div class="pureHTMLtimeline" style="width: 100%; height: 100%; position: relative; background:beige; overflow: auto; transform-origin: top left; font-size:16px; --ff:Times New Roman; font-family: var(--ff)!important;--dashed-color:black;" tabindex="1">
+            <style class="svg-style"> .pureHTMLtimeline {--dashed-color: black;}.darkmode .pureHTMLtimeline {--dashed-color: white!important;}svg.pureHTMLtimeline-svg-container{position:absolute;left:0;top:0;height:100%;width:100%;overflow:visible;pointer-events: none;}path{pointer-events:painted;}path:hover {cursor: pointer;stroke: grey;}.pureHTMLtimeline .event_node {box-shadow: 3px 3px 3px grey; padding-left:5px;padding-right:5px!important;}</style>
+            <svg class="pureHTMLtimeline-svg-container" style="position: absolute;left: 0;top: 0;height: 100%;width: 100%;overflow: visible; pointer-events: none;"><defs><filter id="drop-shadow" x="-2000%" y="-2000%" width="100vw" height="100vh"><feDropShadow dx="5" dy="5" stdDeviation="3" flood-color="#000000" flood-opacity="0.5"/></filter></defs></svg>
+        </div>
+    </div>
+</body>
+<script class="nodes-creation-and-manipulation-script">
+    group_all.click();
+    let selectedDiv = null;
+    let divtype = 'type1';
+    let startX = 0;
+    let startY = 0;
+    let mX = '50';
+    let mY = '50';
+    let startWidth = 0;
+    let startHeight = 0;
+    let isResizing = true;
+    let divCount = 0;
+    let snappingDistance = 10;
+    let allDivs = [];
+    let offsets_forGroupDivs = [];
+    document.getElementById('snappingDistanceInput').value = snappingDistance;
+    let pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0];
+
+    stylesPanel.querySelectorAll('.tableSectionHeaders>td').forEach(td => {td.click()});// hide styles pannel menus
+    function make_manuallyAddedDivsDraggable() {
+        pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline div').forEach(div_x => {
+            if (div_x.matches('.pureHTMLtimeline > div')) {
+                let di = div_x.innerHTML;
+                if (di.match(/<\/*div[^>]*>/)) {div_x.innerHTML = div_x.innerHTML.replace(/<\/*div[^>]*>/gi, '');}
+                let type = type1or2(div_x);
+                div_x.classList.add('event_node', 'resizable');
+                div_x.style.padding = 0; //remove padding
+                createDiv(type, div_x);
+            }
+        });
+    }
+    let div1_defaultStyles = {
+        'position': 'absolute',
+        'border': '1px solid #000',
+        'cursor': 'pointer',
+        'background': '#f0f0f0',
+        'padding': '0',
+        'paddingLeft': '0',
+        'width': '50px',
+        'height': '30px',
+        'text-align': 'center',
+        'zIndex': '1',
+        'box-sizing': 'border-box',
+        'border-radius': '2px',
+        'font-size':'1rem'
+    }
+    let div2_defaultStyles = {
+        'position': 'absolute',
+        'border': '1px solid #000',
+        'cursor': 'pointer',
+        'background': 'black',
+        'resize': 'vertical',
+        'padding': '0',
+        'width': '5px',
+        'height': '10em',
+        'zIndex': '0',
+        'box-sizing': 'border-box',
+        'resize': 'vertical'
+    }
+
+    stylesPanel.addEventListener('keydown', (e) => {
+        if (e.key == "Enter" && document.activeElement.matches('#stylesPanel input')) {
+            applyStyles()
+        }
+    })
+    pureHTMLtimeline.addEventListener('click', (e) => {
+        mX = e.clientX - selectedDiv.getBoundingClientRect().left;
+        mX = mX <= 20 ? 50 : mX;
+        mY = e.clientY - selectedDiv.getBoundingClientRect().top;
+        mY = mY <= 20 ? 50 : mY;
+
+        // Add DIV to Group While Selecting And Holding Down Ctrl Key
+        if (e.target.matches('.event_node:not(.group)') && e.ctrlKey) {
+            selectedDiv.classList.add('group')
+        } else if (e.target.matches('.group') && e.ctrlKey) {
+            e.target.classList.remove('group');
+            return
+        } else if (e.target.matches('.pureHTMLtimeline')) {
+            pureHTMLtimeline.querySelectorAll('.group').forEach(grpdiv => {
+                grpdiv.classList.remove('group');
+            });
+            tr_dashed.classList.add('disabled')
+        }
+        fillStylesPanel(e.target);
+    })
+
+    let shiftKey_pressed = false;
+    pureHTMLtimeline.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && ['a', 'A'].includes(e.key)) {
+            e.preventDefault();
+            if (selectedDiv && selectedDiv.matches('.pureHTMLtimeline > div[tabindex="1"]')) {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div[tabindex="1"]').forEach(d => {
+                    d.classList.add('group');
+                });
+            } else if (selectedDiv && selectedDiv.matches('.pureHTMLtimeline > div[tabindex="2"]')) {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div[tabindex="2"]').forEach(d => {
+                    d.classList.add('group');
+                });
+            } else {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div').forEach(d => {
+                    d.classList.add('group');
+                });
+            }
+        }
+        // Create Div on DoubleClick
+        if (e.key == 'Delete') {
+            deleteEventORLine();
+        }
+        if (e.shiftKey) {
+            shiftKey_pressed = true;
+            snappingDistance = 1;
+        }
+    })
+    pureHTMLtimeline.addEventListener('keyup', (e) => {
+        if (e.key == 'Shift') {
+            snappingDistance = Number(document.getElementById('snappingDistanceInput').value.trim());
+            shiftKey_pressed = false;
+        }
+    })
+    pureHTMLtimeline.addEventListener('focus', (e) => {
+        fillStylesPanel(e.target);
+    })
+    pureHTMLtimeline.addEventListener('dblclick', function (e) {
+        if (e.target.matches('.pureHTMLtimeline')) {
+            createDiv(divtype)
+        }
+    });
+
+    // Assuming 'pureHTMLtimeline' is the container element
+    document.addEventListener('keydown', (event) => {
+        if (!document.activeElement.closest('.pureHTMLtimeline') || pureHTMLtimeline.querySelector(
+                '.event_node[contenteditable="true"]')) {
+            return
+        }
+        let group_all = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+        group_all.length > 0 ? group_all : (selectedDiv.matches('.pureHTMLtimeline') ? null : group_all = [
+            selectedDiv
+        ]);
+        // if (event.ctrlKey) {
+        switch (event.key) {
+            case 'ArrowUp':
+                // Perform action for Ctrl + ArrowUp
+                group_all.forEach((grpdiv) => {
+                    let currentTop = parseInt(grpdiv.style.top) || 0;
+                    grpdiv.style.top = (currentTop - snappingDistance) + 'px';
+                });
+                break;
+            case 'ArrowDown':
+                // Perform action for Ctrl + ArrowDown
+                group_all.forEach((grpdiv) => {
+                    let currentTop = parseInt(grpdiv.style.top) || 0;
+                    grpdiv.style.top = (currentTop + snappingDistance) + 'px';
+                });
+                break;
+            case 'ArrowLeft':
+                // Perform action for Ctrl + ArrowLeft
+                group_all.forEach((grpdiv) => {
+                    let currentLeft = parseInt(grpdiv.style.left) || 0;
+                    grpdiv.style.left = (currentLeft - snappingDistance) + 'px';
+                });
+                break;
+            case 'ArrowRight':
+                // Perform action for Ctrl + ArrowRight
+                group_all.forEach((grpdiv) => {
+                    let currentLeft = parseInt(grpdiv.style.left) || 0;
+                    grpdiv.style.left = (currentLeft + snappingDistance) + 'px';
+                });
+                break;
+            default:
+                break;
+        }
+        // }
+    });
+
+    function createDiv(type, div_x) {
+        let div;
+        // Create New DIV
+        if (!div_x) {
+            div = document.createElement('div');
+            div.classList.add('event_node', 'resizable');
+
+            let def_styles = '';
+
+            function def_styles_strings(d) {
+                for (const key in d) {
+                    if (Object.hasOwnProperty.call(d, key)) {
+                        div.style[`${key}`] = `${d[key]}`;
+                    }
+                }
+                return def_styles
+            }
+            if (type === 'type1') {
+                def_styles_strings(div1_defaultStyles);
+                div.textContent = `Div ${++divCount}`;
+                div.tabIndex = '1';
+                tr_dashed.classList.add('disabled')
+                //Position the div
+                div.style.left = mX - (Number(div1_defaultStyles.width.replace(/px/, '')) / 2) + 'px';
+                div.style.top = mY - (Number(div1_defaultStyles.height.replace(/px/, '')) / 2) + 'px';
+                divtype = type; //set default type
+            } else if (type === 'type2') {
+                def_styles_strings(div2_defaultStyles);
+                div.tabIndex = '2';
+                tr_dashed.classList.remove('disabled');
+                //Position the div
+                div.style.left = mX + 'px';
+                div.style.top = mY + 'px'
+                divtype = type; //set default type
+            }
+            fillStylesPanel(div);
+        } else if (allDivs.includes(div)) {
+            return
+        }
+        // Already Existing Divs
+        else {
+            div = div_x;
+            if (type === 'type1') {
+                div.tabIndex = '1';
+                // For divs with content vertically centered using flex (old method)
+                if (div.style.display == 'flex' && div.style.alignItems == 'center') {
+                    // remove display:flex etc.
+                    div.setAttribute('style', grpdiv.getAttribute('style').replace(
+                        /((display:\s*flex;)|(align-items:\s*center;)|(justify-content:\s*center;))/gi, ''));
+                    // center using new method (calculate how much padding from top will visually center contents)
+                    let paddingTop = calculateGap(div) / 2 + 'px';
+                    div.style['padding-top'] = paddingTop;
+                }
+            } else if (type === 'type2') {
+                div.tabIndex = '2';
+            }
+        }
+        // Make Type1 DIvs editable on enter
+        if (type === 'type1') {
+            div.addEventListener('keydown', function (e) {
+                if (e.key == 'Enter' && div.matches('[contenteditable="true"]') == false) {
+                    setEditable(true, div)
+                }
+            })
+        }
+
+        // Make divs draggable
+        div.addEventListener('mousedown', startDrag);
+        div.addEventListener('focus', () => {
+            selectedDiv = div;
+            divtype = type;
+            fillStylesPanel(div)
+        });
+
+        function startDrag(event) {
+            selectedDiv = div;
+            if (!selectedDiv.matches('div:focus')) {return}; //Make it draggable only after it has been clicked
+            if (type1or2(div) === 'type1') {tr_dashed.classList.add('disabled')}
+            else {tr_dashed.classList.remove('disabled')}
+
+            if (selectedDiv.contentEditable == 'true') {return}
+            offsetX = event.clientX - selectedDiv.getBoundingClientRect().left + main.scrollLeft;
+            offsetY = event.clientY - selectedDiv.getBoundingClientRect().top + main.scrollTop;
+
+            // get and set offsets for group divs
+            let group_all = pureHTMLtimeline.querySelectorAll('.group');
+            offsets_forGroupDivs = [];
+            group_all.forEach(grpdiv => {
+                let xy = [
+                    event.clientX - grpdiv.getBoundingClientRect().left,
+                    event.clientY - grpdiv.getBoundingClientRect().top
+                ];
+                offsets_forGroupDivs.push(xy)
+            });
+
+            document.addEventListener('mousemove', dragDiv);
+            document.addEventListener('mouseup', dragDiv_end);
+
+            function dragDiv_end(e) {
+                document.removeEventListener('mousemove', dragDiv);
+                group_all_collect().forEach(div => {
+                    div.setAttribute('style', div.getAttribute('style').replace(/user-select\s*;*\s*[^;]+\s*;*/,
+                        '')); // Allow highlighting of text (remove 'user-select:none;')
+                    div.style.top = roundUpHtmlUnitToNearest(div.style.top, snappingDistance);
+                    div.style.left = roundUpHtmlUnitToNearest(div.style.left, snappingDistance);
+                    removeStyle(div, 'resize')
+                });
+                document.removeEventListener('mouseup', dragDiv_end);
+            }
+        }
+
+        function isResizing(event) {
+            const rect = div.getBoundingClientRect();
+            const edgeSize = 15; // Adjust this value according to the handle size
+
+            // Get mouse position relative to the element
+            const offsetX = event.clientX - rect.left + main.scrollLeft;
+            const offsetY = event.clientY - rect.top + main.scrollTop;
+
+            // Check if the mouse is near the edges for resizing
+            const nearTop = offsetY < edgeSize;
+            const nearBottom = offsetY > rect.height - edgeSize;
+            const nearLeft = offsetX < edgeSize;
+            const nearRight = offsetX > rect.width - edgeSize;
+
+            if ((nearBottom && nearRight) || (nearTop && nearLeft)) {
+                //Snap width and height after resizing
+                document.addEventListener('mouseup', resize_end);
+
+                function resize_end(e) {
+                    //Ensure width of vertical lines are not resized on resizing of length
+                    if (type1or2(div) == 'type1') {
+                        div.style.width = roundUpHtmlUnitToNearest(div.style.width, snappingDistance);
+                    }
+                    div.style.height = roundUpHtmlUnitToNearest(div.style.height, snappingDistance);
+                    document.removeEventListener('mouseup', resize_end);
+                }
+                return true
+            }
+            div.style.resize = "none";
+            return false
+        }
+
+        let newLeft, newTop;
+        let boundaryReachedORnot = {
+            "leftLimit": [false, null],
+            "rightLimit": [false, null],
+            "topLimit": [false, null],
+            "bottomLimit": [false, null],
+        }
+
+        function dragDiv(event) {
+            if (isResizing(event) || event.ctrlKey) {
+                return
+            }
+            event.target.style.userSelect = 'none';
+
+            // Define variables to store previous positions
+            let prevLeft = newLeft;
+            let prevTop = newTop;
+
+            let group_all = group_all_collect();
+            group_all.forEach((grpdiv, i) => {
+                let mouseX, mouseY;
+                if (grpdiv == selectedDiv) {
+                    mouseX = event.clientX - offsetX + main.scrollLeft;
+                    mouseY = event.clientY - offsetY + main.scrollTop;
+                } else {
+                    mouseX = event.clientX - offsets_forGroupDivs[i][0] + main.scrollLeft;
+                    mouseY = event.clientY - offsets_forGroupDivs[i][1] + main.scrollTop;
+                }
+
+
+                const pureHTMLtimelineRect = pureHTMLtimeline.getBoundingClientRect();
+                const divRect = grpdiv.getBoundingClientRect();
+
+                let pW = pureHTMLtimelineRect.width;
+                let pH = pureHTMLtimelineRect.height;
+                const groupCoordinates = getGroupPosition(group_all)
+                const maxX = pW - divRect.width;
+                const maxY = pH - divRect.height;
+
+                newLeft = mouseX - pureHTMLtimelineRect.left;
+                newTop = mouseY - pureHTMLtimelineRect.top;
+
+                // Ensure the div doesn't go beyond pureHTMLtimeline boundaries
+                newLeft = Math.min(Math.max(newLeft, 0), maxX);
+                newTop = Math.min(Math.max(newTop, 0), maxY);
+
+                // Previous top and left (used below)
+                let old_left = Number(grpdiv.style.left.replace(/px/gi, '')) - newLeft;
+                let old_top = Number(grpdiv.style.top.replace(/px/gi, '')) - newTop;
+
+                grpdiv.style.left = newLeft + 'px';
+                grpdiv.style.top = newTop + 'px';
+
+                newLeft = parseInt(roundUpHtmlUnitToNearest(newLeft + 'px', snappingDistance));
+                newTop = parseInt(roundUpHtmlUnitToNearest(newTop + 'px', snappingDistance));
+
+                // To adjust path origins
+                let div_index = grpdiv.getAttribute('div_index');
+
+                /* For Moving Path Originating With nodeDiv When nodeDiv is Moved */
+                let pathOriginatingFrmDiv = pureHTMLtimeline.querySelectorAll(`[pathStart="${div_index}"]`);
+                if (pathOriginatingFrmDiv) {
+                    pathOriginatingFrmDiv.forEach(p => {
+                        moveSelectedPath(p,old_left,old_top);
+                    });
+                }
+                /* For Moving Path Ending With nodeDiv When nodeDiv is Moved */
+                let pathEndingInDiv = pureHTMLtimeline.querySelectorAll(`[pathEnd="${div_index}"]`);
+                if (pathEndingInDiv) {
+                    pathEndingInDiv.forEach(p => {
+                        let p_d_attr;
+                        if(p.hasAttribute('curveless_path')){
+                            p_d_attr = p.getAttribute('curveless_path');
+                        } else {
+                            p_d_attr = p.getAttribute('d');
+                        }
+
+                        if (event.shiftKey) {
+                            // PRESS SHIFT-KEY TO MOVE WHOLE PATH
+                            // Move the Whole Path (Change only the first coordinate--the rest are relative to it)
+                            let m = p_d_attr.match(/M\s*(\d+(?:\.\d+)*)\s*(\d+(?:\.\d+)*)\s*/);
+                            let [px, py] = [Number(m[1]) - old_left, Number(m[2]) - old_top];
+                            p_d_attr = p_d_attr.replace(/M\s*(\d+(?:\.\d+)*)\s*(\d+(?:\.\d+)*)\s*/, 'M' + px + ' ' + py);
+                        } else {
+                            // DON"T PRESS THE SHIFT-KEY -- WILL ONLY MOVE THE FIRST EDGE
+                            // Move the First Edge Alone (Change only the first coordinate--the rest are relative to it)
+                            let l = p_d_attr.match(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*$/);
+                            [px, py] = [Number(l[1]) - old_left, Number(l[2]) - old_top];
+                            p_d_attr = p_d_attr.replace(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*$/,
+                                'l' + px + ' ' + py);
+                        }
+                        p_d_attr = convertPathCoordinates(p_d_attr)//convert it back to relative
+
+                        if(p.hasAttribute('curveless_path')){
+                            p.setAttribute('curveless_path',p_d_attr);
+                            // Curve the edges
+                            p_d_attr = roundPathCorners(p_d_attr, Number(p.getAttribute('curve_radius')), null)
+                        }
+
+                        p.setAttribute('d', p_d_attr);
+                    });
+                }
+
+            });
+            fillStylesPanel(div);
+        }
+
+        // Make divs editable on double click and uneditable on blur
+        div.addEventListener('dblclick', function () {
+            setEditable(true, div);
+            div.focus();
+        });
+
+        div.addEventListener('focus', () => {
+            fillStylesPanel(div);
+        })
+
+        pureHTMLtimeline.appendChild(div);
+        allDivs.push(div)
+    }
+
+    function setEditable(editable, div) {
+        if (editable) {
+            div.setAttribute("onblur", "this.removeAttribute('contenteditable'),this.removeAttribute('onblur')")
+            div.contentEditable = true;
+        }
+    }
+    function toggleElementsSiblings(e,dis) {
+        e.preventDefault();
+        e.preventDefault();
+        let disParent = dis.closest('table');
+        let siblings = disParent.querySelectorAll('tr');
+        if(e.button==0){
+            siblings.forEach(tr => {
+                tr!=dis.closest('tr')?tr.classList.toggle('disabled'):null;
+            });
+        }
+        else if(e.button==2 || e.type == 'contextmenu'){
+            let disable;
+            if(dis.closest('tr').nextElementSibling.matches('.disabled')){dis.click();}// ensure it is open
+            stylesPanel.querySelectorAll('tr.tableSectionHeaders>td').forEach((td,k) => {
+                let siblings = td!=dis?td.closest('table').querySelectorAll('tr'):null;
+                siblings?siblings.forEach((tr,i) => {
+                    (tr!=dis.closest('tr') && !tr.matches('.tableSectionHeaders'))?tr.classList.add('disabled'):null;
+                }):null;
+            });
+        }
+    }
+    function fillStylesPanel(div) {
+        let t=0;
+        function clearPathRelatedContents() {
+            paths_coordinates.innerText = '';
+        }
+        if (div.matches('path.temporary_path')) {return}
+        if (div.matches('.pureHTMLtimeline')) {
+            defaulstyles_btn.disabled = true;
+            delete_btn.disabled = true;
+            // disableEnableStylesPanelButtons(null,'.paths_modifiers,.divs_modifiers');
+            clearPathRelatedContents();
+        } else if (div.matches('path')) {
+            let path = div;
+            defaulstyles_btn.disabled = true;
+            delete_btn.disabled = false;
+            // disableEnableStylesPanelButtons('.divs_modifiers','.paths_modifiers');
+            if (path.hasAttribute('stroke-width')) {
+                let strokeWidth = path.getAttribute('stroke-width').replace(/\w+/,'');
+                group_rangeinputs.value = strokeWidth;
+                curvePathEdgesInput.value = strokeWidth;
+            }
+            if (path.hasAttribute('curve_radius')) {
+                let curve_radius = path.getAttribute('curve_radius');
+                pathStrokeWidthInput.value = curve_radius;
+                pathStrokeWidth_range.value = curve_radius;
+            }
+            else {
+                group_rangeinputs.value = 0;
+                curvePathEdgesInput.value = 0;
+            }
+            // Copy the path coordinates to the paths_coordinates textarea 
+            paths_coordinates.innerText = path.getAttribute('d');
+        } else {
+            defaulstyles_btn.disabled = false;
+            delete_btn.disabled = false;
+            // disableEnableStylesPanelButtons('.paths_modifiers','.divs_modifiers');
+            clearPathRelatedContents();
+        }
+        function disableEnableStylesPanelButtons(a,b) {
+            stylesPanel.querySelectorAll('tr').forEach((tr,i) => {
+                 t=t+(i*0.5)
+                 if(tr.matches(`${a}:not(${b})`)){
+                    setTimeout(() => {
+                        tr.classList.add('disabled');
+                    }, t);
+                }
+                else if(tr.matches(`${b}`)){
+                    setTimeout(() => {
+                        tr.classList.remove('disabled');
+                    }, t);
+                }
+            });
+        }
+        selectedDiv = div;
+        if (parseInt(selectedDiv.style.paddingTop) > 0) {
+            textAlign_vertical.checked = true;
+        } else {
+            textAlign_vertical.checked = false;
+        }
+        const allInlineStyles = getInlineStyles(div); //using 'getInlineStyles' incase it has !important
+        changeInputValue(widthInput, roundUpHtmlUnitToNearest(div.getAttribute('stroke-width')?div.getAttribute('stroke-width'):div.style.width, snappingDistance));
+        changeInputValue(heightInput,roundUpHtmlUnitToNearest(div.style.height, snappingDistance));
+        let bgcolor;
+        if(div.hasAttribute('bgcolor')){bgcolor = div.getAttribute('bgcolor')}
+        else if(div.style.background){bgcolor = allInlineStyles.background};
+        changeInputValue(backgroundInput,bgcolor);
+        changeInputValue(borderInput,div.style.border);
+        changeInputValue(zIndexInput,div.style.zIndex);
+        changeInputValue(textColorInput,div.style.color ? allInlineStyles.color : '');
+        changeInputValue(fontWeightInput,div.style.fontWeight);
+        changeInputValue(borderRadiusInput,div.style.borderRadius);
+        changeInputValue(textAlignInput,div.style.textAlign);
+        changeInputValue(paddingLeftInput,div.style.paddingLeft);
+        if (!shiftKey_pressed) {
+            changeInputValue(snappingDistanceInput,snappingDistance)
+        }
+        // Function to change the input value programmatically
+        function changeInputValue(inputElm,newValue) {
+            inputElm.value = newValue;
+            // Manually trigger the input event
+            var inputEvent = new Event('input', { bubbles: true });
+            inputElm.dispatchEvent(inputEvent);
+        }
+    }
+
+    function defaultStyles(def) {
+        //modifies the default styles object 'div1_defaultStyles' & 'div1_defaultStyles' 
+        applyStyles(divtype);
+    }
+
+    function applyStyles(dtype, groupStyle) {
+        if (!selectedDiv) {
+            alert('Please select a div first.');
+            return;
+        }
+        snappingDistance = Number(document.getElementById('snappingDistanceInput').value.trim());
+        let width = widthInput.value.trim();
+        let height = heightInput.value.trim();
+        let borderRadius = borderRadiusInput.value.trim();
+        let paddingLeft = paddingLeftInput.value.trim();
+        [
+            [width, widthInput],
+            [height, heightInput],
+            [borderRadius, borderRadiusInput],
+            [paddingLeft, paddingLeftInput]
+        ].forEach(x => { // if a number is supplied without a unit, add px as default
+            (x[0] != '' && !x[0].match(/(\d+(?:px|em|rem|%))$/)) ? (x[0] = `${x[0]}px`, x[1].value = x[0]) :
+            null;
+        });
+        [width, height, borderRadius, paddingLeft] = [widthInput.value, heightInput.value, borderRadiusInput.value,
+            paddingLeftInput.value
+        ]
+        let background = backgroundInput.value.trim();
+        let border = borderInput.value.trim();
+        let zIndex = zIndexInput.value.trim();
+        let color = textColorInput.value.trim();
+        let fontWeight = fontWeightInput.value.trim();
+        let textAlign = textAlignInput.value.trim();
+        let fontFamily = setfontFamilyInput.value.trim();
+        let fontSize = fontSizeInput.value.trim();
+
+        let allStyles_string = ['width', 'height', 'background', 'border', 'zIndex', 'color', 'fontWeight', 'borderRadius', 'textAlign', 'paddingLeft', 'fontFamily','fontSize'];
+        let allStyles = [width, height, background, border, zIndex, color, fontWeight, borderRadius, textAlign, paddingLeft, fontFamily,fontSize];
+        let group_allStyles_string = [];
+        allStyles_string.forEach(a => {
+            // check if the style is to be added
+            if (stylesPanel.querySelector('[groupstyle=' + a + ']').checked) {
+                group_allStyles_string.push(a)
+            } else(
+                group_allStyles_string.push(null)
+            )
+        });
+        if (dtype) {
+            dtype = dtype == 'type1' ? div1_defaultStyles : div2_defaultStyles;
+            allStyles.forEach((stl, i) => {
+                if (stl.trim() != '' && group_allStyles_string[i] != null) {
+                    dtype[allStyles_string[i]] = stl;
+                }
+            });
+        }
+
+        // Apply the styles in the styles object to the selected div(s)
+        group_allStyles_string.forEach((g, i) => {
+            if (g != null) {
+                let all_grpdivs = pureHTMLtimeline.querySelectorAll('.group');
+                if (all_grpdivs.length < 1 && selectedDiv) {
+                    if (!selectedDiv) {
+                        return
+                    } // If there isn't any div selected
+                    all_grpdivs = [selectedDiv]; // If there is a selectedDiv
+                }
+                all_grpdivs.forEach(grpdiv => {
+                    grpdiv.style[g] = allStyles[i];
+                    if (grpdiv.matches('path')) {
+                        if (g == 'background') {
+                            selectedDiv.setAttribute('stroke', allStyles[i]);
+                            pureHTMLtimeline.querySelector('#' + selectedDiv.getAttribute('arrowhead'))
+                                .style.fill = allStyles[i];
+                        } else if (g == 'width') {
+                            selectedDiv.setAttribute('stroke-width', allStyles[i]);
+                        }
+                    }
+                    if (!grpdiv.matches('path')) {
+                        // In case the styles includes '!important'
+                        if (allStyles[i].includes('!important')) {
+                            const regex = new RegExp(`(${g}\\s*:)\\s*[^;]+(;|$)`, 'gi');
+                            let styl = grpdiv.getAttribute('style');
+                            grpdiv.setAttribute('style', styl.replace(regex, '$1' + allStyles[i] +
+                                '$2'));
+                        }
+                        //first time only
+                        if (i == 0) {
+                            let paddingTop; // for visually vertically centering content of div 
+                            if (textAlign_vertical.checked && group_textAlign_vertical.checked) {
+                                paddingTop = calculateGap(grpdiv) / 2 + 'px';
+                                grpdiv.style['padding-top'] = paddingTop;
+                            } else {
+                                grpdiv.style.paddingTop = paddingTop;
+                            }
+                        }
+                    }
+
+                });
+            }
+        });
+    }
+    function updateRange(dis,rng) {
+        let disValue = dis.value.match(/\d+/);
+        disValue ? disValue = dis.value.match(/\d+/)[0] : null;
+        if (typeof Number(disValue) == 'number') {//done this way in case it is 0    
+            rng.value=disValue;
+        }
+    }
+    function type1or2(elm) {
+        let type = elm.style.resize == 'vertical' ? 2 : 1;
+        elm.tabIndex = type; // ensure element has tabindex (it gets removed somewhere between copying and pasting back the pureHTMLtimeline--yet to figure it out)
+        return 'type' + type; // if it has tab index set. New ones will have it
+        // return elm.tabIndex ? 'type' + elm.tabIndex : type; // if it has tab index set. New ones will have it
+    }
+
+    function verticalTextAlignment(dis) {
+        // if (dis && dis.checked) {}
+        if (!group_textAlign_vertical.checked) {
+            return
+        }
+        /*  If more than one div is selected */
+        let all_grpdivs = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+        if (all_grpdivs.length < 1 && selectedDiv) {
+            if (!selectedDiv) {
+                return
+            } // If there isn't any div selected
+            all_grpdivs = [selectedDiv]; // If there is a selectedDiv
+        }
+        // choice of styling will depend on the last (or only) selected div
+        if (!selectedDiv) {
+            selectedDiv = all_grpdivs.reverse()[0]
+        } // If no selectedDiv, make last div in the page heirarchy the selectedDiv
+        let make_it_flex = textAlign_vertical.checked;
+        all_grpdivs.forEach(grpdiv => {
+            /* Centering with flex gives problems with ref divs */
+            /* Center Using Padding Top */
+            let paddingTop; // for visually vertically centering content of div 
+            if (textAlign_vertical.checked && group_textAlign_vertical.checked) {
+                paddingTop = calculateGap(grpdiv) / 2 + 'px';
+                grpdiv.style['padding-top'] = paddingTop;
+            } else {
+                grpdiv.style.paddingTop = '0px';
+            }
+        });
+    }
+
+    function deleteEventORLine() {
+        if (selectedDiv) {
+            if (selectedDiv.matches('.pureHTMLtimeline')) {return} //prevent deletion of background
+            let grpAll = pureHTMLtimeline.querySelectorAll('.group');
+            if (grpAll.length > 0) {
+                grpAll.forEach(g => {
+                    removePathMarker(g)
+                    saveState(g);
+                    g.remove();
+                });
+            } else {
+                removePathMarker(selectedDiv)
+                saveState(selectedDiv);
+                selectedDiv.remove();
+            }
+            function removePathMarker(p) {
+                if(p.matches('path')){
+                    let arrowHead = p.getAttribute('arrowhead');
+                    pureHTMLtimeline.querySelector('marker#'+ arrowHead).remove()
+                }
+            }
+        }
+    }
+    function groupAttributes(dis) {
+        if (dis == group_all) {
+            let onOFF = group_all.checked;
+            stylesPanel.querySelectorAll('.group_checkboxes').forEach(grp => {
+                !grp.matches('.disabled') ? grp.checked = onOFF : null;
+            });
+        } else if (!dis.checked && stylesPanel.querySelectorAll('.group_checkboxes:checked').length == 0) {
+            group_all.checked = false;
+        } else if (dis.checked) {
+            group_all.checked = true;
+        }
+    }
+
+    function copyContainerContent(pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0]) {
+        // const pureHTMLtimeline = document.getElementById('pureHTMLtimeline');
+        // const pureHTMLtimelineCopy = pureHTMLtimeline.cloneNode(true);
+        let c_height = pureHTMLtimeline.offsetHeight;
+        let c_width = pureHTMLtimeline.offsetWidth;
+        pureHTMLtimeline.querySelectorAll('br:only-child').forEach(br => {
+            br.remove()
+        });
+        pureHTMLtimeline = pureHTMLtimeline.cloneNode(true);
+        pureHTMLtimeline.style.height = c_height + 'px';
+        pureHTMLtimeline.style.width = c_width + 'px';
+        // Create a temporary textarea to hold the HTML content
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = pureHTMLtimeline.outerHTML.replace(
+            /\s*[a-zA-Z0-9:'"#=-\s]*darkreader[a-zA-Z0-9:;'"#=-\s]*\s*/gi, '').replace(/;>/g, ';">').replace(
+            /((draggable)|(resizable))*/g, '').replace(/&quot;/g, "'").replace(/<br>(\s*|\n*)*<\/div/g, "</div");
+        document.body.appendChild(tempTextArea);
+
+        // Select and copy the HTML content
+        tempTextArea.select();
+        document.execCommand('copy');
+
+        // Clean up - remove the temporary textarea
+        document.body.removeChild(tempTextArea);
+    }
+    // Function to retrieve clipboard content
+    async function getClipboardContent() {
+        try {
+            const clipboardData = await navigator.clipboard.readText();
+            return clipboardData;
+        } catch (error) {
+            console.error('Failed to read clipboard contents: ', error);
+            return null;
+        }
+    }
+
+    function group_all_collect() {
+        let group_all = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+        if (!group_all.includes(selectedDiv) || group_all.length < 1) {
+            group_all = [selectedDiv]
+        };
+        return group_all
+    }
+    // Usage example: calling the function to get clipboard content
+    function replace_pureHTMLtimeline() {
+        getClipboardContent().then((clipboardContent) => {
+            if (clipboardContent) {
+                // Test that clipboardContent is .pureHTMLtimeline
+                let temp = document.createElement('div');
+                temp.innerHTML = clipboardContent;
+                if (temp.firstElementChild.matches('.pureHTMLtimeline')) {
+                    let pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0];
+                    pureHTMLtimeline.setAttribute('style', temp.firstElementChild.getAttribute('style').replace(
+                        /transform:\s*[^\)]+\s*;*/, ''));
+                    pureHTMLtimeline.style.height = '100%';
+                    pureHTMLtimeline.style.width = '100%';
+                    pureHTMLtimeline.innerHTML = temp.firstElementChild.innerHTML;
+                    temp.remove();
+                    // Attach eventListeners and other things
+                    make_manuallyAddedDivsDraggable();
+                    make_manuallyAdded_Paths_Draggable();
+                } else {
+                    alert('NOT Pure HTML Timeline!');
+                }
+            } else {
+                alert('Replace Failed!--Clipboard is empty or access denied.');
+            }
+        });
+    }
+
+    function roundDownAToB(a, b) {
+        return Math.round(a / b) * b;
+    }
+    let shiftCount = 0;
+
+    function roundUpHtmlUnitToNearest(unit, nearest) {
+        const numberPart = parseFloat(unit); // Extract the numerical part from the unit
+        unit = unit.toString().trim().replace(/^\d+\.?\d*/, ''); // Extract the unit type (e.g., 'px', 'em', etc.)
+        let unitType = unit.trim();
+
+        if (!isNaN(numberPart)) {
+            let roundedNumber = Math.round(numberPart / nearest) * nearest; // Round up to the nearest number
+            roundedNumber = roundedNumber >= nearest ? roundedNumber : numberPart;
+            unit = `${roundedNumber}${unitType}`; // Combine the rounded number with the unit type
+            return unit
+        } else {
+            return '';
+        }
+    }
+    // Function to calculate the gap between element's bottom and bottom of its lowest childnode
+    function calculateGap(parent) {
+        let allNodes = getAllNodes(parent);
+        let lowestNodeBottom = 0;
+
+        // Temporarily remove padding then add after getting the gap
+        let currentPadding = parseInt(parent.style.paddingTop);
+        if (currentPadding > 0) {
+            parent.style.paddingTop = '0px'
+        }
+
+        // Loop through child nodes to find the lowest bottom position
+        for (let i = 0; i < allNodes.length; i++) {
+            if (allNodes[i].nodeType === Node.TEXT_NODE) {
+                const text = allNodes[i].nodeValue.trim();
+                if (text !== '') {
+                    const span = document.createElement('span');
+                    span.innerText = text;
+                    span.style.margin = '0!important';
+                    span.style.padding = '0!important';
+                    allNodes[i].replaceWith(span); // Replace textnode with element span node containing the textnode
+
+                    const spanBottom = span.getBoundingClientRect().bottom;
+                    lowestNodeBottom = Math.max(lowestNodeBottom, spanBottom);
+                    span.replaceWith(text); // replace span with original textnode
+                }
+            } else if (allNodes[i].nodeType === Node.ELEMENT_NODE) {
+                const nodeBottom = allNodes[i].getBoundingClientRect().bottom;
+                lowestNodeBottom = Math.max(lowestNodeBottom, nodeBottom);
+            }
+        }
+
+        const parentBottom = parent.getBoundingClientRect().bottom;
+        const gap = Math.round(parentBottom - lowestNodeBottom);
+
+        // restore the initial padding top
+        if (currentPadding > 0) {
+            parent.style.paddingTop = currentPadding + 'px';
+        }
+        return gap;
+
+        function getAllNodes(element, nodeArray = []) {
+            for (let node of element.childNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+                    nodeArray.push(node);
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        getAllNodes(node, nodeArray);
+                    }
+                }
+            }
+            return nodeArray;
+        }
+    }
+
+    function getInlineStyles(element) {
+        // Get the "style" attribute of the element
+        const styleAttribute = element.getAttribute('style');
+
+        // Regular expression to match inline style properties and values
+        const regex = /([a-zA-Z-]+)\s*:\s*([^;]+);?/g;
+
+        const inlineStyles = {};
+        let match;
+
+        // Extract each property and value using the regex
+        while ((match = regex.exec(styleAttribute)) !== null) {
+            const propertyName = match[1].trim();
+            const propertyValue = match[2].trim();
+            inlineStyles[propertyName] = propertyValue;
+        }
+
+        return inlineStyles;
+    }
+
+    function removeStyle(elm, styl) {
+        const regex = new RegExp(`(${styl}\s*:\s*[^;"]+;*)`, 'gi');
+        elm.setAttribute('style', elm.getAttribute('style').replace(regex, ''));
+    }
+
+    function getGroupPosition(eventNodes) {
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+
+        eventNodes.forEach(node => {
+            const rect = node.getBoundingClientRect();
+
+            // Update minimum and maximum X and Y coordinates to get the bounding box of the group
+            minX = Math.min(minX, rect.left);
+            minY = Math.min(minY, rect.top);
+            maxX = Math.max(maxX, rect.right);
+            maxY = Math.max(maxY, rect.bottom);
+        });
+
+        const width = maxX - minX;
+        const height = maxY - minY;
+
+        return {
+            left: minX,
+            top: minY,
+            width,
+            height
+        };
+    }
+
+    function changeToDashedLine(x) {
+        // Dashed Line
+        let dashedLineStyling = "--dashed-color:" + backgroundInput.value + "; background: linear-gradient(var(--dashed-color) 50%, transparent 50%) 0px 0px / 50% " + parseInt(dashedInput.value) + "px; border: none;"
+        if (x) {
+            selectedDiv.setAttribute('style', selectedDiv.getAttribute('style').replace(/(.+)/, '$1' + dashedLineStyling));
+            selectedDiv.setAttribute('bgcolor', backgroundInput.value);
+        } else {
+            removeStyle(selectedDiv, 'background');
+            removeStyle(selectedDiv, 'border');
+            removeStyle(selectedDiv, '--dashed-color');
+            selectedDiv.removeAttribute('bgcolor');
+        }
+    }
+</script>
+<script class="svg-path-creation-script">
+    // Get the SVG container
+    let svgContainer = document.getElementsByClassName('pureHTMLtimeline-svg-container')[0];
+    
+    let addEdge;
+    let isDrawing = false;
+    let isDiv = false;
+    let currentPath = null;
+    let previousPoint = {'x': 0,'y': 0};
+    let previousPath = null;
+    let startingXY = null;
+    let ignore = null;
+    let lastAbsoluteCoordinate = null;
+    let path;
+    let path_m;
+    let div_index = 0;
+
+    let pathSegments = [];
+    let path_coordinates_array = [];
+    let old_path_d_attribute = '';
+    let svgPath;
+    let edgeIsDragging = false;
+    let td_offset = 2.5; //temporary_div_lefttop_offset
+    let oldtempDiv, firstMouseup = false;
+    
+    let spnum = 0;
+
+    function readyToMoveSVGpath (e1){
+        let p = e1.target
+        if (p.matches('path')) {
+            const pureHTMLtimelineRect = pureHTMLtimeline.getBoundingClientRect();
+            let eX = e1.clientX + main.scrollLeft + pureHTMLtimeline.scrollLeft;
+            let eY = e1.clientY + main.scrollTop + pureHTMLtimeline.scrollTop;
+            console.log({eX,eY});
+
+            pureHTMLtimeline.addEventListener('mousemove',movePath);
+            pureHTMLtimeline.addEventListener('mouseup',remove_movePath);
+            function remove_movePath(params) {
+                pureHTMLtimeline.removeEventListener('mousemove',movePath);
+                pureHTMLtimeline.removeEventListener('mouseup',remove_movePath);
+            }
+            function movePath(e) {
+                let newX = e.clientX + main.scrollLeft + pureHTMLtimeline.scrollLeft;
+                let newY = e.clientY + main.scrollTop + pureHTMLtimeline.scrollTop;
+                let dx = eX - newX;
+                let dy = eY - newY;
+                [eX,eY] = [newX, newY];
+                moveSelectedPath(p,dx,dy,true)
+            }
+        }
+    }
+    pureHTMLtimeline.addEventListener('mousedown', svgContainerMouseDown);
+    pureHTMLtimeline.addEventListener('mousedown', readyToMoveSVGpath);
+    pureHTMLtimeline.addEventListener('mousemove', svgContainerMouseMove)
+    pureHTMLtimeline.addEventListener('mouseup', svgContainerMouseUp);
+
+    pureHTMLtimeline.addEventListener('mouseup', addPointToPath);
+    pureHTMLtimeline.addEventListener('mousedown', addPointToPath);
+    pureHTMLtimeline.addEventListener('mouseover', addPointToPath);
+    pureHTMLtimeline.addEventListener('mouseout', addPointToPath);
+    pureHTMLtimeline.addEventListener('keydown', addPointToPath);
+    pureHTMLtimeline.addEventListener('dblclick', addPointToPath);
+
+    // End path with Escape Key press
+    pureHTMLtimeline.addEventListener('keydown', (event) => {
+        if (event.key == 'Escape') {endPath(event, null, true);}
+    });
+    pureHTMLtimeline.addEventListener('contextmenu', (event) => {
+        if (isDrawing) {
+            endPath(event, true, true);
+            event.preventDefault()
+        }
+    });
+
+    function make_manuallyAdded_Paths_Draggable() {
+        svgContainer = document.getElementsByClassName('pureHTMLtimeline-svg-container')[0];
+        document.querySelectorAll('path').forEach(p => {
+            p.addEventListener('focus', (e) => {
+                removeAll_temporary_paths()
+                fillStylesPanel(e.target)
+            })
+        });
+    }
+    // Function to create a new SVG path element
+    function createPath(x, y, x2, y2, index) {
+        path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('stroke', 'var(--dashed-color)');
+        path.setAttribute('stroke-width', '2px');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('stroke-linejoin', 'round');
+        path_m = `M${x} ${y}`;
+        previousPath = path_m;
+        startingXY = [x, y];
+        path.setAttribute('fill', 'none');
+        path.setAttribute('startingpoint', `${x}_${y}`);
+        // path.setAttribute('d', path_m);
+        if (x2) {
+            // This is to create a temporary set of paths to determine where on the actual path is clicked
+            // This duplicates the hovered path but breaks it into segments as generated by the splitUpPath(path) function    
+            path.setAttribute('d', `${path_m} L${x2} ${y2}`);
+            path.classList.add('temporary_path');
+            path.setAttribute('stroke', 'blue');
+            path.setAttribute('stroke-width', '3px');
+            path.setAttribute('index', index);
+        } else {
+            path.setAttribute('filter', 'url(#drop-shadow)');
+            path.setAttribute('tabindex', '1');
+            let arrowHeadIndex = 1;
+            while (pureHTMLtimeline.querySelector('path[arrowhead="ah' + arrowHeadIndex + '"]')) {
+                arrowHeadIndex++;
+            }
+            let arrowHead = 'ah' + arrowHeadIndex;
+            path.setAttribute('arrowhead', arrowHead);
+            pureHTMLtimeline.querySelector('.pureHTMLtimeline-svg-container defs').innerHTML +=
+                `<marker id="${arrowHead}" viewBox="0 0 4 4" refX="1" refY="2" markerUnits="strokeWidth" markerWidth="4" markerHeight="4" orient="auto" fill="var(--dashed-color)"> <path d="M2 1 l1.1055728090000843 0.5527864045000421 c0.44721359549995787 0.22360679774997894 0.44721359549995787 0.670820393249937 0 0.8944271909999157  l-2.211145618000168 1.1055728090000843 c-0.44721359549995804 0.22360679774997871 -0.6708203932499371 0 -0.44721359549995815 -0.44721359549995787  l0.1055728090000842 -0.2111456180001685 c0.22360679774997894 -0.44721359549995787 0.22360679774997894 -1.3416407864998736 0 -1.7888543819998315  l-0.1055728090000842 -0.2111456180001684 c-0.22360679774997896 -0.4472135954999579 0 -0.6708203932499369 0.4472135954999579 -0.4472135954999579  l1.1055728090000843 0.5527864045000421" /> </marker>`
+                // <path d="M 2 1 L 4 2 L 0 4 L 1 2 L0 0 L2 1" />
+                // <path d="M 0 0 L 4 2 L 0 4 L 1 2 z" />
+            // path.setAttribute('marker-end', `url(#${arrowHead})`);
+            if(!group_arrowHeadInput.checked){
+                path.setAttribute('marker-end_', `url(#${arrowHead})`);
+            }
+            else {path.setAttribute('marker-end', `url(#${arrowHead})`)}
+            path.addEventListener('focus', (e) => {
+                removeAll_temporary_paths()
+                fillStylesPanel(e.target)
+            })
+        }
+        svgContainer.appendChild(path);
+    }
+    // Function to update the path with new points
+    function drawPath(event, continuePath, endline) {
+        const movingPath = !continuePath;
+        const clientX = (event.clientX - (main.scrollLeft + pureHTMLtimeline.scrollLeft)).toFixed(0);
+        const clientY = (event.clientY - (main.scrollTop + pureHTMLtimeline.scrollTop)).toFixed(0);
+        // const {left,top} = svgContainer.getBoundingClientRect();
+        const {left,top} = {'left':(pureHTMLtimeline.getBoundingClientRect().left - main.scrollLeft).toFixed(0), 'top':(pureHTMLtimeline.getBoundingClientRect().top - main.scrollTop).toFixed(0)};
+        let sp = event.shiftKey ? Number(document.getElementById('snappingDistanceInput').value.trim()) : 1;
+        const x = roundUpHtmlUnitToNearest(clientX - left, sp);
+        const y = roundUpHtmlUnitToNearest(clientY - top, sp);
+
+        if (endline) {
+            // Relative Coordinates
+            path.setAttribute('d', path_m);
+            if (continuePath) {
+                let d = path_m + ` l${x-startingXY[0]} ${y-startingXY[1]}`;
+                path.setAttribute('d', d);
+            }
+        } else if (movingPath) {
+            // Relative Coordinates
+            let d = path_m + ` l${x-startingXY[0]} ${y-startingXY[1]}`;
+            if(!path.hasAttribute('d')){
+                //for the begining of move (to avoid adding a point immediately after the start of the path)
+                d = path_m;}
+            path.setAttribute('d', d);
+
+            if (addEdge) {
+                startingXY = [x, y]
+                path_m = d;
+                addEdge = false;
+            }
+        } else {
+            ignore = true;
+            addEdge = true;
+        }
+    }
+
+    function removePath() {
+        pureHTMLtimeline.removeEventListener('mouseup', removePath);
+        path.remove();
+    }
+
+    function svgContainerMouseDown(event) {
+        if(event.target.matches('.pureHTMLtimeline')){removeAll_temporary_paths(true);}
+        // Temporary fix so as not to create unwanted paths on click of nodes
+        if(!event.ctrlKey){return}
+        // let eventnode_pathOrigin = event.target.closest('.event_node:not(div:focus)');
+        let eventnode_pathOrigin = event.target.closest('.pureHTMLtimeline, .event_node:not(div:focus)');
+
+        function isResizing(event, div = eventnode_pathOrigin) {//is the divnode being drag at the resize edge?
+            const rect = div.getBoundingClientRect();
+            const edgeSize = 15; // Adjust this value according to the handle size
+
+            // Get mouse position relative to the element
+            const offsetX = event.clientX - rect.left + main.scrollLeft;
+            const offsetY = event.clientY - rect.top + main.scrollTop;
+
+            // Check if the mouse is near the edges for resizing
+            const nearTop = offsetY < edgeSize;
+            const nearBottom = offsetY > rect.height - edgeSize;
+            const nearLeft = offsetX < edgeSize;
+            const nearRight = offsetX > rect.width - edgeSize;
+
+            if ((nearBottom && nearRight) || (nearTop && nearLeft)) {
+                return true
+            }
+            return false
+        }
+        if (eventnode_pathOrigin.matches('.event_node:not(div:focus)') && isResizing(event)) {return}
+        if (!isDrawing && !event.target.matches('path') && eventnode_pathOrigin) {
+            let di;
+            if (eventnode_pathOrigin.getAttribute('div_index')) {
+                di = Number(eventnode_pathOrigin.getAttribute('div_index'));
+            } else {
+                eventnode_pathOrigin.setAttribute('div_index', ++div_index);
+                di = div_index;
+            }
+            isDrawing = true;
+            const clientX = event.clientX - (main.scrollLeft + pureHTMLtimeline.scrollLeft);
+            const clientY = event.clientY - (main.scrollTop + pureHTMLtimeline.scrollTop);
+            const {left,top} = {'left':pureHTMLtimeline.getBoundingClientRect().left - main.scrollLeft, 'top':pureHTMLtimeline.getBoundingClientRect().top - main.scrollTop};
+            const x = (clientX - left).toFixed(0);
+            const y = (clientY - top).toFixed(0);
+
+            createPath(x, y);
+            previousPoint = {'x': clientX,'y': clientY};
+            previousPath = path.getAttribute('d');
+            path.setAttribute('pathStart', di)
+            pureHTMLtimeline.addEventListener('mouseup',
+            removePath); //to remove path that gets drawn on mousedown without mousemove
+        }
+    }
+
+    // Event listener for mousemove
+    function svgContainerMouseMove(e) {
+        if (e.type == 'mousemove') {
+            pureHTMLtimeline.removeEventListener('mouseup', removePath);
+        }
+        if (isDrawing) {
+            drawPath(e);
+        }
+    }
+
+    // Event listener for mouseup
+    function svgContainerMouseUp(e) {
+        if (!isDrawing) {return}
+        isDiv = e.target.closest('div.event_node');
+        let di;
+        if (isDiv) {
+            if (isDiv.hasAttribute('div_index')) {
+                di = Number(e.target.getAttribute('div_index'));
+            } else {
+                isDiv.setAttribute('div_index', ++div_index);
+                di = div_index;
+            }
+            path ? path.setAttribute('pathEnd', di) : null;
+            isDrawing = false;
+            previousPoint = null;
+        } else {
+            drawPath(e, true)
+        }
+    }
+
+    function endPath(a, b, c) {
+        isDrawing = false;
+        edgeIsDragging = false;
+        previousPoint = null;
+        (path && path.getAttribute('d')) ? path.setAttribute('d', path_m.replace(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*/i, ' ')) : null;
+        drawPath(a, b, c);
+        path=null;
+    }
+
+    function removeAll_temporary_paths(removeEdgesAsWell = false) {
+        // remove only edges
+        if (removeEdgesAsWell == 3) {
+            all_temporary_path = pureHTMLtimeline.querySelectorAll('div.temporary_div')
+        }
+        // remove both temporary_paths and temporary_divs
+        else if (removeEdgesAsWell == true) {
+            all_temporary_path = pureHTMLtimeline.querySelectorAll('path.temporary_path, div.temporary_div')
+        }
+        // remove only temporary_paths
+        else if (removeEdgesAsWell == false) {
+            all_temporary_path = pureHTMLtimeline.querySelectorAll('path.temporary_path')
+        }
+
+        if (all_temporary_path) {
+            all_temporary_path.forEach(tempPath => {tempPath.remove();});
+            if (removeEdgesAsWell != 3) {pathSegments = [];};
+        }
+    }
+
+    // Function to create Sub-Divided Paths To Determine Where along the Path Was Clicked
+    function addPointToPath(e) {
+        if (e.ctrlKey || e.type == 'mouseup' || (e.type == 'mouseover' && e.target.matches('*:not(path):not(.temporary_div):not(.temporary_path):not(.event_node)'))) {
+            setTimeout(() => {
+                removeAll_temporary_paths(true);
+            }, 10000);
+            return
+        }
+        if (e.type == 'keydown' && !e.ctrlKey) {
+            return
+        }
+        let all_temporary_path = pureHTMLtimeline.querySelectorAll('path.temporary_path');
+        let elementsFromPoint = document.elementsFromPoint(e.clientX, e.clientY);
+        let has_temporary_path = elementsFromPoint.find(x => {
+            return x.matches('path.temporary_path')
+        });
+        
+        if (['contextmenu', 'dblclick', 'mousedown'].includes(e.type) && e.target.matches(
+            'path.temporary_path, .temporary_div') && !isDrawing) {
+                
+            removeAll_temporary_paths();
+            pureHTMLtimeline.removeEventListener('mouseover', addPointToPath);
+
+            var {clientX,clientY} = e;
+            let {left,top} = svgContainer.getBoundingClientRect();
+            let xN = (clientX - left).toFixed(0);
+            let yN = (clientY - top).toFixed(0);
+
+            let pointAfterWhichToAdd, pointToModify, tempDiv;
+            if (e.target.matches('.temporary_div')) {
+                tempDiv = e.target;
+                pointToModify = Number(tempDiv.getAttribute('pathServing')) - 1;
+            } else {
+                pointAfterWhichToAdd = Number(e.target.getAttribute('index'));
+            }
+            pureHTMLtimeline.addEventListener('contextmenu', addPointToPath); //Delete edge
+            pureHTMLtimeline.addEventListener('contextmenu', modifyPathCoord); //Delete edge
+            pureHTMLtimeline.addEventListener('mouseup', modifyPathCoord); //Delete edge (simulates double click)
+            pureHTMLtimeline.addEventListener('mousemove', modifyPathCoord); //Simulating dragging of the path
+            pureHTMLtimeline.addEventListener('mouseup', end_modifyPathCoord);
+
+            // Modify the Coordinates of the Targeted Path
+            function modifyPathCoord(e) {
+                e.preventDefault();
+                
+                edgeIsDragging = true;
+                let delete_tempDiv = false;
+                if (e.type == 'contextmenu' || e.button == 2) {
+                    pureHTMLtimeline.addEventListener('contextmenu', preventContextMenuDefault);
+                    delete_tempDiv = true;
+                }
+                else if (e.type == 'mouseup') {
+                    // Deletes node by simulating double click
+                    // Mousemove will nullify the second click
+                    
+                    if (tempDiv) {//If clicking on an edge
+                        let newtempDiv = tempDiv.getAttribute('style');
+                        /* *** * *** *** ***** ******* *** * *** *** */
+                        /* *** * *** *** First Mouseup *** * *** *** */
+                        /* *** * *** *** ***** ******* *** * *** *** */
+                        if (!oldtempDiv) {
+                            oldtempDiv = newtempDiv;
+                            setTimeout(() => {oldtempDiv = null;}, 1000);// If the second mouseup does not happen in 1000ms, it will reset oldtempDiv to null                            
+                            return // It doesn't run the function completely on first mouseup
+                        }
+                        /* * *********** ****** ******* *********** * */
+                        /* * *********** Second Mouseup *********** * */
+                        /* * *********** ****** ******* *********** * */
+                        else if (oldtempDiv && oldtempDiv != newtempDiv) {
+                            // By Second Mouseup, the edge has been moved (the edge div's coordinates will have changed)
+                            oldtempDiv = null;
+                            return
+                        } else if (oldtempDiv && oldtempDiv == newtempDiv) {
+                            // The edge div on Second Mouseup is the same as the edge div of the First Mouseup
+                            delete_tempDiv = true;
+                        }
+                        /* * *********** ****** ******* *********** * */
+                    }
+                    // Only had edge On Mouseup If CtrlKey is Pressed 
+                    if (e.button != 2 && !e.ctrlKey && !oldtempDiv && !firstMouseup) {
+                        firstMouseup = true;
+                        setTimeout(() => {firstMouseup = false;}, 1000);// If the second mouseup does not happen in 1000ms, it will reset oldtempDiv to null
+                        return
+                    }
+                    firstMouseup = false;
+                }
+                else if (e.type == 'mousemove') {
+                    oldtempDiv = null;
+                }
+
+                var {clientX,clientY} = e;
+
+                xN = snapEdge((clientX - left).toFixed(0));
+                yN = snapEdge((clientY - top).toFixed(0));
+
+                // Generate New Path Coordinates From the path_coordinates_array Adding the Coordinates of the Mousedown/Mousemove Point at Based on the Index of the Clicked Segment
+                let newCoordinate = '';
+                path_coordinates_array.forEach((x, i) => {
+
+                    /* FOR PATH EDGE DRAGGING */
+                    if (pointToModify + 2 && i == pointToModify + 1) {
+                        if (delete_tempDiv) {
+                            setTimeout(() => {tempDiv.remove()}, 5000);
+                            oldtempDiv = null;
+                            edgeIsDragging = false;
+                        } else {
+                            i == 0 ? newCoordinate += `M${xN} ${yN} ` : newCoordinate += `L${xN} ${yN} `;
+                            tempDiv.style.left = `${xN - td_offset}px`;
+                            tempDiv.style.top = `${yN - td_offset}px`;
+                        }
+                    }
+                    /* FOR PATH SEGMENT DRAGGING */
+                    else {newCoordinate += `${x} `;}
+
+                    // Add new Coordinate After The Coordinate In the path_coordinates_array Corresponding to the Index of the Hovered Path Segment
+                    if (i == pointAfterWhichToAdd) {newCoordinate += `L${xN} ${yN} `;}
+                });
+                // Convert Path Coordinates Back From Absolute to Relative
+                newCoordinate = convertPathCoordinates(newCoordinate.replace(/\s+/g, ' '));
+                if (!newCoordinate.match(/l/i)) {
+                    // Delete if Only Starting Edge is Left
+                    svgPath.remove()
+                } else {
+                    // If path was closed, ensure it is closed
+                    // add z to path definition to close path
+                    if (svgPath.hasAttribute('former-marker-end')){// Path will have this attribute if it was previously closed
+                        newCoordinate = newCoordinate + ' z';
+                    }
+                    //make the path curved if it was previously curved
+                    if(svgPath.hasAttribute('curveless_path')){//meaning it was originally curved
+                        svgPath.setAttribute('curveless_path',newCoordinate);
+                        newCoordinate = convertPathCoordinates(roundPathCorners(newCoordinate));
+                    }
+                    // Apply the newCoordinate to the svgPath
+                    svgPath.setAttribute('d', newCoordinate);
+                }
+            }
+
+            function snapEdge(q) {
+                let sp = event.shiftKey ? Number(document.getElementById('snappingDistanceInput').value.trim()) : 1;
+                return roundUpHtmlUnitToNearest(q, sp);
+            }
+            // Remove Relevant EventListeners
+            function end_modifyPathCoord(event) {
+                e.preventDefault();
+                edgeIsDragging = false;
+                removeAll_temporary_paths(true);
+                pureHTMLtimeline.removeEventListener('contextmenu', modifyPathCoord);
+                pureHTMLtimeline.removeEventListener('mousemove', modifyPathCoord);
+                pureHTMLtimeline.removeEventListener('mouseup', modifyPathCoord);
+                pureHTMLtimeline.removeEventListener('mouseup', end_modifyPathCoord);
+
+                // Re-enable addition of points to path on mouseover (addition of artificial segments)
+                pureHTMLtimeline.addEventListener('mouseover', addPointToPath);
+            }
+
+            function preventContextMenuDefault(e) {
+                e.preventDefault();
+                pureHTMLtimeline.removeEventListener('contextmenu', preventContextMenuDefault)
+            };
+
+            return
+        }
+
+        if (e.target.matches('path:not(path.temporary_path)') && !isDrawing && !edgeIsDragging) {
+            svgPath = e.target;
+
+            if (e.type == 'mouseover' && pathSegments.length == 0) {
+                pathSegments = [];
+                path_coordinates_array = [];
+                splitUpPath(svgPath);
+            }
+
+            function splitUpPath(svgPath) {
+                path_d_attribute = svgPath.hasAttribute('curveless_path')?svgPath.getAttribute('curveless_path'):svgPath.getAttribute('d');
+                old_path_d_attribute = path_d_attribute;
+                let m = path_d_attribute.match(/M\s*(\d+(?:\.\d+)*)\s*(\d+(?:\.\d+)*)\s*/);
+                let [px, py] = [Number(m[1]), Number(m[2])];
+                pathSegments.push([px, py]);
+                path_coordinates_array.push(m[0]);
+                path_d_attribute = path_d_attribute.replace(/M\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*/, '');
+                let l = path_d_attribute.match(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*/);
+                while (l) {
+                    [px, py] = [px + Number(l[1]), py + Number(l[2])];
+                    pathSegments.push([px, py]);
+                    // path_coordinates_array.push(l[0]);//relative coordinate
+                    path_coordinates_array.push(`L${px} ${py}`); //absolute coordinate
+                    path_d_attribute = path_d_attribute.replace(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*/, '');
+                    l = path_d_attribute.match(/l\s*(-*\d+(?:\.\d+)*)\s*(-*\d+(?:\.\d+)*)\s*/);
+                }
+                // To created temporary paths mirroring the segements of the hovered path
+                all_temporary_path = pureHTMLtimeline.querySelectorAll('path.temporary_path');
+                removeAll_temporary_paths(3)
+                if (all_temporary_path.length == 0) {
+                    pathSegments.forEach((arr, i) => {
+                        if (i != pathSegments.length - 1) {
+                            createPath(arr[0], arr[1], pathSegments[i + 1][0], pathSegments[i + 1][1], i);
+                        }
+                        createTempPathEdgeDiv(arr[0], arr[1]);
+
+                        /* CREATE TEMPORARY DIVS TO MARK EDGES OF PATH */
+                        function createTempPathEdgeDiv(x, y) {
+                            let tempDiv = document.createElement('DIV');
+                            tempDiv.classList.add('temporary_div');
+                            tempDiv.style.position = 'absolute';
+                            tempDiv.style.width = '5px';
+                            tempDiv.style.height = '5px';
+                            tempDiv.style.left = x - td_offset + 'px';
+                            tempDiv.style.top = y - td_offset + 'px';
+                            tempDiv.style.boxShadow = '0 0 0 1px grey';
+                            tempDiv.style.background = 'var(--dashed-color)';
+                            tempDiv.style.cursor = 'pointer';
+                            tempDiv.style.zIndex = '500';
+                            tempDiv.setAttribute('pathServing', i);
+                            tempDiv.setAttribute('tabindex', '1');
+                            pureHTMLtimeline.append(tempDiv);
+                        }
+                    });
+                }
+                return pathSegments
+            }
+        } else if (!has_temporary_path /* && svgPath.matches('path.temporary_path') */ ) {
+            removeAll_temporary_paths()
+        }
+    }
+
+    // Convert Path Coordinates from Absolute to Relative
+    function convertPathCoordinates(path_d_attribute, toRelative = true) {
+        path_d_attribute = path_d_attribute.replace(/,/g, ' ')
+        let new_path_d_attribute // = makePathCoordinates_Relative(path_d_attribute);//ensure it starts off relative
+        new_path_d_attribute = makePathCoordinates_Absolute(path_d_attribute);
+        return toRelative ? makePathCoordinates_Relative(path_d_attribute) : new_path_d_attribute;
+
+        function makePathCoordinates_Absolute(path_d_attribute) {
+            if(path_d_attribute==null){return}
+            let new_path_d_attribute = '';
+            let pathSectionsArr = path_d_attribute.match(/(\w\s*(?:-*\d+(?:\.\d+)*\s*)*)\s*/g);
+            let xAbs=0, yAbs=0, prv_xAb, prv_yAb;
+            let new_pathArr = [];
+            pathSectionsArr.forEach((p_seg,i) => {
+                p_seg = p_seg.trim();
+                // Convert Everything to Absolute
+                if(i==0 && p_seg.match('M')){
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    [xAbs,yAbs]=[Number(arr[0]),Number(arr[1])];
+                    [prv_xAb, prv_yAb] = [xAbs,yAbs];// The first coordinate following an Absolute coordinate (Used for Curves)
+                    new_pathArr.push(p_seg);
+                }
+                //If It is a RELATIVE CURVE -- it needs conversion
+                else if(p_seg.match(/c/)) {
+                    let p_seg_string = 'C';
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        if (k==0||k%2==0) {
+                            p_seg_string += a+prv_xAb + ' ';
+                        }
+                        else {
+                            p_seg_string += a+prv_yAb + ' ';
+                        }
+                        if(k==arr.length-1){
+                            [xAbs,yAbs] = [arr[k-1]+prv_xAb,a+prv_yAb]
+                        }
+                    });
+                    new_pathArr.push(p_seg_string);
+                }
+                else if(p_seg.match(/[a-bd-y]/)) {//If LowerCase, it is Relative -- it needs conversion
+                    let p_seg_string = p_seg.match(/\w/)[0].toUpperCase();
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        if (k==0||k%2==0) {xAbs+=a; p_seg_string+=' ' + xAbs;}
+                        else {yAbs+=a; p_seg_string+=' ' + yAbs;}
+                    });
+                    new_pathArr.push(p_seg_string);
+                }
+                else if(p_seg.match(/[A-Y]/)) {//If UpperCase, it is Absolute no need for conversion
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        //incase next coordinates are relative so that they can be added
+                        if (k==0||k%2==0) {xAbs=a;}
+                        else {yAbs=a;}
+                        if (k==0){// The first coordinate following an Absolute coordinate (Used for Curves)
+                            [prv_xAb, prv_yAb] = [arr[0],arr[1]]
+                        }
+                        if(p_seg.match(/C/) && k==arr.length-1){
+                            [xAbs,yAbs] = [arr[k-1]+prv_xAb,a+prv_yAb];
+                        }
+                    });
+                    new_pathArr.push(p_seg);
+                }
+                else if(p_seg.match(/[zZ]/)){
+                    new_pathArr.push(p_seg);
+                }
+            });
+            // Absolute Path Coordinates
+            let absPathCoor = new_pathArr.join(' ').replace(/([a-zA-Z])\s+/gi,'$1');
+            return absPathCoor
+        }
+        function makePathCoordinates_Relative(path_d_attribute) {
+            if(path_d_attribute==null){return}
+            let new_path_d_attribute = '';
+            let pathSectionsArr = path_d_attribute.match(/(\w\s*(?:-*\d+(?:\.\d+)*\s*)*)\s*/g);
+            let xAbs=0, yAbs=0;
+            let new_pathArr = [];
+            pathSectionsArr.forEach((p_seg,i) => {
+                p_seg = p_seg.replace(/,/g,' ').replace(/\s+/g,' ').trim();
+                // Convert Everything to Absolute
+                if(i==0 && p_seg.match('M')){
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    [xAbs,yAbs]=[Number(arr[0]),Number(arr[1])];
+                    [prv_xAb, prv_yAb] = [xAbs,yAbs]; // The first coordinate following an Absolute coordinate (Used for Curves)
+                    new_pathArr.push(p_seg);
+                }
+                //If It is an Absolute CURVE -- it needs conversion
+                else if(p_seg.match(/C/)) {
+                    let p_seg_string = 'c';
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        if (k==0||k%2==0) {
+                            p_seg_string += a-prv_xAb + ' ';
+                        }
+                        else {
+                            p_seg_string += a-prv_yAb + ' ';
+                        }
+                        if(k==arr.length-1){
+                            [xAbs,yAbs] = [arr[k-1],a]
+                        }
+                    });
+                    new_pathArr.push(p_seg_string);
+                }
+                else if(p_seg.match(/[A-BD-Y]/)) {//If UpperCase, it is Absolute and should be converted
+                    let p_seg_string = p_seg.match(/\w/)[0].toLowerCase();
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        if (k==0){
+                            // The first coordinate following an Absolute coordinate
+                            // Used for Curves
+                            [prv_xAb, prv_yAb] = [arr[0],arr[1]]
+                        }
+                        if (k==0||k%2==0) {p_seg_string+=' ' + (a - xAbs); xAbs = a;}
+                        else {p_seg_string+=' ' + (a - yAbs); yAbs = a; }
+                    });
+                    new_pathArr.push(p_seg_string);
+                }
+                else if(p_seg.match(/[a-y]/)) {//If LowerCase, it is Relative -- it needs conversion
+                    let arr = p_seg.match(/(?:-*\d+(?:\.\d+)*\s*)/g);
+                    arr.forEach((a,k) => {
+                        a=Number(a);
+                        //incase next coordinates are relative so that they can be added
+                        if (k==0||k%2==0) {xAbs+=a;}
+                        else {yAbs+=a;}
+                    });
+                    new_pathArr.push(p_seg);
+                }
+                else if(p_seg.match(/[zZ]/)){
+                    new_pathArr.push(p_seg);
+                }
+            });
+            // Absolute Path Coordinates
+            let absPathCoor = new_pathArr.join(' ').replace(/([a-zA-Z])\s+/gi,'$1');
+            return absPathCoor
+        }
+    }
+
+    // Close SVG Path
+    function pathclose(dis) {
+        if (dis == group_closePathInput) {
+            if (!dis.checked && stylesPanel.querySelectorAll('.group_checkboxes:checked').length == 0) {
+                group_all.checked = false;
+            } else if (dis.checked) {group_all.checked = true;}
+            if (selectedDiv) {
+                let path = selectedDiv;
+                let pathAttr = path.getAttribute('d');
+                if (dis.checked) {
+                    // add z to path definition to close path
+                    path.setAttribute('d', !pathAttr.match(/z|Z/)?pathAttr + 'z':pathAttr);
+                    // remove arrowhead back
+                    path.setAttribute('former-marker-end', path.getAttribute('marker-end'));
+                    path.removeAttribute('marker-end');
+                }
+                else  {
+                    // remove z from path definition to open path
+                    path.setAttribute('d', pathAttr.replace(/z|Z/,''));
+                    // add arrowhead back
+                    if (path.hasAttribute('former-marker-end')) {
+                        path.setAttribute('marker-end', path.getAttribute('former-marker-end'));
+                        path.removeAttribute('former-marker-end');
+                    }
+                }
+            }
+        }
+    }
+    // Remove ArrowHead
+    function path_head(params) {
+        if((path=selectedDiv) && selectedDiv.matches('path')){
+            if(!group_arrowHeadInput.checked){
+                path.setAttribute('marker-end_', path.getAttribute('marker-end'))
+                path.removeAttribute('marker-end')
+            }
+            else if(group_arrowHeadInput.checked){
+                path.setAttribute('marker-end', path.getAttribute('marker-end_'))
+                path.removeAttribute('marker-end_')
+            }
+        }
+    }
+    // Detach from DIV
+    function path_detachFromDIV(params) {
+        if((path=selectedDiv) && selectedDiv.matches('path')){
+            if(!group_detachFromDIVInput.checked){
+                path.removeAttribute('pathstart')
+            }
+            else if(group_detachFromDIVInput.checked){
+            }
+        }
+    }
+    // Curve Path Edges on Slider Drag
+    function path_curveEdges(path,radius) {
+        if(selectedDiv){path = selectedDiv;}
+        if (group_curvePathEdgesInput.checked && path && path.matches('path')) {
+            radius = radius==undefined ? group_rangeinputs.value : radius;
+            if (radius<1) {// remove curves if radius < 1
+                let curveless_pathAttr = path.getAttribute('curveless_path');
+                path.removeAttribute('curveless_path');
+                path.setAttribute('d',curveless_pathAttr);
+                return curveless_pathAttr
+            } else {
+                let pathAttr = path.getAttribute('d');
+                if (path.hasAttribute('curveless_path')) {
+                    pathAttr = path.getAttribute('curveless_path');
+                    path.setAttribute('curve_radius',radius)//save the radius
+                }
+                let curved_pathAttr = convertPathCoordinates(roundPathCorners(pathAttr, radius, null));
+                if (!path.hasAttribute('curveless_path')) {
+                    path.setAttribute('curveless_path',pathAttr)//save the path without curves
+                    path.setAttribute('curve_radius',radius)//save the radius
+                }
+                path.setAttribute('d',curved_pathAttr);
+                return curved_pathAttr
+            }
+        }
+    }
+    function path_fill(color) {
+        if (group_pathColorFill_Input.checked && selectedDiv) {
+            if(!selectedDiv.matches('path')){return}
+            let path = selectedDiv;
+            let fillColor = color ? color : pathColorFill_Input.value;
+            path.setAttribute('fill',fillColor)
+        }
+    }
+    function path_strokeColor(color) {
+        if (group_pathStrokeColor_Input.checked && selectedDiv) {
+            if(!selectedDiv.matches('path')){return}
+            let path = selectedDiv;
+            let strokeColor = color ? color : pathStrokeColor_Input.value;
+            path.setAttribute('stroke',strokeColor)
+            //ArrowHead Color
+            let markerforPath=path.getAttribute('arrowhead');
+            markerforPath = pureHTMLtimeline.querySelector('#'+markerforPath)
+            markerforPath.setAttribute('fill', strokeColor);
+        }
+    }
+    function path_strokeWidth(dis) {
+        if (group_pathStrokeWidth_Input.checked && selectedDiv) {
+            if(!selectedDiv.matches('path')){return}
+            let path = selectedDiv;
+            let strokeWidth = pathStrokeWidthInput.value + 'px';
+            path.setAttribute('stroke-width',strokeWidth)
+        }
+    }
+    function pathCoordinates() {
+        if(selectedDiv && selectedDiv.matches('path')){
+            let path = selectedDiv;
+            let newPathCoordinate = paths_coordinates.value.trim();
+            path.setAttribute('d', convertPathCoordinates(newPathCoordinate));
+        }
+    }
+    function arrowHead() {
+        if((path=selectedDiv) && path.matches('path')){
+            let scale = arrowHead_Input.value.trim();
+            let markerforPath=path.getAttribute('arrowhead');
+            markerforPath = pureHTMLtimeline.querySelector('#'+markerforPath)
+            markerforPath.setAttribute('markerWidth', scale);
+            markerforPath.setAttribute('markerHeight', scale);
+        }
+    }
+    function rotationOfSelectedElement() {
+        if(selectedDiv){
+            let rotation = rotationInput.value.trim();
+            selectedDiv.style.transform = 'rotate('+ rotation +'deg)';
+            selectedDiv.style.transformOrigin = '50% 50%';
+            selectedDiv.style.transformBox = 'fill-box';
+            // selectedDiv.setAttribute('transform', 'rotate('+ rotation +')');
+        }
+    }
+    function moveSelectedPath(p,x,y,moveWholePath) {
+        let [old_left, old_top] = [x,y];
+        let original_relative_path, p_d_attr;
+        if(p.hasAttribute('curveless_path')){
+            original_relative_path = p.getAttribute('curveless_path');
+        } else {
+            original_relative_path = p.getAttribute('d');
+        }
+        // DON"T PRESS THE SHIFT-KEY -- WILL ONLY MOVE THE FIRST EDGE
+        if (event.shiftKey || moveWholePath) {
+            // If shift key is pressed, use relative path. Since it is relative, changing the M command will move the whole path
+            p_d_attr = original_relative_path;
+        }
+        else {
+            p_d_attr = convertPathCoordinates(original_relative_path,false);//Make it absolute so that changing the M will not affect the rest of the coordinate, then change it back to relative
+        }
+        
+        // PRESS SHIFT-KEY TO MOVE WHOLE PATH
+        // Move the Whole Path (Change only the first coordinate--the rest are relative to it)
+        let m = p_d_attr.match(/M\s*(\-*\d+(?:\.\d+)*)\s*(\-*\d+(?:\.\d+)*)\s*/);
+        let [px, py] = [Number(m[1]) - old_left, Number(m[2]) - old_top];
+        p_d_attr = p_d_attr.replace(/M\s*(\-*\d+(?:\.\d+)*)\s*(\-*\d+(?:\.\d+)*)\s*/, 'M' + px + ' ' + py);
+        p_d_attr = convertPathCoordinates(p_d_attr)//convert it back to relative
+
+        if(p.hasAttribute('curveless_path')){
+            p.setAttribute('curveless_path',p_d_attr);
+            // Curve the edges
+            p_d_attr = roundPathCorners(p_d_attr, Number(p.getAttribute('curve_radius')), null)
+        }
+
+        p.setAttribute('d', p_d_attr);
+    }
+</script>
+<script class="svg-path-rounding-corner-script">
+/* ***************************************************************************
+*                                                                            *
+*  SVG Path Rounding Function                                                *
+*  Copyright (C) 2014 Yona Appletree                                         *
+*                                                                            *
+*  Licensed under the Apache License, Version 2.0 (the "License");           *
+*  you may not use this file except in compliance with the License.          *
+*  You may obtain a copy of the License at                                   *
+*                                                                            *
+*      http://www.apache.org/licenses/LICENSE-2.0                            *
+*                                                                            *
+*  Unless required by applicable law or agreed to in writing, software       *
+*  distributed under the License is distributed on an "AS IS" BASIS,         *
+*  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  *
+*  See the License for the specific language governing permissions and       *
+*  limitations under the License.                                            *
+*                                                                            *
+*************************************************************************** */
+
+/**
+ * SVG Path rounding function. Takes an input path string and outputs a path
+ * string where all line-line corners have been rounded. Only supports absolute
+ * commands at the moment.
+ * 
+ * @param pathString The SVG input path
+ * @param radius The amount to round the corners, either a value in the SVG 
+ *               coordinate space, or, if useFractionalRadius is true, a value
+ *               from 0 to 1.
+ * @param useFractionalRadius If true, the curve radius is expressed as a
+ *               fraction of the distance between the point being curved and
+ *               the previous and next points.
+ * @returns A new SVG path string with the rounding
+ */
+function roundPathCorners(pathString, radius=group_rangeinputs.value, useFractionalRadius) {
+    pathString = convertPathCoordinates(pathString,false)
+    function moveTowardsLength(movingPoint, targetPoint, amount) {
+      var width = (targetPoint.x - movingPoint.x);
+      var height = (targetPoint.y - movingPoint.y);
+      
+      var distance = Math.sqrt(width*width + height*height);
+      
+      return moveTowardsFractional(movingPoint, targetPoint, Math.min(1, amount / distance));
+    }
+    function moveTowardsFractional(movingPoint, targetPoint, fraction) {
+      return {
+        x: movingPoint.x + (targetPoint.x - movingPoint.x)*fraction,
+        y: movingPoint.y + (targetPoint.y - movingPoint.y)*fraction
+      };
+    }
+    
+    // Adjusts the ending position of a command
+    function adjustCommand(cmd, newPoint) {
+      if (cmd.length > 2) {
+        cmd[cmd.length - 2] = newPoint.x;
+        cmd[cmd.length - 1] = newPoint.y;
+      }
+    }
+    
+    // Gives an {x, y} object for a command's ending position
+    function pointForCommand(cmd) {
+      return {
+        x: parseFloat(cmd[cmd.length - 2]),
+        y: parseFloat(cmd[cmd.length - 1]),
+      };
+    }
+    
+    // Split apart the path, handing concatonated letters and numbers
+    var pathParts = pathString
+      .split(/[,\s]/)
+      .reduce(function(parts, part){
+        var match = part.match("([a-zA-Z])(.+)");
+        if (match) {
+          parts.push(match[1]);
+          parts.push(match[2]);
+        } else {
+          parts.push(part);
+        }
+        
+        return parts;
+      }, []);
+    
+    // Group the commands with their arguments for easier handling
+    var commands = pathParts.reduce(function(commands, part) {
+      if (parseFloat(part) == part && commands.length) {
+        commands[commands.length - 1].push(part);
+      } else {
+        commands.push([part]);
+      }
+      
+      return commands;
+    }, []);
+    
+    // The resulting commands, also grouped
+    var resultCommands = [];
+    
+    if (commands.length > 1) {
+      var startPoint = pointForCommand(commands[0]);
+      
+      // Handle the close path case with a "virtual" closing line
+      var virtualCloseLine = null;
+      if (commands[commands.length - 1][0] == "Z" && commands[0].length > 2) {
+        virtualCloseLine = ["L", startPoint.x, startPoint.y];
+        commands[commands.length - 1] = virtualCloseLine;
+      }
+      
+      // We always use the first command (but it may be mutated)
+      resultCommands.push(commands[0]);
+      
+      for (var cmdIndex=1; cmdIndex < commands.length; cmdIndex++) {
+        var prevCmd = resultCommands[resultCommands.length - 1];
+        
+        var curCmd = commands[cmdIndex];
+        
+        // Handle closing case
+        var nextCmd = (curCmd == virtualCloseLine)
+          ? commands[1]
+          : commands[cmdIndex + 1];
+        
+        // Nasty logic to decide if this path is a candidite.
+        if (nextCmd && prevCmd && (prevCmd.length > 2) && curCmd[0] == "L" && nextCmd.length > 2 && nextCmd[0] == "L") {
+          // Calc the points we're dealing with
+          var prevPoint = pointForCommand(prevCmd);
+          var curPoint = pointForCommand(curCmd);
+          var nextPoint = pointForCommand(nextCmd);
+          
+          // The start and end of the cuve are just our point moved towards the previous and next points, respectivly
+          var curveStart, curveEnd;
+          
+          if (useFractionalRadius) {
+            curveStart = moveTowardsFractional(curPoint, prevCmd.origPoint || prevPoint, radius);
+            curveEnd = moveTowardsFractional(curPoint, nextCmd.origPoint || nextPoint, radius);
+          } else {
+            curveStart = moveTowardsLength(curPoint, prevPoint, radius);
+            curveEnd = moveTowardsLength(curPoint, nextPoint, radius);
+          }
+          
+          // Adjust the current command and add it
+          adjustCommand(curCmd, curveStart);
+          curCmd.origPoint = curPoint;
+          resultCommands.push(curCmd);
+          
+          // The curve control points are halfway between the start/end of the curve and
+          // the original point
+          var startControl = moveTowardsFractional(curveStart, curPoint, .5);
+          var endControl = moveTowardsFractional(curPoint, curveEnd, .5);
+    
+          // Create the curve 
+          var curveCmd = ["C", startControl.x, startControl.y, endControl.x, endControl.y, curveEnd.x, curveEnd.y];
+          // Save the original point for fractional calculations
+          curveCmd.origPoint = curPoint;
+          resultCommands.push(curveCmd);
+        } else {
+          // Pass through commands that don't qualify
+          resultCommands.push(curCmd);
+        }
+      }
+      
+      // Fix up the starting point and restore the close path if the path was orignally closed
+      if (virtualCloseLine) {
+        var newStartPoint = pointForCommand(resultCommands[resultCommands.length-1]);
+        resultCommands.push(["Z"]);
+        adjustCommand(resultCommands[0], newStartPoint);
+      }
+    } else {
+      resultCommands = commands;
+    }
+    
+    return resultCommands.reduce(function(str, c){ return str + c.join(" ") + " "; }, "");
+}
+</script>
+<script class="history-script">
+    const timeline = pureHTMLtimeline;
+    let history = [];
+    let history_2 = [];//for elements' style attributes
+    let history_3 = [];
+    let currentIndex = -1;
+    let oldState;
+    let editableElmValue,prvEditableElm,prvEditableElmValue;
+    
+    function getCurrentState() {oldState = pureHTMLtimeline.innerHTML;}
+    function saveState(deletedElement) {
+        if (!deletedElement && oldState == pureHTMLtimeline.innerHTML) {return}
+        getCurrentState();
+        const allAttributes = pureHTMLtimeline.attributes;
+        history = history.slice(0, currentIndex + 1);
+        history.push(oldState);
+        currentIndex++;
+    }
+
+    function applyState() {
+        const savedInnerHTMLOfElements = history[currentIndex];
+        pureHTMLtimeline.innerHTML = history[currentIndex];
+        // Re-Attach eventListeners and other things
+        make_manuallyAddedDivsDraggable();
+        make_manuallyAdded_Paths_Draggable();
+    }
+
+    function undo() {
+        if (currentIndex > 0) {
+            currentIndex--;
+            applyState();
+        }
+    }
+
+    function redo() {
+        if (currentIndex < history.length - 1) {
+            currentIndex++;
+            applyState();
+        }
+    }
+    document.addEventListener('keydown', function (event) {
+        if (event.ctrlKey && ['y','z'].includes(event.key)) {
+            if(editableElm = document.activeElement.closest('[contenteditable="true"], textarea')){
+                if(editableElm.matches('textarea')){editableElmValue = editableElm.value;}
+                else if (editableElm.matches('[contenteditable="true"]')){editableElmValue = editableElm.innerHTML;}
+                // If content is the same as before, then there is nothing to ctrl+[z|y] to
+                if(prvEditableElm==editableElm){
+                    if(prvEditableElmValue!=editableElmValue){
+                        prvEditableElm=editableElm;
+                        prvEditableElmValue=editableElmValue;
+                        return
+                    }
+                } else {return}
+            }
+        }
+        if (event.ctrlKey && event.key === 'z') {
+            event.preventDefault();
+            undo();
+        } else if (event.ctrlKey && event.key === 'y') {
+            event.preventDefault();
+            redo();
+        }
+    });
+    timeline.addEventListener('mouseup', function(){saveState();});
+    timeline.addEventListener('input', function(){saveState();});
+</script>
+<script class="darkLightMode-script">
+    document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey && e.key == 'd') {
+            darkLightMode();
+            e.preventDefault()
+        }
+    })
+    
+    if(dm = localStorage.getItem('pureHTMLtimeline_darkmode')){
+        if (dm=='true') {
+            document.querySelector('body').classList.add('darkmode')
+        } else {
+            document.querySelector('body').classList.remove('darkmode')
+        }
+    }
+
+    function darkLightMode(cls = 'darkmode') {
+        let dm = document.querySelector('body').classList.toggle(cls)
+        localStorage.setItem('pureHTMLtimeline_darkmode', dm);
+    }
+</script>
+<script class="helper-scripts">
+    function addTransparencyToColor(color, alpha) {
+        let rgbaColor = getRGBAColor(color);// Convert color to RGBA format
+        rgbaColor[3] = alpha;// Add transparency to the alpha channel
+        return `rgba(${rgbaColor.join(',')})`;// Convert back to CSS color format
+        
+        function getRGBAColor(color) {
+            let tempDiv = document.createElement('div');
+            tempDiv.style.color = color;
+            document.body.appendChild(tempDiv);
+            let computedColor = window.getComputedStyle(tempDiv).color;
+            document.body.removeChild(tempDiv);
+        
+            // Extract RGBA values
+            let rgbaMatch = computedColor.match(/\d+/g);
+            return rgbaMatch ? rgbaMatch.map(Number) : null;
+        }
+    }
+    //   SHAPE       :                      COORDINATE
+    // PENTAGON      : M75 20 L100 40 L79 100 L17 100 L0 40 L50 0 L75 20
+    // TRAPEZOID     : M50 0 L100 0 L80 50 L20 50 L0 0 L50 0
+    // PARALELLOGRAM : M15 50 L30 0 L140 0 L110 100 L0 100 L15 50
+    // TRIANGLE      : M25 50 L0 100 L100 100 L50 0 25 50
+    // HEXAGON       : M129 25 L173 50 L173 150 L86 200 L0 150 L0 50 L86 0 L129 25
+    // CIRCLE        : M 100 100 m-75 0 a75 75 0 1 0 150 0 a75 75 0 1 0 -150 0
+    //                  
+    
+    /*
+        <circle cx="" cy="" r="" />
+        <path d="
+            M cx, cy
+            m -r, 0
+            a r,r 0 1,0 (r * 2),0
+            a r,r 0 1,0 -(r * 2),0
+        "/>
+
+        ...or a bit shorter (merging the two moves) 
+
+        <path d="
+            M (cx - r), cy
+            a r,r 0 1,0 (r * 2),0
+            a r,r 0 1,0 -(r * 2),0
+        "/>
+    */
+</script>
+</html>

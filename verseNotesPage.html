@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bibleApp.css">
+    <link rel="stylesheet" href="bibleApp-darkmode.css">
+    <link rel="stylesheet" href="bibleApp-2.css">
+    <link rel="stylesheet" href="verseNotesPage.css">
+    <script src="script.js/interact.min.js"></script>
+    <title>Verse Notes</title>
+</head>
+
+<body id="versenotepage">
+    <div class="button-container">
+        <!-- <button id="hide_col1" class="reveal-button"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button> -->
+        <div class="button-group">
+            <!-- <button>KJV</button>
+            <button>ESV</button>
+            <button>NIV</button> -->
+        </div>
+        <button id="darkmode_btn" onclick="toggleDarkLightMode('darkmode')">D&L</button>
+        <button id="sidebar_togglebtn" onclick="toggleCol2()">
+            <span></span>
+            <span></span>
+        </button>
+        <div id="bibleversions_btns" style="display: none;">
+            <button bversion="KJV" class="active_button"><input type="checkbox">KJV</button><button bversion="ESV" class="active_button"><input type="checkbox">ESV</button><button bversion="NET"><input type="checkbox">NET</button><button bversion="NIV84"><input type="checkbox">NIV84</button><button bversion="ABP-en"><input type="checkbox">ABP-en</button><button bversion="ABP-gr"><input type="checkbox">ABP-gr</button><button bversion="accented"><input type="checkbox">accented</button>
+        </div>
+        <!-- <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">CRef</button> -->
+    </div>
+      <div id="col1">
+        <!-- <button id="available_notes" onclick="appendAllRefsWithNote()" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;"></button> -->
+        <!-- <div id="bibleapp_available_notes" class=""><i><br><br>Loading<br>Available<br>Notes... <br><br>Please<br>Wait...</i></div> -->
+        <div id="bibleapp_available_notes" class="">
+            <div>            
+              <details class="settings">
+                <summary id="biblenotes_nav_settings">
+                  <div class="openCloseIconHolder"></div>
+                  <div>Verse Notes</div>
+                  <button class="refnav_col2_closebtn" onclick="toggleCol2()"></button>
+                </summary>
+                <div>
+                  <button id="refresh_available_versenotes" onclick="findAllBookChptnVersesWithNote()" title="Refresh Abailable Versenotes">Refresh</button>
+                  <div><hr>
+                    Default Notes Folder
+                    <button class="defnotefolder" id="nfolder_psam" onclick="setDefVNFolder('psam')" title="Pastor Sam ElYah Notes"><input type="checkbox" id="nfolder_psam_check" name="nfolder_psam_check">Samuel ElYah</button>
+                    <button class="defnotefolder" id="nfolder_user1" onclick="setDefVNFolder('user1')" title="User Verse Notes"><input type="checkbox" id="nfolder_user1_check" name="nfolder_user1_check">Draft</button><hr>
+                  </div>
+                </div>
+              </details>
+              
+            </div>
+            <div id="biblenotes_nav"></div>
+          </div>
+    </div>
+    <div id="col2">
+        <div id="context_menu" class="context_menu slideoutofview"></div>
+        <details open>
+            <summary>
+                <div class='openCloseIconHolder'></div>
+                <h1 id="win2_bcv_ref" class="win2_bcv_ref">Loading...</h1>
+            </summary>
+            <div id="win2_noteholder" class="win2_noteholder"></div>
+        </details>
+    </div>
+</body>
+<script src="script.js/bibleApp.js" charset="utf-8"></script>
+<script src="data/bible.js"></script>
+<script src="data/bibleApp_reKeyedCrossReference.js" charset="utf-8"></script>
+<script src="data/strongsObjectRoots.js" charset="utf-8"></script>
+<script src="data/strongsObjectWithFamilies2.js" charset="utf-8"></script>
+<script src="data/LSJ Full.js" charset="utf-8"></script>
+<script src="data/morphParse_GreeknHebrew.js" charset="utf-8"></script>
+<script src="script.js/helpers.js"></script>
+<script src="script.js/bibleApp_page2.js" charset="utf-8"></script>
+<script src="script.js/TSK.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_contextMenu_mainFunc.js"></script>
+<script src="script.js/bibleApp_contextMenu_notesPage.js"></script>
+<script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_refNav.js"></script>
+<script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_generateScriptureReference.js"></script>
+<script src="script.js/bibleApp_localStorage_cache.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_crossRefrencer.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
+<script src="script.js/searchPage.js" charset="utf-8"></script>
+<script>
+    function toggleCol2(){
+        let x = bibleapp_available_notes;
+        if(x.style.marginLeft == ''){x.style.marginLeft = "-200px";}
+        else {x.style.marginLeft = "";}
+        x.classList.toggle('slideoutofview');
+        // available_notes.classList.toggle('slideoutofview');
+        sidebar_togglebtn.classList.toggle('active_button')
+    }
+    
+    /* SHOW HIDE BUTTONS */
+    const buttonContainer = document.querySelector('.button-container');
+    const buttonGroup = document.querySelector('.button-group');
+    
+    function darkLightMode(){toggleDarkLightMode('darkmode');}
+    function toggleDarkLightMode(cls){
+        // document.querySelector('body').classList.toggle(cls);
+        // if(document.body.matches('.darkmode')){localStorage.setItem('darkmode','true')}
+        // else {localStorage.removeItem('darkmode')}
+        const darkmode_trueORfalse = document.body.classList.toggle('darkmode')
+        dmodeupdater(darkmode_trueORfalse)
+        function dmodeupdater(darkmode_trueORfalse) {
+            localStorage.setItem('darkmode_trueORfalse', darkmode_trueORfalse);
+            if (!darkmode_trueORfalse) {
+                const inlineStyles = document.body.getAttribute('style');
+                if (inlineStyles) {
+                    const styles = inlineStyles.split(';');
+                    const updatedStyles = styles.filter(style => !style.trim().startsWith('--')).join(';');
+                    document.body.setAttribute('style', updatedStyles);
+                  }
+              }
+          }
+    }
+    if (localStorage.getItem('darkmode')) {document.body.classList.add('darkmode');}
+    document.addEventListener('keydown', e => {
+        if ((e.key === 'd'||e.key === 'D') && e.altKey) {
+            e.preventDefault();
+            toggleDarkLightMode('darkmode');
+        }
+    });
+    /* LOAD VERSIONS */
+    bibleversions_btns.querySelectorAll('button').forEach(vBtn=>{loadVersion(vBtn.innerText);});
+    if (defNotesFolder=localStorage.getItem('default_notes_folder')) {
+        notesFolder=defNotesFolder;
+        if(defNotesFolder=='bible_notes'){
+            nfolder_psam_check.checked=true;
+            notesFolder='bible_notes';
+            setDefVNFolder('psam')
+        }
+        else{
+            nfolder_user1_check.checked=true;
+            notesFolder='bible_notes_user1';
+            setDefVNFolder('user1')
+        }
+    } else {
+        notesFolder='bible_notes';
+        nfolder_psam_check.checked=true;
+        setDefVNFolder('psam')
+    }
+    findAllBookChptnVersesWithNote()
+    add_showAllSameStrongsnumberedWord_EventListener(true);// Higlight all same strong's words
+</script>
+<script>
+let fontsizes_set = ['fontsizes_1','fontsizes_2','fontsizes_3','fontsizes_4','currentFontSizeSet'];
+let fsnm_local = localStorage.getItem('fsnm');
+let fsnm = 0; 
+document.addEventListener('keydown', evt => {
+if (evt.altKey && (evt.key === 'q'||evt.key === 'Q')) {
+        evt.preventDefault()
+        fsnm = (fsnm==fontsizes_set.length-1)?0:++fsnm;
+        loadfontsizes(fontsizes_set[fsnm]);
+        localStorage.setItem('fsnm', fontsizes_set[fsnm])
+        console.log(fontsizes_set[fsnm])
+    }
+});
+if (fsnm_local) {loadfontsizes(fsnm_local);}
+else if (localStorage.getItem('currentFontSizeSet')&&localStorage.getItem(localStorage.getItem('currentFontSizeSet')))  {loadfontsizes('currentFontSizeSet');}
+function loadfontsizes(fsIndx){
+    if(stylesVariablesArray = localStorage.getItem(fsIndx)) {
+        if(fsIndx=='currentFontSizeSet'){
+            stylesVariablesArray = localStorage.getItem(stylesVariablesArray);
+            fsIndx = stylesVariablesArray;
+        }
+        stylesVariablesArray = stylesVariablesArray.split(',');
+        stylesVariablesArray.forEach((sVar, i) => {
+            j = i + 2;
+            if (j % 2 == 0) {
+                if(stylesVariablesArray[i+1].includes("background")){stylesVariablesArray[i+1]='whitesmoke'}
+                document.querySelector(':root').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1].replace(/\|/g,','));
+            }
+        });
+    }
+    // FOR DARKMODE COLORS
+    if (document.body.classList.contains('darkmode')) {
+        fsIndx
+        if (dmfv = localStorage.getItem('darkmode_'+fsIndx)) {
+            const stylesVariablesArray = dmfv.split(/,(?![^()]*\))/g);// Split on comma, but not inside parentheses because of e.g., rgb(0,7,4)
+            stylesVariablesArray.forEach((sVar, i) => {
+                j = i + 2;
+                if (j % 2 == 0) {
+                    document.querySelector('.darkmode').style.setProperty(stylesVariablesArray[i], stylesVariablesArray[i + 1]);
+                }
+            });
+        }
+    }
+}
+</script>
+<!-- <script src="../_sitewide_resources/searchPage.js"></script> -->
+</html>

@@ -10,15 +10,15 @@
   <meta name="mobile-web-app-capable" content="yes">
   <script src="ckeditor/ckeditor.js"></script>
   <script src="script.js/interact.min.js"></script>
-  <!-- <style id="verse_alignement">
-    .verse {
-      display: block;
-    }   
-  </style> -->
+  <link rel="stylesheet" href="bibleApp-darkmode.css">
   <link rel="stylesheet" href="bibleApp.css">
   <link rel="stylesheet" href="bibleApp-2.css">
-  <link rel="stylesheet" href="bibleApp-darkmode.css">
-</head>
+  <!-- TensorFlow.js Machine Learning -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"></script> -->
+
+<style id="lazyloaderStyle" class="lazyloadingSpinner">body:has(#loadingOverlay:is(body > #loadingOverlay)) > *:not(#loadingOverlay) {opacity: 0.5 !important;}.darkmode #loadingOverlay {background: rgba(12, 14, 18, 0.93) !important;}.darkmode #lazyLoaderSpinner {background: rgba(12, 14, 18, 0) !important;border: 16px solid var(--ref-img) !important;border-top-color: rgb(219, 135, 52) !important;}#lazyLoaderSpinner {box-shadow: 0px 0px 0.5px var(--sh), 0px 0px 0.5px var(--sh) inset !important;}@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}body {overflow: hidden;position: static !important;}#loadingOverlay {position:fixed;min-height: 100vh !important;min-width: 100vw !important;}</style><style id="lazyloaderStyle" class="lazyloadingSpinner">body:has(#loadingOverlay:is(body > #loadingOverlay)) > *:not(#loadingOverlay) {opacity: 0.5 !important;}.darkmode #loadingOverlay {background: rgba(12, 14, 18, 0.93) !important;}.darkmode #lazyLoaderSpinner {background: rgba(12, 14, 18, 0) !important;border: 16px solid var(--ref-img) !important;border-top-color: rgb(219, 135, 52) !important;}#lazyLoaderSpinner {box-shadow: 0px 0px 0.5px var(--sh), 0px 0px 0.5px var(--sh) inset !important;}@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}body {overflow: hidden;position: static !important;}#loadingOverlay {position:fixed;min-height: 100vh !important;min-width: 100vw !important;}</style><style id="lazyloaderStyle" class="lazyloadingSpinner">body:has(#loadingOverlay:is(body > #loadingOverlay)) > *:not(#loadingOverlay) {opacity: 0.5 !important;}.darkmode #loadingOverlay {background: rgba(12, 14, 18, 0.93) !important;}.darkmode #lazyLoaderSpinner {background: rgba(12, 14, 18, 0) !important;border: 16px solid var(--ref-img) !important;border-top-color: rgb(219, 135, 52) !important;}#lazyLoaderSpinner {box-shadow: 0px 0px 0.5px var(--sh), 0px 0px 0.5px var(--sh) inset !important;}@keyframes spin {0% { transform: rotate(0deg); }100% { transform: rotate(360deg); }}body {overflow: hidden;position: static !important;}#loadingOverlay {position:fixed;min-height: 100vh !important;min-width: 100vw !important;}</style></head>
 
 <body id="homepage">
   <div id="pagemaster">
@@ -26,83 +26,155 @@
     <!-- TOP HORIZONTAL BAR -->
     <div id="top_horizontal_bar">
         <div class="buttons" id="top_horizontal_bar_buttons">
-          <button onclick="toggleNav(null, refnav)" class="togglenav" id="togglenavbtn" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
-          <div id="ref_search_versions_holder">
+          <button id="togglenavbtn" class="togglenav" onclick="toggleNav(event, null)" oncontextmenu="quickFontSizesChange(null,qfssc_1)">
+            <img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
+          <div id="ref_search_versions_holder" tabindex="1">
             <div id="refdiv">
               <input class="footersection reference homepage" id="reference" title="Type Bible Reference"
                 placeholder="Type Bible Reference"></input><button onclick="gotoRef()" class="footersection"
                 id="forreference" title="go to reference"><img src="images/scroll-svgrepo-com.svg"></button>
             </div>
+            <div id="refhistoryBtns">
+              <button id="refhistoryback" onclick="refHistoryNavigate('back')" disabled></button>
+              <button id="refhistoryfront" onclick="refHistoryNavigate('front')" disabled></button>
+              <div id="refhistory_list">
+                <div id="refhistorylist_back" class="displaynone"></div>
+                <div id="refhistorylist_front" class="displaynone"></div>
+              </div>
+            </div>
             <div id="searchdiv">
-              <button id="titlebar_show_searchsettings" onclick="toggleClassAndActiveButton(titlebarsearchparameters, 'slideup',this)"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button><input class="footersection" id="wordsearch" title="What to search for"
-                placeholder="Type Words to Search For" onInput="this.parentNode.dataset.value = this.value" size="4"><button onclick="runWordSearch()" class="footersection"
-                id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
+              <input class="footersection searchinput" id="wordsearch" placeholder="Word(s) to Search For" onInput="this.parentNode.dataset.value=this.value" size="4">
+              <button onclick="runWordSearch()" class="footersection" id="forwordsearch" title="Run Search" disabled><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
+              <button id="titlebar_show_searchsettings"><img src="images/settings-gear-svgrepo-com.svg" alt="⚙"></button>
+              <div id="biblebooksgroup_inputndropdown" class="biblebooksgroup_inputndropdown displaynone">
+                <input type="text" id="biblebooksgroup_1" placeholder="Book(s), chapter(s), range"><select class="nearbyVerses" onchange="updateNearbyVersesSelect(this.value)" title="Adjacent verse(s) to include in search.">
+                  <option value="0">1</option>
+                  <option value="1">2</option>
+                  <option value="2">3</option>
+                  <option value="3">4</option>
+                  <option value="4">5</option>
+                  <option value="5">6</option>
+                  <option value="6">7</option>
+                  <option value="7">8</option>
+                  <option value="8">9</option>
+                  <option value="9">10</option>
+              </select><button id="showhidebookgrps_1" class="showhidebookgrps showbksdrpdown"></button>
+                <div id="biblebooksgroup_myDropdown_1" class="biblebooksgroup_dropdown_content displaynone">
+                  <button href="#" onmouseup="setBiblebooksValue(event,'currentBookName')" onkeydown="setBiblebooksValue(event,'currentBookName')">Current Book</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Rev')" onkeydown="setBiblebooksValue(event,'Gen-Rev')">ALL BOOKS</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Mal')" onkeydown="setBiblebooksValue(event,'Gen-Mal')">Old Testament [Gen-Mal]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Deut')" onkeydown="setBiblebooksValue(event,'Gen-Deut')">Pentateuch [Gen-Deut]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Josh-Est')" onkeydown="setBiblebooksValue(event,'Josh-Est')">History [Jos-Est]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Job - SOS')" onkeydown="setBiblebooksValue(event,'Job - SOS')">Wisdom [Job-SOS]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Isaiah - Daniel')" onkeydown="setBiblebooksValue(event,'Isaiah - Daniel')">Major Prophets [Isa-Dan]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Hos-Mal')" onkeydown="setBiblebooksValue(event,'Hos-Mal')">Minor Prophets [Hos-Mal]</button>
+                  </div>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Rev')" onkeydown="setBiblebooksValue(event,'Mat-Rev')">New Testament [Mat-Rev]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Act')" onkeydown="setBiblebooksValue(event,'Mat-Act')">Gospels [Mat-Act]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rom-Heb')" onkeydown="setBiblebooksValue(event,'Rom-Heb')">Pauline [Rom-Heb]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam-Jud')" onkeydown="setBiblebooksValue(event,'Jam-Jud')">General Epistles [Jam-Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'1Pe-2Pe')" onkeydown="setBiblebooksValue(event,'1Pe-2Pe')">Peter [1Pe-2Pe]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Joh; 1Jo-3Jo')" onkeydown="setBiblebooksValue(event,'Joh; 1Jo-3Jo')">John [1Jo-3Jo]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam; Jud')" onkeydown="setBiblebooksValue(event,'Jam; Jud')">Others [Jam, Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rev')" onkeydown="setBiblebooksValue(event,'Rev')">Revelation [Rev]</button>
+                  </div>
+                  <!-- <button href="#" onmouseup="setBiblebooksValue(event,'1Es-Ps151')" onkeydown="setBiblebooksValue(event,'1Es-Ps151')">Apocrypha</button> -->
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Apocrypha')" onkeydown="setBiblebooksValue(event,'Apocrypha')">Apocrypha</button>
+                </div>
+              </div>
             </div>
-            <div id="bibleversions_btns">
-            </div>
+            <div id="bibleversions_btns"></div>
             <div id="otherButtonsInHead">
-              <button id="opensearch" class="footersection" onclick="hideRefNav(null,searchPreviewWindowFixed)" title="Open Search"><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
-              <button id="scriptureCompareWinDetacher_inHeader" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
-              <button id="noteDetacher_inHeader" onclick="detachInlineVerseNote()" title="detach inline versenote"><input type="checkbox" id="notedetach_check">N-D</button>
+              <button id="opensearch" class="footersection" onmouseup="toggleSearchWindow(event,null)" title="Open Search"><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
+              <button id="scriptureCompareWinDetacher_inHeader" onclick="comparewindowBtn.click()" title="Compare Passages Side by Side"><img src="images\scale-gold.svg" alt="⚖"></button>
+              <button id="noteDetacher_inHeader" onclick="detachInlineVerseNote()" title="detach inline versenote"><input type="checkbox" tabindex="-1" id="notedetach_check">N-D</button>
             </div>
             <div id="bookmarks_holder">
-              <div id="bookmark_head">
-                Bookmarks
-              </div>
+              <div id="bookmark_head" title="Book marks">BkMx</div>
               <ol id="bookmark_content"></ol>
             </div>
           </div>
         </div>
-      <div id="titlebarsearchparameters" class="slideup">
-        <button onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button><button onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Search for Phrase</button><button onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words-Not Phrase</button><button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="t_search_anyWord" name="t_phraseornot" value="t_search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
-
-        <select id="biblebooksgroup" class="biblebooksgroup" onchange="console.log('YES'),biblebooksgroup_fixed.value=biblebooksgroup.value">
-          <option value="allbks" selected>ALL BOOKS</option>
-          <option value="ot">OT</option>
-          <optgroup label="Old Testament">
-            <option value="pentateuch">Pentateuch [Gen-Deut]</option>
-            <option value="history">History [Jos-Est]</option>
-            <option value="wisdom">Wisdom [Job-SOS]</option>
-            <option value="majorProphets">Major Prophets [Isa-Dan]</option>
-            <option value="minorProphets">Minor Prophets [Hos-Mal]</option>
-          </optgroup>
-          <option value="nt">NT</option>
-          <optgroup label="New Testament">
-            <option value="nt_narrative">Gospels [Mat-Act]</option>
-            <option value="pauline">Pauline [Rom-Heb]</option>
-            <option value="generalEpistles">General Epistles [Jam-Jud]</option>
-            <option value="revelation">Revelation [Rev]</option>
-          </optgroup>
-          <option value="currentbk">Current Book</option>
+        <div class="quickFontSizesSetChange displaynone" id="qfssc_1">
+          <button onclick="quickFontSizesChange(1,this)" onmouseup="quickFontSizesChange(1,this)">Office</button>
+          <button onclick="quickFontSizesChange(2,this)" onmouseup="quickFontSizesChange(2,this)">Church</button>
+          <button onclick="quickFontSizesChange(3,this)" onmouseup="quickFontSizesChange(3,this)">House</button>
+          <button onclick="quickFontSizesChange(4,this)" onmouseup="quickFontSizesChange(4,this)">FS-A</button>
+        </div>
+        <div id="titlebarsearchparameters" class="slideup displaynone">
+          <button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input id="t_case_sensitive" name="t_case_sensitive" type="checkbox" tabindex="-1" onclick="checkUncheck([case_sensitive,t_case_sensitive])">Case Sensitivity</button><button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" tabindex="-1" id="t_whole_word" name="t_whole_word" value="t_whole_word" onclick="checkUncheck([whole_word,t_whole_word])">Whole Words</button>
+          <div class="biblebooksgroup_inputndropdown">
+            <input type="text" id="biblebooksgroup_2" placeholder="Type or Select a Books To Search">
+            <button id="showhidebookgrps_2" class="showhidebookgrps showbksdrpdown"></button>
+            <div id="biblebooksgroup_myDropdown_2" class="biblebooksgroup_dropdown_content displaynone">
+              <button href="#" onmouseup="setBiblebooksValue(event,'currentBookName')" onkeydown="setBiblebooksValue(event,'currentBookName')">Current Book</button>
+              <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Rev')" onkeydown="setBiblebooksValue(event,'Gen-Rev')">ALL BOOKS</button>
+              <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Mal')" onkeydown="setBiblebooksValue(event,'Gen-Mal')">Old Testament [Gen-Mal]</button>
+              <div class="biblebooksgroup_dropdown_group">
+                <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Deut')" onkeydown="setBiblebooksValue(event,'Gen-Deut')">Pentateuch [Gen-Deut]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Josh-Est')" onkeydown="setBiblebooksValue(event,'Josh-Est')">History [Jos-Est]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Job - SOS')" onkeydown="setBiblebooksValue(event,'Job - SOS')">Wisdom [Job-SOS]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Isaiah - Daniel')" onkeydown="setBiblebooksValue(event,'Isaiah - Daniel')">Major Prophets [Isa-Dan]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Hos-Mal')" onkeydown="setBiblebooksValue(event,'Hos-Mal')">Minor Prophets [Hos-Mal]</button>
+              </div>
+              <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Rev')" onkeydown="setBiblebooksValue(event,'Mat-Rev')">New Testament [Mat-Rev]</button>
+              <div class="biblebooksgroup_dropdown_group">
+                <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Act')" onkeydown="setBiblebooksValue(event,'Mat-Act')">Gospels [Mat-Act]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Rom-Heb')" onkeydown="setBiblebooksValue(event,'Rom-Heb')">Pauline [Rom-Heb]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Jam-Jud')" onkeydown="setBiblebooksValue(event,'Jam-Jud')">General Epistles [Jam-Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'1Pe-2Pe')" onkeydown="setBiblebooksValue(event,'1Pe-2Pe')">Peter [1Pe-2Pe]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Joh; 1Jo-3Jo')" onkeydown="setBiblebooksValue(event,'Joh; 1Jo-3Jo')">John [1Jo-3Jo]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam; Jud')" onkeydown="setBiblebooksValue(event,'Jam; Jud')">Others [Jam, Jud]</button>
+                <button href="#" onmouseup="setBiblebooksValue(event,'Rev')" onkeydown="setBiblebooksValue(event,'Rev')">Revelation [Rev]</button>
+              </div>
+            </div>
+          </div>
+          <select id="nearbyVerses" class="nearbyVerses" onchange="updateNearbyVersesSelect(this.value)" title="Adjacent verse(s) to include in search.">
+            <option value="0">1</option>
+            <option value="1">2</option>
+            <option value="2">3</option>
+            <option value="3">4</option>
+            <option value="4">5</option>
+            <option value="5">6</option>
+            <option value="6">7</option>
+            <option value="7">8</option>
+            <option value="8">9</option>
+            <option value="9">10</option>
         </select>
-      </div>
-      <button id="topbartogglebtn" onclick="titlebarsearchparameters.classList.add('slideup'),slideUpDown(top_horizontal_bar_buttons,'slideup'),this.classList.toggle('active_button'),modifyRefNavChildrenHeight()">
-        <span></span><span></span>
+          <button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input tabindex="-1" type="radio" id="t_search_anyWord" name="t_phraseornot" value="t_search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Any Word</button>
+          <button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([search_all_words,t_search_all_words])"><input tabindex="-1" type="radio" id="t_search_all_words" name="t_phraseornot" value="t_search_all_words" checked onclick="checkUncheck([search_all_words,t_search_all_words])">All Words</button>
+          <button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([search_phrase,t_search_phrase])"><input tabindex="-1" type="radio" id="t_search_phrase" name="t_phraseornot" value="t_search_phrase" onclick="checkUncheck([search_phrase,t_search_phrase])">Phrase</button>
+          
+          <button tabindex="-1" oldtabindex="-1" onclick="checkUncheck([strongsAnalysisOnly,t_strongsAnalysisOnly]), setItemInLocalStorage('strongsAnalysisOnly_cache', strongsAnalysisOnly.checked)"><input id="strongsAnalysisOnly" name="strongsAnalysisOnly" type="checkbox" tabindex="-1" onchange="checkUncheck([strongsAnalysisOnly,t_strongsAnalysisOnly])">Strong's Analysis Only</button>
+        </div>
+      <button id="topbartogglebtn">
+        <span></span><span></span><!-- spans are for arrowheads -->
       </button>
     </div>
 
     <!-- BIBLE REFERENCE SIDE BAR -->
     <nav id="refnav">
       <div id="app_settings" class="refnav slideoutofview displaynone" style="margin-left:-50px;" name="settings">
-        <button id="biblenavigation" onclick="hideRefNav(null, bible_nav)" toopen="bible_nav" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
-        <button id="bibles" onclick="hideRefNav(null, bible_versions)" toopen="bible_versions" title="Bible Versions">
+        <button id="biblenavigation" onclick="hideRefNav(null,bible_nav)" toopen="bible_nav" title="Bible Navigation"><img src="images\books-stack-svgrepo-com.svg" alt="☰" ></button>
+        <button id="bibles" onclick="hideRefNav(null,bible_versions)" toopen="bible_versions" title="Bible Versions">
           <!-- <img src="images\knowledge-base-svgrepo-com.svg" alt="&#128218;" > -->
           &#128218;</button>
         <!-- <button id="versealignment" onclick="changeVerseAlignment()" title="verses alignment">V</button> -->
-        <button id="comparewindowBtn" onclick="hideRefNav(null,scriptureCompareWindow)" title="Compare Passages Side by Side" toopen="scriptureCompareWindow"><img src="images\scale-gold.svg" alt="⚖"style="transform:scale(1.5)"></button>
+        <button id="comparewindowBtn" onclick="scriptureCompareWindowBtnToggle()" title="Compare Passages Side by Side" toopen="scriptureCompareWindow"><img src="images\scale-gold.svg" alt="⚖"></button>
         
-        <button id="searchsettings" onclick="hideRefNav(null, searchPreviewWindowFixed)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" style="transform:scale(1.3)"></button>
+        <button id="searchsettings" onmouseup="toggleSearchWindow(event,null)" toopen="searchPreviewWindowFixed" title="word(s) search"><img src="images\search-svgrepo-com(2).svg" alt="search" style="transform:scale(1.3)"></button>
         </button>
-        <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null, strongsdefinitionwindow)" toopen="strongsdefinitionwindow" title="Show strongs definition window">Str</button>
-        <button id="available_notes" onclick="hideRefNav(null, bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button>
-        <button id="verse_markers_list" onclick="hideRefNav(null, bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
-        <button id="cachesettings" onclick="hideRefNav(null, bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" style="transform:scale(1.5)"></button>
+        <button id="open_strongsdefinitionwindow" onclick="hideRefNav(null,strongsdefinitionwindow)" toopen="strongsdefinitionwindow" title="Show strongs definition window">Str</button>
+        <button id="available_notes" onclick="hideRefNav(null,bibleapp_available_notes)" toopen="bibleapp_available_notes" title="Pastor Sam ElYah's Bible Notes"><img src="images\book-pencil-svgrepo-com.svg" alt="&#9881;" ></button>
+        <button id="verse_markers_list" onclick="hideRefNav(null,bibleapp_versemarkers)" toopen="bibleapp_versemarkers" title="Pastor Sam ElYah's Bible Verses Markers"><img src="images\bookmarks-hand-drawn-outline-svgrepo-com.svg" alt="VM" ></button>
+        <button id="cachesettings" onclick="hideRefNav(null,bibleapp_cache)" toopen="bibleapp_cache" title="general settings"><img src="images\settings-svgrepo-com.svg" alt="&#9881;" style="transform:scale(1.5)"></button>
         
         <button id="darkmodebtn" onclick="darkLightMode()">🌤</button>
-        <button id="sitehome"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
+        <button id="sitehome" onclick="window.open(`https://lightcityteachingfellowship.github.io/BibleStudies/`,'_blank')"><a href="https://lightcityteachingfellowship.github.io/BibleStudies/" title="Site Home" target="_blank" tabindex="-1"><img src="images\home-svgrepo-com(maroon).svg" alt="Site Home"></a></button>
         
         <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',app_settings)"><img src="images/arrow-right-angle-svgrepo-com.svg" alt=""></button>
-        
       </div>
       <div id="refnav_col2">
         <div id="bible_nav" class="slideoutofview displaynone">
@@ -116,241 +188,421 @@
           <div class="bible_versions_heading">Available Bible Versions</div>
         </div>
         <div id="searchPreviewWindowFixed" class="slideoutofview displaynone">
-          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',searchPreviewWindowFixed)"></button>
+          <div id="closebtn_searchPreviewWindowFixed" class="holder_refnav_col2_closebtn">
+            <button class="" onclick="tileVerses(this)" title="Tile Verses"></button>
+            <button class="fillscreen_btn" title="[2]" onclick="this.closest('#refnav_col2 > div').classList.toggle('fillscreen')"></button>
+            <button class="refnav_col2_closebtn" onmouseup="toggleSearchWindow(event,'hide')"></button>
+          </div>
           <div id="searchparameters" class="hidesearchparameters">
             <div id="searchparametertitlebar_holder">
               <button id="searchparametertitlebar" class="settingssectionheadings" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone')">Search Parameters</button>
-              
               <button id="showonlysearchinput" class="" onclick="toggleClassAndActiveButton(searchdiv_fixed, 'displaynone', this)" class="active_button"></button>
-              
               <button id="hidesearchparameters" onclick="hideSearchParameters(),toggleClassAndActiveButton([searchprametersbtnholder,where2display],'displaynone',this)">&#9660;</button>
             </div>
             <div id="searchdiv_fixed">
-              <input class="footersection" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For">
-              <button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
+              <input class="footersection searchinput" id="wordsearch_fixed" title="What to search for" placeholder="Type Words to Search For">
+              <select class="nearbyVerses" onchange="updateNearbyVersesSelect(this.value)" title="Adjacent verse(s) to include in search.">
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+                <option value="3">4</option>
+                <option value="4">5</option>
+                <option value="5">6</option>
+                <option value="6">7</option>
+                <option value="7">8</option>
+                <option value="8">9</option>
+                <option value="9">10</option>
+            </select>
+            <button onclick="runWordSearch()" class="footersection" id="forwordsearch_fixed" title="Run Search" disabled=""><img src="images/search-svgrepo-com(2).svg" alt="..."></button>
             </div>
-            <div id="searchprametersbtnholder" class="displaynone">
-              <select id="biblebooksgroup_fixed" class="biblebooksgroup" onchange="console.log('YES'),biblebooksgroup.value=biblebooksgroup_fixed.value">
-                  <option value="allbks" selected>ALL BOOKS</option>
-                  <option value="ot">OT</option>
-                  <optgroup label="Old Testament">
-                    <option value="pentateuch">Pentateuch [Gen-Deut]</option>
-                    <option value="history">History [Jos-Est]</option>
-                    <option value="wisdom">Wisdom [Job-SOS]</option>
-                    <option value="majorProphets">Major Prophets [Isa-Dan]</option>
-                    <option value="minorProphets">Minor Prophets [Hos-Mal]</option>
-                  </optgroup>
-                  <option value="nt">NT</option>
-                  <optgroup label="New Testament">
-                    <option value="nt_narrative">Gospels [Mat-Act]</option>
-                    <option value="pauline">Pauline [Rom-Heb]</option>
-                    <option value="generalEpistles">General Epistles [Jam-Jud]</option>
-                    <option value="revelation">Revelation [Rev]</option>
-                  </optgroup>
-                  <option value="currentbk">Current Book</option>
-              </select>
-              <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
-              <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
-              <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">All Words-Search for Phrase</button>
-              <button class="search_param_btns" onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked>All Words-Not Phrase</button>
-              <button onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="search_anyWord" name="phraseornot" value="search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Search for AnyWord</button>
+            <div id="searchprametersbtnholder" class="biblebooksgroup_inputndropdown displaynone">
+                <input type="text" id="biblebooksgroup_fixed" placeholder="Type or Select a Books To Search">
+                <button id="showhidebookgrpsFixed" class="showhidebookgrps showbksdrpdown"></button>
+                <div id="biblebooksgroup_fixed_myDropdown" class="biblebooksgroup_dropdown_content displaynone">
+                  <button href="#" onmouseup="setBiblebooksValue(event,'currentBookName')" onkeydown="setBiblebooksValue(event,'currentBookName')">Current Book</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Rev')" onkeydown="setBiblebooksValue(event,'Gen-Rev')">ALL BOOKS</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Mal')" onkeydown="setBiblebooksValue(event,'Gen-Mal')">Old Testament [Gen-Mal]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Deut')" onkeydown="setBiblebooksValue(event,'Gen-Deut')">Pentateuch [Gen-Deut]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Josh-Est')" onkeydown="setBiblebooksValue(event,'Josh-Est')">History [Jos-Est]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Job - SOS')" onkeydown="setBiblebooksValue(event,'Job - SOS')">Wisdom [Job-SOS]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Isaiah - Daniel')" onkeydown="setBiblebooksValue(event,'Isaiah - Daniel')">Major Prophets [Isa-Dan]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Hos-Mal')" onkeydown="setBiblebooksValue(event,'Hos-Mal')">Minor Prophets [Hos-Mal]</button>
+                  </div>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Rev')" onkeydown="setBiblebooksValue(event,'Mat-Rev')">New Testament [Mat-Rev]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Act')" onkeydown="setBiblebooksValue(event,'Mat-Act')">Gospels [Mat-Act]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rom-Heb')" onkeydown="setBiblebooksValue(event,'Rom-Heb')">Pauline [Rom-Heb]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam-Jud')" onkeydown="setBiblebooksValue(event,'Jam-Jud')">General Epistles [Jam-Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'1Pe-2Pe')" onkeydown="setBiblebooksValue(event,'1Pe-2Pe')">Peter [1Pe-2Pe]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Joh; 1Jo-3Jo')" onkeydown="setBiblebooksValue(event,'Joh; 1Jo-3Jo')">John [1Jo-3Jo]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam; Jud')" onkeydown="setBiblebooksValue(event,'Jam; Jud')">Others [Jam, Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rev')" onkeydown="setBiblebooksValue(event,'Rev')">Revelation [Rev]</button>
+                  </div>
+                </div>
+              <!-- </div> -->
+              <button class="search_param_btns" onclick="checkUncheck([strongsAnalysisOnly,t_strongsAnalysisOnly])"><input id="t_strongsAnalysisOnly" name="t_strongsAnalysisOnly" type="checkbox" tabindex="-1" onchange="checkUncheck([strongsAnalysisOnly,t_strongsAnalysisOnly])">Strong’s Analysis</button>
+              <button class="search_param_btns" onclick="checkUncheck([case_sensitive,t_case_sensitive])"><input type="checkbox" tabindex="-1" id="case_sensitive" name="case_sensitive" value="case_sensitive">Case Sensitivity</button>
+              <button class="search_param_btns" onclick="checkUncheck([whole_word,t_whole_word])"><input type="checkbox" tabindex="-1" id="whole_word" name="whole_word" value="whole_word">Whole Words</button>
+              <button class="search_param_btns" onclick="checkUncheck([search_anyWord,t_search_anyWord])"><input type="radio" id="search_anyWord" name="phraseornot" value="search_anyWord" onclick="checkUncheck([search_anyWord,t_search_anyWord])">Any Word</button>
+              <button class="search_param_btns" onclick="checkUncheck([search_all_words,t_search_all_words])"><input type="radio" id="search_all_words" name="phraseornot" value="search_all_words" checked>All Words</button>
+              <button class="search_param_btns" onclick="checkUncheck([search_phrase,t_search_phrase])"><input type="radio" id="search_phrase" name="phraseornot" value="search_phrase">Wole Phrase</button>
             </div>
   
             <span id="where2display" class="displaynone">
-              <input type="checkbox" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"
+              <input type="checkbox" tabindex="-1" id="searchresultdisplay" name="searchresultdisplay" value="searchresultdisplay"
                 checked><label for="searchresultdisplay">Show search results in this window only</label><br>
-              <input type="checkbox" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"
+              <input type="checkbox" tabindex="-1" id="showreturnedverses" name="showreturnedverses" value="showreturnedverses"
                 checked><label for="showreturnedverses">Show all verses</label><br>
-              <input type="checkbox" id="keepsearchopen" name="keepsearchopen" value="keep search open" onchange="if(!this.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}"><label for="keepsearchopen">Cancel Search Autohide</label>
+              <input type="checkbox" tabindex="-1" id="keepsearchopen" name="keepsearchopen" value="keep search open" checked="true"  onchange="if(!this.checked){clearSearchWindow(false)}"><label for="keepsearchopen">Cancel Search Autohide</label>
+              <div class="searchFontSizeSettings">
+                <span>Search & Compare Verses Font Size</span>
+                  <span>
+                    <button onclick="changeFontSize('search_n_compare_verses','minus',srccompfs1)">−</button>
+                    <button onclick="changeFontSize('search_n_compare_verses','plus',srccompfs2)">+</button>
+                </span>
+              </div>
             </span>
-            <div id="totalfound"></div>
+            <div id="totalfound" class="totalfound"></div>
           </div>
           <div id="searchPreviewFixed"></div>
         </div>
         <div id="bibleapp_cache" class="slideoutofview displaynone">
-          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_cache)"></button>
-          <div class="" id="eng2grk_sup">
-            <div class="settingssectionheadings">Show Hide Eng/Transliteration</div>
-            <table id="eng2grk_sup_table">
-              <tr style="border-top:1px solid var(--black)">
-                <td>Hovered Version</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="hl_hoveredversion" onclick="versionHighlighting_ON_OFF()" title="highlight hovered version"><input type="checkbox" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
-                </td>
-              </tr>
-              <tr style="border-bottom:1px solid var(--black)">
-                <td>Scroll TO Verse</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="scrollToVerseBtn" onclick="checkUncheck(scrollToVerseBtn_check)" title="scroll to reference"><input type="checkbox" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check">VSCROLL</button>
-                </td>
-              </tr>
-              <tr>
-                <td>English</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="show_eng_superscript" onclick="engnXlit_supscript('eng')"><input type="checkbox" id="showEnSup_check" name="showEnSup_check" value="showEnSup_check">OFF</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Heb/Grk</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Bible Ref Selection</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="showBible_Nav" title="showBible_Nav" class="active_button" onclick="checkUncheck(showBible_Nav_check)"><input type="checkbox" id="showBible_Nav_check" name="showBible_Nav_check" value="showBible_Nav_check"checked>Books & Chapters</button>
-                </td>
-              </tr>
-              <tr>
-                <td>CrossRefs In Tooltip</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">TSK/CRef</button>
-                </td>
-              </tr>
-              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
-                <td>VerseNote To The Right</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
-                  <button class="eng2grk_sup_btns" id="detach_versenote_totheright" onclick="checkUncheck(detach_versenote_totheright_check),detachVersenoteToTheRight()"><input type="checkbox" id="detach_versenote_totheright_check" name="detach_versenote_totheright_check">Note Window Detached</button>
-                </td>
-              </tr>
-              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
-                <td>Center Navigations & Settings</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="center_settings_h" onclick="centerNavigationAndOtherSettings('h')"  title="Center Settings Horizontally"><input type="checkbox" id="center_settings_h_check" name="center_settings_h_check" value="center_settings_h_check">Horizontally</button>
-                  <button class="eng2grk_sup_btns" id="center_settings_v" onclick="centerNavigationAndOtherSettings('v')"  title="Center Settings Vertically"><input type="checkbox" id="center_settings_v_check" name="center_settings_v_check" value="center_settings_v_check">Vertically</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Toggle Button Image Color</td>
-                <td>
-                  <button class="eng2grk_sup_btns" id="button_image_color" colormode="darkmode" onclick="darkLightMode(this.getAttribute('colormode'))"  title="Toggle button image color">Toggle Buttons Image Color</button>
-                </td>
-              </tr>
-            </table>
+          <div class="holder_refnav_col2_closebtn">
+            <div style="border: none">Fonts & Color Themes</div>
+            <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_cache)"></button>
           </div>
-          <div class="settingssectionheadings">Change Font</div>
-          <select id="fontchange" onchange="changeFontFamily()">
-            <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
-            <option value="Calibri, sans-serif">Calibri</option>
-            <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
-            <option value="'Courier New',monospace">Courier New</option>
-            <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
-            <option value="Garamond, sans-serif">Garamond</option>
-            <option value="Georgia, sans-serif">Georgia</option>
-            <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
-            <option value="Perpetua, sans-serif">Perpetua</option>
-            <option
-              value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
-              System-ui</option>
-            <option value="'Times New Roman', serif">Times New Roman</option>
-            <option value="Verdana, sans-serif">Verdana</option>
-          </select>
-          <div class="" id="change_fontsize">
-            <div class="settingssectionheadings">Change Font Sizes</div>
             <select id="fontsizes" onchange="loadfontsizes()">
               <option value="fontsizes_1">Office</option>
               <option value="fontsizes_2">Church</option>
               <option value="fontsizes_3">House</option>
               <option value="fontsizes_4">FontSizes-A</option>
             </select>
+          <details class="" id="change_fontsize">
+            <summary class="settingssectionheadings">Change Font Sizes</summary>
+            <select id="fontchange" onchange="changeFontFamily()">
+              <option value="Arial, 'Arial Narrow', sans-serif">Arial</option>
+              <option value="Calibri, sans-serif">Calibri</option>
+              <option value="Cambria, Cochin, Times, 'Times New Roman', serif">Cambria</option>
+              <option value="'Courier New',monospace">Courier New</option>
+              <option value="'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif">Franklin Gothic Medium</option>
+              <option value="Garamond, sans-serif">Garamond</option>
+              <option value="Georgia, sans-serif">Georgia</option>
+              <option value="Helvetica,Verdana, sans-serif">Helvetica</option>
+              <option value="Marvel">Marvel</option>
+              <option value="Merriweather">Merriweather</option>
+              <option value="Poppins">Perpetua</option>
+              <option value="'Playfair Display', serif">Playfair</option>
+              <option value="Perpetua, sans-serif">Poppins</option>
+              <option
+                value="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif">
+                System-ui</option>
+              <option value="'Times New Roman', serif">Times New Roman</option>
+              <option value="Verdana, sans-serif">Verdana</option>
+            </select>
             <table id="cache_table">
+              <tr class="hr">
+                <td>Main Font Size</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('main_font','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('main_font','plus',this)">&plus;</button></td>
+              </tr>
+              <tr>
+                <td>TopBar-(Ref/Search)</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('refnsrch','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('refnsrch','plus',this)">&plus;</button></td>
+              </tr>
+              <tr>
+                <td>TopBar-(Versions)</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('versionsbuttons','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('versionsbuttons','plus',this)">&plus;</button></td>
+              </tr>
+              <tr>
+                <td>SideBar Buttons</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('widthsidebuttons','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('widthsidebuttons','plus',this)">&plus;</button></td>
+              </tr>
+              <tr class="hr">
+                <td>Bible Nav</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('bible_nav','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('bible_nav','plus',this)">&plus;</button></td>
+              </tr>
+            <tr class="hr">
+                <td>Sub-Headings</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('sub_headings','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('sub_headings','plus',this)">&plus;</button></td>
+              </tr>
               <tr>
                 <td>Verse Text</td>
-                <td>
-                  <button id="decrease_fontsize" onclick="changeFontSize('verse_text','minus')">-</button>
-                </td>
-                <td>
-                <button id="increase_fontsize" onclick="changeFontSize('verse_text','plus')">+</button>
-                </td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('verse_text','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('verse_text','plus',this)">&plus;</button></td>
+              </tr>
+              <tr class="hr">
+                <td>Reference Text</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('ref_text','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('ref_text','plus',this)">&plus;</button></td>
               </tr>
               <tr>
-                <td>Refrence Text</td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('ref_text','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('ref_text','plus')">+</button>
-                </td>
+                <td>Search & Compare Verses</td>
+                <td><button id="srccompfs1" class="decrease_fontsize" fontsize="" onclick="changeFontSize('search_n_compare_verses','minus',this)">&minus;</button></td>
+                <td><button id="srccompfs2" class="increase_fontsize" fontsize="" onclick="changeFontSize('search_n_compare_verses','plus',this)">&plus;</button></td>
               </tr>
               <tr>
-                <td>Strongs Tool Tip</td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('strongs_tooltip','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('strongs_tooltip','plus')">+</button>
-                </td>
+                <td>Verses Notes</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('versenotes','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('versenotes','plus',this)">&plus;</button></td>
               </tr>
               <tr>
-                <td>Bible Nav</td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('bible_nav','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('bible_nav','plus')">+</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Main Font Size</td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('main_font','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('main_font','plus')">+</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Topbar-<br><i>(Ref/Search)</i></td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('refnsrch','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('refnsrch','plus')">+</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Topbar-<br><i>(Versions)</i></td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('versionsbuttons','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('versionsbuttons','plus')">+</button>
-                </td>
-              </tr>
-              <tr>
-                <td>Side Buttons</i></td>
-                <td>
-                  <button class="decrease_fontsize" onclick="changeFontSize('widthsidebuttons','minus')">-</button>
-                </td>
-                <td>
-                <button class="increase_fontsize" onclick="changeFontSize('widthsidebuttons','plus')">+</button>
-                </td>
+                <td>Strong’s Tool Tip</td>
+                <td><button class="decrease_fontsize" fontsize="" onclick="changeFontSize('strongs_tooltip','minus',this)">&minus;</button></td>
+                <td><button class="increase_fontsize" fontsize="" onclick="changeFontSize('strongs_tooltip','plus',this)">&plus;</button></td>
               </tr>
             </table>
-          </div>
+          </details>
+          <details class="" id="eng2grk_sup" style="border-top:1px solid var(--black)">
+            <summary class="settingssectionheadings">Ornamentation & Display</summary>
+            <table id="eng2grk_sup_table">
+              <!-- <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)"><td colspan="2" style="text-align:inherit;"><h4 style="margin-top: 0.5em;;margin-bottom: 0;">Colors Section</h4></td></tr> -->
+              <tr id="colorsection">
+                <td>
+                  <div><span>Colors</span>
+                    <input id="setcolor_input" type="color" oninput="setColor(colorgroups.querySelector('input:checked').value,this.value)"></input>
+                    <button onclick="setColor(colorgroups.querySelector('input:checked').value,'default')">Default</button>
+                  </div>
+                </td>
+                <td id="colorgroups">
+                  <button class="eng2grk_sup_btns active_button ignore" id="color_1" onclick="checkColorToSet(color_1_check,true)" title="Page & Buttons Background"><input type="checkbox" tabindex="-1" id="color_1_check" name="color_1" value="--ref-img" default="#e8e9ed" checked>BG</button>
+                  <button class="eng2grk_sup_btns" id="color_2" onclick="checkColorToSet(color_2_check)" title="Hovered Verse bg-Color"><input type="checkbox" tabindex="-1" id="color_2_check" name="color_2" value="--vhlt3" default="#fffac884">VH</button>
+                  <button class="eng2grk_sup_btns" id="color_3" onclick="checkColorToSet(color_3_check)" title="Hovered Verse Column bg-Color"><input type="checkbox" tabindex="-1" id="color_3_check" name="color_3" value="--vhlt4" default="#fffac884">VC</button>
+                  <button class="eng2grk_sup_btns" id="color_4" onclick="checkColorToSet(color_4_check)" title="Active Button & Chapter Headings"><input type="checkbox" tabindex="-1" id="color_4_check" name="color_4" value="--chpt" default="#F6D588">BT</button>
+                  <button class="eng2grk_sup_btns" id="color_5" onclick="checkColorToSet(color_5_check)" title="Text with Strong's Number"><input type="checkbox" tabindex="-1" id="color_5_check" name="color_5" value="--translated-word" default="#01003d">TSt</button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black)" title="">
+                <td>Number of Verses Per Row</td>
+                <td id="columnsperverse">
+                  <button class="eng2grk_sup_btns" id="cpv_1" onclick="setMaxNumOfVersesPerRow(cpv_1_check)"><input type="checkbox" tabindex="-1" id="cpv_1_check" name="cpv_1" value="cpv_1"><span>1</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_2" onclick="setMaxNumOfVersesPerRow(cpv_2_check)"><input type="checkbox" tabindex="-1" id="cpv_2_check" name="cpv_2" value="cpv_2"><span>2</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_3" onclick="setMaxNumOfVersesPerRow(cpv_3_check)"><input type="checkbox" tabindex="-1" id="cpv_3_check" name="cpv_3" value="cpv_3"><span>3</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_4" onclick="setMaxNumOfVersesPerRow(cpv_4_check)"><input type="checkbox" tabindex="-1" id="cpv_4_check" name="cpv_4" value="cpv_4"><span>4</span></button>
+                  <button class="eng2grk_sup_btns active_button" id="cpv_5" onclick="setMaxNumOfVersesPerRow(cpv_5_check)"><input type="checkbox" tabindex="-1" id="cpv_5_check" name="cpv_5" value="cpv_5" checked><span>5</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_6" onclick="setMaxNumOfVersesPerRow(cpv_6_check)"><input type="checkbox" tabindex="-1" id="cpv_6_check" name="cpv_6" value="cpv_6"><span>6</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_7" onclick="setMaxNumOfVersesPerRow(cpv_7_check)"><input type="checkbox" tabindex="-1" id="cpv_7_check" name="cpv_7" value="cpv_7"><span>7</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_8" onclick="setMaxNumOfVersesPerRow(cpv_8_check)"><input type="checkbox" tabindex="-1" id="cpv_8_check" name="cpv_8" value="cpv_8"><span>8</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_9" onclick="setMaxNumOfVersesPerRow(cpv_9_check)"><input type="checkbox" tabindex="-1" id="cpv_9_check" name="cpv_9" value="cpv_9"><span>9</span></button>
+                  <button class="eng2grk_sup_btns" id="cpv_10" onclick="setMaxNumOfVersesPerRow(cpv_10_check)"><input type="checkbox" tabindex="-1" id="cpv_10_check" name="cpv_10" value="cpv_1"><span>10</span></button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black)">
+                <td>Bible Ref Selection</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="showBible_Nav" title="showBible_Nav" class="active_button" onclick="checkUncheck(showBible_Nav_check)"><input type="checkbox" tabindex="-1" id="showBible_Nav_check" name="showBible_Nav_check" value="showBible_Nav_check">Books & Chapters</button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black)">
+                <td>Show Subheadings</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="showSub_Headings" title="showSub_Headings" class="active_button" onclick="checkUncheck(showSub_Headings_check)"><input type="checkbox" tabindex="-1" id="showSub_Headings_check" name="showSub_Headings_check" value="showSub_Headings_check" checked>Sub Headings</button>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><select id="Subheadings_source" onchange="loadSubheading(this.value)" style="width:100%;">
+                <option value="NIV1984">NIV'1984</option>
+                <option value="NIV2011">NIV'2011</option>
+                <option value="BereanSB">Berean Study Bible</option>
+                <option value="TSK">TSK Outlines</option>
+              </select></td>
+              </tr>
+              <tr style="border-top:1px solid var(--black)" title="[Ctrl+Shift+D] HighLight All Words With Same StrongsNum when One is Hovered">
+                <td>HighLight All Same Strongs</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="hl_highlightwordswithsamestrongs" onclick="checkUncheck(hl_highlightwordswithsamestrongs_check),add_showAllSameStrongsnumberedWord_EventListener(hl_highlightwordswithsamestrongs_check.checked)"><input type="checkbox" tabindex="-1" id="hl_highlightwordswithsamestrongs_check" name="hl_highlightwordswithsamestrongs_check" value="hl_highlightwordswithsamestrongs_check">HWwSSN</button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black)" title="highlight hovered verse">
+                <td title="[Ctrl]+[H]">HighLight Hovered Verse</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="hl_hoveredverse" onclick="hl_hverse_check.checked?(hl_hverse_check.checked=false,this.classList.remove('active_button')):(hl_hverse_check.checked=true,this.classList.add('active_button'))"><input type="checkbox" tabindex="-1" id="hl_hverse_check" name="hl_hverse_check" value="hl_hverse_check">HLHVR</button>
+                </td>
+              </tr>
+              <tr title="highlight hovered verse row">
+                <td title="[Shift]+[Alt]+[H]">HighLight Hovered Verse Row</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="hl_hoveredverse_row" onclick="hl_hverse_row_check.checked?(hl_hverse_row_check.checked=false,this.classList.remove('active_button')):(hl_hverse_row_check.checked=true,this.classList.add('active_button'))"><input type="checkbox" tabindex="-1" id="hl_hverse_row_check" name="hl_hverse_row_check" value="hl_hverse_row_check">HLHVR</button>
+                </td>
+              </tr>
+              <tr title="[Alt+H] highlight hovered version">
+                <td title="[Alt]+[H]">HighLight Hovered Verse Column</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="hl_hoveredversion" onclick="versionHighlighting_ON_OFF()"><input type="checkbox" tabindex="-1" id="hl_hversion_check" name="hl_hversion_check" value="hl_hversion_check">HLHV</button>
+                </td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--black)"  title="[Alt+E] Enlarge Second Version">
+                <td title="[Alt]+[E]">Enlarge Second Verse Column</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="enlargeSecondVersion" onclick="checkUncheck(enlargeSecondVersion_check)"><input type="checkbox" tabindex="-1" id="enlargeSecondVersion_check" name="enlargeSecondVersion_check" value="enlargeSecondVersion_check">ESVC</button>
+                </td>
+              </tr>
+              <tr style="border-bottom:1px solid var(--black)">
+                <td>Scroll TO Verse</td>
+                <td>
+                  <button class="eng2grk_sup_btns active_button" id="scrollToVerseBtn" onclick="checkUncheck(scrollToVerseBtn_check)" title="scroll to reference"><input type="checkbox" tabindex="-1" id="scrollToVerseBtn_check" name="scrollToVerseBtn_check" value="scrollToVerseBtn_check" checked>VSCROLL</button>
+                </td>
+              </tr>
+              <tr>
+                <td>English</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="show_eng_superscript" onclick="engnXlit_supscript('eng')"><input type="checkbox" tabindex="-1" id="showEnSup_check" name="showEnSup_check" value="showEnSup_check">OFF</button>
+                </td>
+              </tr>
+              <tr>
+                <td>Heb/Grk</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="show_hebgrk_superscript" onclick="engnXlit_supscript('hebgrk')"><input type="checkbox" tabindex="-1" id="showHGsup_check" name="showHGsup_check" value="showHGsup_check">OFF</button>
+                </td>
+              </tr>
+              <!-- <tr>
+                <td>CrossRefs In Tooltip</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="crossRefinScriptureTooltip" onclick="checkUncheck(crossRefinScriptureTooltip_check)"  title="Show TSK In Scripture Tooltip"><input type="checkbox" tabindex="-1" id="crossRefinScriptureTooltip_check" name="crossRefinScriptureTooltip_check" value="crossRefinScriptureTooltip_check">TSK/CRef</button>
+                </td>
+              </tr> -->
+              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
+                <td>VerseNotes Windows</td>
+                <td>
+                  <button class="eng2grk_sup_btns" id="show_versenote_totheright" onclick="checkUncheck(show_versenote_totheright_check),showVersenoteToTheRight()"  title="Center Settings Horizontally"><input type="checkbox" tabindex="-1" id="show_versenote_totheright_check" name="show_versenote_totheright_check" value="Show VerseNotes On the Side">RightSide</button>
+                  <button class="eng2grk_sup_btns" id="detach_versenote" onclick="detachInlineVerseNote()"><input type="checkbox" tabindex="-1" id="detach_versenote_check" name="detach_versenote_check">Detached</button>
+                </td>
+              </tr>
+              <tr style="border-top:1px solid var(--black);border-bottom:1px solid var(--black)">
+                <td>Center Navigations & Settings</td>
+                <td id="refnavpositions">
+                  <button class="eng2grk_sup_btns" id="center_settings_o" onclick="centerNavigationAndOtherSettings('o')"  title="Settings Fixed But Over BibleWindow"><input type="checkbox" tabindex="-1" id="center_settings_o_check" name="center_settings_o_check" value="center_settings_o_check">Overlay</button>
+                  <button class="eng2grk_sup_btns" id="center_settings_v" onclick="centerNavigationAndOtherSettings('v')"  title="Center Settings Vertically"><input type="checkbox" tabindex="-1" id="center_settings_v_check" name="center_settings_v_check" value="center_settings_v_check">Vertically</button>
+                  <button class="eng2grk_sup_btns" id="center_settings_h" onclick="centerNavigationAndOtherSettings('h')"  title="Center Settings Horizontally"><input type="checkbox" tabindex="-1" id="center_settings_h_check" name="center_settings_h_check" value="center_settings_h_check">Horizontally</button>
+                  <button class="eng2grk_sup_btns" id="center_settings_r" onclick="centerNavigationAndOtherSettings('r')" title="Move Settings to the Right"><input type="checkbox" tabindex="-1" id="center_settings_r_check" name="center_settings_r_check" value="center_settings_r_check">Move Right</button>
+                  <button class="eng2grk_sup_btns" id="center_settings_b" onclick="centerNavigationAndOtherSettings('b')" title="Bottom Bar"><input type="checkbox" tabindex="-1" id="center_settings_b_check" name="center_settings_b_check" value="center_settings_b_check">Bottom Bar</button>
+                </td>
+              </tr>
+                <td><button class="eng2grk_sup_btns" id="" onclick="resetAllTransforms()" title="Reset All Transforms">Reset Transforms</button>
+                </td>
+            </table>
+          </details>
           
-          <div class="settingssectionheadings">Change Background</div>
-          <div style="display: flex">
-            <input type="color" style="width: 100px;height: 100px;padding:0;border:0;flex-basis: 50%;" onchange="changeBackGround(null,this.value,'--ref-img','--buttons','--whitesmoke')"></input>
-            <button style="flex-basis: 50%;" onclick="changeBackGround('default','url(images/background.jpg)','--ref-img','--buttons','--whitesmoke')">Default</button>
-          </div>
-          <div>
-            <!-- <details class="settings"> -->
-              <div class="settingssectionheadings">Shortcut Keys</div>
-              <ul>
-                <li><b>Alt + T</b>: Toggle Showing translated word when the displayed word is the Lemma Transliteration</li>
-                <li><b>Alt + Z</b>: Detach Versnote and Center it on the page.</li>
-                <li><b>Alt + T</b>: Toggle Showing Hebrew/Greek Lemma Transliteration</li>
-                <li><b>Alt + H</b>: Toggle highlighting hovered version</li>
-                <li><b>Ctrl + Up Arrow Key</b>: Go to previous chapter</li>
-                <li><b>Ctrl + Down Arrow Key</b>: Go to next chapter</li>
-                <li><b>Ctrl + Shift + F</b>: Search for highlighted text</li>
-                <li><b>Ctrl + Shift + Z</b>: Toggle Side Nav <i>does not work if any input has the focus</i>.</li>
-                <li><b>Escape</b>: Toggle Showing side and top bar and their contents</li>
-              </ul>
-            <!-- </details> -->
+          <div id="shortcutkeys_list">
+            <details class="settings">
+              <summary>Help Section</summary>
+              <span>
+                <h3 class="settingssectionheadings">Shortcut Keys</h3>
+                <ol>
+                  <li><b>Alt + V</b>: Detach Side Windows</li>
+                  <li><b>Alt + C</b>: Open/Close Compare-Search Window</li>
+                  <li><b>Alt + T</b>: Toggle Showing Hebrew/Greek Lemma Transliteration</li>
+                  <li><b>Alt + Z</b>: Detach Versnote and Center it on the page.</li>
+                  <li><b>Alt + H</b>: Toggle highlighting hovered version</li>
+                  <li><b>Alt + S</b>: Scripture Reference Input</li>
+                  <li><b>ALT + Q</b>: Loop through the Fonts and Color Themes</li>
+                  <li><b>Ctrl + Shift + D</b>: Toggle highlighting of all words with the same Strong's number</li>
+                  <li><b>Ctrl + Shift + F</b>: Search for highlighted text</li>
+                  <li><b>Ctrl + Shift + Z</b>: Toggle Side Nav <i>does not work if any input has the focus</i>.</li>
+                  <li><b>Ctrl + Up Arrow Key</b>: Go to previous chapter</li>
+                  <li><b>Ctrl + Down Arrow Key</b>: Go to next chapter</li>
+                  <li><b>n/N</b>: Show/Hide VerseNote for most recently clicked verse </li>
+                  <li><b>m/M</b>: Show/Hide Markers for most recently clicked verse </li>
+                  <li><b>x/X</b>:
+                    <ol>
+                      <li><b>With Mouse Over RightClick Menu</b>: Show/Hide CrossRef and Versions Buttons in Scripture RightClick Window</li>
+                      <li><b>When Mouse Is Not Over RightClick Menu</b>: Show/Hide CrossRefs for most recently clicked verse</li>
+                    </ol>
+                  </li>
+                  <li><b>Escape</b>: Toggle Showing side and top bar and their contents</li>
+                </ol>
+                <h3 class="settingssectionheadings">Search</h3>
+                <ol>
+                  <h4>Search Modifiers</h4>
+                  <li><i>Search for any of the words:</i> <b>[word1 word2 word3 ...]</b></li>
+                  <li><i>* Indicate Part of Word That Could Be Anything</i></li>
+                  <li><i>Ends with word</i>: <b>*word1</b></li>
+                  <li><i>Starts with word</i>: <b>word2*</b></li>
+                  <li><i>Whole word</i>: <b>*word3*</b></li>
+                  <li><i>Phrase (Whole and Partial Words of Phrase)</i>: <b>"word1 word2* *word3 ..."</b> Surround with double quotes `"` to search for phrase</li>
+                  <li><i>The above works within brackets</i>: <b>[*word1 word2* *word3* "word4 word5* *word6..." ...]</b></li>
+                </ol>
+                <ol>
+                  <h4>Short Cut Keys</h4>
+                  <li><i>Search for highlighted text:</i> <b>{Ctrl + Shift + F}</b></li>
+                  <li><i>Open Search Section/Window</i>: <b>{Right Click} on Search Button or SearchSettings Button in Top Bar</b></li>
+                  <li><i>Clear and Close Search Section/Window</i>: <b>{Right Click} or {CTRL + Click} the Close (x) Button</b></li>
+                  <li><i>Where to Run Search</i>: <b>Search Window or Compare Verses Window <i>(Alt + C)</i></b></li>
+                  <li><i>Strong's Analysis</i>: <b>Return only strong analysis without verses text<i>{Shift + Search (Enter or Click)}</i></b></li>
+                </ol>
+                <h3 class="settingssectionheadings">Quick Change of Theme <i>Font Size Sets</i></h3>
+                <ol>
+                  <li><b>Right Click on Refnav Button <i>Top-Left or Bottom Right Button</i></b>
+                    <ol>Action for the buttons
+                      <li><b>ALT + Q: <i>Loop through the Fonts and Color Themes</i></b></li>
+                      <li><b>Left Click:<i> Change FontSize Set/Theme and hide the QuickChange Buttons</i></b></li>
+                      <li><b>Left Click:<i> Change FontSize Set/Theme and hide the QuickChange Buttons</i></b></li>
+                      <li><b>Middle Mouse Button:<i> Open General Settings Side Window</i></b></li>
+                    </ol>
+                  </li>
+                </ol>
+                <h3 class="settingssectionheadings">Scripture/Strong's ContextMenu/Window Shortcuts-</h3>
+                <i>*** Mouse Has To Be Over the ContextMenu/Window ***</i>
+                <ol>
+                  <li><b>X Key</b>: Show/Hide CrossRef and Versions Buttons in Scripture RightClick Window</li>
+                  <li><b>Alt + Up Arrow Key</b>: Move References in Window Forward</li>
+                  <li><b>Alt + Down Arrow Key</b>: Move References in Window Backward</li>
+                  <li><b>Left Arrow Key</b>: Go to next window <i>(if available)</i></li>
+                  <li><b>Right Arrow Key</b>: Go to previous window <i>(if available)</i></li>
+                </ol>
+                <h3 class="settingssectionheadings">ContextMenu Search Icon</h3>
+                <ol>
+                  <li>Under "Word Relatives" Section<ol>
+                    <li>Search Icon/Button at the begining of a list gets all the Strong's Number in that list item, including those in its children list.</li>
+                    <li>Search Icon/Button before a Strong's Number only gets that Strong's Number</li></ol>
+                  </li>
+                  <li><b>Left Click</b>: Search for Strong's Number</li>
+                  <li><b>CTRL + Left Click</b>: Add Strong's Number to Search Input Without Clearing It and Run Word Search</li>
+                  <li><b>Right Click</b>: Add Strong's Number to Search Input Without Clearing It and Make It Ready for Enter Key Press</li>
+                  <li><b>CTRL + Right Click</b>: Clear Search Input and Paste Strong's Number and Make It Ready for Enter Key Press</li>
+                </ol>
+                <h3 class="settingssectionheadings">Books & Chapters Search Ranges</h3>
+                <ol>
+                  <li><b><i>Use full book names or standard abbreviations</i></b>
+                  <ol>
+                    <li><b>Revelation 2</b>: Search in Revelation 2</li>
+                    <li><b>Rev2</b>: Search in Revelation 2</li>
+                  </ol>
+                  </li>
+                  <li><b><i>Separate beginning and end of rang with a dash</i></b>
+                    <ol>
+                      <li><b>Gen-Rom</b>: From Genesis to Romans</li>
+                      <li><b>Rut - Gen</b>: Search backwards from Ruth to Genesis</li>
+                      <li><b>1Sam3-10</b>: Search from 1Samuel 3 to 1Samuel 10</li>
+                      <li><b>Gal 6-1</b>: Search backwards from Galatians 6 to Galatians 1</li>
+                    </ol>
+                  </li>
+                  <li><b><i>Seperate list of books/ranges with semicolon</i></b>
+                    <ol>
+                      <li><b>Gal6,Rom2-6</b>: Search Galatians 6 and Romans Chapter 2 to Chapter 6</li>
+                      <li><b>Gal6;Rom2-6</b>: Search Galatians 6 and Romans Chapter 2 to Chapter 6</li>
+                    </ol>
+                  </li>
+                </ol>
+                <h3 class="settingssectionheadings">For Compare Window/Sections</h3>
+                <ol>
+                  <li><b><i>Use full book names or standard abbreviations</i></b></li>
+                  <li><b><i>Reference must at least have Book name and chapter number</i></b></li>
+                  <li><b>Rev2</b>: Will generate all of Revelation Chapter 2</li>
+                  <li><i>Seperate list of books/ranges with semicolon</i></li>
+                  <li><b>Gal6;Rom2:1-6</b>: Search backwards from Galatians 6 to Galatians 1</li>
+                  <li><b>Gal6:1,3,10;Rom2:1,2,9,5</b>: <i>Use commas to separate verses</i></li>
+                  <li><b><i>Range list can include words to search for</i></b></li>
+                  <li><b>Zelophehad;Gal6;Rom2-6;Nazareth</b></li>
+                  <li>Chapter Range, e.g., <b>1Sam3-10</b> Not Yet Supported</li>
+                </ol>
+              </span>
+            </details>
           </div>
         </div>
         <div id="bibleapp_available_notes" class="slideoutofview displaynone">
@@ -360,16 +612,20 @@
                 <div class="openCloseIconHolder"></div>
                 <div><img class="dmalterable" src="images/settings-gear-svgrepo-com.svg" alt="⚙">Verse Notes</div>
                 <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',bibleapp_available_notes)"></button>
-                </summary>
+              </summary>
               <div>
-                <button class="" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check" value="Show VerseNotes On the Side">Right Side Versenote</button>
-                <button class="" id="refresh_available_versenotes" onclick="appendAllRefsWithNote()"  title="Refresh Abailable Versenotes">Refresh</button>
+                <button id="refresh_available_versenotes" onclick="findAllBookChptnVersesWithNote()" title="Refresh Abailable Versenotes">Refresh</button>
+                <div><hr>
+                  Default Notes Folder
+                  <button class="defnotefolder" id="nfolder_psam" onclick="setDefVNFolder('psam')" title="Pastor Sam ElYah Notes"><input type="checkbox" tabindex="-1" id="nfolder_psam_check" name="nfolder_psam_check">Samuel ElYah</button>
+                  <button class="defnotefolder" id="nfolder_user1" onclick="setDefVNFolder('user1')" title="User Verse Notes"><input type="checkbox" tabindex="-1" id="nfolder_user1_check" name="nfolder_user1_check">Draft</button><hr>
+                </div>
+                <button class="" id="show_versenote_totheright_2" onclick="show_versenote_totheright.click()"  title="Center Settings Horizontally"><input type="checkbox" tabindex="-1" id="show_versenote_totheright_2_check" name="show_versenote_totheright_2_check">Right Side Versenote</button><button onclick="openNewVerseNotesWindow()"title="Open verseNote Page">Versenote Page</button>
               </div>
             </details>
             
           </div>
           <div id="biblenotes_nav"></div>
-
         </div>
         <div id="bibleapp_versemarkers" class="slideoutofview displaynone">
           <details class="settings">
@@ -381,12 +637,12 @@
             <div>
               <div>Autocomplete</div>
               <div id="autocomplete_buttons">
-                <button id="autocomplete_1" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_2 input')])"><input type="checkbox" id="autocomplete_1check" name="autocomplete_1check" value="autocomplete_1check"><div>Book Only</div></button>
-                <button id="autocomplete_2" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_1 input')])"><input type="checkbox" id="autocomplete_2check" name="autocomplete_2check" value="autocomplete_2check" checked><div>Whole Bible</div></button>
+                <button id="autocomplete_1" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_2 input')])"><input type="checkbox" tabindex="-1" id="autocomplete_1check" name="autocomplete_1check" value="autocomplete_1check"><div>Book Only</div></button>
+                <button id="autocomplete_2" onclick="checkUncheck([this.querySelector('input'),this.parentElement.querySelector('#autocomplete_1 input')])"><input type="checkbox" tabindex="-1" id="autocomplete_2check" name="autocomplete_2check" value="autocomplete_2check" checked><div>Whole Bible</div></button>
               </div>
               <div>Show All Markers</div>
               <div id="showallmarkers_div">
-                <button id="showAllmarkersBtn" onclick="checkUncheck([this.querySelector('input')]),showAllVersesMarkers()"><input type="checkbox" id="showAllmarkersBtn_check" name="showAllmarkersBtn_check" value="showAllmarkersBtn_check"><div>ShowAll Markers</div></button>
+                <button id="showAllmarkersBtn" onclick="checkUncheck([this.querySelector('input')]),showAllVersesMarkers()"><input type="checkbox" tabindex="-1" id="showAllmarkersBtn_check" name="showAllmarkersBtn_check" value="showAllmarkersBtn_check"><div>ShowAll Markers</div></button>
               </div>
             </div>
           </details>
@@ -396,7 +652,10 @@
           </div>
         </div>
         <div id="strongsdefinitionwindow" class="slideoutofview displaynone">
-          <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',strongsdefinitionwindow)"></button>
+          <div style="margin-left:auto;display:flex;">
+            <button class="fillscreen_btn" title="[2]" onclick="this.closest('#refnav_col2 > div').classList.toggle('fillscreen')"></button>
+            <button class="refnav_col2_closebtn" onclick="hideRefNav('hide',strongsdefinitionwindow)"></button>
+          </div>
           <div id="strongsnum_inputholder">
             <input class="footersection" id="strongsnum_input" title="Input Strong's Number" placeholder="Input Strong's Number"><button onclick="getsStrongsDefinition(strongsnum_input.value.split(/[,\s]+/))" class="footersection" id="strongsnum_srchbtn" title="Get Strong's Definition"><img src="images/check-box-svgrepo-com.svg" alt="..."></button>
           </div>
@@ -405,11 +664,58 @@
         <!-- SCRIPTURE COMPARE WINDOW -->
         <div id="scriptureCompareWindow" class="showingNote slideoutofview displaynone">
           <div id="btns_compareWindow_totheright" class="closebtn">
-            <button class="compwin_closebtn_x" onclick="hideRefNav('hide',scriptureCompareWindow)"></button>
+            <div style="display: flex;">
+              <div class="searchFontSizeSettings" title="Search & Compare Verses Font Size">
+                <button onclick="changeFontSize('search_n_compare_verses','minus',srccompfs1)">−</button>
+                <button onclick="changeFontSize('search_n_compare_verses','plus',srccompfs2)">+</button>
+              </div>
+              <div id="biblebooksgroup_inputndropdown_3" class="biblebooksgroup_inputndropdown">
+                <input type="text" id="biblebooksgroup_3" placeholder="Search Range--Book & Chapters">
+                <button id="showhidebookgrps_3" class="showhidebookgrps showbksdrpdown"></button>
+                <div id="biblebooksgroup_myDropdown_3" class="biblebooksgroup_dropdown_content displaynone">
+                  <button href="#" onmouseup="setBiblebooksValue(event,'currentBookName')" onkeydown="setBiblebooksValue(event,'currentBookName')">Current Book</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Rev')" onkeydown="setBiblebooksValue(event,'Gen-Rev')">ALL BOOKS</button>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Mal')" onkeydown="setBiblebooksValue(event,'Gen-Mal')">Old Testament [Gen-Mal]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Gen-Deut')" onkeydown="setBiblebooksValue(event,'Gen-Deut')">Pentateuch [Gen-Deut]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Josh-Est')" onkeydown="setBiblebooksValue(event,'Josh-Est')">History [Jos-Est]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Job - SOS')" onkeydown="setBiblebooksValue(event,'Job - SOS')">Wisdom [Job-SOS]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Isaiah - Daniel')" onkeydown="setBiblebooksValue(event,'Isaiah - Daniel')">Major Prophets [Isa-Dan]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Hos-Mal')" onkeydown="setBiblebooksValue(event,'Hos-Mal')">Minor Prophets [Hos-Mal]</button>
+                  </div>
+                  <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Rev')" onkeydown="setBiblebooksValue(event,'Mat-Rev')">New Testament [Mat-Rev]</button>
+                  <div class="biblebooksgroup_dropdown_group">
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Mat-Act')" onkeydown="setBiblebooksValue(event,'Mat-Act')">Gospels [Mat-Act]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rom-Heb')" onkeydown="setBiblebooksValue(event,'Rom-Heb')">Pauline [Rom-Heb]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Jam-Jud')" onkeydown="setBiblebooksValue(event,'Jam-Jud')">General Epistles [Jam-Jud]</button>
+                      <button href="#" onmouseup="setBiblebooksValue(event,'1Pe-2Pe')" onkeydown="setBiblebooksValue(event,'1Pe-2Pe')">Peter [1Pe-2Pe]</button>
+                      <button href="#" onmouseup="setBiblebooksValue(event,'Joh; 1Jo-3Jo')" onkeydown="setBiblebooksValue(event,'Joh; 1Jo-3Jo')">John [1Jo-3Jo]</button>
+                      <button href="#" onmouseup="setBiblebooksValue(event,'Jam; Jud')" onkeydown="setBiblebooksValue(event,'Jam; Jud')">Others [Jam, Jud]</button>
+                    <button href="#" onmouseup="setBiblebooksValue(event,'Rev')" onkeydown="setBiblebooksValue(event,'Rev')">Revelation [Rev]</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="display: flex;">
+              <button class="" onclick="tileVerses(this)" title="Tile Verses"></button>
+              <button class="fillscreen_btn" title="[2]" onclick="this.closest('#refnav_col2 > div').classList.toggle('fillscreen')"></button>
+              <button class="compwin_closebtn_x" onclick="hideRefNav('hide',scriptureCompareWindow)"></button>
+            </div>
           </div>
           <div id="scriptureCompare_columns_holder">
             <div class="scriptureCompare_columns">
-              <div class="input_n_btn"><input class="verses_input" placeholder="Enter Bible Reference"></input><button onclick="fill_Compareverse(this)">GO</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
+              <div class="input_n_btn"><input class="verses_input" placeholder="Enter Bible Reference"></input><select class="nearbyVerses" onchange="updateNearbyVersesSelect(this.value)" title="Adjacent verse(s) to include in search.">
+                <option value="0">1</option>
+                <option value="1">2</option>
+                <option value="2">3</option>
+                <option value="3">4</option>
+                <option value="4">5</option>
+                <option value="5">6</option>
+                <option value="6">7</option>
+                <option value="7">8</option>
+                <option value="8">9</option>
+                <option value="9">10</option>
+            </select><button onclick="fill_Compareverse(this)">GO</button><button class="wordmap_btn" onclick="wordMapFromVerseCompareInput(this)" title="Word Map">WM</button><button onclick="delete_verseCompColumn(this)">-</button><button onclick="add_verseCompColumn(this)">+</button></div>
               <div class="compare_verses"></div>
             </div>
           </div>
@@ -419,26 +725,33 @@
     </nav>
     
     <main id="main" contenteditable="false">
-      <div id="context_menu" class="context_menu slideoutofview displaynone"></div>
+      <div id="context_menu" class="context_menu slideoutofview displaynone" contenteditable="false"></div>
       <div id="show_crossref_comments" class="displaynone">
-        <button class="buttons" id="verse_marker_button" onclick="show_v_grp(this)">Markers</button><button class="buttons" id="verse_crossref_button">TSK</button><button class="buttons" id="verse_notes_button">Note</button>
+        <button class="buttons" id="inline_versions_buttons" onclick="toggleInlineVerseCompareContextMenu()" style="font-style:normal!important;">Versions&#x25B6;</button><button class="buttons" id="verse_crossref_button" title="[X] Show X-Refs">x_Ref</button><div><button class="buttons" id="verse_notes_button">Note</button><button class="buttons" id="verse_marker_button" onclick="show_v_grp(this)">Markers</button></div>
+        <div id="secondversion_mag" title="[ALT][2] Enlarge Second Version's Column"><button class="buttons" id="enlarge_second_translation_column" onclick="checkUncheck(enlargeSecondVersion_check)"><img src="images/search-svgrepo-com(2).svg" alt="...">2nd Version</button></div>
       </div>
-      <div id="ppp"></div>
-        <!-- <div id="search_section">adfadfadsfasdfadsf</div> -->
-        
+      <div id="ppp">
+        <h2 class="chptheading" bookname="Psalms" id="_18.99">Psalms 100</h2><span class="chptverses" bookname="Psalms" bookid="18" chapter="100"><span class="vmultiple" ref="Psalms 100:1" id="_18.99.0"><span class="v_KJV verse"><code ref="Psalms 100:1" aria-hidden="true">KJV 100:1</code>  <span class="translated H4210" data-xlit="mizmôwr" data-lemma="מִזְמוֹר" strnum="H4210" data-kjv-trans=" A Psalm" translation=" A Psalm" data-title="H4210 | mizmôwr | מִזְמוֹר">A Psalm</span> <span class="translated H8426" data-xlit="tôwdâh" data-lemma="תּוֹדָה" strnum="H8426" data-kjv-trans=" of praise" translation=" of praise" data-title="H8426 | tôwdâh | תּוֹדָה">of praise</span>. <span th="TH8685" class="translated H7321" data-xlit="rûwaʻ" data-lemma="רוּעַ" strnum="H7321" data-kjv-trans=" Make a joyful noise" translation=" Make a joyful noise" data-title="H7321 | rûwaʻ | רוּעַ">Make a joyful noise</span> unto <span class="translated H3068" data-xlit="Yᵉhôvâh" data-lemma="יְהֹוָה" strnum="H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span>, <span class="translated H776" data-xlit="ʼerets" data-lemma="אֶרֶץ" strnum="H776" data-kjv-trans=" all ye lands" translation=" all ye lands" data-title="H776 | ʼerets | אֶרֶץ">all ye lands</span>.</span><span class="v_ESV verse"><code ref="Psalms 100:1" aria-hidden="true">ESV 100:1</code>  His Steadfast Love Endures Forever A <span class="translated H4210" data-xlit="mizmôwr" data-lemma="מִזְמוֹר" strnum="H4210" data-kjv-trans=" Psalm" translation=" Psalm" data-title="H4210 | mizmôwr | מִזְמוֹר">Psalm</span> for giving <span class="translated H8426" data-xlit="tôwdâh" data-lemma="תּוֹדָה" strnum="H8426" data-kjv-trans=" thanks." translation=" thanks." data-title="H8426 | tôwdâh | תּוֹדָה">thanks.</span> Make a <span class="translated H7321" data-xlit="rûwaʻ" data-lemma="רוּעַ" strnum="H7321" data-kjv-trans=" joyful noise" translation=" joyful noise" data-title="H7321 | rûwaʻ | רוּעַ">joyful noise</span> to <span class="translated H3068" data-xlit="|Yᵉhôvâh" data-lemma="|יְהֹוָה" strnum="dvnNm H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span>, <span class="translated H3605" data-xlit="kôl" data-lemma="כֹּל" strnum="H3605" data-kjv-trans=" all" translation=" all" data-title="H3605 | kôl | כֹּל">all</span> <span class="translated H776" data-xlit="ʼerets" data-lemma="אֶרֶץ" strnum="H776" data-kjv-trans=" the earth" translation=" the earth" data-title="H776 | ʼerets | אֶרֶץ">the earth</span> !</span><div class="v_markers sld_up" versecode="_18_99_0" display="none" anim_dur="300" style="display: none; transition: 0.3s ease-in-out; margin-top: 0px; opacity: 0; z-index: -1;"><button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button></div></span><span class="vmultiple" ref="Psalms 100:2" id="_18.99.1"><span class="v_KJV verse"><code ref="Psalms 100:2" aria-hidden="true">KJV 100:2</code>  <span th="TH8798" class="translated H5647" data-xlit="ʻâbad" data-lemma="עָבַד" strnum="H5647" data-kjv-trans=" Serve" translation=" Serve" data-title="H5647 | ʻâbad | עָבַד">Serve</span> <span class="translated H3068" data-xlit="Yᵉhôvâh" data-lemma="יְהֹוָה" strnum="H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span> <span class="translated H8057" data-xlit="simchâh" data-lemma="שִׂמְחָה" strnum="H8057" data-kjv-trans=" with gladness" translation=" with gladness" data-title="H8057 | simchâh | שִׂמְחָה">with gladness</span>: <span th="TH8798" class="translated H935" data-xlit="bôwʼ" data-lemma="בּוֹא" strnum="H935" data-kjv-trans=" come" translation=" come" data-title="H935 | bôwʼ | בּוֹא">come</span> <span class="translated H6440" data-xlit="pânîym" data-lemma="פָּנִים" strnum="H6440" data-kjv-trans=" before his presence" translation=" before his presence" data-title="H6440 | pânîym | פָּנִים">before his presence</span> <span class="translated H7445" data-xlit="rᵉnânâh" data-lemma="רְנָנָה" strnum="H7445" data-kjv-trans=" with singing" translation=" with singing" data-title="H7445 | rᵉnânâh | רְנָנָה">with singing</span>.</span><span class="v_ESV verse"><code ref="Psalms 100:2" aria-hidden="true">ESV 100:2</code>  <span class="translated H5647" data-xlit="ʻâbad" data-lemma="עָבַד" strnum="H5647" data-kjv-trans=" Serve" translation=" Serve" data-title="H5647 | ʻâbad | עָבַד">Serve</span> <span class="translated H3068" data-xlit="|Yᵉhôvâh" data-lemma="|יְהֹוָה" strnum="dvnNm H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span> with <span class="translated H8057" data-xlit="simchâh" data-lemma="שִׂמְחָה" strnum="H8057" data-kjv-trans=" gladness" translation=" gladness" data-title="H8057 | simchâh | שִׂמְחָה">gladness</span> ! <span class="translated H935" data-xlit="bôwʼ" data-lemma="בּוֹא" strnum="H935" data-kjv-trans=" Come" translation=" Come" data-title="H935 | bôwʼ | בּוֹא">Come</span> into his <span class="translated H6440" data-xlit="pânîym" data-lemma="פָּנִים" strnum="H6440" data-kjv-trans=" presence" translation=" presence" data-title="H6440 | pânîym | פָּנִים">presence</span> with <span class="translated H7445" data-xlit="rᵉnânâh" data-lemma="רְנָנָה" strnum="H7445" data-kjv-trans=" singing" translation=" singing" data-title="H7445 | rᵉnânâh | רְנָנָה">singing</span> !</span><div class="v_markers sld_up" versecode="_18_99_1" display="none" anim_dur="300" style="display: none; transition: 0.3s ease-in-out; margin-top: 0px; opacity: 0; z-index: -1;"><button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button></div></span><span class="vmultiple" ref="Psalms 100:3" id="_18.99.2"><span class="v_KJV verse"><code ref="Psalms 100:3" aria-hidden="true">KJV 100:3</code>  <span th="TH8798" class="translated H3045" data-xlit="yâdaʻ" data-lemma="יָדַע" strnum="H3045" data-kjv-trans=" Know" translation=" Know" data-title="H3045 | yâdaʻ | יָדַע">Know</span> ye that <span class="translated H3068" data-xlit="Yᵉhôvâh" data-lemma="יְהֹוָה" strnum="H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span> he <span>is</span> <span class="translated H430" data-xlit="ʼĕlôhîym" data-lemma="אֱלֹהִים" strnum="H430" data-kjv-trans=" God" translation=" God" data-title="H430 | ʼĕlôhîym | אֱלֹהִים">God</span>: <span>it is</span> he <span>that</span> <span th="TH8804" class="translated H6213" data-xlit="ʻâsâh" data-lemma="עָשָׂה" strnum="H6213" data-kjv-trans=" hath made" translation=" hath made" data-title="H6213 | ʻâsâh | עָשָׂה">hath made</span> us, and not we ourselves; <span>we are</span> <span class="translated H5971" data-xlit="ʻam" data-lemma="עַם" strnum="H5971" data-kjv-trans=" his people" translation=" his people" data-title="H5971 | ʻam | עַם">his people</span>, <span class="translated H6629" data-xlit="tsôʼn" data-lemma="צֹאן" strnum="H6629" data-kjv-trans=" and the sheep" translation=" and the sheep" data-title="H6629 | tsôʼn | צֹאן">and the sheep</span> <span class="translated H4830" data-xlit="mirʻîyth" data-lemma="מִרְעִית" strnum="H4830" data-kjv-trans=" of his pasture" translation=" of his pasture" data-title="H4830 | mirʻîyth | מִרְעִית">of his pasture</span>.</span><span class="v_ESV verse"><code ref="Psalms 100:3" aria-hidden="true">ESV 100:3</code>  <span class="translated H3045" data-xlit="yâdaʻ" data-lemma="יָדַע" strnum="H3045" data-kjv-trans=" Know" translation=" Know" data-title="H3045 | yâdaʻ | יָדַע">Know</span> <span class="translated H3588" data-xlit="kîy" data-lemma="כִּי" strnum="H3588" data-kjv-trans=" that" translation=" that" data-title="H3588 | kîy | כִּי">that</span> <span class="translated H3068" data-xlit="|Yᵉhôvâh" data-lemma="|יְהֹוָה" strnum="dvnNm H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span>, he is <span class="translated H430" data-xlit="ʼĕlôhîym" data-lemma="אֱלֹהִים" strnum="H430" data-kjv-trans=" God" translation=" God" data-title="H430 | ʼĕlôhîym | אֱלֹהִים">God</span> ! It is he who <span class="translated H6213" data-xlit="ʻâsâh" data-lemma="עָשָׂה" strnum="H6213" data-kjv-trans=" made" translation=" made" data-title="H6213 | ʻâsâh | עָשָׂה">made</span> us, and we are his; we are his <span class="translated H5971" data-xlit="ʻam" data-lemma="עַם" strnum="H5971" data-kjv-trans=" people" translation=" people" data-title="H5971 | ʻam | עַם">people</span>, and <span class="translated H6629" data-xlit="tsôʼn" data-lemma="צֹאן" strnum="H6629" data-kjv-trans=" the sheep" translation=" the sheep" data-title="H6629 | tsôʼn | צֹאן">the sheep</span> of his <span class="translated H4830" data-xlit="mirʻîyth" data-lemma="מִרְעִית" strnum="H4830" data-kjv-trans=" pasture." translation=" pasture." data-title="H4830 | mirʻîyth | מִרְעִית">pasture.</span></span><div class="v_markers sld_up" versecode="_18_99_2" display="none" anim_dur="300" style="display: none; transition: 0.3s ease-in-out; margin-top: 0px; opacity: 0; z-index: -1;"><button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button></div></span><span class="vmultiple" ref="Psalms 100:4" id="_18.99.3"><span class="v_KJV verse"><code ref="Psalms 100:4" aria-hidden="true">KJV 100:4</code>  <span th="TH8798" class="translated H935" data-xlit="bôwʼ" data-lemma="בּוֹא" strnum="H935" data-kjv-trans=" Enter" translation=" Enter" data-title="H935 | bôwʼ | בּוֹא">Enter</span> <span class="translated H8179" data-xlit="shaʻar" data-lemma="שַׁעַר" strnum="H8179" data-kjv-trans=" into his gates" translation=" into his gates" data-title="H8179 | shaʻar | שַׁעַר">into his gates</span> <span class="translated H8426" data-xlit="tôwdâh" data-lemma="תּוֹדָה" strnum="H8426" data-kjv-trans=" with thanksgiving" translation=" with thanksgiving" data-title="H8426 | tôwdâh | תּוֹדָה">with thanksgiving</span>, <span>and</span> <span class="translated H2691" data-xlit="châtsêr" data-lemma="חָצֵר" strnum="H2691" data-kjv-trans=" into his courts" translation=" into his courts" data-title="H2691 | châtsêr | חָצֵר">into his courts</span> <span class="translated H8416" data-xlit="tᵉhillâh" data-lemma="תְּהִלָּה" strnum="H8416" data-kjv-trans=" with praise" translation=" with praise" data-title="H8416 | tᵉhillâh | תְּהִלָּה">with praise</span>: <span th="TH8685" class="translated H3034" data-xlit="yâdâh" data-lemma="יָדָה" strnum="H3034" data-kjv-trans=" be thankful" translation=" be thankful" data-title="H3034 | yâdâh | יָדָה">be thankful</span> unto him, <span>and</span> <span th="TH8761" class="translated H1288" data-xlit="bârak" data-lemma="בָרַךְ" strnum="H1288" data-kjv-trans=" bless" translation=" bless" data-title="H1288 | bârak | בָרַךְ">bless</span> <span class="translated H8034" data-xlit="shêm" data-lemma="שֵׁם" strnum="H8034" data-kjv-trans=" his name" translation=" his name" data-title="H8034 | shêm | שֵׁם">his name</span>.</span><span class="v_ESV verse"><code ref="Psalms 100:4" aria-hidden="true">ESV 100:4</code>  <span class="translated H935" data-xlit="bôwʼ" data-lemma="בּוֹא" strnum="H935" data-kjv-trans=" Enter" translation=" Enter" data-title="H935 | bôwʼ | בּוֹא">Enter</span> his <span class="translated H8179" data-xlit="shaʻar" data-lemma="שַׁעַר" strnum="H8179" data-kjv-trans=" gates" translation=" gates" data-title="H8179 | shaʻar | שַׁעַר">gates</span> with <span class="translated H8426" data-xlit="tôwdâh" data-lemma="תּוֹדָה" strnum="H8426" data-kjv-trans=" thanksgiving," translation=" thanksgiving," data-title="H8426 | tôwdâh | תּוֹדָה">thanksgiving,</span> and his <span class="translated H2691" data-xlit="châtsêr" data-lemma="חָצֵר" strnum="H2691" data-kjv-trans=" courts" translation=" courts" data-title="H2691 | châtsêr | חָצֵר">courts</span> with <span class="translated H8416" data-xlit="tᵉhillâh" data-lemma="תְּהִלָּה" strnum="H8416" data-kjv-trans=" praise" translation=" praise" data-title="H8416 | tᵉhillâh | תְּהִלָּה">praise</span> ! <span class="translated H3034" data-xlit="yâdâh" data-lemma="יָדָה" strnum="H3034" data-kjv-trans=" Give thanks" translation=" Give thanks" data-title="H3034 | yâdâh | יָדָה">Give thanks</span> to him; <span class="translated H1288" data-xlit="bârak" data-lemma="בָרַךְ" strnum="H1288" data-kjv-trans=" bless" translation=" bless" data-title="H1288 | bârak | בָרַךְ">bless</span> his <span class="translated H8034" data-xlit="shêm" data-lemma="שֵׁם" strnum="H8034" data-kjv-trans=" name" translation=" name" data-title="H8034 | shêm | שֵׁם">name</span> !</span><div class="v_markers sld_up" versecode="_18_99_3" display="none" anim_dur="300" style="display: none; transition: 0.3s ease-in-out; margin-top: 0px; opacity: 0; z-index: -1;"><button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button></div></span><span class="vmultiple" ref="Psalms 100:5" id="_18.99.4"><span class="v_KJV verse"><code ref="Psalms 100:5" aria-hidden="true">KJV 100:5</code>  For <span class="translated H3068" data-xlit="Yᵉhôvâh" data-lemma="יְהֹוָה" strnum="H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span> <span>is</span> <span class="translated H2896" data-xlit="ṭôwb" data-lemma="טוֹב" strnum="H2896" data-kjv-trans=" good" translation=" good" data-title="H2896 | ṭôwb | טוֹב">good</span>; <span class="translated H2617" data-xlit="chêçêd" data-lemma="חֵסֵד" strnum="H2617" data-kjv-trans=" his mercy" translation=" his mercy" data-title="H2617 | chêçêd | חֵסֵד">his mercy</span> <span>is</span> <span class="translated H5769" data-xlit="ʻôwlâm" data-lemma="עוֹלָם" strnum="H5769" data-kjv-trans=" everlasting" translation=" everlasting" data-title="H5769 | ʻôwlâm | עוֹלָם">everlasting</span>; <span class="translated H530" data-xlit="ʼĕmûwnâh" data-lemma="אֱמוּנָה" strnum="H530" data-kjv-trans=" and his truth" translation=" and his truth" data-title="H530 | ʼĕmûwnâh | אֱמוּנָה">and his truth</span> <span>endureth</span> <span class="translated H1755" data-xlit="dôwr" data-lemma="דּוֹר" strnum="H1755" data-kjv-trans=" to all" translation=" to all" data-title="H1755 | dôwr | דּוֹר">to all</span> <span class="translated H1755" data-xlit="dôwr" data-lemma="דּוֹר" strnum="H1755" data-kjv-trans=" generations" translation=" generations" data-title="H1755 | dôwr | דּוֹר">generations</span>.</span><span class="v_ESV verse"><code ref="Psalms 100:5" aria-hidden="true">ESV 100:5</code>  <span class="translated H3588" data-xlit="kîy" data-lemma="כִּי" strnum="H3588" data-kjv-trans=" For" translation=" For" data-title="H3588 | kîy | כִּי">For</span> <span class="translated H3068" data-xlit="|Yᵉhôvâh" data-lemma="|יְהֹוָה" strnum="dvnNm H3068" data-kjv-trans=" the LORD" translation=" the LORD" data-title="H3068 | Yᵉhôvâh | יְהֹוָה">the LORD</span> is <span class="translated H2896" data-xlit="ṭôwb" data-lemma="טוֹב" strnum="H2896" data-kjv-trans=" good;" translation=" good;" data-title="H2896 | ṭôwb | טוֹב">good;</span> his <span class="translated H2617" data-xlit="chêçêd" data-lemma="חֵסֵד" strnum="H2617" data-kjv-trans=" steadfast love" translation=" steadfast love" data-title="H2617 | chêçêd | חֵסֵד">steadfast love</span> <span class="translated H5769" data-xlit="ʻôwlâm" data-lemma="עוֹלָם" strnum="H5769" data-kjv-trans=" endures forever," translation=" endures forever," data-title="H5769 | ʻôwlâm | עוֹלָם">endures forever,</span> and his <span class="translated H530" data-xlit="ʼĕmûwnâh" data-lemma="אֱמוּנָה" strnum="H530" data-kjv-trans=" faithfulness" translation=" faithfulness" data-title="H530 | ʼĕmûwnâh | אֱמוּנָה">faithfulness</span> to <span class="translated H1755" data-xlit="dôwr" data-lemma="דּוֹר" strnum="H1755" data-kjv-trans=" all" translation=" all" data-title="H1755 | dôwr | דּוֹר">all</span> <span class="translated H1755" data-xlit="dôwr" data-lemma="דּוֹר" strnum="H1755" data-kjv-trans=" generations." translation=" generations." data-title="H1755 | dôwr | דּוֹר">generations.</span></span><div class="v_markers sld_up" versecode="_18_99_4" display="none" anim_dur="300" style="display: none; transition: 0.3s ease-in-out; margin-top: 0px; opacity: 0; z-index: -1;"><button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button></div></span></span>
+      </div>       
       </main>
     <div id="bottomleft_btns">
       <div class="flex">
-        <button id="gotochpt_prev" class="nextprevchpt" onclick="goToNextPrevChapter('-')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
-        <button id="gotochpt_next" class="nextprevchpt" onclick="goToNextPrevChapter('+')"><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
-        <button id="sidemenubtn_rightbottom" onclick="toggleNav(null, refnav)" class="togglenav" title="Toggle Nav"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
+        <button id="gotochpt_prev" class="nextprevchpt" onclick="if(event.button==0){goToNextPrevChapter('-')}else if(event.button==1){handleKeyPress('up')}" oncontextmenu="smoothScrollFromVerseToVerse({code:'ArrowUp', preventDefault:function(){}})" ><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="gotochpt_next" class="nextprevchpt" onclick="if(event.button==0){goToNextPrevChapter('+')}else if(event.button==1){handleKeyPress('down')}" oncontextmenu="smoothScrollFromVerseToVerse({code:'ArrowDown', preventDefault:function(){}})" ><img src="images/arrow-up-svgrepo-com.svg" alt=""></button>
+        <button id="sidemenubtn_rightbottom" onclick="toggleNav(event, null)" oncontextmenu="quickFontSizesChange(null,qfssc_2)" class="togglenav" title="Toggle Side Bar"><img src="images/hamburger-menu-svgrepo-com.svg" alt="☰"></button>
+        <div class="quickFontSizesSetChange displaynone" id="qfssc_2">
+          <button onclick="quickFontSizesChange(1,this)" onmouseup="quickFontSizesChange(1,this)">Office</button>
+          <button onclick="quickFontSizesChange(2,this)" onmouseup="quickFontSizesChange(2,this)">Church</button>
+          <button onclick="quickFontSizesChange(3,this)" onmouseup="quickFontSizesChange(3,this)">House</button>
+          <button onclick="quickFontSizesChange(4,this)" onmouseup="quickFontSizesChange(4,this)">FS A</button>
+        </div>
       </div>
     </div>
     <!-- SIDE VERSENOTES -->
     <div id="versenote_totheright">
       <div id="btns_vtotheright" class="closebtn">
         <button class="note_closebtn_x" onclick="versenote_totheright.classList.remove('showingNote'), versenote_totheright_div2.innerHTML=''"></button>
-        <button class="note_closebtn_x note_closebtn_d" onclick="detachVersenoteToTheRight(),checkUncheck([notedetach_check_2])" title="detach from rightside"><input type="checkbox" id="notedetach_check_2">D</button>
+        <button class="note_closebtn_x note_closebtn_d" onclick="showVersenoteToTheRight(true),checkUncheck([notedetach_check_2])" title="detach from rightside"><input type="checkbox" tabindex="-1" id="notedetach_check_2">D</button>
       </div>
       <div id="versenote_totheright_div1"></div>
       <div id="versenote_totheright_div2"></div>
@@ -446,23 +759,41 @@
   </div>
   <div id="singleverse_compare_menu" class="displaynone"></div>
   <div name="verse_note" id="verse_note" class="verse_note">
-  
     <!--element to edit-->
-    <div class="notes_ref_head"></div>
+    <div class="notes_ref_head" onmousedown="gotoRef(event,this.innerText,false)"></div>
+    <div class="notemenu" style="display:none;" onclick="goToHeading()" aria-placeholder="No Headings"></div>
   
-    <div class="text_content" contenteditable="false" placeholder="Take down a comment to the verse"></div>
+    <div class="text_content t1" contenteditable="false" placeholder="Take down a comment to the verse"></div>
+    <div class="t2" contenteditable="false" placeholder="Take down a comment to the verse"></div>
     <div class="save_edit_btns_holder">
-      <button class="note_save_button" title="click to save verse note" disabled></button><button id="note_edit_button" class="note_edit_button" title="edit verse note"></button><button class="closebtn note_closebtn" onclick="closeNote(null,null,this)"></button><button class="closebtn note_closebtn note_closebtn_x" onclick="closeNote(null,null,this)"></button>
+      <div class="close_n_notemenu_btns">
+        <button class="notemenubtn prevNoteButton" onclick="showPrevNextNote(this,true)" title="Previous Note on page"></button>
+        <button class="notemenubtn nextNoteButton" onclick="showPrevNextNote(this)" title="Next note on page"></button>
+        <span style="width:5px;height:10px;"></span>
+        <button class="notemenubtn togglenav" onclick="generateNoteMenu(this)" title="Toggle Notes Nav">☰</button>
+        <button class="notemenubtn maximizeHorizontal_button" onclick="toggleMaximize(this,['maximizeVertical','maximizeHorizontal'])" class="togglenav" title="[2] Maximize Horizontally" alt=&#8596;></button>
+        <button class="closebtn note_closebtn note_closebtn_x" onclick="closeNote(null,null,this)"></button>
+      </div>
+      <button class="note_save_button" disabled></button><button id="note_edit_button" class="note_edit_button"></button><button class="closebtn note_closebtn" onclick="closeNote(null,null,this)"></button>
+      <button class="defnotefolder" class="user1_vn" onclick="setDefVNFolder('user1noteToggle',this)"><input type="checkbox" tabindex="-1" class="user1_vn_check" name="user1_vn_check">Draft</button>
     </div>
   </div>
+  <dialog id="myDialog">
+    <button id="closeDialog" onclick="showHelpDialogWindow()">Close</button>
+  </dialog>
 </body>
 
+<script src="script.js/bibleApp_elementExtended.js" charset="utf-8"></script>
 <script src="script.js/bibleApp.js" charset="utf-8"></script>
 <script src="data/bible.js" charset="utf-8"></script>
-<script src="data/crossReferences.js" charset="utf-8"></script>
+<script src="data/strongsObjectRoots.js" charset="utf-8"></script>
+<script src="data/strongsObjectWithFamilies2.js" charset="utf-8"></script>
+<script src="data/LSJ Full.js" charset="utf-8"></script>
+<script src="data/morphParse_GreeknHebrew.js" charset="utf-8"></script>
+<script src="data/bibleApp_reKeyedCrossReference.js" charset="utf-8"></script>
 <script src="script.js/helpers.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_newWindow.js" charset="utf-8"></script>
-<script src="data/bibleApp_reKeyedCrossReference.js" charset="utf-8"></script>
+<script src="script.js/TSK.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_crossRefrencer.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_contextMenu_mainFunc.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_contextMenu_mainPage.js" charset="utf-8"></script>
@@ -471,17 +802,18 @@
 <script src="script.js/bibleApp_transliteration.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_transliteratorGreek.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_refNav.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_chapterNameOnScroll.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_localStorage_cache.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_styles.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_gotoRef_Func.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_search.js" charset="utf-8"></script>
-<script src="script.js/bibleApp_chapterNameOnScroll.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_ref_browserHistory.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_versionHighlight.js" charset="utf-8"></script>
-<script src="script.js/bibleApp_localStorage_indexedDB.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotesSave.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseNotes.js" charset="utf-8"></script>
 <script src="script.js/bibleApp_verseMarkers.js" charset="utf-8"></script>
-<!-- <script src="/install-prompt.js"></script> -->
-
+<script src="script.js/bibleApp_compareSection.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_wordMap.js" charset="utf-8"></script>
+<script src="script.js/bibleApp_scrolling.js" charset="utf-8"></script>
+<!-- <script src="script.js/searchPage.js" charset="utf-8"></script> -->
 </html>

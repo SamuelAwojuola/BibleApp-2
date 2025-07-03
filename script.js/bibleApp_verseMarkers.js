@@ -1,20 +1,16 @@
-/* 
-***generateAllMarkers() adds vmarkers to all verses on chapter load
-***The allBibleMarkersOBJ is populated by getAllRefsInBookThatHaveNote(bookName, callback) function
-*/
+/* ***generateAllMarkers() adds vmarkers to all verses on chapter load
+***The allBibleMarkersOBJ is populated by getAllRefsInBookThatHaveNote(bookName, callback) function */
 
 let bookMarkers;
 let markersObjForCurrentBook;
-/* 
-Populated in
+/* Populated in
     * markersForCurrentChapter(vcode)
     * markersForCurrentVerse(vcode) -- if successful
     * removeMarkerFromJSONfile(vcode, markername) -- if successful
     * saveMarkerNote(dis,vcode,markername) -- if successful
 */
 let previouslyMarkedBook;
-/* 
-Set in
+/* Set in
     * markersForCurrentChapter(vcode)
     * appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter=0)
     * 
@@ -28,46 +24,64 @@ let allBibleMarkersOBJ={};
 function show_v_grp(x) {
     closeAnyMarkersCreatorInput()
     // Get the verseHolder
-    let parent_vMultiple = elmAhasElmOfClassBasAncestor(x, '.vmultiple');
-    appendAllAvialableMarkersToVMultiple(parent_vMultiple)
+    const pvm = elmAhasElmOfClassBasAncestor(x, '.vmultiple');
+    appendAllAvialableMarkersToVMultiple(pvm)
 }
-async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter=0){
-    let verse_refcode = parent_vMultiple.id.replace(/\./g,'_');
-    let bcv = vNumCode(verse_refcode);
-    
-    // If v_markers already attached to verse, just toggle it
-    if(v_markersHolder=parent_vMultiple.querySelector('.v_markers')){
-        if(forChapter==0){
-            slideUpDown(v_markersHolder);
-            if(v_markerinputnbtn_holder = parent_vMultiple.querySelector('.v_markerinputnbtn_holder')){
-                if(!v_markerinputnbtn_holder.matches('.slidleft')){toggleSlideLeft(v_markerinputnbtn_holder)}
-            }
+/* ******************************************************************* */
+/* ***** Append on press of 'm' key ********************************** */
+/* ******************************************************************* */
+document.addEventListener('keydown', function(e) {
+    if(document.activeElement.closest('input, [contenteditable="true"], .cke_dialog_body')){return}
+    if(e.key=='m'){
+        const pvm=lastClickedVerse.closest('.vmultiple');
+        if(e.altKey){
+            // showAllVersesMarkers();
+            // checkUncheck([showAllmarkersBtn.querySelector('input')]);
+            showAllmarkersBtn.click();
+        } else if(pvm) {
+            appendAllAvialableMarkersToVMultiple(pvm)
         }
     }
-    // If v_markers NOT already attached to verse, create and append it to the verse
-    else{
-        let v_markersHolder = new DocumentFragment();
-        let tempDIV = createNewElement('DIV','.v_markers', `[versecode=${verse_refcode}]`);
-        tempDIV.innerHTML= `<button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button>`;
-        
-        // If Verse Has Markers it is under, add them to the tempDIV
-        if(forChapter){
-            if(previouslyMarkedBook != bcv.bkName){
-                bookMarkers = await markersForCurrentChapter(verse_refcode)
-                previouslyMarkedBook = bcv.bkName;
-                vmAppender(bookMarkers,tempDIV)
-            }
-            else if (await bookMarkers){
-                previouslyMarkedBook = bcv.bkName;
-                vmAppender(bookMarkers,tempDIV)
-            }
-        } else {
-            getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vMultiple);
-        }   
-        v_markersHolder.append(tempDIV);
-        parent_vMultiple.append(v_markersHolder);
-        tempDIV.querySelector('.add_vMarker').focus();
+});
+/* ******************************************************************* */
+/* ******************************************************************* */
+// 04.04.2024 NEW async function appendAllAvialableMarkersToVMultiple...
+async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter=false){
+    // If v_markers already attached to verse, just toggle it
+    if(!parent_vMultiple){return}
+    if(!forChapter && (v_mH=parent_vMultiple.getElementsByClassName('v_markers')[0])){
+        slideUpDown(v_mH);
+        if((v_markerinputnbtn_holder=parent_vMultiple.getElementsByClassName('v_markerinputnbtn_holder')[0])&&(!v_markerinputnbtn_holder.matches('.slidleft'))){
+            toggleSlideLeft(v_markerinputnbtn_holder)
+        }
+        return
     }
+
+    // If v_markers NOT already attached to verse, create and append it to the verse
+    let verse_refcode = parent_vMultiple.id.replace(/\./g,'_');
+    let bcv = vNumCode(verse_refcode);
+    let v_markersHolder = new DocumentFragment();
+    let tempDIV = createNewElement('DIV','.v_markers', `[versecode=${verse_refcode}]`);
+    tempDIV.innerHTML= `<button class="add_vMarker" onclick="add_vMarker_creator(this)">+</button>`;
+    
+    // If Verse Has Markers it is under, add them to the tempDIV
+    if(forChapter){
+        let bm_=false;
+        if(previouslyMarkedBook != bcv.bkName){
+            bookMarkers = await markersForCurrentChapter(verse_refcode);
+            bm_=true;
+        }
+        else if (await bookMarkers){bm_=true;}
+        if(bm_){
+            previouslyMarkedBook = bcv.bkName;
+            vmAppender(bookMarkers,tempDIV)
+        }
+    } else {
+        getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vMultiple);
+    }   
+    v_markersHolder.append(tempDIV);
+    parent_vMultiple.append(v_markersHolder);
+    tempDIV.querySelector('.add_vMarker').focus();
     
     function vmAppender(bookMarkers,tempDIV){
         // First, get an array of the markers for this verse, if it has
@@ -87,7 +101,7 @@ async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter
         // Next create the marker elements and append them to the verseHolder
         let tempMarkersFrag = document.createDocumentFragment();
         arrOfVerseMarkers.forEach((mrk,i) => {
-            let cleanMarker=mrk.replace(/\s+/,'_');// replace spaces with '_'
+            let cleanMarker=mrk.replace(/\s+/g,'_');// replace spaces with '_'
             let newMarkerNameClass = `marker_${cleanMarker}`;
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
             let newMarkerElm = createNewElement('SPAN','.vmarker',dot_newMarkerNameClass);
@@ -107,7 +121,7 @@ async function appendAllAvialableMarkersToVMultiple(parent_vMultiple, forChapter
         tempDIV.querySelectorAll('.add_vMarker,.v_markerinputnbtn_holder').forEach((x)=>{
             clonedNodes.append(x.cloneNode(true));
         })
-        tempDIV.innerHTML=null;
+        tempDIV.textContent='';
         tempDIV.style.display = 'none';
         tempDIV.append(clonedNodes);
         tempDIV.prepend(tempMarkersFrag);
@@ -146,7 +160,7 @@ async function create_v_marker(x) {
     if(newMarkerName = x.previousElementSibling.value.trim()){
         // Clean the input value up--it cannot have any space
         x.previousElementSibling.value = newMarkerName;
-        let cleanMarker=newMarkerName.replace(/\s+/,'_');// replace spaces with '_'
+        let cleanMarker=newMarkerName.replace(/\s+/g,'_');// replace spaces with '_'
         let newMarkerNameClass = `marker_${cleanMarker}`;
         let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
 
@@ -212,7 +226,7 @@ async function getMarkersForCurrentVerseFromFile(verse_refcode,tempDIV,parent_vM
     if(arrOfVerseMarkers){
         let tempMarkersFrag = document.createDocumentFragment();
         arrOfVerseMarkers.forEach((mrk,i) => {
-            let cleanMarker=mrk.replace(/\s+/,'_');// replace spaces with '_'
+            let cleanMarker=mrk.replace(/\s+/g,'_');// replace spaces with '_'
             let newMarkerNameClass = `marker_${cleanMarker}`;
             let dot_newMarkerNameClass = `.${newMarkerNameClass}`;
             let newMarkerElm = createNewElement('SPAN','.vmarker',dot_newMarkerNameClass)
@@ -394,12 +408,12 @@ async function addNewMarkerToFile(vcode,markername,vmHolder){
         markersObjForCurrentBook = deepCopyObj(tempMrkObj);
         if(vcode&&vmHolder){
             let parent_vMultiple = elmAhasElmOfClassBasAncestor(vmHolder, '.vmultiple');
-            getMarkersForCurrentVerseFromFile(vcode,vmHolder,parent_vMultiple)
+            getMarkersForCurrentVerseFromFile(vcode,vmHolder,parent_vMultiple);
+            update_rICSBWTRM(markername,currentBookName,bcv.currentChpt,bcv.currentV)
         }
         return true
-    } else {
-        return false
     }
+    else {return false}
 }
 async function removeMarkerFromJSONfile(vcode, markername){
     let bcv = vNumCode(vcode);
@@ -434,13 +448,32 @@ async function removeMarkerFromJSONfile(vcode, markername){
     // r will be false if the save operation was cancelled
     if(r!=false){
         markersObjForCurrentBook = deepCopyObj(tempMrkObj);
+        update_rICSBWTRM(markername,currentBookName,bcv.currentChpt,bcv.currentV,false,vcode)
         return true
-    } else {
-        return false
     }
+    else {return false}
 }
-async function generateAllMarkers(){
-    let allVmultiple = main.querySelectorAll('.vmultiple');
+function update_rICSBWTRM(m,bkn,chpt,vrs,add=true,vcode) {
+    if (add) {
+        bkn in rICSBWTRM ? null : (rICSBWTRM[bkn] = {});
+        !(chpt in rICSBWTRM[bkn]) ? (rICSBWTRM[bkn][chpt] = {}) : null;
+        !(vrs in rICSBWTRM[bkn][chpt]) ? (rICSBWTRM[bkn][chpt][vrs] = []) : null;
+        rICSBWTRM[bkn][chpt][vrs].includes(m) ? null : rICSBWTRM[bkn][chpt][vrs].push(m);
+        // addKeyToArrayOfAllVerseMarkers(m);
+    } else {
+        let tempArr = rICSBWTRM[bkn][chpt][vrs];
+        tempArr = removeItemFromArray(m,tempArr);
+        rICSBWTRM[bkn][chpt][vrs] = tempArr;
+        main.querySelector(`#${vcode.replace(/(\d+)_/g, '$1\\.')}.vmultiple`).classList.remove(`marker_${m}`);
+    }
+
+    allReferencesWithNotesProxy['markers'] = rICSBWTRM;
+    // allReferencesWithNotes['markers'] = rICSBWTRM;
+    combined_referencesWithNotes['markers'] = rICSBWTRM;
+}
+async function generateAllMarkers(chapterVersesFrag){
+    let allVmultiple = chapterVersesFrag ? chapterVersesFrag.querySelectorAll('.vmultiple') : main.getElementsByClassName('vmultiple');
+    // chapterVersesFrag ? console.log('chapterFrag') : console.log('main');
 
     // I append it in reverse so that it doesn't scroll away from the topmost verse
     for (let i = allVmultiple.length-1; i > -1; i--) {
@@ -503,23 +536,15 @@ function markersOptions(e){
     }
 }
 let showAllVersesMarkers = toggleVmarkersInVerses();
-function toggleVmarkersInVerses(){
-    let count=1;
+function toggleVmarkersInVerses(count=1){
     return function toggleAllvm(){
-        let sldUpVmarkers=document.querySelectorAll('.v_markers');
+        let sldUpVmarkers=ppp.querySelectorAll('.v_markers');
         if(sldUpVmarkers){
             svmmm=sldUpVmarkers;
-            if(count%2){
-                sldUpVmarkers.forEach(sldvm=>{
-                    slideUpDown(sldvm,'show')
-                    sldvm.style.display = "";
-                })
-                console.log({count})
-            } else {
-                sldUpVmarkers.forEach(sldvm=>{
-                    slideUpDown(sldvm, 'hide')
-                })
-                console.log({count})
+            if(count%2){//if 0
+                sldUpVmarkers.forEach((sldvm,i)=>{slideUpDown(sldvm,'show'); sldvm.style.display = "";})
+            } else {//if 1
+                sldUpVmarkers.forEach((sldvm,i)=>{slideUpDown(sldvm, 'hide')})
             }
             count++
         }
@@ -607,8 +632,8 @@ function highlight_allVmultipleWithMarker_Class(eX){
                 font-weight:bold;
                 border-radius:2px;
             }
-            .darkmode #${markerName.replace(/marker/,'vm')} button {
-                background-color: #50efad;
+            .darkmode #${markerName.replace(/marker/,'vm')} button:not(:hover) {
+                background-color: #50efad!important;
             }
             .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnprevious:before,
             .darkmode #${markerName.replace(/marker/,'vm')} .vmbtnnext:before {
@@ -684,7 +709,7 @@ async function generateVmarkerReport(allorOne,appendVersesToSearchWindow,markerN
                         searchPreviewFixed.append(vHolder);
                         let allSearchVerses = searchPreviewFixed.querySelectorAll('span.verse');
                         const vsInAllSearchVerses = allSearchVerses[allSearchVerses.length-1];
-                        vsInAllSearchVerses.append(crfnnote_DIV());
+                        vsInAllSearchVerses.append(crfnnote_DIV(eTargetMarker.closest('.vmultiple')));
                     })
                     if(!keepsearchopen.checked){runFuncAfterSetTimeInactivityInElm(searchPreviewWindowFixed, 60000, clearSearchWindow)}
                     // Empty the window where they will be appended (using the search window for now)
@@ -845,7 +870,8 @@ async function goToPrevNxtVerse(e) {
         }
         // IF THERE ARE NO VERSES UNDER MARKER ON THE PAGE
         if(marker_s.length==0){
-            const highestVerseOnPage = getHighestVisibleH2().highestVerse;
+            let highestVerseOnPage = await getHighestVisibleH2(false);
+            highestVerseOnPage = highestVerseOnPage.highestVerse;
             const chptHoldersOnPage = highestVerseOnPage.parentElement;
             const versenNum = highestVerseOnPage.id.split('.')[2];
 
@@ -874,25 +900,25 @@ async function goToPrevNxtVerse(e) {
                 if(prNx.matches('.vmbtnprevious')){
                     if(lastMarkerRef_indx - 1 > -1){
                         lastMarkerRef_indx = lastMarkerRef_indx - 1;
-                        console.log({lastMarkerRef_indx});
+                        // console.log({lastMarkerRef_indx});
                     }
                     else if(lastMarkerRef_indx - 1 == -1){
                         lastMarkerRef_indx = arrOf_allRefs_UnderMarker.length - 1;
-                        console.log({lastMarkerRef_indx});
+                        // console.log({lastMarkerRef_indx});
                     }
                 }
                 else if(prNx.matches('.vmbtnnext')){
                     if(lastMarkerRef_indx + 1 < arrOf_allRefs_UnderMarker.length){
                         lastMarkerRef_indx = lastMarkerRef_indx + 1;
-                        console.log({lastMarkerRef_indx});
+                        // console.log({lastMarkerRef_indx});
                     }
                     else if(lastMarkerRef_indx + 1 == arrOf_allRefs_UnderMarker.length){
                         lastMarkerRef_indx = 0;
-                        console.log({lastMarkerRef_indx});
+                        // console.log({lastMarkerRef_indx});
                     }
                 }
                 ref2goto = arrOf_allRefs_UnderMarker[lastMarkerRef_indx]
-                console.log({ref2goto});
+                // console.log({ref2goto});
             }
             else {
                 offpage_MarkerRef_gotten = true;
@@ -919,11 +945,11 @@ async function goToPrevNxtVerse(e) {
                                 // Check ahead until the bookname changes
                                 let j = i + 1;
                                 if(j < arrOf_allRefs_UnderMarker.length){
-                                    console.log({ref2goto})
+                                    // console.log({ref2goto})
                                     let nxt_ref_bkn = arrOf_allRefs_UnderMarker[j].split('.')[0]
                                     // if the next book is higher than the book on the page
                                     if((closest_bkName_ABOVE != nxt_ref_bkn) && (allBibleBooks.indexOf(nxt_ref_bkn) > highestBookID)){
-                                        console.log({ref2goto})
+                                        // console.log({ref2goto})
                                         gotoRef(ref2goto)
                                         return
                                     }
@@ -997,7 +1023,6 @@ async function goToPrevNxtVerse(e) {
                     }
                 }
             }
-            console.log({ref2goto})
             gotoRef(ref2goto)
         }
         // else{

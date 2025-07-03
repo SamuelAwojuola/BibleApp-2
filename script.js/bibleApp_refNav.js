@@ -4,8 +4,6 @@ function populateBooks() {
     var booksLength = booksList.length;
 
     var bookName = null,
-        bookStartIndex = null,
-        bookEndIndex = null,
         numberOfChapters = null;
 
     for (let i = 0; i < booksLength; i++) {
@@ -20,10 +18,10 @@ function populateBooks() {
         bibleBook.tabIndex = 0;
 
         selectBooks.appendChild(bibleBook);
-        var chapterStartIncreamenter = 0;
 
         //Chapters Select
-        var numberOfChapters = KJV[Object.keys(KJV)[i]].length;
+        // var numberOfChapters = KJV[Object.keys(KJV)[i]].length;        
+        var numberOfChapters = bible.Data.verses[i].length;
         for (j = 0; j < numberOfChapters; j++) {
             var bookChapters = document.createElement('option');
             bookChapters.classList.add('book_' + i);
@@ -42,27 +40,28 @@ function populateBooks() {
 }
 
 function getBksChptsNum(xxx) {
-    if (document.querySelector(".show_chapter")) {
-        document.querySelectorAll(".show_chapter").forEach(element => {
-            element.classList.remove("show_chapter");
-        });
-    }
-    let classOfChapters = document.querySelectorAll('.' + xxx.value);
+    const chapterNumsShowingInRefnav = document.querySelectorAll(".show_chapter");
+    //Remove previously showing chapter numbers of #bible_chapters under #refnav
+    chapterNumsShowingInRefnav.length>0?chapterNumsShowingInRefnav.forEach(element => {element.classList.remove("show_chapter");}):null;
+    const classOfChapters = document.querySelectorAll('.' + xxx.value);
     reference.value=xxx.getAttribute('bookname');
-    classOfChapters.forEach(element => {
-        element.classList.add("show_chapter");
-    });
+    classOfChapters.forEach(element => {element.classList.add("show_chapter");});
     //remove class from previous class holder in refnav
-    if (bible_books.querySelector('.tmp_hlt')) {
-        bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt')
-    }
+    const tmp_hlt=bible_books.querySelector('.tmp_hlt');
+    tmp_hlt?tmp_hlt.classList.remove('tmp_hlt'):null;
     xxx.classList.add('tmp_hlt')
 }
 
 var stl = 0;
 var currentBookValue = null;
-let app_settings = document.querySelector('#app_settings')
+let app_settings = document.querySelector('#app_settings');
 if(!document.querySelector('body').matches('#versenotepage')){
+    ['mousedown','focusin'].forEach(listener=>{
+        refnav.addEventListener(listener,(e)=>{
+            const eT = e.target;
+            bringRefNavForwardOnFocus(eT);
+        });
+    });
     refnav.addEventListener("click", function (e) {
         // if((e.target===(undefined||null))||(e.target.toString().replace(/[\s\r\n]+/g, '').length==0)){return}
         clickedElm = e.target;
@@ -85,67 +84,73 @@ if(!document.querySelector('body').matches('#versenotepage')){
             //For previous and next chapter
             if(clickedElm.previousElementSibling){prevBibleChapter = clickedElm.previousElementSibling;}
             if(clickedElm.nextElementSibling){nextBibleChapter = clickedElm.nextElementSibling;}
-            hideRefNav(null, bible_nav);
-            hideRefNav("hide");
-            clearPageIfChapterNotPresent(clickedElm);
-            getTextOfChapter(clickedElm, null, null, true, true);
+            // hideRefNav(null, bible_nav);
+            // hideRefNav("hide");
+            // clearPageIfChapterNotPresent(clickedElm);
+            let ref2go2 = clickedElm.getAttribute('bookname') + ' ' + (Number(clickedElm.getAttribute('chapterindex'))+1);
+            gotoRef(ref2go2);
+            // getTextOfChapter(clickedElm, null, null, true);
             indicateBooknChapterInNav(null, clickedElm);
             currentChapterValue = clickedElm.getAttribute('value');
-            bible_chapters.classList.remove('active_button')
-            // setItemInLocalStorage('lastBookandChapter', currentBookValue + ',' + currentChapterValue);
+            bible_chapters.classList.remove('active_button');
         }
         toggleActiveButtonClass(clickedElm)
     }
 )}
 
-function indicateBooknChapterInNav(bk, chpt) {
-    if (bk == null) bk = bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);
-    //remove class from previous class holder in refnav
-    if (bible_books.querySelector('.tmp_hlt')) {
-        bible_books.querySelector('.tmp_hlt').classList.remove('tmp_hlt');
+let bringRefNavForwardOnFocus = (function(){
+    let ignore = false;
+    return function (eT) {
+        if (ignore) {return}
+        ignore = true;
+        refnav.classList.add('bringforward');
+        main.addEventListener('mousedown', refnavBlur);
+        main.addEventListener('focusin', refnavBlur);
+        function refnavBlur(e) {
+            if(e.target.closest('#refnav')){return}
+            ignore = false;
+            refnav.classList.remove('bringforward');
+            main.removeEventListener('mousedown', refnavBlur);
+            main.removeEventListener('focusin', refnavBlur);
+        }
     }
-    if (bk) {
-        if (refbk = bible_books.querySelector('.ref_hlt')) {
+})();
+
+function indicateBooknChapterInNav(bk, chpt) {
+    if(!chpt)return
+    if(bk == null){bk = bible_books.querySelector(`[bookname="${chpt.getAttribute('bookname')}"`);}
+    //remove class from previous class holder in refnav
+    if(t_h = bible_books.querySelector('.tmp_hlt')) {t_h.classList.remove('tmp_hlt');}
+    if(bk){
+        if(refbk = bible_books.querySelector('.ref_hlt')){
             refbk.classList.remove('ref_hlt')
         }
         bk.classList.add('ref_hlt');
-        if (!checkVisible(bk)) {
-            bk.scrollIntoView(false);
-        }
-        // getBksChptsNum(bk);
-        if (!chpt) {
+        if(!chpt){
             let chapter_to_highlight = bible_chapters.querySelector('.show_chapter');
             chapter_to_highlight.classList.add('ref_hlt');
-            if (!checkVisible(chapter_to_highlight)) {
-                chapter_to_highlight.scrollIntoView(false);
-            }
         }
     }
-    if (chpt) {
+    if(chpt){
         //remove class from previous class holder in refnav
-        if (chptnumref = document.querySelector('.chptnum.ref_hlt')) {
-            chptnumref.classList.remove('ref_hlt')
-        }
-        chpt.scrollIntoView(false);
+        if (chptnumref = document.querySelector('.chptnum.ref_hlt')) {chptnumref.classList.remove('ref_hlt')}
         chpt.classList.add('ref_hlt');
         if (tmpbk = bible_books.querySelector('.tmp_hlt')) {
             tmpbk.classList.remove('tmp_hlt')
             let bookToHighlight = bible_books.querySelector('[bookname="' + chpt.getAttribute('bookname'));
             bookToHighlight.classList.add('ref_hlt');
-            bookToHighlight.scrollIntoView(false);
         }
     }
-    // UPDATE CACHE
-    setItemInLocalStorage('lastBookandChapter', bk.getAttribute('value') + ',' + chpt.getAttribute("value") + ',' + chpt.getAttribute("bookname"));
-
-    //BROWERS HISTORY
-    // let derivedReference=chpt.getAttribute('bookname') + ' ' + chpt.innerText;
-    // if(derivedReference!=reference.value){
-    //     console.log(derivedReference)
-    //     if (derivedReference!=window.location.hash.split('%20').join(' ')){
-    //         updateRefBrowserHistory(derivedReference);
-    //     }
-    // }
+    if (bk && chpt) {
+        bk.scrollIntoView({behavior:"smooth",block:"center"});
+        chpt.scrollIntoView({behavior:"smooth",block:"center"});
+        
+        // UPDATE CACHE
+        const bkn = chpt.getAttribute("bookname");
+        const cI = chpt.getAttribute("chapterindex");
+        currentBooknChpt_Ref = `${bkn} ${cI}`;
+        setItemInLocalStorage('lastBookandChapter', bk.getAttribute('value') + ',' + chpt.getAttribute("value") + ',' + bkn);
+    }
 }
 
 /* **************************************************** */
@@ -153,88 +158,207 @@ function indicateBooknChapterInNav(bk, chpt) {
 /* **************************************************** */
 document.addEventListener('keydown', general_EscapeEventListener);
 function general_EscapeEventListener(e){
-    if (e.key === "Escape") {
-        // Remove ContextMenu if present
-        if(document.querySelector('#context_menu') && context_menu.matches('.slideintoview')){
-            hideRightClickContextMenu();
-        }
-        else if(document.querySelector('#versenote_totheright.showingNote')){
-            versenote_totheright.classList.remove('showingNote');
-        }        
-        else if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
-            bookmark_content.classList.remove('displayblock');
-            bookmarks_holder.classList.remove('showing_bookmarks');
-        }        
-        // Hide vmarker_options_menu
-        else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
-            prev_vmrkoptm.remove()
-        }
-        // Stop editing verseNote
-        else if (document.activeElement.matches('#noteEditingTarget')) {
-            let verseNoteDiv = elmAhasElmOfClassBasAncestor(noteEditingTarget, '.verse_note');
-            let editBtn = verseNoteDiv.querySelector('.note_edit_button');
-            let saveBtn = verseNoteDiv.querySelector('.note_save_button');
-            editVerseNote(editBtn, e, saveBtn);
-        }
-        else if(refnav && top_horizontal_bar_buttons){
-            // Hide refnav any child window, e.g., searchWindow, that is open
-            if(openRefnavChild = refnav.querySelector('.slideintoview:not(#app_settings)')){
-                hideRefNav('hide',openRefnavChild);
+    if (e.key != "Escape") {return}
+    const activeElm = document.activeElement;
+    if (xxx = document.querySelector('#singleverse_compare_menu.show')) {
+        xxx.remove();
+    }
+    else if (document.querySelector('#show_crossref_comments:not(.displaynone)')) {
+        show_crossref_comments.classList.add('displaynone');
+    }
+    else if(document.querySelector('#context_menu.fillscreen')){
+        context_menu.classList.remove('fillscreen');
+    }
+    else if(document.querySelector('#singleverse_compare_menu:not(.displaynone)')){
+        singleverse_compare_menu.remove();
+    }
+    else if (typeof searchedWordsContainer != 'undefined' && searchedWordsContainer!=null) {
+        // searchedWordsContainer.removeEventListener("keydown",searchHistory_enterKeyFunc_COPY);
+        searchedWordsContainer.remove();
+        searchedWordsContainer=null;
+    } 
+    else if(tempRefdiv_un_Select()){return}
+    else if(typeof qfssc_1 !== 'undefined' && (!qfssc_1.matches('.displaynone')||!qfssc_2.matches('.displaynone'))){
+        qfssc_1.classList.add('displaynone');
+        qfssc_2.classList.add('displaynone');
+    }
+    else if(bbg = document.querySelector('#biblebooksgroup_inputndropdown:not(.displaynone)')){
+        bbg.classList.add('displaynone');
+        bbg.querySelector('.showhidebookgrps').classList.add('showbksdrpdown');
+        bbg.querySelector('.biblebooksgroup_dropdown_content').classList.add('displaynone');
+    }
+    // Hide book ranges dropdown
+    else if(bbg = document.querySelector('.biblebooksgroup_dropdown_content:not(.displaynone)')){
+        bbg.classList.add('displaynone');
+        bbg.parentElement.querySelector('.showhidebookgrps').classList.add('showbksdrpdown');
+    }
+    // Hide reference History dropdown
+    else if(document.querySelector('#refhistorylist_front:not(.displaynone)') || document.querySelector('#refhistorylist_back:not(.displaynone)')){
+        refhistorylist_back.classList.add('displaynone');
+        refhistorylist_front.classList.add('displaynone');
+    }
+    else if(bbgDrpdwn2 = document.querySelector('#biblebooksgroup_myDropdown_2:not(.displaynone)')){
+        bbgDrpdwn2.classList.add('displaynone');
+        bbgDrpdwn2.closest('.biblebooksgroup_inputndropdown').querySelector('.showhidebookgrps').classList.add('showbksdrpdown');
+    }
+    else if(tsp = document.querySelector('#titlebarsearchparameters:not(.slideup)')){
+        tsp.classList.add('slideup');
+        titlebar_show_searchsettings.focus();
+    }
+    // Remove ContextMenu if present
+    else if(document.querySelector('#context_menu.slideintoview')){
+        hideRightClickContextMenu();
+    }
+    else if(fillScreen = document.querySelector('#refnav_col2 > .fillscreen.slideintoview')){
+        fillScreen.classList.remove('fillscreen');
+    }
+    else if(document.querySelector('#versenote_totheright.showingNote')){
+        versenote_totheright.classList.remove('showingNote');
+    }
+    // Hide bookMarks
+    else if(document.querySelector('#bookmark_content') && bookmark_content.matches('.displayblock')){
+        bookmark_content.classList.remove('displayblock');
+        bookmarks_holder.classList.remove('showing_bookmarks');
+    }        
+    // Hide vmarker_options_menu
+    else if(prev_vmrkoptm=document.querySelector('#vmarker_options_menu')){
+        prev_vmrkoptm.remove()
+    }
+    // Stop editing verseNote
+    else if (activeElm.matches('#noteEditingTarget')) {
+        stop_note_editing(activeElm, e);
+    }
+    //Hide versenote notemenu, if open
+    // else if((vnt=activeElm.closest('.verse_note')?activeElm.closest('.verse_note'):window.getSelection().anchorNode.parentNode.closest('.most_recent_note')) && ((nm=vnt.querySelector('.notemenu:not(.sld_up)')) && nm.style.display!='none')){
+    else if((vnt=activeElm.closest('.verse_note')||((an=window.getSelection().anchorNode) && an.parentNode.closest('.most_recent_note'))) && ((nm=vnt.querySelector('.notemenu:not(.sld_up)')) && nm.style.display!='none')){
+        generateNoteMenu(vnt);
+    }
+    else if(main.matches('.maximizeVertical, .maximizeHorizontal') && !app_settings.matches('.slideintoview') && !document.querySelector('#refnav_col2 > .slideintoview')){main.classList.remove('maximizeVertical','maximizeHorizontal')}
+
+    /* RefNav && Top_Horizontal_Bar_Buttons */
+    // else if(refnav && top_horizontal_bar_buttons) {
+    else {
+        // Hide refnav any child window, e.g., searchWindow, that is open
+        if(!e.shiftKey /* && !refnav.matches('.refnav_detached') */ && (openRefnavChild = refnav.querySelector('.slideintoview:not(#app_settings)'))){hideRefNav('hide',openRefnavChild);}
+        else // if (!top_horizontal_bar_buttons.matches('.sld_up')/*  && !e.shiftKey */){//if #top_horizontal_bar_buttons is showing
+            if(app_settings.matches('.slideintoview')){hideRefNav('hide',app_settings);}// Hide #app_settings (if #app_settings is showing)
+                /*Hide #top_horizontal_bar_buttons (if #app_settings is hidden)*/
+            // else {
+            else if(!e.shiftKey && !app_settings.matches('.slideintoview')) {
+                titlebarsearchparameters.classList.add('slideup');
+                slideUpDown(top_horizontal_bar_buttons);
+                topbartogglebtn.classList.toggle('active_button');
+                modifyRefNavChildrenHeight();
             }
-            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-            /* Hide "app_settings" && "top_horizontal_bar_buttons" */
-            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-            else if (!top_horizontal_bar_buttons.matches('.sld_up')){
-                /* \/\/\/\/\/\/\/\/\ */
-                /* Hide app_settings */
-                /* \/\/\/\/\/\/\/\/\ */
-                if(app_settings.matches('.slideintoview')){hideRefNav('hide',app_settings);}
-                /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-                /* Hide top_horizontal_bar_buttons (if app_settings is hidden) */
-                /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\ */
-                else {
-                    titlebarsearchparameters.classList.add('slideup'),
-                    slideUpDown(top_horizontal_bar_buttons),
-                    topbartogglebtn.classList.toggle('active_button')
-                }
-            }
-            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
-            /* SHOW both "top_horizontal_bar_buttons" && "app_settings" */
-            /* \/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/\/ */
-            else {
-                slideUpDown(top_horizontal_bar_buttons),
-                topbartogglebtn.classList.toggle('active_button')
-                hideRefNav('show',app_settings);
-                togglenavbtn.focus()                
-            }
+        // }
+        // else if (e.shiftKey){hideRefNav('show',app_settings);}//SHOW #app_settings
+        else if (e.shiftKey){
+            hideRefNav(null,app_settings, null, e.shiftKey);}//Toggle #app_settings
+        else {
+            /* SHOW both #top_horizontal_bar_buttons */
+            slideUpDown(top_horizontal_bar_buttons);
+            topbartogglebtn.classList.toggle('active_button');
+            togglenavbtn.focus();
+            modifyRefNavChildrenHeight();
         }
     }
 }
 
-function toggleNav(showHide=null) {
+function stop_note_editing(note_editing_target, e={key:'Escape'}) {
+    note_editing_target = note_editing_target ? note_editing_target.closest('#noteEditingTarget'):null;
+    if (!note_editing_target) {return}
+    let verseNoteDiv = note_editing_target.closest('.verse_note');
+    let editBtn = verseNoteDiv.querySelector('.note_edit_button');
+    let saveBtn = verseNoteDiv.querySelector('.note_save_button');
+    editVerseNote(editBtn, e, saveBtn);
+}
+
+function toggleNav(event, showHide=null) {
     let elm2HideShow;
     // IF ANY SUB-WINDOW, E.G., SEARCH-WINDOW, IS OPENNED
-    if(!refnav.matches('.slideoutofview') && refnav.querySelector('.slideintoview:not(#app_settings)')){
+    if(!event.shiftKey && !refnav.matches('.slideoutofview') && refnav.querySelector('.slideintoview:not(#app_settings)')){
         elm2HideShow = refnav.querySelector('.slideintoview:not(#app_settings)')
         hideRefNav(showHide,elm2HideShow)
     }
     // IF NO SUB-WINDOW IS OPENNED
     elm2HideShow = app_settings;
-    hideRefNav(showHide,elm2HideShow)
+    hideRefNav(showHide,elm2HideShow,null,event.shiftKey)
     // realine();
 }
 
 // FUNCTION TO SHOW OR HIDE REF_NAV
 // hideRefNav(null, searchPreviewWindowFixed)
-function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
+async function hideRefNav(hideOrShow, elm2HideShow, runfunc, shiftKey) {
     if(!elm2HideShow){
-        if(!hideOrShow){hideOrShow=null}
-        toggleNav(hideOrShow)
+        if(!hideOrShow){hideOrShow=null};
+        toggleNav(hideOrShow);
         return
     }
-    const hdtime = 100;
-    function changeMarginLeft(x,l=null){
-        if(l==null) {x.style.marginLeft = `-${x.offsetWidth}px`}
+    if(!document.body.matches('#homepage')){lastClickedVerse=null}
+    else {!lastClickedVerse ? await getHighestVisibleH2() : null};
+    const lcv = lastClickedVerse;
+
+    const hdtime = elm2HideShow != document.querySelector('#context_menu') ? 300 : 0;
+    if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideoutofview')))) {        
+        elm2HideShow.classList.remove('displaynone');
+        // To ensure that the display none is no longer applied (because it cancels the animation)
+        setTimeout(()=>{            
+           if(elm2HideShow!=app_settings || (elm2HideShow==app_settings && !shiftKey)){toShowOnlyOneAtaTime()};
+            changeMarginLeft(elm2HideShow,0);
+            elm2HideShow.classList.remove('slideoutofview');
+            elm2HideShow.classList.add('slideintoview');
+            /* For when I set #refnav_col2 > div {position: absolute;} */
+            // if(document.body.matches('#homepage') && elm2HideShow != app_settings && elm2HideShow.matches('#refnav_col2>div')){elm2HideShow.style.height = `calc(100% - ${top_horizontal_bar.offsetHeight}px)`;}
+        }, 1)
+        
+        // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
+        if(elm2HideShow == bible_nav){
+            main.addEventListener("click", hideBibleNav);//add eventlistener to hide bible_nav
+            if(isMobileDevice){
+                topbartogglebtn.style.right='';
+                bottomleft_btns.style.right='';
+            }
+            let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
+            higlightedBknChpt.forEach(refHlt => {refHlt.scrollIntoView(false);});
+        }
+        else if(elm2HideShow==app_settings){
+            const idx = refNavMainBtns.indexOf(document.activeElement)
+            if(idx<2 || idx>10){biblenavigation.focus();}
+        }
+        else if(typeof searchPreviewWindowFixed != 'undefined' && elm2HideShow==searchPreviewWindowFixed){wordsearch_fixed.select();}
+    }
+    //TO HIDE
+    else if((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideoutofview'))||(elm2HideShow.classList.contains('slideintoview'))))) {
+        if(elm2HideShow==bible_nav){
+            main.removeEventListener("click", hideBibleNav);//remove eventlistener that hides bible_nav
+            if(isMobileDevice){
+                topbartogglebtn.style.right='0.75em';
+                bottomleft_btns.style.right='0.75em';
+            }
+        }
+        if(elm2HideShow==app_settings){togglenavbtn.focus();}
+        elm2HideShow.classList.remove('slideintoview');
+        elm2HideShow.classList.add('slideoutofview');
+        if (app_settings != null) {
+            //If there is active_button
+            const a_b=app_settings.querySelector('.active_button');
+            app_settings.matches('.displaynone')?togglenavbtn.focus():a_b?a_b.focus():null;// Make focus main nav button if app_settings is hidden
+            a_b?a_b.classList.remove('active_button'):null;//If there is active_button
+        }
+        
+        changeMarginLeft(elm2HideShow)
+        
+        refnav_timeout = setTimeout(()=>{
+            elm2HideShow.classList.add('displaynone');
+            elm2HideShow==document.querySelector('#context_menu')?elm2HideShow.remove():null;
+        }, hdtime);
+    }
+    (lcv && !elm2HideShow.closest('#context_menu') && elm2HideShow.closest('#refnav')) ? setTimeout(()=>{lcv.scrollIntoView()},hdtime) : null;
+    runfunc;
+    return {delay:hdtime}
+    function hideBibleNav() {if(bible_nav.matches('.slideintoview')){hideRefNav('hide', bible_nav)}}
+    function changeMarginLeft(x,l=null) {
+        if (l==null) {x.style.marginLeft = `-${x.getBoundingClientRect().x + x.offsetWidth}px`}
         // else if(elm2HideShow==bible_nav && isMobileDevice){x.style.marginLeft ="10px"}
         else {x.style.marginLeft = `-${l}px`}
     }
@@ -242,11 +366,12 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
         //To show only one at a time
         if(document.querySelector('#context_menu')==null||elm2HideShow!=context_menu){
             let btnID = new RegExp(elm2HideShow.id);
-            let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button')
+            let otherActiveButtonsToHide = app_settings.querySelectorAll('.active_button');
             otherActiveButtonsToHide.forEach(o_btns=>{
                 // Don't run if btn is the orginating button
                 // (the orginating btn will have the id of the 'elm2HideShow' in its onclick function)
-                if(btnID.test(o_btns.onclick.toString())==false){
+                // if(btnID.test(o_btns.onclick.toString())==false){
+                if(btnID.test(o_btns.getAttribute("toopen"))==false){
                     o_btns.classList.remove('active_button')
                 }
             })
@@ -260,61 +385,37 @@ function hideRefNav(hideOrShow, elm2HideShow, runfunc) {
             })
         }
     }
-    if ((hideOrShow == 'show')||((hideOrShow==null||hideOrShow==undefined)&&(elm2HideShow.classList.contains('slideoutofview')))) {
-        elm2HideShow.classList.remove('displaynone');
-        // To ensure that the display none is no longer applied (it cancels the animation)
-        setTimeout(()=>{
-            toShowOnlyOneAtaTime()
-            changeMarginLeft(elm2HideShow,0);
-            elm2HideShow.classList.remove('slideoutofview');
-            elm2HideShow.classList.add('slideintoview');
-            /* For when I set #refnav_col2 > div {position: absolute;} */
-            // if(document.body.matches('#homepage') && elm2HideShow != app_settings && elm2HideShow.matches('#refnav_col2>div')){elm2HideShow.style.height = `calc(100% - ${top_horizontal_bar.offsetHeight}px)`;}
-        }, 1)
-        
-        // TO SCROLL BOOK-NAME AND CHAPTER-NUMBER IN REF-NAV INTO VIEW
-        if(elm2HideShow == bible_nav){
-            if(isMobileDevice){
-                topbartogglebtn.style.right='';
-                bottomleft_btns.style.right='';
-            }
-            let higlightedBknChpt = bible_nav.querySelectorAll('.ref_hlt');
-            higlightedBknChpt.forEach(refHlt => {
-                refHlt.scrollIntoView(false);
-            });
-        }
-        else if(elm2HideShow==app_settings){
-            const idx = refNavMainBtns.indexOf(document.activeElement)
-            if(idx<2 || idx>10){
-                biblenavigation.focus()
-            }
-        }
-    } else if ((hideOrShow == 'hide')||((hideOrShow==null||hideOrShow==undefined)&&((!elm2HideShow.classList.contains('slideoutofview'))||(elm2HideShow.classList.contains('slideintoview'))))) {
-        if(elm2HideShow==bible_nav && isMobileDevice){
-            topbartogglebtn.style.right='0.75em';
-            bottomleft_btns.style.right='0.75em';
-        }
-        if(elm2HideShow==app_settings){
-            togglenavbtn.focus();
-        }
-        elm2HideShow.classList.remove('slideintoview');
-        elm2HideShow.classList.add('slideoutofview');
-        changeMarginLeft(elm2HideShow)
-        
-        setTimeout(()=>{elm2HideShow.classList.add('displaynone')}, hdtime);
-    }
-    runfunc
 }
-function modifyRefNavChildrenHeight() {
+let refnav_timeout=null;
+async function modifyRefNavChildrenHeight(resizeNoteOnly) {
+    if (!notedetach_check.checked && !show_versenote_totheright_2_check.checked) {
+        if (vntdrs=document.querySelector('head').querySelector('#vn_totheright_topANDheight')){
+            vntdrs.remove();
+        };
+        // return
+    }
+    !lastClickedVerse ? await getHighestVisibleH2() : null;
+    const lcv = lastClickedVerse;
+
     // /* For when I set #refnav_col2 > div {position: absolute;} */
-    // setTimeout(() => {
-    //     if(refCol2showingChild=refnav.querySelector('#refnav_col2 > div.slideintoview')){
-    //         refCol2showingChild.style.height = `calc(100% - ${top_horizontal_bar.offsetHeight}px)`;
-    //         if(refCol2showingChild.matches('#bible_nav')){
-    //             refCol2showingChild.querySelector('.bkname.ref_hlt').scrollIntoView({block:"center"});
-    //             refCol2showingChild.querySelector('.chptnum.ref_hlt').scrollIntoView({block:"center"})}
-    //     }
-    // }, 200);
+    setTimeout(() => {
+        let maxH = `calc(100vh - 0px)`;
+        if (!top_horizontal_bar.querySelector('#top_horizontal_bar > div').closest('.sld_up')) {//if topbar is showing
+            const h = top_horizontal_bar.offsetHeight;
+            maxH = `calc(100vh - ${h}px)`;
+            documentROOT.style.setProperty('--refnav-max-height', maxH);
+            // const maxH = `calc(100vh - var(--topBarHeight))`;
+            // document.querySelector(':root').style.setProperty('--topBarHeight', `${h}px`);
+            const tp = `${h}px`;
+            const vntdr_style = !show_versenote_totheright_2_check.checked ? (`.verse_note {max-height: ${maxH}!important;margin-top:${tp}!important;}`) : (`.versenote_totheright {max-height:${maxH}!important;margin-top:${tp}!important;}#cke_noteEditingTarget {margin-top:${tp}!important;}#refnav.refnav_tobottom:not(.ignore_refnav_tobottom) #refnav_col2 {height: calc(100% - ${h}px - 2.1em)!important;}#refnav:has(#refnav_col2:hover).refnav_tobottom:not(.ignore_refnav_tobottom) #refnav_col2 {height: calc(100% - ${h}px - 1em)!important;}`);
+            createNewStyleSheetandRule('vn_totheright_topANDheight', vntdr_style);
+            resizeNoteOnly ? null : setTimeout(()=>{lcv.scrollIntoView()},5);
+        } else if (vntdrs = document.querySelector('head').querySelector('#vn_totheright_topANDheight')) {
+            vntdrs.remove();
+            resizeNoteOnly ? null : setTimeout(()=>{lcv.scrollIntoView()},5);
+        }
+        documentROOT.style.setProperty('--refnav-max-height', maxH);
+    }, 300);
 }
 function changeVerseAlignment() {
     let styleID = 'verse_alignement'
@@ -341,137 +442,139 @@ function hideSearchParameters(arr) {
 /* FOR CENTERING THE REFNAV & ITS CHILDREN ON NARROW MOBILE SCREENS */
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+*+ */
 function centerNavigationAndOtherSettings(vh){
+    // console.log(refnavpositions.querySelectorAll('input:checked'));    
+    let et;
+    // refnav.classList.remove('refnav_totheright');
+    refnav.classList.remove('ignore_refnav_tobottom');
     /* HORIZONTALLY */
     if (vh=='h') {
-        if(document.head.querySelector('#h_centeredSettings')){
+        et = center_settings_h_check.closest('button');
+        if(document.head.querySelector('.h_centeredSettings')){
             h_centeredSettings.remove();
             center_settings_h_check.checked=false;
+            refnav.classList.remove('ignore_refnav_tobottom');
         } else {
-            const styleRule = `
-#refnav {
-    position: absolute;
-    left: 1.5em;
-    margin-top: 1em;
-    height: calc(100% - 5em);
-    border-radius: 5px;
-    background-color: none;
-    overflow: visible;
-    z-index: 10;
-}
-#refnav #app_settings {
-    background: var(--ref-img);
-    position: fixed;
-    display: flex;
-    height: fit-content;
-    height: auto;
-    max-width: calc(100% - ((var(--width-sidebuttons) - 0.25em)*3));
-/*  left: calc((((var(--width-sidebuttons) - 0.25em)*1))); */
-    bottom: 1em;
-    background-color: transparent;
-    overflow-x: auto;
-    z-index: 10;
-}
-#refnav #app_settings button {
-    margin: 0;
-    padding: 0;
-    border-radius:0!important;
-}
-#refnav #refnav_col2 {
-    border: none;
-    border:transparent!important;
-}
-#refnav #refnav_col2 {border-radius:5px;}
-#refnav #app_settings,
-#refnav #refnav_col2 > div {
-    border-radius:5px!important;
-    border:2px solid dimgrey!important;
-    box-shadow: 3px 3px 5px 0px rgba(30,30,30,0.5),6px 6px 3px -1px rgba(30,30,30,0.5)!important;
-}
-#refnav #app_settings:hover~#refnav_col2,
-#refnav #refnav_col2 > div.slideoutofview {
-    z-index: 1;
-}
-#app_settings .refnav_col2_closebtn {
-    position: absolute!important;
-    display:block!important;
-    left:-1.5em!important;
-}`;
-            createNewStyleSheetandRule('h_centeredSettings', styleRule)
-            center_settings_h_check.checked=true;
+            refnav.classList.add('h_centeredSettings');
             center_settings_v_check.checked=false;
-            if(document.head.querySelector('#v_centeredSettings')){
-                v_centeredSettings.remove();
-            }
+            center_settings_h_check.checked=true;
+            center_settings_r_check.checked=false;
+            center_settings_b_check.checked=false;
+            refnav.classList.remove('v_centeredSettings')
+            refnav.classList.add('ignore_refnav_tobottom');
         }
     }
     /* VERTICALLY */
     else if(vh=='v'){
+        et = center_settings_v_check.closest('button');
         if(document.head.querySelector('#v_centeredSettings')){
             v_centeredSettings.remove();
             center_settings_v_check.checked=false;
+            refnav.classList.remove('ignore_refnav_tobottom');
         } else {
-            const styleRule =
-`#refnav {
-    position: absolute;
-    top: 1em;
-    left: 1em;
-    height: calc(100% - 5em);
-    background-color: none!important;
-    z-index: 10;
-    overflow: visible;
-}
-#refnav #app_settings {
-    display:block;
-    max-width:auto;
-    height: auto;
-    background-color: transparent;
-    border: none;
-}
-#refnav #app_settings button {border-radius:0!important;}
-#refnav #refnav_col2 {
-    border: none;
-    border:transparent!important;
-}
-#refnav #refnav_col2 {border-radius:5px;}
-#refnav #app_settings,
-#refnav #refnav_col2 > div {
-    position: absolute;
-    border-radius:5px!important;
-    border:2px solid dimgrey!important;
-    box-shadow: 3px 3px 5px 0px rgba(30,30,30,0.5),6px 6px 3px -1px rgba(30,30,30,0.5)!important;
-}
-#refnav #refnav_col2 > div {
-    left: 3.5rem;
-}
-#refnav #app_settings:hover~#refnav_col2,
-#refnav #refnav_col2 > div.slideoutofview {
-    z-index: 1;
-}
-#app_settings .refnav_col2_closebtn {
-    position: absolute!important;
-    display:block!important;
-    bottom:-1em!important;
-    top:101%!important;
-    margin-top:0;
-}
-@media screen and (max-device-width: 540px) {
-    #refnav {
-        left: 0.5em;
-    }
-    #refnav #app_settings {
-        bottom:0;
-    }
-}`;
-            createNewStyleSheetandRule('v_centeredSettings', styleRule)
+            refnav.classList.add('v_centeredSettings');
             center_settings_v_check.checked=true;
             center_settings_h_check.checked=false;
-            if(document.head.querySelector('#h_centeredSettings')){
-                h_centeredSettings.remove();
-            }
+            center_settings_b_check.checked=false;
+            center_settings_r_check.checked=false;
+            refnav.classList.remove('h_centeredSettings');
+            refnav.classList.add('ignore_refnav_tobottom');
+        }
+        if (!center_settings_v_check.checked){
+        } else {
+        }
+
+    }
+    else if(vh=='r'){
+        et = center_settings_r_check.closest('button');
+        center_settings_v_check.checked=false;
+        center_settings_h_check.checked=false;
+        center_settings_b_check.checked=false;
+        refnav.classList.remove('h_centeredSettings', 'v_centeredSettings');
+        if (!center_settings_r_check.checked){
+            center_settings_r_check.checked=true;
+            refnav.classList.add('refnav_totheright');
+            refnav.classList.add('ignore_refnav_overlay');
+            refnav.classList.add('ignore_refnav_tobottom');
+        } else {
+            center_settings_r_check.checked=false;
+            refnav.classList.remove('refnav_totheright');
+            refnav.classList.remove('ignore_refnav_overlay');
+            refnav.classList.remove('ignore_refnav_tobottom');
         }
     }
+    else if(vh=='b'){//refnav_fixed_but_overlaying_bible
+        et = center_settings_b_check.closest('button');
+        center_settings_v_check.checked=false;
+        center_settings_h_check.checked=false;
+        center_settings_r_check.checked=false;
+        refnav.classList.remove('refnav_totheright');
+        refnav.classList.remove('h_centeredSettings', 'v_centeredSettings');
+        if (!center_settings_b_check.checked){
+            center_settings_b_check.checked=true;
+            center_settings_b.classList.add('active_button');
+            refnav.classList.add('refnav_tobottom');
+            refnav.classList.add('refnav_detached');
+        } else {
+            center_settings_b_check.checked=false;
+            center_settings_b.classList.remove('active_button');
+            refnav.classList.remove('refnav_tobottom');
+            refnav.classList.remove('ignore_refnav_tobottom');
+            refnav.classList.remove('ignore_refnav_overlay');
+        }
+    }
+    else if(vh=='o'){//refnav_fixed_but_overlaying_bible
+        if (!center_settings_o_check.checked){
+            center_settings_o_check.checked=true;
+            center_settings_o.classList.add('active_button');
+            refnav.classList.add('refnav_overlay');
+            refnav.classList.add('refnav_detached');
+        } else {
+            center_settings_o_check.checked=false;
+            center_settings_o.classList.remove('active_button');
+            refnav.classList.remove('refnav_overlay');
+            refnav.classList.remove('refnav_detached');
+            refnav.classList.remove('ignore_refnav_overlay');
+        }
+    }
+    
+    if(center_settings_h_check.checked){
+        center_settings_h.classList.add('active_button');
+        center_settings_v.classList.remove('active_button');
+        center_settings_r.classList.remove('active_button');
+        refnav.classList.add('refnav_detached');
+    }
+    else if(center_settings_v_check.checked){
+        center_settings_v.classList.add('active_button');
+        center_settings_h.classList.remove('active_button');
+        center_settings_r.classList.remove('active_button');
+        refnav.classList.add('refnav_detached');
+    }
+    else if(center_settings_r_check.checked){
+        center_settings_h.classList.remove('active_button');
+        center_settings_v.classList.remove('active_button');
+        center_settings_r.classList.add('active_button');
+        if (!center_settings_o_check.checked && !center_settings_b_check.checked) {
+            refnav.classList.remove('refnav_detached');
+        }    }
+    else {
+        center_settings_h.classList.remove('active_button');
+        center_settings_v.classList.remove('active_button');
+        center_settings_r.classList.remove('active_button');
+        center_settings_b.classList.remove('active_button');
+        if (!center_settings_o_check.checked && !center_settings_b_check.checked) {
+            refnav.classList.remove('refnav_detached');
+        }
+    }
+    showHideTransliterationSection({'target':et})
 }
-
+// ALT + V
+document.addEventListener('keydown', (e)=>{
+    if (!e || e.altKey && e.code=='KeyV') {
+        let cbcs = [[center_settings_v_check.checked,'h'],[center_settings_h_check.checked,'r'],[center_settings_r_check.checked,'b'],[center_settings_b_check.checked,'b']];
+        let chckdB = cbcs.find(x=>{return x[0]});
+        chckdB ? centerNavigationAndOtherSettings(chckdB[1]) : centerNavigationAndOtherSettings('v');
+    }
+});
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
 /* *+*+* Navigating RefNav With Arrow Keys +*+*+ */
 /* *+*+*+*+*+*+*+*+*+*+*+*+*+**+*+*+*+*+*+*+*+*+ */
@@ -479,18 +582,13 @@ let refNavMainBtns
 if (document.body.matches('#homepage')) {
     document.addEventListener('keydown',navigationByArrowKeys)
     refNavMainBtns=[togglenavbtn,biblenavigation,bibles,comparewindowBtn,searchsettings,open_strongsdefinitionwindow,available_notes,verse_markers_list,cachesettings,darkmodebtn,sitehome,sidemenubtn_rightbottom,gotochpt_next,gotochpt_prev,topbartogglebtn];
-    
-    togglenavbtn.focus()
-    document.addEventListener('keydown',function(e){
-        /* CTRL+SHIFT+D */
-        if (e.altKey && e.code=='KeyZ') {
-            detachInlineVerseNote()
-        }
-    })
+    togglenavbtn.focus();
 }
 function navigationByArrowKeys(e){
-    if(document.activeElement.matches('input')){return}
+    if(document.activeElement.matches('input, .cke_dialog_body') || document.activeElement.closest('.cke_dialog_body')){return}
+    
     /* TOGGLE REF_NAV WITH CTRL+SHIFT+Z */
+    if (e.altKey){return}//If altKey is pressed don't work. Because of verseUpDownNavigationByKeys(e) which uses alt + up/down arrow keys
     if (e.ctrlKey && e.shiftKey && e.keyCode==90) {
         hideRefNav(null,app_settings);
     }
@@ -569,13 +667,20 @@ function navigationByArrowKeys(e){
                 else if(right_key){
                     if(rfnvb==biblenavigation){
                         hideRefNav("show",bible_nav);
-                        rfnvb.classList.toggle('active_button')
+                        rfnvb.classList.toggle('active_button');
                         if (newFocusElm=bible_nav.querySelector('.bkname.ref_hlt')) {newFocusElm.focus();}
                     } else {
                         if (sectionToShow=rfnvb.getAttribute('toopen')) {
                             sectionToShow=refnav_col2.querySelector('#'+sectionToShow);
                             hideRefNav("show",sectionToShow);
                             rfnvb.classList.toggle('active_button')
+                            sectionToShow.focus();
+                            if(sectionToShow==bibleapp_cache){
+                                sectionToShow.querySelector('button:not(.refnav_col2_closebtn)').focus()
+                            }
+                            else if(sectionToShow==available_notes){
+                                bibleapp_available_notes.querySelector('details').focus()
+                            }
                         }
                     }
                     return
@@ -634,5 +739,38 @@ function navigationByArrowKeys(e){
             return
         }
     }
-    function ePrev(){e.preventDefault()}
+    function ePrev(){e.target.closest('select') ? null:e.preventDefault()}
+}
+document.addEventListener("keydown",goToParentButton)
+function goToParentButton(e){
+    if (e.ctrlKey && e.key === 'Tab') {
+        const currentTarget = document.activeElement;
+        if(currentTarget && currentTarget.matches('#refnav_col2 *')){
+            e.preventDefault()
+            const currentTargetID = elmAhasElmOfClassBasAncestor(currentTarget, '#refnav_col2>div').id;
+            app_settings.querySelector(`[toopen="${currentTargetID}"]`).focus()
+        }
+    }
+}
+function topbartogglebtnFunctions(){
+    titlebarsearchparameters.classList.add('slideup');
+    slideUpDown(top_horizontal_bar_buttons,'slideup');
+    this.classList.toggle('active_button');
+    modifyRefNavChildrenHeight(true);
+    tempRefdiv_un_Select();
+}
+if (typeof topbartogglebtn != 'undefined') {
+    topbartogglebtn.addEventListener('click',topbartogglebtnFunctions)
+}
+function resetAllTransforms(){
+    refnav_col2.querySelectorAll('[data-x]').forEach(x=>{
+        x.style.transform = '';
+        x.removeAttribute('data-x');
+        x.removeAttribute('data-y');
+    })
+}
+function tileVerses(dis) {
+    const targElm = dis.closest('.context_menu, #searchPreviewWindowFixed, #scriptureCompareWindow');
+    const classAdded = targElm.classList.toggle('versestiled');
+    if(targElm.id == 'context_menu'){classAdded ? cmenuVerseTiling=true : cmenuVerseTiling = false;}
 }

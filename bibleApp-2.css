@@ -15,17 +15,20 @@
         align-items: center;
         max-width: 300px;
         max-width: 100%;
+        /* margin-left: 0.25em; */
     }
     #searchdiv #titlebar_show_searchsettings {
-        grid-area: 1/1;
-        height:100%;
-    }
-    #searchdiv #forwordsearch {
+        /* grid-area: 1/1; */
         grid-area: 1/3;
         height:100%;
     }
+    #searchdiv #forwordsearch {
+        /* grid-area: 1/3; */
+        grid-area: 1/2;
+        height:100%;
+    }
     #searchdiv input#wordsearch {
-        font-size: var(--fontsize-refnsearch);
+        /* font-size: var(--fontsize-refnsearch); */
         width: 100%;
     }
     #searchdiv:before {
@@ -37,17 +40,23 @@
     #searchdiv input#wordsearch,
     #searchdiv:before {
         content: attr(data-value);
-        min-width: 9em;
-        grid-area: 1/2;
+        min-width: 7em;
+        max-width: 21em;
+        grid-area: 1/1;
         height:100%;
         font: inherit;
+        font-size: calc(var(--fontsize-refnsearch)*1.7);
+        font-weight: bold;
         margin: 0;
         border: none;
         -webkit-appearance: none;
         -moz-appearance: none;
-            appearance: none; 
+        appearance: none;
         resize:both;
     }
+    /* #pagemaster:has(#searchPreviewWindowFixed.slideintoview) .verse_note.detached_note {
+        left:390px!important;
+    } */
 }
 @media screen and (max-device-width: 540px) {
      :root {
@@ -117,7 +126,7 @@
     #topbartogglebtn {
         opacity: 0.8;
     }
-    #searchprametersbtnholder>* {
+    #searchprametersbtnholder > button {
         flex: 1 1 50%!important;
     }
     #otherButtonsInHead button {
@@ -185,4 +194,11 @@
     #context_menu {
         min-height: 70vh!important;
     }
+}
+div:has(table:only-child):not(div:has(.table-wrapper)){
+    max-width: 100vw!important;
+    overflow-x: auto;
+}
+/* body:has(:is(#context_menu,#pageEditNsaveBtns)) */ .cke.cke_reset_all.cke_panel.cke_panel.cke_menu_panel.cke_ltr {
+    display: none!important;
 }

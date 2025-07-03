@@ -22,7 +22,7 @@
 } */
 let noteForCurrentlyEditedVerse;
 
-function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
+async function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
     if ((bookName == undefined) && (chapternumber == undefined) && (verseNumber == undefined)) {
         let refObj = breakDownClickedVerseRef();
         bookName = refObj.bN;
@@ -31,7 +31,7 @@ function readFromVerseNotesFiles(bookName, chapternumber, verseNumber) {
     }
 
     async function fetchBookNotes() {
-        const response = await fetch(`/bible_notes/notes_${bookName}.json`);
+        const response = await fetch(`/${notesFolder}/notes_${bookName}.json`);
         return await response.json()
     }
 
@@ -64,7 +64,7 @@ function writeToVerseNotesFiles(bookName, chapternumber, verseNumber) {
     console.log(chapternumber)
     console.log(bookName + ":" + chapternumber + ":" + verseNumber)
     async function fetchBookNotes() {
-        const response = await fetch(`/bible_notes/notes_${bookName}.json`);
+        const response = await fetch(`/${notesFolder}/notes_${bookName}.json`);
         return await response.json()
     }
 

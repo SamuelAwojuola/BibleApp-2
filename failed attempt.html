@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Only TimeLine</title>
+    <style id="tableAndTimelineStyles">
+        * {
+            box-sizing:border-box;
+        }
+        body, .darkmode {
+            background: black;
+        }
+        #main,
+        #stylesPanel {
+            left: 0;
+            top: 0;
+            z-index: 2;
+            background: cadetblue;
+            height: 100%;
+            height: fit-content;
+            width: fit-content;
+        }
+        .event_node {
+            position: absolute;
+            border: 1px solid #000;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            padding: 8px;
+        }
+
+        .resizable {
+            resize: both;
+            overflow: auto;
+        }
+
+        button,
+        td,
+        input {
+            font-size: 10px !important;
+        }
+
+        td[for] {
+            text-align: right;
+            background: rgb(228, 228, 228);
+        }
+        td {
+            width:75px;
+            background: #607d8b;
+        }
+        td:last-child {width: 1px;}
+        td:last-child input {width: auto!important;}
+        tr td:first-child {width: 50px!important;}
+        td button {width: 100%;}
+        #row_snappingdistance td {
+            border-top: 5px solid!important;
+        }
+        hr {margin: 0!important;}
+        button:active {
+            background: burlywood;
+            /* font-weight: bold; */
+        }
+
+        input {
+            width: 100%;
+            height: -webkit-fill-available;
+        }
+        .pureHTMLtimeline div {overflow:hidden!important;}
+        .pureHTMLtimeline div:focus {
+            box-shadow: 0 0 0 2px blue;
+            z-index: 10!important;
+        }
+        .pureHTMLtimeline *:active {
+            box-shadow: 0 0 0 1px blue;
+        }
+        .pureHTMLtimeline div.group:focus,
+        .pureHTMLtimeline div.group {
+            /* border:1px dashed black!important; */
+            box-shadow: 0 0 0 1px maroon, inset 0 0 0 1px white;
+        }
+    </style>
+    <style id="darkmodeStyles">
+        :root {
+            --darkmode-bg1color:black;
+        }
+        .darkmode #main,
+        .darkmode #stylesPanel {
+            background: #0d1f2d;
+        }
+        .darkmode td {
+            background: transparent!important;
+        }
+        .darkmode td input {
+            background: transparent!important;
+            color: white;
+        }
+        .darkmode button {
+            background: #333637;
+            border:1px;
+            color: whitesmoke;
+            box-shadow: 0 0 1px whitesmoke inset, 0 0 0.9px whitesmoke;
+        }
+        .darkmode div {
+            color:white;
+        }
+        /* :not([style*="background:transparent"]) */
+        .darkmode .pureHTMLtimeline,
+        .darkmode .event_node:not([style*="resize:vertical"]):not([style*="resize: vertical"]){
+            background: var(--darkmode-bg1color)!important;
+        }
+        .darkmode .event_node[style*="border:1px"],
+        .darkmode .event_node[style*="border: 1px"] {
+            border-color: white!important;
+        }
+        .darkmode .event_node[style*="resize: vertical"][style*="background: black"],
+        .darkmode .event_node[style*="resize:vertical"][style*="background:black"] {
+            background: white!important;
+        }
+        .darkmode .event_node[style*="resize: vertical"]:not([style*="background: black"]),
+        .darkmode .event_node[style*="resize:vertical"]:not([style*="background:black"]) {
+            background: lightsalmon!important;
+        }
+        .displaynone {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main" style="display:inline-grid;grid-template-columns:auto 1fr;width:100%;height:450px;border:2px solid #ccc;box-shadow:10px 5px 0px grey;overflow:auto;">
+        <div style="width:160px;padding:2.5px;position:sticky;top:0px;left:0px;z-index:1;width:auto;">
+            <div id="stylesPanel">
+                <button onclick="stylesPanel.querySelectorAll('#stylesPanel > *').forEach(x=>{x!=this?x.classList.toggle('displaynone'):null;})">|||</button>
+                <table>
+                    <tr>
+                        <td><button onclick="createDiv('type1')" title="add Event">Event</button></td>
+                        <td><button onclick="createDiv('type2')" title="add Vertical Line">Vertical Line</button></td>
+                        <td><input type="checkbox" id="group_all" name="group_all" onchange="groupAttributes(this)" title="Select All"></td>
+                    </tr>
+                    <tr>
+                        <td for="backgroundInput">Background:</td>
+                        <td style="display: flex;">
+                            <input type="text" id="backgroundInput">
+                            <input id="setcolor_input" type="color" style="width:40px;height: auto;" oninput="backgroundInput.value=this.value"></input>
+                        </td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_backgroundInput" name="group_backgroundInput" onchange="groupAttributes(this)" groupstyle="background"></td>
+                    </tr>
+                    <tr>
+                        <td for="textColorInput">TextColor:</td>
+                        <td><input type="text" id="textColorInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_textColorInput" name="group_textColorInput" onchange="groupAttributes(this)" groupstyle="color"></td>
+                    </tr>
+                    <tr>
+                        <td for="fontWeightInput">Font Weight:</td>
+                        <td><input type="text" id="fontWeightInput" placeholder="normal,bold,bolder"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_fontWeightInput" name="group_fontWeightInput" onchange="groupAttributes(this)" groupstyle="fontWeight"></td>
+                    </tr>
+                    <tr>
+                        <td for="textAlignInput">textAlign:</td>
+                        <td><input type="text" id="textAlignInput" placeholder="right,justify,left,center"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_textAlignInput" name="group_textAlignInput" onchange="groupAttributes(this)" groupstyle="textAlign"></td>
+                    </tr>
+                    <tr>
+                        <td for="textAlign_vertical">TextAlign Vertical:</td>
+                        <td><input type="checkbox" id="textAlign_vertical" name="textAlign_vertical" onchange="verticalTextAlignment()"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_textAlign_vertical" name="group_textAlign_vertical" onchange="groupAttributes(this), verticalTextAlignment(this)" groupstyle="textAlign"></td>
+                    </tr>
+                    <tr>
+                        <td for="widthInput">Padding Left:</td>
+                        <td><input type="text" id="paddingLeftInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_paddingLeftInput" name="group_paddingLeftInput" onchange="groupAttributes(this)" groupstyle="paddingLeft"></td>
+                    </tr>
+                    <tr>
+                        <td for="widthInput">Width:</td>
+                        <td><input type="text" id="widthInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_widthInput" name="group_widthInput" onchange="groupAttributes(this)" groupstyle="width"></td>
+                    </tr>
+                    <tr>
+                        <td for="heightInput">Height:</td>
+                        <td><input type="text" id="heightInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_heightInput" name="group_heightInput" onchange="groupAttributes(this)" groupstyle="height"></td>
+                    </tr>
+                    <tr>
+                        <td for="borderInput">Border:</td>
+                        <td><input type="text" id="borderInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_borderInput" name="group_borderInput" onchange="groupAttributes(this)" groupstyle="border"></td>
+                    </tr>
+                    <tr>
+                        <td for="borderRadiusInput">Border Radius:</td>
+                        <td><input type="text" id="borderRadiusInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_borderRadiusInput" name="group_borderRadiusInput" onchange="groupAttributes(this)" groupstyle="borderRadius"></td>
+                    </tr>
+                    <tr>
+                        <td for="zIndexInput">zIndex:</td>
+                        <td><input type="text" id="zIndexInput"></td>
+                        <td><input class="group_checkboxes" type="checkbox" id="group_zIndexInput" name="group_zIndexInput" onchange="groupAttributes(this)" groupstyle="zIndex"></td>
+                    </tr>
+                    <tr id="row_snappingdistance">
+                        <td for="snappingDistanceInput">Snap Size:</td>
+                        <td><input type="text" id="snappingDistanceInput"></td>
+                        <td><button onclick="snappingDistance = Number(snappingDistanceInput.value.trim())">*</button></td>
+                    </tr>
+                </table>
+
+                <hr>
+                <button id="delete_btn" onclick="deleteEventORLine()" disabled>Delete</button>
+                <hr>
+                <button id="defaulstyles_btn" onclick="defaultStyles()" disabled>Default</button>
+                <button onclick="applyStyles()">Apply Styles</button>
+                <hr>
+                <button onclick="copyContainerContent()" title="Copy HTML Timeline" style="font-weight: bold;">COPY<hr><em>EXPORT</em></button>
+                <button onclick="replace_pureHTMLtimeline()" title="Replace Current Timeline with Copied Timeline">PASTE<hr><em>IMPORT</em></button>
+                <!-- <button onclick="make_manuallyAddedDivsDraggable()" title="Make Pasted Divs Draggable">Refresh</button> -->
+            </div>
+        </div>
+        <div class="pureHTMLtimeline" style="width: 100%; height: 100%; position: relative; background:beige; overflow: auto; transform-origin: top left; font-size:16px; --ff:Times New Roman; font-family: var(--ff)!important;" tabindex="1">
+        </div>
+    </div>
+</body>
+<script>
+    group_all.click();
+    let selectedDiv = null;
+    let divtype = null;
+    let startX = 0;
+    let startY = 0;
+    let mX = '50';
+    let mY = '50';
+    let startWidth = 0;
+    let startHeight = 0;
+    let isResizing = true;
+    let divCount = 0;
+    let snappingDistance = 10;
+    let allDivs = [];
+    let offsets_forGroupDivs = [];
+    document.getElementById('snappingDistanceInput').value = snappingDistance;
+    const pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0];
+    function make_manuallyAddedDivsDraggable() {
+        pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline div').forEach(div_x => {
+            if (div_x.matches('.pureHTMLtimeline > div')) {
+                let di = div_x.innerHTML;
+                if(di.match(/<\/*div[^>]*>/)){
+                    div_x.innerHTML = div_x.innerHTML.replace(/<\/*div[^>]*>/gi,'');
+                }
+                let type = div_x.style.resize=='vertical'?'type2':'type1';
+                div_x.classList.add('event_node','resizable');
+                div_x.style.padding=0;//remove padding
+                createDiv(type,div_x);
+            }
+        });
+    }
+    let div1_defaultStyles = {
+        'position': 'absolute',
+        'border': '1px solid #000',
+        'cursor': 'pointer',
+        'background': '#f0f0f0',
+        'padding':'0',
+        'paddingLeft':'0',
+        'width': '50px',
+        'height': '30px',
+        'zIndex': '1',
+        'box-sizing':'border-box',
+        'border-radius':'2px'
+    }
+    let div2_defaultStyles = {
+        'position': 'absolute',
+        'border': '1px solid #000',
+        'cursor': 'pointer',
+        'background': '#f0f0f0',
+        'resize': 'vertical',
+        'padding': '0',
+        'width': '5px',
+        'height': '10em',
+        'zIndex': '0',
+        'box-sizing':'border-box'
+    }
+
+    stylesPanel.addEventListener('keydown', (e) => {
+        if (e.key == "Enter" && document.activeElement.matches('#stylesPanel input')) {
+            applyStyles()
+        }
+    })
+    pureHTMLtimeline.addEventListener('click', () => {
+        mX = event.clientX - selectedDiv.getBoundingClientRect().left;
+        mX = mX<=20?50:mX;
+        mY = event.clientY - selectedDiv.getBoundingClientRect().top;
+        mY = mY<=20?50:mY;
+    });
+
+    pureHTMLtimeline.addEventListener('keydown', (e) => {
+        if(e.ctrlKey && ['a','A'].includes(e.key)){
+            e.preventDefault();
+            if (selectedDiv && selectedDiv.matches('.pureHTMLtimeline > div[tabindex="1"]')) {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div[tabindex="1"]').forEach(d => {d.classList.add('group');});
+            } else if (selectedDiv && selectedDiv.matches('.pureHTMLtimeline > div[tabindex="2"]')) {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div[tabindex="2"]').forEach(d => {d.classList.add('group');});
+            } else {
+                pureHTMLtimeline.querySelectorAll('.pureHTMLtimeline > div').forEach(d => {d.classList.add('group');});
+            }
+        }
+    })
+    pureHTMLtimeline.addEventListener('click', (e) => {
+        if(e.target.matches('.event_node:not(.group)') && e.ctrlKey){
+            selectedDiv.classList.add('group')
+        }
+        else if(e.target.matches('.group') && e.ctrlKey){
+            e.target.classList.remove('group');
+            return
+        }
+        else if(e.target.matches('.pureHTMLtimeline')){
+            pureHTMLtimeline.querySelectorAll('.group').forEach(grpdiv => {
+                grpdiv.classList.remove('group');
+            });
+        }
+        fillStylesPanel(e.target);
+    })
+    pureHTMLtimeline.addEventListener('focus', (e) => {
+        fillStylesPanel(e.target);
+    })
+    pureHTMLtimeline.addEventListener('keydown', (e) => {
+        if (e.key == 'Delete') {deleteEventORLine()}
+    })
+
+    // Assuming 'pureHTMLtimeline' is the container element
+    document.addEventListener('keydown', (event) => {
+        if(!document.activeElement.closest('.pureHTMLtimeline') || pureHTMLtimeline.querySelector('.event_node[contenteditable="true"]')){return}
+        let group_all = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+        group_all.length>0?group_all:(selectedDiv.matches('.pureHTMLtimeline')?null:group_all=[selectedDiv]); 
+        // if (event.ctrlKey) {
+            switch (event.key) {
+                case 'ArrowUp':
+                    // Perform action for Ctrl + ArrowUp
+                    group_all.forEach((grpdiv) => {
+                        let currentTop = parseInt(grpdiv.style.top) || 0;
+                        grpdiv.style.top = (currentTop - snappingDistance) + 'px';
+                    });
+                    break;
+                case 'ArrowDown':
+                    // Perform action for Ctrl + ArrowDown
+                    group_all.forEach((grpdiv) => {
+                        let currentTop = parseInt(grpdiv.style.top) || 0;
+                        grpdiv.style.top = (currentTop + snappingDistance) + 'px';
+                    });
+                    break;
+                case 'ArrowLeft':
+                    // Perform action for Ctrl + ArrowLeft
+                    group_all.forEach((grpdiv) => {
+                        let currentLeft = parseInt(grpdiv.style.left) || 0;
+                        grpdiv.style.left = (currentLeft - snappingDistance) + 'px';
+                    });
+                    break;
+                case 'ArrowRight':
+                    // Perform action for Ctrl + ArrowRight
+                    group_all.forEach((grpdiv) => {
+                        let currentLeft = parseInt(grpdiv.style.left) || 0;
+                        grpdiv.style.left = (currentLeft + snappingDistance) + 'px';
+                    });
+                    break;
+                default:
+                    break;
+            }
+        // }
+    });
+
+    function createDiv(type,div_x) {
+        let div;
+        // Create New DIV
+        if (!div_x){
+            div = document.createElement('div');
+            div.classList.add('event_node', 'resizable');
+    
+            let def_styles='';
+            function def_styles_strings(d) {
+                for (const key in d) {
+                    if (Object.hasOwnProperty.call(d, key)) {
+                        div.style[`${key}`]=`${d[key]}`;
+                    }
+                }
+                return def_styles
+            }
+            if (type === 'type1') {
+                def_styles_strings(div1_defaultStyles);
+                div.textContent = `Div ${++divCount}`;
+                div.tabIndex = '1';
+            } else if (type === 'type2') {
+                def_styles_strings(div2_defaultStyles);
+                div.tabIndex = '2';
+            }
+
+            div.style.left = mX + 'px';
+            div.style.top = mY + 'px';
+            fillStylesPanel(div);
+        }
+        else if(allDivs.includes(div)) {return}
+        // Already Existing Divs
+        else {
+            div = div_x;
+            if (type === 'type1') {
+                div.tabIndex = '1';
+                // For divs with content vertically centered using flex (old method)
+                if(div.style.display=='flex' && div.style.alignItems=='center'){
+                    // remove display:flex etc.
+                    div.setAttribute('style', grpdiv.getAttribute('style').replace(/((display:\s*flex;)|(align-items:\s*center;)|(justify-content:\s*center;))/gi,''));
+                    // center using new method (calculate how much padding from top will visually center contents)
+                    let paddingTop = calculateGap(div) / 2 + 'px';
+                    div.style['padding-top'] = paddingTop;
+                }
+            }
+            else if (type === 'type2') {div.tabIndex = '2';}
+        }
+
+        // Make divs draggable
+        div.addEventListener('mousedown', startDrag);
+        div.addEventListener('click', () => {
+            selectedDiv = div;
+            divtype = type;
+            fillStylesPanel(div)
+        });
+
+        function startDrag(event) {
+            selectedDiv = div;
+            if(selectedDiv.contentEditable=='true'){return}
+            offsetX = event.clientX - selectedDiv.getBoundingClientRect().left + main.scrollLeft;
+            offsetY = event.clientY - selectedDiv.getBoundingClientRect().top + main.scrollTop;
+
+            // get and set offsets for group divs
+            let group_all = pureHTMLtimeline.querySelectorAll('.group');
+            offsets_forGroupDivs = [];
+            group_all.forEach(grpdiv => {
+                let xy = [event.clientX - grpdiv.getBoundingClientRect().left,event.clientY - grpdiv.getBoundingClientRect().top];
+                offsets_forGroupDivs.push(xy)
+            });
+
+            document.addEventListener('mousemove', dragDiv);
+            document.addEventListener('mouseup', (e) => {
+                document.removeEventListener('mousemove', dragDiv);
+                div.setAttribute('style',div.getAttribute('style').replace(/user-select\s*;*\s*[^;]+\s*;*/,''));// Allow highlighting of text (remove 'user-select:none;')
+                div.style.width = roundUpHtmlUnitToNearest(div.style.width, snappingDistance);
+                div.style.height = roundUpHtmlUnitToNearest(div.style.height, snappingDistance);
+                removeStyle(div, 'resize')
+        });
+        }
+
+        function isResizing(event) {
+            const rect = div.getBoundingClientRect();
+            const edgeSize = 15; // Adjust this value according to the handle size
+
+            // Get mouse position relative to the element
+            const offsetX = event.clientX - rect.left + main.scrollLeft;
+            const offsetY = event.clientY - rect.top + main.scrollTop;
+
+            // Check if the mouse is near the edges for resizing
+            const nearTop = offsetY < edgeSize;
+            const nearBottom = offsetY > rect.height - edgeSize;
+            const nearLeft = offsetX < edgeSize;
+            const nearRight = offsetX > rect.width - edgeSize;
+
+            if ((nearBottom && nearRight) || (nearTop && nearLeft)) {
+                return true
+            }
+            div.style.resize="none";
+            return false
+        }
+
+        let newLeft, newTop;
+        let boundaryReachedORnot = {
+            "leftLimit": [false,null],
+            "rightLimit": [false,null],
+            "topLimit": [false,null],
+            "bottomLimit": [false,null],
+        }
+        function dragDiv(event) {
+            console.log(boundaryReachedORnot.leftLimit);
+            if (isResizing(event) || event.ctrlKey) {return}
+            event.target.style.userSelect = 'none';
+            
+            // Define variables to store previous positions
+            let prevLeft = newLeft;
+            let prevTop = newTop;
+           
+            let group_all = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+            if (!group_all.includes(selectedDiv) || group_all.length<1) {group_all=[selectedDiv]}
+            group_all.forEach((grpdiv,i) => {
+                let mouseX, mouseY;
+                if (grpdiv==selectedDiv) {
+                    mouseX = event.clientX - offsetX + main.scrollLeft;
+                    mouseY = event.clientY - offsetY + main.scrollTop;
+                } else {
+                    mouseX = event.clientX - offsets_forGroupDivs[i][0] + main.scrollLeft;
+                    mouseY = event.clientY - offsets_forGroupDivs[i][1] + main.scrollTop;
+                }
+
+                const pureHTMLtimelineRect = pureHTMLtimeline.getBoundingClientRect();
+                const divRect = grpdiv.getBoundingClientRect();
+
+                let pW = pureHTMLtimelineRect.width;
+                let pH = pureHTMLtimelineRect.height;
+                const groupCoordinates = getGroupPosition(group_all)
+                const maxX = pW - divRect.width;
+                const maxY = pH - divRect.height;
+    
+                newLeft = mouseX - pureHTMLtimelineRect.left;
+                newTop = mouseY - pureHTMLtimelineRect.top;
+    
+                // Ensure the div doesn't go beyond pureHTMLtimeline boundaries
+                newLeft = Math.min(Math.max(newLeft, 0), maxX);
+                newTop = Math.min(Math.max(newTop, 0), maxY);
+                
+                newLeft = roundDownAToB(newLeft,snappingDistance);
+                newTop = roundDownAToB(newTop,snappingDistance);
+
+
+                // Check for boundary conditions
+                const leftBoundaryReached = newLeft === 0;
+                const rightBoundaryReached = newLeft === maxX;
+                const topBoundaryReached = newTop === 0;
+                const bottomBoundaryReached = newTop === maxY;
+                // Determine the direction of movement
+                let movementDirection = '';
+                // Left Direction
+                // console.log(boundaryReachedORnot);
+                if (newLeft < prevLeft) {
+                    console.log('left');
+                    let bL_limit = boundaryReachedORnot.leftLimit;
+                    setBoundaryReached(bL_limit, leftBoundaryReached, grpdiv);
+                    if(bL_limit[0]==false){horizontalVertical().horizontal}
+                }
+                // Right Direction
+                else if (newLeft > prevLeft) {
+                    console.log('right');
+                    let bR_limit = boundaryReachedORnot.rightLimit;
+                    setBoundaryReached(bR_limit, rightBoundaryReached, grpdiv);
+                    if(bR_limit[0]==false){horizontalVertical().horizontal}
+                }
+                
+                // Top Direction
+                if (newTop < prevTop) {
+                    console.log('top');
+                    let bT_limit = boundaryReachedORnot.topLimit;
+                    setBoundaryReached(bT_limit, topBoundaryReached, grpdiv);
+                    if(bT_limit[0]==false){horizontalVertical().vertical}
+                }
+                // Bottom Direction
+                else if (newTop > prevTop) {
+                    console.log('bottom');
+                    let bB_limit = boundaryReachedORnot.bottomLimit;
+                    setBoundaryReached(bB_limit, bottomBoundaryReached, grpdiv);
+                    if(bB_limit[0]==false){horizontalVertical().vertical}
+                }
+                
+                function horizontalVertical() {
+                    // Update previous positions for the next iteration
+                    prevLeft = newLeft;
+                    prevTop = newTop;
+                    return {
+                        'horizontal':grpdiv.style.left = newLeft + 'px',
+                        'vertical':grpdiv.style.top = newTop + 'px'
+                    };
+                }
+                // Function to handle setting/resetting boundaries
+                function setBoundaryReached(boundary, reached, div) {
+                    console.log(reached);
+                    // console.log(boundary[1]);
+                    if (reached) {// left|right|top|bottom boundary reached
+                        boundary[0] = true;
+                        boundary[1] = group_all.indexOf(div);
+                        console.log(boundary[1]);
+                    } else if (boundary[1] === group_all.indexOf(div)) {// if not limit of e.g., 'leftboundary' yet this element had previously reached it, then reset it to false
+                    console.log('sssssss');
+                        boundary[0] = false;
+                        boundary[1] = null;
+                    }
+                }
+                function roundDownAToB(a,b) {return Math.floor(a / b) * b;}
+
+    
+            });
+            fillStylesPanel(div);
+        }
+
+        // Make divs editable on double click and uneditable on blur
+        div.addEventListener('dblclick', function () {
+            setEditable(true);
+            div.focus();
+
+            function setEditable(editable) {
+                if (editable) {
+                    div.setAttribute("onblur","this.removeAttribute('contenteditable'),this.removeAttribute('onblur')")
+                    div.contentEditable = true;
+                }
+            }
+        });
+
+        div.addEventListener('focus', ()=>{fillStylesPanel(div);})
+
+        pureHTMLtimeline.appendChild(div);
+        allDivs.push(div)
+    }
+
+    function fillStylesPanel(div) {
+        if (div.matches('.pureHTMLtimeline')) {
+            defaulstyles_btn.disabled = true;
+            delete_btn.disabled = true;
+        }
+        else {
+            defaulstyles_btn.disabled = false;
+            delete_btn.disabled = false;
+        }
+        selectedDiv = div;
+        if (parseInt(selectedDiv.style.paddingTop)>0) {
+            textAlign_vertical.checked=true;
+        } else {
+            textAlign_vertical.checked=false;
+        }
+        const allInlineStyles = getInlineStyles(div);//using 'getInlineStyles' incase it has !important
+        widthInput.value = roundUpHtmlUnitToNearest(div.style.width, snappingDistance);
+        heightInput.value = roundUpHtmlUnitToNearest(div.style.height, snappingDistance);
+        backgroundInput.value = div.style.background?allInlineStyles.background:'';
+        borderInput.value = div.style.border;
+        zIndexInput.value = div.style.zIndex;
+        textColorInput.value = div.style.color?allInlineStyles.color:'';
+        fontWeightInput.value = div.style.fontWeight;
+        borderRadiusInput.value = div.style.borderRadius;
+        textAlignInput.value = div.style.textAlign;
+        paddingLeftInput.value = div.style.paddingLeft;
+        snappingDistanceInput.value = snappingDistance;
+    }
+
+    function defaultStyles(def) {
+        //modifies the default styles object 'div1_defaultStyles' & 'div1_defaultStyles' 
+        applyStyles(divtype);
+    }
+
+    function applyStyles(dtype, groupStyle) {
+        if (!selectedDiv) {
+            alert('Please select a div first.');
+            return;
+        }
+
+        snappingDistance = Number(document.getElementById('snappingDistanceInput').value.trim());
+        
+        let width = widthInput.value.trim();
+        let height = heightInput.value.trim();
+        let borderRadius = borderRadiusInput.value.trim();
+        let paddingLeft = paddingLeftInput.value.trim();
+        [[width,widthInput],[height,heightInput],[borderRadius,borderRadiusInput],[paddingLeft,paddingLeftInput]].forEach(x => {// if a number is supplied without a unit, add px as default
+            (x[0]!='' && !x[0].match(/(\d+(?:px|em|rem|%))$/))?(x[0]=`${x[0]}px`,x[1].value=x[0]):null;
+        });
+        [width,height,borderRadius,paddingLeft]=[widthInput.value,heightInput.value,borderRadiusInput.value,paddingLeftInput.value]
+        let background = backgroundInput.value.trim();
+        let border = borderInput.value.trim();
+        let zIndex = zIndexInput.value.trim();
+        let color = textColorInput.value.trim();
+        let fontWeight = fontWeightInput.value.trim();
+        let textAlign = textAlignInput.value.trim();
+
+        let allStyles_string = ['width', 'height', 'background', 'border', 'zIndex', 'color', 'fontWeight','borderRadius', 'textAlign', 'paddingLeft'];
+        let allStyles = [width, height, background, border, zIndex, color, fontWeight, borderRadius, textAlign, paddingLeft];
+        let group_allStyles_string = [];
+        allStyles_string.forEach(a => {
+            // check if the style is to be added
+            if (stylesPanel.querySelector('[groupstyle='+ a +']').checked) {
+                group_allStyles_string.push(a)
+            }
+            else (
+                group_allStyles_string.push(null)
+            )
+        });
+        if (dtype) {
+            dtype = dtype == 'type1' ? div1_defaultStyles : div2_defaultStyles;
+            allStyles.forEach((stl, i) => {
+                if (stl.trim() != '' && group_allStyles_string[i]!=null) {
+                    dtype[allStyles_string[i]] = stl;
+                }
+            });
+        }
+
+        // Apply the styles in the styles object to the selected div(s)
+        group_allStyles_string.forEach((g, i) => {
+            if (g!=null) {
+                let all_grpdivs = pureHTMLtimeline.querySelectorAll('.group');
+                if (all_grpdivs.length<1 && selectedDiv) {
+                    if (!selectedDiv) {return} // If there isn't any div selected
+                    all_grpdivs = [selectedDiv];// If there is a selectedDiv
+                }
+                all_grpdivs.forEach(grpdiv => {
+                    grpdiv.style[g] = allStyles[i];
+                    // In case the styles includes '!important'
+                    if(allStyles[i].includes('!important')){
+                        const regex = new RegExp(`(${g}\\s*:)\\s*[^;]+(;|$)`, 'gi');
+                        let styl = grpdiv.getAttribute('style');
+                        grpdiv.setAttribute('style', styl.replace(regex, '$1'+allStyles[i]+'$2'));
+                    }
+                    //first time only
+                    if (i==0) {
+                        let paddingTop; // for visually vertically centering content of div 
+                        if(textAlign_vertical.checked && group_textAlign_vertical.checked){
+                            paddingTop = calculateGap(grpdiv) / 2 + 'px';
+                            grpdiv.style['padding-top'] = paddingTop;
+                        } else {
+                            grpdiv.style.paddingTop = paddingTop;
+                        }             
+                    }
+                });
+            }
+        });
+    }
+
+    function verticalTextAlignment(dis) {
+        // if (dis && dis.checked) {}
+        if(!group_textAlign_vertical.checked){return}
+        /*  If more than one div is selected */
+        let all_grpdivs = Array.from(pureHTMLtimeline.querySelectorAll('.group'));
+        if (all_grpdivs.length<1 && selectedDiv) {
+            if (!selectedDiv) {return} // If there isn't any div selected
+            all_grpdivs = [selectedDiv];// If there is a selectedDiv
+        }
+        // choice of styling will depend on the last (or only) selected div
+        if (!selectedDiv) {selectedDiv = all_grpdivs.reverse()[0]} // If no selectedDiv, make last div in the page heirarchy the selectedDiv
+        let make_it_flex = textAlign_vertical.checked;
+        all_grpdivs.forEach(grpdiv => {
+            /* Centering with flex gives problems with ref divs */
+            /* Center Using Padding Top */
+            let paddingTop; // for visually vertically centering content of div 
+            if(textAlign_vertical.checked && group_textAlign_vertical.checked){
+                paddingTop = calculateGap(grpdiv) / 2 + 'px';
+                grpdiv.style['padding-top'] = paddingTop;
+            } else {
+                grpdiv.style.paddingTop = '0px';
+            }
+        });
+    }
+    function deleteEventORLine() {
+        if(selectedDiv){
+            if(selectedDiv.matches('.pureHTMLtimeline')){return}//prevent deletion of background
+            let grpAll = pureHTMLtimeline.querySelectorAll('.group');
+            if(grpAll.length>0){
+                grpAll.forEach(g => {g.remove();});
+            }
+            else {
+                selectedDiv.remove();
+            }
+        }
+    }
+
+    function groupAttributes(dis) {
+        if(dis==group_all){
+            let onOFF = group_all.checked;
+            stylesPanel.querySelectorAll('.group_checkboxes').forEach(grp => {
+                grp.checked = onOFF;
+            });
+        }
+        else if (!dis.checked && stylesPanel.querySelectorAll('.group_checkboxes:checked').length==0) {
+            group_all.checked = false;
+        }
+        else if (dis.checked) {
+            group_all.checked = true;
+        }
+    }
+
+    function copyContainerContent(pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0]) {
+        // const pureHTMLtimeline = document.getElementById('pureHTMLtimeline');
+        // const pureHTMLtimelineCopy = pureHTMLtimeline.cloneNode(true);
+        let c_height = pureHTMLtimeline.offsetHeight;
+        let c_width = pureHTMLtimeline.offsetWidth;
+        pureHTMLtimeline.querySelectorAll('br:only-child').forEach(br=>{br.remove()});
+        pureHTMLtimeline = pureHTMLtimeline.cloneNode(true);
+        pureHTMLtimeline.style.height = c_height + 'px';
+        pureHTMLtimeline.style.width = c_width + 'px';
+        // Create a temporary textarea to hold the HTML content
+        const tempTextArea = document.createElement('textarea');
+        tempTextArea.value = pureHTMLtimeline.outerHTML.replace(
+            /\s*[a-zA-Z0-9:'"#=-\s]*darkreader[a-zA-Z0-9:;'"#=-\s]*\s*/gi, '').replace(/;>/g, ';">').replace(
+            /((draggable)|(resizable))*/g, '').replace(/&quot;/g,"'").replace(/<br>(\s*|\n*)*<\/div/g,"</div");
+        document.body.appendChild(tempTextArea);
+
+        // Select and copy the HTML content
+        tempTextArea.select();
+        document.execCommand('copy');
+
+        // Clean up - remove the temporary textarea
+        document.body.removeChild(tempTextArea);
+    }
+    // Function to retrieve clipboard content
+    async function getClipboardContent() {
+        try {
+            const clipboardData = await navigator.clipboard.readText();
+            return clipboardData;
+        } catch (error) {
+            console.error('Failed to read clipboard contents: ', error);
+            return null;
+        }
+    }
+    
+    // Usage example: calling the function to get clipboard content
+    function replace_pureHTMLtimeline() {
+        getClipboardContent().then((clipboardContent) => {
+            if (clipboardContent) {
+                // Test that clipboardContent is .pureHTMLtimeline
+                let temp = document.createElement('div');
+                temp.innerHTML = clipboardContent;
+                if(temp.firstElementChild.matches('.pureHTMLtimeline')){
+                    let pureHTMLtimeline = document.getElementsByClassName('pureHTMLtimeline')[0];
+                    pureHTMLtimeline.setAttribute('style', temp.firstElementChild.getAttribute('style').replace(/transform:\s*[^\)]+\s*;*/,''));
+                    pureHTMLtimeline.style.height = '100%';
+                    pureHTMLtimeline.style.width = '100%';
+                    pureHTMLtimeline.innerHTML = temp.firstElementChild.innerHTML;
+                    temp.remove();
+                    // Attach eventListeners and other things
+                    make_manuallyAddedDivsDraggable()
+                }
+                else {
+                    alert('NOT Pure HTML Timeline!');
+                }
+            } else {
+                alert('Replace Failed!--Clipboard is empty or access denied.');
+            }
+        });
+    }
+    function roundUpHtmlUnitToNearest(unit, nearest) {
+        const numberPart = parseFloat(unit); // Extract the numerical part from the unit
+        const unitType = unit.replace(/^\d+\.?\d*/, ''); // Extract the unit type (e.g., 'px', 'em', etc.)
+        
+        if (!isNaN(numberPart)) {
+            let roundedNumber = Math.floor(numberPart / nearest) * nearest; // Round up to the nearest number
+            roundedNumber = roundedNumber>=nearest?roundedNumber:numberPart;
+            return `${roundedNumber}${unitType}`; // Combine the rounded number with the unit type
+        } else {
+            return '';
+        }
+    }
+    // Function to calculate the gap between element's bottom and bottom of its lowest childnode
+    function calculateGap(parent) {
+        let allNodes = getAllNodes(parent);
+        let lowestNodeBottom = 0;
+        
+        // Temporarily remove padding then add after getting the gap
+        let currentPadding = parseInt(parent.style.paddingTop);
+        if (currentPadding>0) {
+            parent.style.paddingTop = '0px'
+        }
+
+        // Loop through child nodes to find the lowest bottom position
+        for (let i = 0; i < allNodes.length; i++) {
+            if (allNodes[i].nodeType === Node.TEXT_NODE) {
+                const text = allNodes[i].nodeValue.trim();
+                if (text !== '') {
+                    const span = document.createElement('span');
+                    span.innerText = text;
+                    span.style.margin = '0!important';
+                    span.style.padding = '0!important';
+                    allNodes[i].replaceWith(span); // Replace textnode with element span node containing the textnode
+                    
+                    const spanBottom = span.getBoundingClientRect().bottom;
+                    lowestNodeBottom = Math.max(lowestNodeBottom, spanBottom);
+                    span.replaceWith(text); // replace span with original textnode
+                }
+            } else if (allNodes[i].nodeType === Node.ELEMENT_NODE) {
+                const nodeBottom = allNodes[i].getBoundingClientRect().bottom;
+                lowestNodeBottom = Math.max(lowestNodeBottom, nodeBottom);
+            }
+        }
+        
+        const parentBottom = parent.getBoundingClientRect().bottom;
+        const gap=Math.round(parentBottom - lowestNodeBottom);
+
+        // restore the initial padding top
+        if (currentPadding>0) {
+            parent.style.paddingTop = currentPadding + 'px';
+        }
+        return gap;
+
+        function getAllNodes(element, nodeArray = []) {
+            for (let node of element.childNodes) {
+                if (node.nodeType === Node.ELEMENT_NODE || node.nodeType === Node.TEXT_NODE) {
+                    nodeArray.push(node);
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                        getAllNodes(node, nodeArray);
+                    }
+                }
+            }
+            return nodeArray;
+        }
+    }
+    function getInlineStyles(element) {
+        // Get the "style" attribute of the element
+        const styleAttribute = element.getAttribute('style');
+      
+        // Regular expression to match inline style properties and values
+        const regex = /([a-zA-Z-]+)\s*:\s*([^;]+);?/g;
+      
+        const inlineStyles = {};
+        let match;
+      
+        // Extract each property and value using the regex
+        while ((match = regex.exec(styleAttribute)) !== null) {
+          const propertyName = match[1].trim();
+          const propertyValue = match[2].trim();
+          inlineStyles[propertyName] = propertyValue;
+        }
+      
+        return inlineStyles;
+    }
+    function removeStyle(elm, styl) {
+        const regex = new RegExp(`(${styl}\s*:\s*[^;"]+;*)`,'gi');
+        elm.setAttribute('style', elm.getAttribute('style').replace(regex,''));
+    }
+    function getGroupPosition(eventNodes) {
+        let minX = Infinity;
+        let minY = Infinity;
+        let maxX = -Infinity;
+        let maxY = -Infinity;
+
+        eventNodes.forEach(node => {
+            const rect = node.getBoundingClientRect();
+
+            // Update minimum and maximum X and Y coordinates to get the bounding box of the group
+            minX = Math.min(minX, rect.left);
+            minY = Math.min(minY, rect.top);
+            maxX = Math.max(maxX, rect.right);
+            maxY = Math.max(maxY, rect.bottom);
+        });
+
+        const width = maxX - minX;
+        const height = maxY - minY;
+
+        return { left: minX, top: minY, width, height };
+    }
+</script>
+<script>
+    function darkLightMode(cls='darkmode'){
+        document.querySelector('body').classList.toggle(cls)
+    }
+</script>
+</html>

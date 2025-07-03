@@ -1,5 +1,5 @@
 const add_tooltipContextMenu_preventDoublick = debounce(add_tooltipContextMenu, 300);
-
+goAheadandHighlightSameStrongs=true;
 col2.addEventListener(contextMenu_touch, add_tooltipContextMenu, false);
 
 col2.addEventListener('mouseout', function (e) {
@@ -31,31 +31,29 @@ document.addEventListener('keydown', evt => {
 });
 
 //Hide ContextMenu on clicking outside of col2 window
-document.addEventListener('click', function (e) {
-    if (document.querySelector('.context_menu') && (!e.target.matches('[strnum]') && !e.target.matches('.context_menu') && !elmAhasElmOfClassBasAncestor(e.target, '.context_menu'))) {
-        hideRightClickContextMenu()
-    }
+col2.addEventListener('click', function (e) {
+    if (col2.querySelector('.context_menu') && !e.target.matches('.closebtn,.context_menu,.context_menu *')) {hideRightClickContextMenu()}
 })
 
-context_menu.addEventListener("click", codeElmRefClick);
+context_menu.addEventListener("mouseup", codeElmRefClick);
 
 /* FOR SHOWING CROSSREFS AND VERSES NOTES */
-col2.addEventListener("mouseover", codeButtons);
-function codeButtons(e) {
-    if(document.getElementById('show_crossref_comments')==null){ //It may get removed on loading new reference
-        let newElm = document.createElement('div');
-        newElm.classList.add('slideoutofview');
-        newElm.id='show_crossref_comments';
-        newElm.innerHTML=`<button class="buttons verse_crossref_button" id="verse_crossref_button"><a>TSK</a></button><button class="buttons verse_notes_button" id="verse_notes_button"><a>Note</a></button>`;
-        col2.append(newElm);
-    } else if(show_crossref_comments){
-        if (e.target.matches('.verse code') && (e.type == 'mouseover')) {
-            relocateElmTo(show_crossref_comments, e.target);
-            show_crossref_comments.classList.remove('slideoutofview');
-            show_crossref_comments.classList.add('slideintoview');
-        } else if (!e.target.matches('.verse code') && (e.type == 'mouseout')) {
-            show_crossref_comments.classList.remove('slideintoview');
-            show_crossref_comments.classList.add('slideoutofview');
-        }
-    }
-}
+// col2.addEventListener("mouseover", codeButtons);
+// function codeButtons(e) {
+//     if(document.getElementById('show_crossref_comments')==null){ //It may get removed on loading new reference
+//         let newElm = document.createElement('div');
+//         newElm.classList.add('slideoutofview');
+//         newElm.id='show_crossref_comments';
+//         newElm.innerHTML=`<button class="buttons verse_crossref_button" id="verse_crossref_button">x-Ref</button><button class="buttons verse_notes_button" id="verse_notes_button">Note</button>`;
+//         col2.append(newElm);
+//     } else if(show_crossref_comments){
+//         if (e.target.matches('.verse code') && (e.type == 'mouseover')) {
+//             relocateElmTo(show_crossref_comments, e.target);
+//             show_crossref_comments.classList.remove('slideoutofview');
+//             show_crossref_comments.classList.add('slideintoview');
+//         } else if (!e.target.matches('.verse code') && (e.type == 'mouseout')) {
+//             show_crossref_comments.classList.remove('slideintoview');
+//             show_crossref_comments.classList.add('slideoutofview');
+//         }
+//     }
+// }
